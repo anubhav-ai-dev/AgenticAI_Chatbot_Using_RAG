@@ -231,24 +231,27 @@ st.markdown("""
         display: block !important;
     }
     
+    /* Improved radio button alignment - both options in same row with equal width */
     .stRadio [role="radiogroup"] {
         display: flex !important;
         flex-direction: row !important;
         gap: 0.75rem !important;
         flex-wrap: nowrap !important;
-        align-items: center !important;
+        align-items: stretch !important;
+        width: 100% !important;
     }
     
     .stRadio [role="radiogroup"] > label {
         background: #f8fafc !important;
-        padding: 0.65rem 1.25rem !important;
+        padding: 0.7rem 1rem !important;
         border-radius: 8px !important;
         margin: 0 !important;
         border: 2px solid #e2e8f0 !important;
         transition: all 0.3s ease !important;
         cursor: pointer !important;
-        flex: 1 !important;
-        min-width: 90px !important;
+        flex: 1 1 0 !important;
+        min-width: 0 !important;
+        max-width: none !important;
         text-align: center !important;
         font-size: 0.85rem !important;
         font-weight: 500 !important;
@@ -256,6 +259,7 @@ st.markdown("""
         align-items: center !important;
         justify-content: center !important;
         gap: 0.4rem !important;
+        white-space: nowrap !important;
     }
     
     .stRadio [role="radiogroup"] > label:hover {
@@ -276,6 +280,17 @@ st.markdown("""
         display: flex !important;
         align-items: center !important;
         gap: 0.4rem !important;
+        width: 100% !important;
+        justify-content: center !important;
+    }
+    
+    .stRadio [role="radiogroup"] > label > div > div:first-child {
+        flex-shrink: 0 !important;
+    }
+    
+    .stRadio [role="radiogroup"] > label > div > div:last-child {
+        flex-grow: 0 !important;
+        white-space: nowrap !important;
     }
     
     /* Select Box */
