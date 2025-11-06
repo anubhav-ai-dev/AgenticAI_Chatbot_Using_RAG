@@ -231,7 +231,7 @@ st.markdown("""
         display: block !important;
     }
     
-    /* Improved radio button alignment - both options in same row with equal width */
+    /* Improved radio button alignment - each option in a separate box */
     .stRadio [role="radiogroup"] {
         display: flex !important;
         flex-direction: row !important;
@@ -241,56 +241,65 @@ st.markdown("""
         width: 100% !important;
     }
     
+    /* Each radio option styled as a distinct box with borders and background */
     .stRadio [role="radiogroup"] > label {
-        background: #f8fafc !important;
-        padding: 0.7rem 1rem !important;
-        border-radius: 8px !important;
+        background: white !important;
+        padding: 0.85rem 1rem !important;
+        border-radius: 10px !important;
         margin: 0 !important;
-        border: 2px solid #e2e8f0 !important;
+        border: 2px solid #cbd5e1 !important;
         transition: all 0.3s ease !important;
         cursor: pointer !important;
         flex: 1 1 0 !important;
         min-width: 0 !important;
         max-width: none !important;
         text-align: center !important;
-        font-size: 0.85rem !important;
+        font-size: 0.9rem !important;
         font-weight: 500 !important;
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
-        gap: 0.4rem !important;
+        gap: 0.5rem !important;
         white-space: nowrap !important;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.08) !important;
     }
     
     .stRadio [role="radiogroup"] > label:hover {
-        background: #eff6ff !important;
+        background: #f8fafc !important;
         border-color: #3b82f6 !important;
-        transform: translateY(-1px);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(59, 130, 246, 0.15) !important;
     }
     
+    /* Selected radio option with distinct styling */
     .stRadio [role="radiogroup"] > label[data-checked="true"] {
-        background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%) !important;
+        background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%) !important;
         border-color: #3b82f6 !important;
+        border-width: 2.5px !important;
         font-weight: 600 !important;
         color: #1e40af !important;
-        box-shadow: 0 2px 8px rgba(59, 130, 246, 0.2);
+        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.25) !important;
     }
     
     .stRadio [role="radiogroup"] > label > div {
         display: flex !important;
         align-items: center !important;
-        gap: 0.4rem !important;
+        gap: 0.5rem !important;
         width: 100% !important;
         justify-content: center !important;
     }
     
+    /* Ensure circular radio button is visible */
     .stRadio [role="radiogroup"] > label > div > div:first-child {
         flex-shrink: 0 !important;
+        width: 18px !important;
+        height: 18px !important;
     }
     
     .stRadio [role="radiogroup"] > label > div > div:last-child {
         flex-grow: 0 !important;
         white-space: nowrap !important;
+        font-size: 0.9rem !important;
     }
     
     /* Select Box */
