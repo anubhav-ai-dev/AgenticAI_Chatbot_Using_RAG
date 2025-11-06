@@ -544,6 +544,34 @@ st.markdown("""
             padding: 1rem;
         }
     }
+    
+    /* Button Container for Same Row Layout */
+    .button-row {
+        display: flex;
+        gap: 0.5rem;
+        margin: 1rem 0;
+    }
+    
+    /* Reduced Button Height and Equal Width */
+    .stButton > button {
+        height: 38px !important;
+        padding: 0.4rem 0.8rem !important;
+        font-size: 0.85rem !important;
+        min-height: 38px !important;
+        width: 100% !important;
+    }
+    
+    /* Radio Buttons in Same Row */
+    .stRadio > div[role="radiogroup"] {
+        display: flex !important;
+        flex-direction: row !important;
+        gap: 1rem;
+    }
+    
+    .stRadio [role="radiogroup"] label {
+        margin: 0 !important;
+        flex: 1;
+    }
 </style>
 """, unsafe_allow_html=True)
 
@@ -592,7 +620,7 @@ with st.sidebar:
     MODEL_NAMES_GROQ = ["llama-3.3-70b-versatile", "llama3-70b-8192"]
     MODEL_NAMES_OPENAI = ["gpt-4o-mini"]
 
-    provider = st.radio("Select Provider:", ("Groq", "OpenAI"))
+    provider = st.radio("Select Provider:", ("Groq", "OpenAI"), index=0)
 
     if provider == "Groq":
         selected_model = st.selectbox("Select Groq Model:", MODEL_NAMES_GROQ)
