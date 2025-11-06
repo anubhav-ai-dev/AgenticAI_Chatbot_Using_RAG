@@ -102,25 +102,25 @@ st.markdown("""
     [data-testid="stSidebar"] {
         background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
         border-right: 2px solid #e2e8f0;
-        padding: 1rem 0.5rem;
+        padding: 1.5rem 1rem;
     }
     
     [data-testid="stSidebar"] > div:first-child {
-        padding: 1rem;
+        padding: 0.5rem;
     }
     
     /* Section Headers */
     .sidebar-section {
-        margin-bottom: 1.5rem;
-        padding-bottom: 1rem;
+        margin-bottom: 2rem;
+        padding-bottom: 1.5rem;
         border-bottom: 2px solid #e2e8f0;
     }
     
     .sidebar-section h3 {
         color: #3b82f6;
         font-weight: 600;
-        font-size: 1.1rem;
-        margin-bottom: 1rem;
+        font-size: 1.15rem;
+        margin-bottom: 1.25rem;
         font-family: 'Poppins', sans-serif;
         display: flex;
         align-items: center;
@@ -132,7 +132,7 @@ st.markdown("""
         font-weight: 600;
         font-size: 0.95rem;
         margin-bottom: 0.75rem;
-        margin-top: 1rem;
+        margin-top: 0;
     }
     
     /* Input Labels */
@@ -150,7 +150,7 @@ st.markdown("""
     .stTextInput > div > div > input {
         border: 2px solid #e2e8f0;
         border-radius: 8px;
-        padding: 0.6rem 0.8rem;
+        padding: 0.65rem 0.85rem;
         font-size: 0.9rem;
         transition: all 0.3s ease;
         background: white;
@@ -162,25 +162,30 @@ st.markdown("""
         outline: none;
     }
     
-    /* Button Styling - Reduced Height */
+    /* Improved button styling with smaller font and proper alignment */
     .stButton > button {
         background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-        color: white;
+        color: white !important;
         border: none;
         border-radius: 8px;
-        padding: 0.5rem 1rem !important;
-        font-weight: 600;
-        font-size: 0.85rem !important;
+        padding: 0.45rem 0.75rem !important;
+        font-weight: 600 !important;
+        font-size: 0.75rem !important;
+        line-height: 1.2 !important;
         transition: all 0.3s ease;
         box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
         cursor: pointer;
         width: 100%;
-        height: 40px !important;
-        min-height: 40px !important;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 0.4rem;
+        height: 36px !important;
+        min-height: 36px !important;
+        max-height: 36px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 0.3rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
     
     .stButton > button:hover {
@@ -189,13 +194,19 @@ st.markdown("""
         background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
     }
     
+    .stButton > button:active {
+        transform: translateY(0);
+    }
+    
     /* Primary Button (Ask Agent) */
     .stButton > button[kind="primary"] {
         background: linear-gradient(135deg, #10b981 0%, #059669 100%);
         box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
-        font-size: 1rem !important;
-        padding: 0.75rem 2rem !important;
-        height: 48px !important;
+        font-size: 0.95rem !important;
+        padding: 0.7rem 1.5rem !important;
+        height: 46px !important;
+        min-height: 46px !important;
+        max-height: 46px !important;
     }
     
     .stButton > button[kind="primary"]:hover {
@@ -203,7 +214,7 @@ st.markdown("""
         box-shadow: 0 6px 20px rgba(16, 185, 129, 0.5);
     }
     
-    /* Radio Buttons - Inline Layout */
+    /* Radio buttons styled to display inline with proper spacing */
     .stRadio > div {
         background: white;
         padding: 1rem;
@@ -213,42 +224,58 @@ st.markdown("""
     }
     
     .stRadio > label {
-        font-weight: 600;
-        color: #475569;
-        font-size: 0.9rem;
-        margin-bottom: 0.5rem;
+        font-weight: 600 !important;
+        color: #475569 !important;
+        font-size: 0.9rem !important;
+        margin-bottom: 0.75rem !important;
+        display: block !important;
     }
     
     .stRadio [role="radiogroup"] {
         display: flex !important;
         flex-direction: row !important;
-        gap: 0.75rem;
-        flex-wrap: wrap;
+        gap: 0.75rem !important;
+        flex-wrap: nowrap !important;
+        align-items: center !important;
     }
     
-    .stRadio [role="radiogroup"] label {
-        background: #f8fafc;
-        padding: 0.6rem 1.2rem;
-        border-radius: 8px;
+    .stRadio [role="radiogroup"] > label {
+        background: #f8fafc !important;
+        padding: 0.65rem 1.25rem !important;
+        border-radius: 8px !important;
         margin: 0 !important;
-        border: 2px solid #e2e8f0;
-        transition: all 0.3s ease;
-        cursor: pointer;
-        flex: 1;
-        min-width: 100px;
-        text-align: center;
+        border: 2px solid #e2e8f0 !important;
+        transition: all 0.3s ease !important;
+        cursor: pointer !important;
+        flex: 1 !important;
+        min-width: 90px !important;
+        text-align: center !important;
+        font-size: 0.85rem !important;
+        font-weight: 500 !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 0.4rem !important;
     }
     
-    .stRadio [role="radiogroup"] label:hover {
-        background: #eff6ff;
-        border-color: #3b82f6;
+    .stRadio [role="radiogroup"] > label:hover {
+        background: #eff6ff !important;
+        border-color: #3b82f6 !important;
+        transform: translateY(-1px);
     }
     
-    .stRadio [role="radiogroup"] label[data-checked="true"] {
-        background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
-        border-color: #3b82f6;
-        font-weight: 600;
-        color: #1e40af;
+    .stRadio [role="radiogroup"] > label[data-checked="true"] {
+        background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%) !important;
+        border-color: #3b82f6 !important;
+        font-weight: 600 !important;
+        color: #1e40af !important;
+        box-shadow: 0 2px 8px rgba(59, 130, 246, 0.2);
+    }
+    
+    .stRadio [role="radiogroup"] > label > div {
+        display: flex !important;
+        align-items: center !important;
+        gap: 0.4rem !important;
     }
     
     /* Select Box */
@@ -462,6 +489,16 @@ st.markdown("""
     @media (max-width: 768px) {
         .main-header h1 { font-size: 2rem; }
         .main-header p { font-size: 1rem; }
+        
+        .stButton > button {
+            font-size: 0.7rem !important;
+            padding: 0.4rem 0.6rem !important;
+        }
+        
+        .stRadio [role="radiogroup"] > label {
+            font-size: 0.8rem !important;
+            padding: 0.55rem 1rem !important;
+        }
     }
 </style>
 """, unsafe_allow_html=True)
