@@ -25,15 +25,18 @@ if 'chat_history' not in st.session_state:
     st.session_state.chat_history = []
 if 'uploaded_documents' not in st.session_state:
     st.session_state.uploaded_documents = []
+if 'current_response' not in st.session_state:
+    st.session_state.current_response = None
 
 # API Configuration
 API_URL = "https://agenticai-chatbot-using-rag.onrender.com"
 
-# Enhanced Professional CSS Styling
+# Enhanced Professional CSS Styling with Bootstrap and Font Awesome
 st.markdown("""
 <style>
-    /* Import Google Fonts */
+    /* Import Google Fonts and Font Awesome */
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap');
+    @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');
     
     /* Global Styles */
     * {
@@ -41,13 +44,8 @@ st.markdown("""
     }
     
     /* Main Container Styling */
-    .main {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        background-attachment: fixed;
-    }
-    
     .stApp {
-        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        background: linear-gradient(135deg, #f0f4f8 0%, #e2e8f0 100%);
     }
     
     /* Custom Scrollbar */
@@ -57,29 +55,29 @@ st.markdown("""
     }
     
     ::-webkit-scrollbar-track {
-        background: #f1f1f1;
+        background: #f1f5f9;
         border-radius: 10px;
     }
     
     ::-webkit-scrollbar-thumb {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
         border-radius: 10px;
     }
     
     ::-webkit-scrollbar-thumb:hover {
-        background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+        background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
     }
     
-    /* Animated Header */
+    /* Light Blue Animated Header */
     .main-header {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+        background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 50%, #2563eb 100%);
         background-size: 200% 200%;
         animation: gradientShift 8s ease infinite;
         padding: 2.5rem 2rem;
         border-radius: 20px;
         text-align: center;
         margin-bottom: 2rem;
-        box-shadow: 0 10px 40px rgba(102, 126, 234, 0.4);
+        box-shadow: 0 10px 40px rgba(59, 130, 246, 0.3);
         position: relative;
         overflow: hidden;
     }
@@ -91,7 +89,7 @@ st.markdown("""
         left: -50%;
         width: 200%;
         height: 200%;
-        background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+        background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%);
         animation: rotate 20s linear infinite;
     }
     
@@ -108,7 +106,7 @@ st.markdown("""
     
     .main-header h1 {
         color: white;
-        font-size: 3rem;
+        font-size: 2.8rem;
         font-weight: 700;
         margin: 0;
         text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
@@ -119,7 +117,7 @@ st.markdown("""
     
     .main-header p {
         color: rgba(255, 255, 255, 0.95);
-        font-size: 1.2rem;
+        font-size: 1.15rem;
         margin-top: 0.5rem;
         font-weight: 400;
         position: relative;
@@ -128,228 +126,292 @@ st.markdown("""
     
     /* Sidebar Styling */
     [data-testid="stSidebar"] {
-        background: linear-gradient(180deg, #ffffff 0%, #f8f9fa 100%);
-        border-right: 2px solid #e9ecef;
+        background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+        border-right: 2px solid #e2e8f0;
     }
     
     [data-testid="stSidebar"] .stMarkdown h3,
     [data-testid="stSidebar"] .stMarkdown h4 {
-        color: #667eea;
+        color: #3b82f6;
         font-weight: 600;
         font-family: 'Poppins', sans-serif;
         margin-top: 1.5rem;
         margin-bottom: 1rem;
     }
     
-    /* Enhanced Button Styles */
+    /* Bootstrap-Inspired Button Styles */
     .stButton > button {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
         color: white;
         border: none;
-        border-radius: 12px;
-        padding: 0.6rem 1.5rem;
+        border-radius: 10px;
+        padding: 0.65rem 1.5rem;
         font-weight: 600;
         font-size: 0.95rem;
         transition: all 0.3s ease;
-        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
         cursor: pointer;
         width: 100%;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
     }
     
     .stButton > button:hover {
         transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
-        background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+        box-shadow: 0 6px 20px rgba(59, 130, 246, 0.5);
+        background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
     }
     
     .stButton > button:active {
         transform: translateY(0);
+        box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
     }
     
-    /* Primary Button (Ask Agent) */
+    /* Primary Button (Ask Agent) - Bootstrap Primary Style */
     .stButton > button[kind="primary"] {
-        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-        box-shadow: 0 4px 15px rgba(245, 87, 108, 0.4);
+        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
         animation: pulse 2s ease-in-out infinite;
+        font-size: 1.05rem;
+        padding: 0.75rem 2rem;
     }
     
     @keyframes pulse {
-        0%, 100% { box-shadow: 0 4px 15px rgba(245, 87, 108, 0.4); }
-        50% { box-shadow: 0 6px 25px rgba(245, 87, 108, 0.6); }
+        0%, 100% { box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4); }
+        50% { box-shadow: 0 6px 25px rgba(16, 185, 129, 0.6); }
     }
     
     .stButton > button[kind="primary"]:hover {
-        background: linear-gradient(135deg, #f5576c 0%, #f093fb 100%);
-        box-shadow: 0 6px 25px rgba(245, 87, 108, 0.6);
+        background: linear-gradient(135deg, #059669 0%, #047857 100%);
+        box-shadow: 0 6px 25px rgba(16, 185, 129, 0.6);
     }
     
-    /* Input Fields */
+    /* Bootstrap-Style Radio Buttons */
+    .stRadio > div {
+        background: white;
+        padding: 1.2rem;
+        border-radius: 12px;
+        border: 2px solid #e2e8f0;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+    
+    .stRadio > label {
+        font-weight: 600;
+        color: #1e293b;
+        font-size: 0.95rem;
+    }
+    
+    .stRadio [role="radiogroup"] label {
+        background: #f8fafc;
+        padding: 0.6rem 1rem;
+        border-radius: 8px;
+        margin: 0.3rem 0;
+        border: 2px solid #e2e8f0;
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+    
+    .stRadio [role="radiogroup"] label:hover {
+        background: #eff6ff;
+        border-color: #3b82f6;
+        transform: translateX(3px);
+    }
+    
+    .stRadio [role="radiogroup"] label[data-checked="true"] {
+        background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+        border-color: #3b82f6;
+        font-weight: 600;
+        color: #1e40af;
+    }
+    
+    /* Input Fields - Bootstrap Style */
     .stTextInput > div > div > input,
     .stTextArea > div > div > textarea {
-        border: 2px solid #e9ecef;
-        border-radius: 12px;
+        border: 2px solid #e2e8f0;
+        border-radius: 10px;
         padding: 0.75rem 1rem;
         font-size: 0.95rem;
         transition: all 0.3s ease;
         background: white;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.05);
     }
     
     .stTextInput > div > div > input:focus,
     .stTextArea > div > div > textarea:focus {
-        border-color: #667eea;
-        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
         outline: none;
     }
     
-    /* Select Box */
+    /* Select Box - Bootstrap Style */
     .stSelectbox > div > div {
-        border-radius: 12px;
-        border: 2px solid #e9ecef;
+        border-radius: 10px;
+        border: 2px solid #e2e8f0;
         transition: all 0.3s ease;
+        background: white;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.05);
     }
     
     .stSelectbox > div > div:hover {
-        border-color: #667eea;
+        border-color: #3b82f6;
     }
     
-    /* Radio Buttons */
-    .stRadio > div {
-        background: white;
-        padding: 1rem;
-        border-radius: 12px;
-        border: 2px solid #e9ecef;
-    }
-    
-    /* Slider */
+    /* Slider - Bootstrap Primary Color */
     .stSlider > div > div > div {
-        background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(90deg, #3b82f6 0%, #2563eb 100%);
     }
     
-    /* Checkbox */
+    /* Checkbox - Bootstrap Style */
     .stCheckbox {
         background: white;
         padding: 0.75rem;
         border-radius: 10px;
-        border: 2px solid #e9ecef;
+        border: 2px solid #e2e8f0;
         transition: all 0.3s ease;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.05);
     }
     
     .stCheckbox:hover {
-        border-color: #667eea;
-        box-shadow: 0 2px 8px rgba(102, 126, 234, 0.1);
+        border-color: #3b82f6;
+        box-shadow: 0 2px 8px rgba(59, 130, 246, 0.15);
     }
     
-    /* File Uploader */
+    /* File Uploader - Bootstrap Style */
     [data-testid="stFileUploader"] {
         background: white;
-        border: 2px dashed #667eea;
+        border: 2px dashed #3b82f6;
         border-radius: 12px;
         padding: 1.5rem;
         transition: all 0.3s ease;
     }
     
     [data-testid="stFileUploader"]:hover {
-        border-color: #764ba2;
-        background: #f8f9fa;
+        border-color: #2563eb;
+        background: #eff6ff;
     }
     
-    /* Document List Items */
+    /* Document List Items with Icons */
     .document-item {
-        background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+        background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
         padding: 0.75rem 1rem;
         margin: 0.5rem 0;
         border-radius: 10px;
-        border-left: 4px solid #667eea;
+        border-left: 4px solid #3b82f6;
         box-shadow: 0 2px 8px rgba(0,0,0,0.05);
         transition: all 0.3s ease;
         font-size: 0.9rem;
+        display: flex;
+        align-items: center;
     }
     
     .document-item:hover {
         transform: translateX(5px);
-        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
-        border-left-color: #764ba2;
+        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+        border-left-color: #2563eb;
+    }
+    
+    .document-item i {
+        margin-right: 0.5rem;
+        color: #3b82f6;
+    }
+    
+    /* Chat Response Box */
+    .chat-response-box {
+        background: white;
+        border: 2px solid #e2e8f0;
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin-top: 1rem;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        animation: fadeIn 0.5s ease;
+    }
+    
+    .chat-response-box .user-message {
+        background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+        padding: 1rem;
+        border-radius: 10px;
+        margin-bottom: 1rem;
+        border-left: 4px solid #3b82f6;
+    }
+    
+    .chat-response-box .user-message strong {
+        color: #1e40af;
+        display: flex;
+        align-items: center;
+        margin-bottom: 0.5rem;
+    }
+    
+    .chat-response-box .user-message strong i {
+        margin-right: 0.5rem;
+    }
+    
+    .chat-response-box .assistant-message {
+        background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+        padding: 1rem;
+        border-radius: 10px;
+        border-left: 4px solid #10b981;
+    }
+    
+    .chat-response-box .assistant-message strong {
+        color: #047857;
+        display: flex;
+        align-items: center;
+        margin-bottom: 0.5rem;
+    }
+    
+    .chat-response-box .assistant-message strong i {
+        margin-right: 0.5rem;
     }
     
     /* Expander Styling */
     .streamlit-expanderHeader {
-        background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
-        border-radius: 12px;
-        border: 2px solid #e9ecef;
+        background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+        border-radius: 10px;
+        border: 2px solid #e2e8f0;
         font-weight: 600;
         transition: all 0.3s ease;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.05);
     }
     
     .streamlit-expanderHeader:hover {
-        border-color: #667eea;
-        box-shadow: 0 2px 8px rgba(102, 126, 234, 0.1);
+        border-color: #3b82f6;
+        box-shadow: 0 3px 10px rgba(59, 130, 246, 0.15);
     }
     
-    /* Metrics Cards */
-    [data-testid="stMetric"] {
-        background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
-        padding: 1rem;
-        border-radius: 12px;
-        border: 2px solid #e9ecef;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-        transition: all 0.3s ease;
-    }
-    
-    [data-testid="stMetric"]:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.2);
-        border-color: #667eea;
-    }
-    
-    [data-testid="stMetricLabel"] {
-        font-weight: 600;
-        color: #667eea;
-    }
-    
-    [data-testid="stMetricValue"] {
-        font-size: 1.5rem;
-        font-weight: 700;
-        color: #2d3748;
-    }
-    
-    /* Alert Boxes */
+    /* Alert Boxes - Bootstrap Style */
     .stAlert {
-        border-radius: 12px;
+        border-radius: 10px;
         border: none;
         box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     }
     
-    [data-baseweb="notification"] {
-        border-radius: 12px;
-    }
-    
     /* Success Alert */
     .stSuccess {
-        background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
-        border-left: 4px solid #28a745;
+        background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+        border-left: 4px solid #10b981;
     }
     
     /* Error Alert */
     .stError {
-        background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
-        border-left: 4px solid #dc3545;
+        background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+        border-left: 4px solid #ef4444;
     }
     
     /* Warning Alert */
     .stWarning {
-        background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
-        border-left: 4px solid #ffc107;
+        background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+        border-left: 4px solid #f59e0b;
     }
     
     /* Info Alert */
     .stInfo {
-        background: linear-gradient(135deg, #d1ecf1 0%, #bee5eb 100%);
-        border-left: 4px solid #17a2b8;
+        background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+        border-left: 4px solid #3b82f6;
     }
     
     /* Spinner */
     .stSpinner > div {
-        border-top-color: #667eea !important;
+        border-top-color: #3b82f6 !important;
     }
     
     /* Divider */
@@ -357,14 +419,14 @@ st.markdown("""
         margin: 2rem 0;
         border: none;
         height: 2px;
-        background: linear-gradient(90deg, transparent 0%, #667eea 50%, transparent 100%);
+        background: linear-gradient(90deg, transparent 0%, #3b82f6 50%, transparent 100%);
     }
     
     /* Footer Styling */
     .footer {
         text-align: center;
         padding: 2rem;
-        background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+        background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
         border-radius: 15px;
         margin-top: 2rem;
         box-shadow: 0 -4px 20px rgba(0,0,0,0.05);
@@ -372,31 +434,31 @@ st.markdown("""
     
     .footer p {
         margin: 0.5rem 0;
-        color: #4a5568;
+        color: #475569;
     }
     
     .footer strong {
-        color: #667eea;
+        color: #3b82f6;
         font-weight: 700;
     }
     
     /* Feature Badges */
     .feature-badge {
         display: inline-block;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
         color: white;
         padding: 0.4rem 1rem;
         border-radius: 20px;
         margin: 0.25rem;
         font-size: 0.85rem;
         font-weight: 600;
-        box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+        box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
         transition: all 0.3s ease;
     }
     
     .feature-badge:hover {
         transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.5);
+        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.5);
     }
     
     /* Column Styling */
@@ -408,57 +470,53 @@ st.markdown("""
         margin: 0.5rem;
     }
     
+    /* Section Headers with Icons */
+    .section-header {
+        display: flex;
+        align-items: center;
+        color: #1e293b;
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+        font-family: 'Poppins', sans-serif;
+    }
+    
+    .section-header i {
+        margin-right: 0.75rem;
+        color: #3b82f6;
+    }
+    
     /* Markdown Content */
     .stMarkdown {
-        color: #2d3748;
+        color: #334155;
     }
     
     .stMarkdown h3 {
-        color: #667eea;
+        color: #3b82f6;
         font-family: 'Poppins', sans-serif;
         font-weight: 600;
         margin-top: 1.5rem;
     }
     
     .stMarkdown strong {
-        color: #764ba2;
+        color: #1e40af;
     }
     
     /* Code Blocks */
     code {
-        background: #f8f9fa;
+        background: #f1f5f9;
         padding: 0.2rem 0.5rem;
         border-radius: 6px;
-        color: #667eea;
+        color: #3b82f6;
         font-size: 0.9rem;
     }
     
     /* JSON Display */
     .stJson {
-        background: #f8f9fa;
+        background: #f8fafc;
         border-radius: 12px;
-        border: 2px solid #e9ecef;
+        border: 2px solid #e2e8f0;
         padding: 1rem;
-    }
-    
-    /* Tabs */
-    .stTabs [data-baseweb="tab-list"] {
-        gap: 8px;
-        background: white;
-        border-radius: 12px;
-        padding: 0.5rem;
-    }
-    
-    .stTabs [data-baseweb="tab"] {
-        border-radius: 8px;
-        padding: 0.75rem 1.5rem;
-        font-weight: 600;
-        transition: all 0.3s ease;
-    }
-    
-    .stTabs [aria-selected="true"] {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
     }
     
     /* Loading Animation */
@@ -489,21 +547,20 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# Professional header
+# Professional header with light blue gradient
 st.markdown("""
 <div class="main-header">
-    <h1>🤖 AI Assistant Pro</h1>
+    <h1><i class="fas fa-robot"></i> AI Assistant Pro</h1>
     <p>Advanced RAG-powered AI with Memory & Document Intelligence</p>
 </div>
 """, unsafe_allow_html=True)
 
-
 # Sidebar Configuration
 with st.sidebar:
-    st.markdown("### ⚙️ Configuration")
+    st.markdown('<h3><i class="fas fa-cog"></i> Configuration</h3>', unsafe_allow_html=True)
 
     # User & Session Management
-    st.markdown("#### 👤 User & Session")
+    st.markdown('<h4><i class="fas fa-user"></i> User & Session</h4>', unsafe_allow_html=True)
     user_id = st.text_input("User ID:", value=st.session_state.user_id, key="user_id_input")
     if user_id != st.session_state.user_id:
         st.session_state.user_id = user_id
@@ -513,6 +570,7 @@ with st.sidebar:
         if st.button("🔄 New Session"):
             st.session_state.session_id = str(uuid.uuid4())
             st.session_state.chat_history = []
+            st.session_state.current_response = None
             st.rerun()
 
     with col2:
@@ -522,6 +580,7 @@ with st.sidebar:
                                          json={"session_id": st.session_state.session_id})
                 if response.status_code == 200:
                     st.session_state.chat_history = []
+                    st.session_state.current_response = None
                     st.success("History cleared!")
                 else:
                     st.error("Failed to clear history")
@@ -529,7 +588,7 @@ with st.sidebar:
                 st.error(f"Error: {str(e)}")
 
     # Model Configuration
-    st.markdown("#### 🧠 Model Settings")
+    st.markdown('<h4><i class="fas fa-brain"></i> Model Settings</h4>', unsafe_allow_html=True)
     MODEL_NAMES_GROQ = ["llama-3.3-70b-versatile", "llama3-70b-8192"]
     MODEL_NAMES_OPENAI = ["gpt-4o-mini"]
 
@@ -541,7 +600,7 @@ with st.sidebar:
         selected_model = st.selectbox("Select OpenAI Model:", MODEL_NAMES_OPENAI)
 
     # Agent Configuration
-    st.markdown("#### 🎯 Agent Settings")
+    st.markdown('<h4><i class="fas fa-bullseye"></i> Agent Settings</h4>', unsafe_allow_html=True)
     allow_web_search = st.checkbox("🔍 Allow Web Search", value=True)
     similarity_threshold = st.slider(
         "📊 RAG Similarity Threshold",
@@ -553,7 +612,7 @@ with st.sidebar:
     )
 
     # Document Management
-    st.markdown("#### 📚 Document Management")
+    st.markdown('<h4><i class="fas fa-book"></i> Document Management</h4>', unsafe_allow_html=True)
 
     # PDF Upload
     uploaded_file = st.file_uploader("Upload PDF", type=['pdf'])
@@ -589,15 +648,15 @@ with st.sidebar:
     if st.session_state.uploaded_documents:
         st.markdown("**📄 Your Documents:**")
         for doc in st.session_state.uploaded_documents:
-            st.markdown(f'<div class="document-item">📄 {doc}</div>', unsafe_allow_html=True)
+            st.markdown(f'<div class="document-item"><i class="fas fa-file-pdf"></i> {doc}</div>', unsafe_allow_html=True)
     else:
         st.info("*No documents uploaded yet*")
 
-# Main Chat Interface
+# Main Layout: Chat Interface (Left) and Chat History (Right)
 col1, col2 = st.columns([2, 1])
 
 with col1:
-    st.markdown("### 💬 Chat Interface")
+    st.markdown('<div class="section-header"><i class="fas fa-comments"></i> Chat Interface</div>', unsafe_allow_html=True)
 
     # System Prompt
     system_prompt = st.text_area(
@@ -635,12 +694,14 @@ with col1:
                         if "error" in data:
                             st.error(f"❌ {data['error']}")
                         else:
-                            st.session_state.chat_history.append({
+                            # Store current response
+                            st.session_state.current_response = {
                                 "timestamp": datetime.now().strftime("%H:%M:%S"),
                                 "user": user_query,
                                 "assistant": data['response'],
                                 "session_id": data.get('session_id', st.session_state.session_id)
-                            })
+                            }
+                            st.session_state.chat_history.append(st.session_state.current_response)
                             st.rerun()
                     else:
                         st.error("❌ Error: Could not get response from backend.")
@@ -649,8 +710,23 @@ with col1:
         else:
             st.warning("⚠️ Please enter a query!")
 
+    # Display Current Response Below Ask Agent Button
+    if st.session_state.current_response:
+        st.markdown('<div class="chat-response-box">', unsafe_allow_html=True)
+        st.markdown(f'''
+        <div class="user-message">
+            <strong><i class="fas fa-user"></i> You:</strong>
+            <p>{st.session_state.current_response['user']}</p>
+        </div>
+        <div class="assistant-message">
+            <strong><i class="fas fa-robot"></i> Assistant:</strong>
+            <p>{st.session_state.current_response['assistant']}</p>
+        </div>
+        ''', unsafe_allow_html=True)
+        st.markdown('</div>', unsafe_allow_html=True)
+
 with col2:
-    st.markdown("### 📜 Chat History")
+    st.markdown('<div class="section-header"><i class="fas fa-history"></i> Chat History</div>', unsafe_allow_html=True)
 
     if st.button("🔄 Load History"):
         try:
@@ -686,16 +762,6 @@ with col2:
     else:
         st.info("💡 No chat history yet. Start a conversation!")
 
-    # Session Info
-    st.divider()
-    col1, col2, col3 = st.columns(3)
-    with col1:
-        st.metric("👤 User", st.session_state.user_id[:8] + "...")
-    with col2:
-        st.metric("💬 Chats", len(st.session_state.chat_history))
-    with col3:
-        st.metric("📚 Docs", len(st.session_state.uploaded_documents))
-
     # Tips & Debug
     with st.expander("🔧 Advanced Features & Tips"):
         st.markdown("""
@@ -719,7 +785,7 @@ with col2:
         - Powered by Tavily Search API
 
         **5. 🤖 Multiple AI Providers**
-        - Groq: Fast inference with Llama and Mixtral models
+        - Groq: Fast inference with Llama models
         - OpenAI: GPT-4o-mini for high-quality responses
 
         ### 💡 Tips for Best Results:
@@ -755,13 +821,13 @@ with col2:
 st.markdown("---")
 st.markdown("""
 <div class="footer">
-    <p>🤖 <strong>AI Assistant Pro</strong> | Powered by RAG Technology & Advanced Memory Systems</p>
+    <p><i class="fas fa-robot"></i> <strong>AI Assistant Pro</strong> | Powered by RAG Technology & Advanced Memory Systems</p>
     <p><small>Built with Streamlit • Enhanced with Professional UI/UX Design</small></p>
     <p style="margin-top: 1rem;">
-        <span class="feature-badge">RAG Enabled</span>
-        <span class="feature-badge">Memory System</span>
-        <span class="feature-badge">Web Search</span>
-        <span class="feature-badge">Multi-Model</span>
+        <span class="feature-badge"><i class="fas fa-database"></i> RAG Enabled</span>
+        <span class="feature-badge"><i class="fas fa-memory"></i> Memory System</span>
+        <span class="feature-badge"><i class="fas fa-search"></i> Web Search</span>
+        <span class="feature-badge"><i class="fas fa-layer-group"></i> Multi-Model</span>
     </p>
 </div>
 """, unsafe_allow_html=True)
