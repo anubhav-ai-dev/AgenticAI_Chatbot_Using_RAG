@@ -19,7 +19,7 @@ from langchain_cohere import CohereEmbeddings, CohereRerank
 from langchain_community.vectorstores import FAISS
 from langchain_core.messages import AIMessage, HumanMessage, SystemMessage
 from langchain_core.documents import Document
-from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langgraph.graph import StateGraph, END
 from langgraph.graph.message import add_messages
 from typing_extensions import Annotated, TypedDict
@@ -467,4 +467,3 @@ def get_user_documents(user_id: str) -> List[str]:
     except Exception as e:
         print(f"Error getting user documents: {e}")
         return []
-
