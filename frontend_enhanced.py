@@ -231,63 +231,73 @@ st.markdown("""
         display: block !important;
     }
     
-    /* --- Radio options: fix label text overflowing and alignment --- */
+    /* Updated radio button styling for horizontal layout with simple circular buttons in separate boxes */
     .stRadio [role="radiogroup"] {
         display: flex !important;
         flex-direction: row !important;
         gap: 0.75rem !important;
         flex-wrap: nowrap !important;
-        align-items: stretch !important;
         width: 100% !important;
-        box-sizing: border-box !important;
     }
     
-    /* Each option container */
+    /* Each radio option in a clean bordered box */
     .stRadio [role="radiogroup"] > label {
-        background: white !important;
-        padding: 0.85rem 1rem !important;
-        border-radius: 10px !important;
+        background: #ffffff !important;
+        padding: 0.75rem 1rem !important;
+        border-radius: 8px !important;
         margin: 0 !important;
         border: 2px solid #cbd5e1 !important;
         transition: all 0.3s ease !important;
         cursor: pointer !important;
-        flex: 1 1 0 !important;        /* allow options to share available space */
-        min-width: 0 !important;       /* <- critical for proper flex shrinking */
-        text-align: left !important;
-        display: flex !important;      /* make the label itself a flex container */
+        flex: 1 !important;
+        display: flex !important;
         align-items: center !important;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.08) !important;
+        justify-content: flex-start !important;
+        gap: 0.6rem !important;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.06) !important;
+        font-size: 0.9rem !important;
+        font-weight: 500 !important;
+        color: #475569 !important;
     }
     
-    /* The inner wrapper that Streamlit creates: ensure it fills and hides overflow */
+    .stRadio [role="radiogroup"] > label:hover {
+        background: #f8fafc !important;
+        border-color: #94a3b8 !important;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1) !important;
+    }
+    
+    /* Selected state */
+    .stRadio [role="radiogroup"] > label[data-baseweb="radio"] {
+        background: #ffffff !important;
+    }
+    
+    /* Inner wrapper */
     .stRadio [role="radiogroup"] > label > div {
         display: flex !important;
         align-items: center !important;
-        gap: 0.5rem !important;
+        gap: 0.6rem !important;
         width: 100% !important;
-        box-sizing: border-box !important;
-        overflow: hidden !important;   /* hide overflow text gracefully */
     }
     
-    /* The circular radio control (left element) should not grow/shrink */
+    /* Circular radio button - ensure it's visible and properly styled */
     .stRadio [role="radiogroup"] > label > div > div:first-child {
-        flex: 0 0 18px !important;
-        width: 18px !important;
-        height: 18px !important;
-        margin-right: 0.5rem !important;
+        flex-shrink: 0 !important;
+        width: 20px !important;
+        height: 20px !important;
+        border-radius: 50% !important;
+        border: 2px solid #94a3b8 !important;
+        background: white !important;
+        position: relative !important;
     }
     
-    /* The text element (right element) must be allowed to shrink and ellipsize */
+    /* Label text */
     .stRadio [role="radiogroup"] > label > div > div:last-child {
-        flex: 1 1 auto !important;     /* allow shrinking/growing */
-        min-width: 0 !important;       /* critical: allows flex child to shrink */
-        overflow: hidden !important;
-        text-overflow: ellipsis !important;
-        white-space: nowrap !important;
+        flex: 0 1 auto !important;
         font-size: 0.9rem !important;
         font-weight: 500 !important;
+        color: #475569 !important;
+        white-space: nowrap !important;
     }
-
     
     /* Select Box */
     .stSelectbox > div > div {
@@ -782,4 +792,3 @@ st.markdown("""
     </p>
 </div>
 """, unsafe_allow_html=True)
-
