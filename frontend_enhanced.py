@@ -240,7 +240,7 @@ st.markdown("""
         width: 100% !important;
     }
     
-    /* Each radio option in a clean bordered box */
+    /* Each radio option in a clean bordered box with circular radio button */
     .stRadio [role="radiogroup"] > label {
         background: #ffffff !important;
         padding: 0.75rem 1rem !important;
@@ -250,53 +250,37 @@ st.markdown("""
         transition: all 0.3s ease !important;
         cursor: pointer !important;
         flex: 1 !important;
+        min-width: 0 !important;
         display: flex !important;
         align-items: center !important;
         justify-content: flex-start !important;
         gap: 0.6rem !important;
         box-shadow: 0 1px 3px rgba(0,0,0,0.06) !important;
-        font-size: 0.9rem !important;
-        font-weight: 500 !important;
-        color: #475569 !important;
     }
     
     .stRadio [role="radiogroup"] > label:hover {
         background: #f8fafc !important;
-        border-color: #94a3b8 !important;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.1) !important;
+        border-color: #3b82f6 !important;
+        box-shadow: 0 2px 5px rgba(59, 130, 246, 0.15) !important;
     }
     
-    /* Selected state */
-    .stRadio [role="radiogroup"] > label[data-baseweb="radio"] {
-        background: #ffffff !important;
+    /* Styling for selected radio option */
+    .stRadio [role="radiogroup"] > label[data-checked="true"] {
+        border-color: #3b82f6 !important;
+        background: #eff6ff !important;
     }
     
-    /* Inner wrapper */
-    .stRadio [role="radiogroup"] > label > div {
-        display: flex !important;
-        align-items: center !important;
-        gap: 0.6rem !important;
-        width: 100% !important;
-    }
-    
-    /* Circular radio button - ensure it's visible and properly styled */
-    .stRadio [role="radiogroup"] > label > div > div:first-child {
-        flex-shrink: 0 !important;
-        width: 20px !important;
-        height: 20px !important;
-        border-radius: 50% !important;
-        border: 2px solid #94a3b8 !important;
-        background: white !important;
-        position: relative !important;
-    }
-    
-    /* Label text */
-    .stRadio [role="radiogroup"] > label > div > div:last-child {
-        flex: 0 1 auto !important;
+    /* Text styling inside radio boxes */
+    .stRadio [role="radiogroup"] > label div {
         font-size: 0.9rem !important;
         font-weight: 500 !important;
         color: #475569 !important;
         white-space: nowrap !important;
+    }
+    
+    .stRadio [role="radiogroup"] > label[data-checked="true"] div {
+        color: #1e40af !important;
+        font-weight: 600 !important;
     }
     
     /* Select Box */
