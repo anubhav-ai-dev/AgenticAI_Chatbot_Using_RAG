@@ -30,7 +30,7 @@ if 'show_chat_history' not in st.session_state:
     st.session_state.show_chat_history = False
 
 # API Configuration
-API_URL = "https://agenticai-chatbot-using-rag.onrender.com"
+API_URL = "https://ai-agent-backend.up.railway.app/"
 
 # Enhanced Professional CSS Styling
 st.markdown("""
@@ -776,3 +776,4 @@ st.markdown("""
     </p>
 </div>
 """, unsafe_allow_html=True)
+
