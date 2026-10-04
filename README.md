@@ -1,287 +1,194 @@
-# 🤖 Enhanced AI Agent with RAG & Memory
+# 🤖 AI Assistant Pro — RAG & Memory
 
-A powerful AI chatbot system with **Retrieval-Augmented Generation (RAG)**, **conversation memory**, **PDF processing**, and **smart answer switching**.
+A production-ready AI chatbot with **Retrieval-Augmented Generation (RAG)**, **conversation memory**, **PDF processing**, and **smart answer routing**.
 
-[![Live on Render](https://img.shields.io/badge/Live-Demo-blue?style=for-the-badge&logo=render&logoColor=white)](https://agenticai-chatbot-using-rag-1.onrender.com/)
+[![Live Demo](https://img.shields.io/badge/Live-Demo-blue?style=for-the-badge&logo=render&logoColor=white)](https://agenticai-chatbot-using-rag-1.onrender.com/)
+
+---
+
+## 🏗️ Project Structure
+
+```
+AgenticAI_Chatbot_Using_RAG/
+├── backend/
+│   ├── __init__.py
+│   ├── config.py       ← env vars, constants, allowed model names
+│   ├── models.py       ← Pydantic request / response schemas
+│   ├── agent.py        ← LangGraph workflow, RAG manager, memory manager
+│   └── main.py         ← FastAPI application & all HTTP endpoints
+├── frontend/
+│   ├── __init__.py
+│   └── app.py          ← Streamlit UI
+├── .devcontainer/
+│   └── devcontainer.json
+├── .env.example        ← copy to .env and fill in API keys
+├── .gitignore
+├── Procfile            ← Render / Railway deploy command
+├── requirements.txt
+└── README.md
+```
+
+---
 
 ## 🌟 Features
 
-### ✅ **Chat History & Memory**
-- Maintains conversation context across multiple turns
-- Session-based memory management
-- Persistent chat history storage
+| Feature | Details |
+|---------|---------|
+| **RAG** | Upload PDFs → Cohere embeddings → FAISS index → Cohere reranking → page-cited answers |
+| **Memory** | Per-session chat history, last 10 turns carried into every request |
+| **Smart routing** | Automatically chooses document RAG, plain LLM, or Tavily web search |
+| **Multi-provider** | Groq (Llama 3.3 70B) or OpenAI (GPT-4o-mini) |
+| **REST API** | Clean FastAPI backend with Pydantic-validated endpoints |
 
-### ✅ **RAG (Retrieval-Augmented Generation)**
-- Upload and process PDF documents
-- Cohere embeddings for semantic search
-- Automatic document chunking and indexing
-- Smart retrieval with reranking
-
-### ✅ **Smart Answer Switching**
-- Automatically chooses between:
-  - Document-based answers (RAG)
-  - General knowledge (LLM)
-  - Web search results (Tavily)
-- Configurable similarity thresholds
-
-### ✅ **Multiple AI Providers**
-- **Groq**: Fast inference (Llama, Mixtral models)
-- **OpenAI**: High-quality responses (GPT-4o-mini)
-
-### ✅ **Advanced Tools**
-- **Cohere**: Embeddings, reranking, and classification
-- **Tavily**: Web search integration
-- **FAISS**: Vector storage and similarity search
+---
 
 ## 🚀 Quick Start
 
-### 1. **Clone & Setup**
+### 1. Clone & install
+
 ```bash
 git clone https://github.com/BrainstormerAI/AgenticAI_Chatbot_Using_RAG.git
-cd enhanced-ai-agent
-```
-
-### 2. **Install Dependencies**
-```bash
+cd AgenticAI_Chatbot_Using_RAG
 pip install -r requirements.txt
 ```
 
-### 3. **Configure API Keys**
+### 2. Configure
+
 ```bash
 cp .env.example .env
-# Edit .env with your API keys
+# Edit .env and fill in your API keys
 ```
 
-Required API keys:
-- `GROQ_API_KEY` - Get from [Groq Console](https://console.groq.com/)
-- `OPENAI_API_KEY` - Get from [OpenAI Platform](https://platform.openai.com/)
-- `TAVILY_API_KEY` - Get from [Tavily](https://tavily.com/)
-- `COHERE_API_KEY` - Get from [Cohere](https://cohere.ai/)
+Required keys:
 
-### 4. **Run the Application**
+| Variable | Get it from |
+|----------|------------|
+| `GROQ_API_KEY` | [console.groq.com](https://console.groq.com/) |
+| `OPENAI_API_KEY` | [platform.openai.com](https://platform.openai.com/) |
+| `TAVILY_API_KEY` | [tavily.com](https://tavily.com/) |
+| `COHERE_API_KEY` | [cohere.ai](https://cohere.ai/) |
 
-**Linux/Mac:**
+### 3. Run locally
+
+Open **two terminals** from the project root:
+
+**Terminal 1 — Backend:**
 ```bash
-chmod +x run_enhanced.sh
-./run_enhanced.sh
+uvicorn backend.main:app --host 0.0.0.0 --port 8000 --reload
 ```
 
-**Windows:**
-```batch
-run_enhanced.bat
-```
-
-**Manual Start:**
+**Terminal 2 — Frontend:**
 ```bash
-# Terminal 1: Backend
-python backend_enhanced.py
-
-# Terminal 2: Frontend
-streamlit run frontend_enhanced.py
+streamlit run frontend/app.py
 ```
 
-## 📖 Usage Guide
+Then open [http://localhost:8501](http://localhost:8501).
 
-### **1. Basic Chat**
-1. Open the web interface (usually `http://localhost:8501`)
-2. Configure your AI model and provider
-3. Enter your system prompt to define agent behavior
-4. Start chatting!
+---
 
-### **2. PDF Upload & RAG**
-1. Go to the sidebar → "Document Management"
-2. Upload a PDF file
-3. Click "Process PDF" to index the document
-4. Ask questions about the document content
-5. The agent will automatically use document context when relevant
+## ⚙️ Configuration
 
-### **3. Memory & Sessions**
-- Each conversation maintains context automatically
-- Use "New Session" to start fresh
-- "Clear History" removes conversation memory
-- Session IDs help organize different conversations
+All configuration lives in [`backend/config.py`](backend/config.py) and is driven by environment variables (see `.env.example`).
 
-### **4. Smart Answer Switching**
-The agent automatically decides how to answer based on:
-- **High similarity to documents** → Uses RAG with document context
-- **Low similarity to documents** → Uses general LLM knowledge
-- **Web search enabled** → Falls back to web search when needed
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `BACKEND_PORT` | `8000` | Port the FastAPI server listens on |
+| `BACKEND_URL` | `http://localhost:8000` | URL the Streamlit frontend calls |
+| `ALLOWED_ORIGINS` | `http://localhost:8501` | CORS allowed origins (comma-separated) |
 
-Adjust the "RAG Similarity Threshold" to control this behavior:
-- **Lower (0.3-0.5)**: More likely to use documents
-- **Higher (0.7-0.9)**: More strict document matching
+For production, set `BACKEND_URL` in the frontend's environment and `ALLOWED_ORIGINS` in the backend's environment to your deployed URLs.
 
-## 🏗️ Architecture
+---
 
-```
-┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│   Frontend      │    │    Backend      │    │   AI Services   │
-│   (Streamlit)   │◄──►│   (FastAPI)     │◄──►│   (LLM/RAG)     │
-└─────────────────┘    └─────────────────┘    └─────────────────┘
-         │                       │                       │
-         │                       │                       │
-    ┌────▼────┐             ┌────▼────┐             ┌────▼────┐
-    │ Session │             │ Memory  │             │ Vector  │
-    │ State   │             │ Manager │             │ Store   │
-    └─────────┘             └─────────┘             └─────────┘
-```
+## 🔌 API Endpoints
 
-### **Core Components:**
+| Method | Path | Description |
+|--------|------|-------------|
+| `GET` | `/` | API info |
+| `GET` | `/health` | Health check |
+| `POST` | `/chat` | Send a message, get an AI response |
+| `POST` | `/upload-pdf` | Upload a PDF for RAG indexing |
+| `POST` | `/chat-history` | Retrieve session history |
+| `POST` | `/clear-history` | Clear session history |
+| `POST` | `/user-documents` | List indexed documents for a user |
 
-1. **Frontend (`frontend_enhanced.py`)**
-   - Streamlit web interface
-   - File upload handling
-   - Session management
-   - Real-time chat interface
+### Example `/chat` request
 
-2. **Backend (`backend_enhanced.py`)**
-   - FastAPI REST API
-   - PDF processing endpoints
-   - Memory management APIs
-   - CORS support
-
-3. **AI Agent (`ai_agent_enhanced.py`)**
-   - LangGraph workflow orchestration
-   - RAG implementation with Cohere
-   - Memory management
-   - Smart routing logic
-
-## 🔧 API Endpoints
-
-### **Chat**
-```http
-POST /chat
-Content-Type: application/json
-
+```json
 {
   "model_name": "llama-3.3-70b-versatile",
   "model_provider": "Groq",
-  "system_prompt": "You are a helpful assistant...",
-  "messages": ["Hello, how are you?"],
+  "system_prompt": "You are a helpful assistant.",
+  "messages": ["What does the document say about pricing?"],
   "allow_search": true,
-  "user_id": "user123",
-  "session_id": "session456",
+  "user_id": "alice",
+  "session_id": "session-abc",
   "similarity_threshold": 0.5
 }
 ```
 
-### **PDF Upload**
-```http
-POST /upload-pdf
-Content-Type: multipart/form-data
+---
 
-file: <pdf_file>
-user_id: "user123"
+## 🏛️ Architecture
+
+```
+┌─────────────────┐   HTTP   ┌──────────────────┐   Python   ┌─────────────────────┐
+│  Streamlit UI   │─────────►│  FastAPI Backend  │───────────►│  LangGraph Agent    │
+│  frontend/app.py│◄─────────│  backend/main.py  │◄───────────│  backend/agent.py   │
+└─────────────────┘          └──────────────────┘            └──────────┬──────────┘
+                                                                         │
+                              ┌──────────────────────────────────────────┤
+                              │                                          │
+                    ┌─────────▼────────┐                      ┌─────────▼─────────┐
+                    │  MemoryManager   │                      │    RAGManager      │
+                    │  (session dict)  │                      │  FAISS + Cohere    │
+                    └──────────────────┘                      └───────────────────┘
 ```
 
-### **Chat History**
-```http
-POST /chat-history
-Content-Type: application/json
+### LangGraph workflow
 
-{
-  "session_id": "session456"
-}
+```
+router ──► rag ──► agent ──► END
+       └──────────────────►
 ```
 
-### **Other Endpoints**
-- `POST /clear-history` - Clear session history
-- `POST /user-documents` - Get user's uploaded documents
-- `GET /health` - Health check
-- `GET /` - API information
+- **router** — computes FAISS similarity score; routes to `rag` if score > threshold, else straight to `agent`.
+- **rag** — builds a numbered-excerpt prompt with page citations from the top-k reranked documents.
+- **agent** — calls the LLM directly (RAG path) or wraps it in a Tavily ReAct loop (search path).
 
-## ⚙️ Configuration
+---
 
-### **Model Options**
+## 🛠️ Extending
 
-**Groq Models:**
-- `llama-3.3-70b-versatile` - Latest Llama model
-- `llama3-70b-8192` - Standard Llama 3
+### Add a new LLM provider
 
-**OpenAI Models:**
-- `gpt-4o-mini` - Cost-effective GPT-4
+In [`backend/agent.py`](backend/agent.py), add a branch in `get_response()`:
 
-### **RAG Settings**
-- **Chunk Size**: 1000 characters
-- **Chunk Overlap**: 200 characters
-- **Retrieval Count**: 3 documents
-- **Reranking**: Cohere rerank for relevance
-
-### **Memory Settings**
-- **Session History**: Last 10 messages
-- **Storage**: In-memory (can be extended to Redis/DB)
-
-## 🛠️ Customization
-
-### **Adding New LLM Providers**
 ```python
-# In ai_agent_enhanced.py
 elif provider == "Anthropic":
-    llm = ChatAnthropic(model=llm_id)
+    from langchain_anthropic import ChatAnthropic
+    llm = ChatAnthropic(model=llm_id, temperature=LLM_TEMPERATURE)
 ```
 
-### **Custom Document Processing**
-```python
-# Extend RAGManager class
-def process_custom_format(self, content, format_type):
-    # Add support for Word docs, web pages, etc.
-    pass
-```
+Then add the model name to `ALLOWED_MODELS` in [`backend/config.py`](backend/config.py).
 
-### **Persistent Storage**
-```python
-# Replace in-memory storage with database
-class DatabaseMemoryManager:
-    def __init__(self, db_url):
-        # SQLAlchemy or MongoDB setup
-        pass
-```
+### Persistent storage
+
+Replace `MemoryManager` with a Redis or SQLite backend; replace the in-memory FAISS store with a saved index (call `store.save_local()` / `FAISS.load_local()`).
+
+---
 
 ## 🐛 Troubleshooting
 
-### **Common Issues**
+| Symptom | Fix |
+|---------|-----|
+| Frontend shows "Cannot reach the backend" | Make sure `uvicorn backend.main:app` is running and `BACKEND_URL` is set correctly |
+| "COHERE_API_KEY not set" in logs | Add the key to `.env`; RAG and reranking are disabled without it |
+| PDF upload returns 422 | PDF may be scanned/image-only; text extraction requires selectable text |
+| Slow responses | Switch to Groq; disable web search for pure document queries |
 
-1. **"Module not found" errors**
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-2. **API key errors**
-   - Check `.env` file exists and has correct keys
-   - Verify API keys are valid and have sufficient credits
-
-3. **PDF processing fails**
-   - Ensure PDF is not password-protected
-   - Check file size (large PDFs may timeout)
-
-4. **Memory issues with large documents**
-   - Reduce chunk size in `RAGManager`
-   - Implement document pagination
-
-5. **Slow responses**
-   - Try different models (Groq is generally faster)
-   - Reduce similarity search results
-   - Disable web search for faster responses
-
-### **Debug Mode**
-Enable debug information in the frontend to see:
-- Session state
-- API payloads
-- Document processing status
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests if applicable
-5. Submit a pull request
+---
 
 ## 📄 License
 
-This project is licensed under the MIT License.
-
-## 🙏 Acknowledgments
-
-- **LangChain** & **LangGraph** for the agent framework
-- **Cohere** for embeddings and reran
+MIT

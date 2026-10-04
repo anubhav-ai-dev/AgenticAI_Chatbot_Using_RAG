@@ -6,7 +6,8 @@
     "codespaces": {
       "openFiles": [
         "README.md",
-        "frontend_enhanced.py"
+        "frontend/app.py",
+        "backend/main.py"
       ]
     },
     "vscode": {
@@ -19,15 +20,20 @@
   },
   "updateContentCommand": "[ -f packages.txt ] && sudo apt update && sudo apt upgrade -y && sudo xargs apt install -y <packages.txt; [ -f requirements.txt ] && pip3 install --user -r requirements.txt; pip3 install --user streamlit; echo '✅ Packages installed and Requirements met'",
   "postAttachCommand": {
-    "server": "streamlit run frontend_enhanced.py --server.enableCORS false --server.enableXsrfProtection false"
+    "server": "streamlit run frontend/app.py --server.enableCORS false --server.enableXsrfProtection false"
   },
   "portsAttributes": {
+    "8000": {
+      "label": "FastAPI Backend",
+      "onAutoForward": "silent"
+    },
     "8501": {
-      "label": "Application",
+      "label": "Streamlit Frontend",
       "onAutoForward": "openPreview"
     }
   },
   "forwardPorts": [
+    8000,
     8501
   ]
 }
