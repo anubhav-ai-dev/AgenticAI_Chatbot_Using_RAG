@@ -1,5 +1,5 @@
 fastapi
-uvicorn
+uvicorn[standard]
 streamlit
 python-dotenv
 langchain-groq
@@ -9,11 +9,11 @@ langgraph
 langchain-core
 langchain-community
 langchain-cohere
+langchain-text-splitters
 pydantic
 requests
 cohere
 faiss-cpu
 pdfplumber
 PyPDF2
-chromadb
 python-multipart
