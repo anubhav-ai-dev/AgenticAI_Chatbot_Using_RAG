@@ -1,6 +1,5 @@
 fastapi
 uvicorn[standard]
-streamlit
 python-dotenv
 langchain-groq
 langchain-openai
@@ -9,6 +8,7 @@ langgraph
 langchain-core
 langchain-community
 langchain-cohere
+langchain-google-genai
 langchain-text-splitters
 pydantic
 requests
@@ -16,4 +16,12 @@ cohere
 faiss-cpu
 pdfplumber
 PyPDF2
+python-docx
+pandas
+openpyxl
+trafilatura
+beautifulsoup4
+lxml
 python-multipart
+sqlalchemy
+tavily-python

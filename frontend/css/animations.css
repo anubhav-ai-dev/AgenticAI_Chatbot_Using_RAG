@@ -1,0 +1,177 @@
+/* ============================================================
+   animations.css — all @keyframes and motion utility classes
+   ============================================================ */
+
+/* ── Keyframes ───────────────────────────────────────────── */
+
+@keyframes fadeSlideUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(.93); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes slideInLeft {
+  from { opacity: 0; transform: translateX(-14px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(14px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes expandHeight {
+  from { max-height: 0; opacity: 0; }
+  to   { max-height: 600px; opacity: 1; }
+}
+
+@keyframes collapseHeight {
+  from { max-height: 600px; opacity: 1; }
+  to   { max-height: 0; opacity: 0; }
+}
+
+@keyframes cursorBlink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
+@keyframes shimmer {
+  0%   { background-position: -400px 0; }
+  100% { background-position:  400px 0; }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes progressFill {
+  from { width: 0%; }
+  to   { width: 100%; }
+}
+
+@keyframes gradientShift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50%       { transform: scale(1.05); opacity: .8; }
+}
+
+@keyframes bounceIn {
+  0%   { transform: scale(.8); opacity: 0; }
+  60%  { transform: scale(1.06); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-6px); }
+}
+
+/* ── Motion utility classes ──────────────────────────────── */
+
+.animate-fade-slide-up {
+  animation: fadeSlideUp .35s cubic-bezier(.22,.61,.36,1) both;
+}
+.animate-fade-in {
+  animation: fadeIn .25s ease both;
+}
+.animate-scale-in {
+  animation: scaleIn .2s cubic-bezier(.34,1.56,.64,1) both;
+}
+.animate-slide-left {
+  animation: slideInLeft .3s ease both;
+}
+.animate-slide-right {
+  animation: slideInRight .3s ease both;
+}
+.animate-expand {
+  animation: expandHeight .3s cubic-bezier(.4,0,.2,1) both;
+  overflow: hidden;
+}
+.animate-bounce-in {
+  animation: bounceIn .4s cubic-bezier(.34,1.56,.64,1) both;
+}
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* Stagger children */
+.stagger > *:nth-child(1)  { animation-delay: .04s; }
+.stagger > *:nth-child(2)  { animation-delay: .08s; }
+.stagger > *:nth-child(3)  { animation-delay: .12s; }
+.stagger > *:nth-child(4)  { animation-delay: .16s; }
+.stagger > *:nth-child(5)  { animation-delay: .20s; }
+.stagger > *:nth-child(6)  { animation-delay: .24s; }
+
+/* Skeleton loading */
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--bg-card) 25%,
+    var(--bg-hover) 50%,
+    var(--bg-card) 75%
+  );
+  background-size: 400px 100%;
+  animation: shimmer 1.4s ease infinite;
+  border-radius: var(--r-md);
+}
+
+/* Streaming cursor */
+.stream-cursor::after {
+  content: '▋';
+  display: inline-block;
+  animation: cursorBlink .9s step-end infinite;
+  color: var(--accent-blue);
+  margin-left: 2px;
+}
+
+/* Spinner */
+.spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--border);
+  border-top-color: var(--accent-blue);
+  border-radius: 50%;
+  animation: spin .7s linear infinite;
+  flex-shrink: 0;
+}
+.spinner--lg {
+  width: 28px;
+  height: 28px;
+  border-width: 3px;
+}
+
+/* Progress bar */
+.progress-bar {
+  height: 3px;
+  background: var(--border);
+  border-radius: var(--r-pill);
+  overflow: hidden;
+}
+.progress-bar__fill {
+  height: 100%;
+  background: var(--gradient-hero);
+  border-radius: var(--r-pill);
+  animation: progressFill 2s ease both;
+}
+
+/* Reduce motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    transition-duration: .01ms !important;
+  }
+}
