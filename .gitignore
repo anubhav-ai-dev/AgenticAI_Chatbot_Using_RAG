@@ -18,12 +18,15 @@ ENV/
 # ── Secrets ───────────────────────────────────────────────────────────────────
 .env
 
-# ── Frontend config with Puter token ─────────────────────────────────────────
+# ── Optional frontend override (BACKEND_URL for split hosting) ───────────────
 frontend/js/config.js
 
 # ── Runtime data (SQLite DB + FAISS indexes) ──────────────────────────────────
 data/*.db
+data/*.db-*
 data/faiss/
+data/index/
+data/models/
 
 # ── Temp upload files ─────────────────────────────────────────────────────────
 temp_*.pdf
@@ -38,6 +41,3 @@ temp_*
 # ── OS ────────────────────────────────────────────────────────────────────────
 .DS_Store
 Thumbs.db
-
-# ── Streamlit (legacy) ────────────────────────────────────────────────────────
-.streamlit/

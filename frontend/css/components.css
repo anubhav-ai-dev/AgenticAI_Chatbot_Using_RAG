@@ -791,3 +791,31 @@
   .sidebar-toggle { display: flex; }
   .mode-tab span:not(:first-child) { display: none; }
 }
+
+
+/* ── Streaming controls, badges, feedback, document delete ─────────────── */
+.dock-stop { background: var(--accent-red, #ef4444); }
+.dock-stop svg { width: 16px; height: 16px; color: #fff; }
+
+.message__badges { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+.message__badges:empty { display: none; }
+.badge {
+  font-size: 11px; line-height: 1; padding: 3px 7px; border-radius: 999px;
+  background: var(--bg-tertiary, rgba(127,127,127,.15)); color: var(--text-muted, #8b8b8b);
+}
+.badge--cache { color: var(--accent-green, #22c55e); }
+.badge--warn  { color: var(--accent-yellow, #eab308); }
+
+.message__extra-actions { display: inline-flex; gap: 2px; }
+.message__extra-actions .btn { opacity: .6; }
+.message__extra-actions .btn:hover,
+.message__extra-actions .btn.is-active { opacity: 1; }
+
+.doc-item { position: relative; }
+.doc-item__delete {
+  margin-left: auto; background: none; border: 0; cursor: pointer; opacity: 0;
+  color: var(--text-muted, #8b8b8b); font-size: 12px; padding: 2px 6px; border-radius: 4px;
+}
+.doc-item:hover .doc-item__delete,
+.doc-item__delete:focus-visible { opacity: 1; }
+.doc-item__delete:hover { color: var(--accent-red, #ef4444); }

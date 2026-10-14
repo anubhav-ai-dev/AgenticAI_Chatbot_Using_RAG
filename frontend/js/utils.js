@@ -13,14 +13,47 @@ window.Utils = (function () {
     });
   }
 
+  /**
+   * Replace "[n]" in text nodes (outside code/links) with clickable citation badges.
+   * Works on already-sanitised HTML, so it cannot introduce markup from the model.
+   */
+  function decorateCitations(html) {
+    const tpl = document.createElement("template");
+    tpl.innerHTML = html;
+    const walker = document.createTreeWalker(tpl.content, NodeFilter.SHOW_TEXT);
+    const nodes = [];
+    while (walker.nextNode()) nodes.push(walker.currentNode);
+
+    nodes.forEach((node) => {
+      const parent = node.parentElement;
+      if (!/\[\d+\]/.test(node.nodeValue) || (parent && parent.closest("pre, code, a"))) return;
+      const frag = document.createDocumentFragment();
+      node.nodeValue.split(/(\[\d+\])/).forEach((part) => {
+        const m = part.match(/^\[(\d+)\]$/);
+        if (m) {
+          const sup = document.createElement("sup");
+          sup.className = "citation";
+          sup.dataset.id = m[1];
+          sup.textContent = part;
+          frag.appendChild(sup);
+        } else if (part) {
+          frag.appendChild(document.createTextNode(part));
+        }
+      });
+      node.parentNode.replaceChild(frag, node);
+    });
+    return tpl.innerHTML;
+  }
+
+  /** Markdown → sanitised HTML. Falls back to escaped text if a library is missing. */
   function renderMarkdown(text) {
     if (!text) return "";
-    if (window.marked) {
+    // Some models cite as 【1】 or [1]†; normalise to [1] so badges are clickable
+    text = text.replace(/【(\d+)(?:[^】]*)】/g, "[$1]");
+    if (window.marked && window.DOMPurify) {
       try {
-        let html = marked.parse(text);
-        // Transform [1], [2] into citation badges
-        html = html.replace(/\[(\d+)\]/g, '<sup class="citation" data-id="$1">[$1]</sup>');
-        return html;
+        const clean = DOMPurify.sanitize(marked.parse(text), { USE_PROFILES: { html: true } });
+        return decorateCitations(clean);
       } catch (e) {
         console.error("Markdown parse error:", e);
       }

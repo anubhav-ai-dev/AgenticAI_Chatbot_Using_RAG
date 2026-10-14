@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="AI Assistant Pro — Multipurpose AI chatbot with RAG, web search, and 20+ models" />
+  <meta name="description" content="AI Assistant Pro — Multipurpose AI chatbot with hybrid RAG, web search, streaming and free-model fallback" />
   <title>AI Assistant Pro</title>
 
   <!-- Stylesheets -->
@@ -162,23 +162,7 @@
 
       <!-- Model selector -->
       <select class="model-select" id="modelSelect" aria-label="Select AI model">
-        <optgroup label="── Groq (Fast) ──">
-          <option value="llama-3.3-70b-versatile" data-provider="groq">Llama 3.3 70B</option>
-          <option value="deepseek-r1-distill-llama-70b" data-provider="groq">DeepSeek R1 70B</option>
-          <option value="llama3-70b-8192" data-provider="groq">Llama 3 70B</option>
-        </optgroup>
-        <optgroup label="── Puter (Free) ──">
-          <option value="claude-sonnet-4-5" data-provider="puter" selected>Claude Sonnet 4.5</option>
-          <option value="claude-opus-4" data-provider="puter">Claude Opus 4</option>
-          <option value="gpt-4o" data-provider="puter">GPT-4o</option>
-          <option value="gpt-4.1" data-provider="puter">GPT-4.1</option>
-          <option value="google/gemini-2.5-pro" data-provider="puter">Gemini 2.5 Pro</option>
-          <option value="google/gemini-2.0-flash" data-provider="puter">Gemini 2.0 Flash</option>
-          <option value="deepseek-ai/DeepSeek-R1" data-provider="puter">DeepSeek R1</option>
-          <option value="deepseek-ai/DeepSeek-V3" data-provider="puter">DeepSeek V3</option>
-          <option value="meta-llama/llama-4-maverick" data-provider="puter">Llama 4 Maverick</option>
-          <option value="x-ai/grok-2-latest" data-provider="puter">Grok 2</option>
-        </optgroup>
+        <option value="">Loading models…</option>
       </select>
 
     </header>
@@ -190,7 +174,7 @@
         <div class="welcome__logo">🤖</div>
         <h1 class="welcome__title">AI Assistant Pro</h1>
         <p class="welcome__sub">
-          Your multipurpose AI with document intelligence, real-time web search, and 20+ models — all in one place.
+          Your multipurpose AI with document intelligence, real-time web search, and streaming answers from free models with automatic fallback.
         </p>
         <div class="welcome__starters" id="starterPrompts">
           <button class="welcome__starter" data-prompt="Summarize the uploaded document">📄 Summarize my document</button>
@@ -254,6 +238,13 @@
             </svg>
           </button>
 
+          <!-- Stop button (shown while a response is streaming) -->
+          <button class="dock-send dock-stop" id="stopBtn" aria-label="Stop generating" title="Stop generating" style="display:none">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <rect x="6" y="6" width="12" height="12" rx="2" fill="currentColor" stroke="none"/>
+            </svg>
+          </button>
+
         </div>
 
         <div class="dock-hint">
@@ -269,11 +260,9 @@
 <!-- ═══════════════════════════════════════════════════════
      EXTERNAL LIBRARIES
 ════════════════════════════════════════════════════════════ -->
-<!-- Puter.js SDK — provides free access to GPT-4o, Claude, Gemini, DeepSeek, etc. -->
-<script src="https://js.puter.com/v2/"></script>
-
-<!-- Markdown parser -->
+<!-- Markdown parser + HTML sanitiser (model/web/document text is untrusted) -->
 <script src="https://cdn.jsdelivr.net/npm/marked@12/marked.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dompurify@3/dist/purify.min.js"></script>
 
 <!-- Syntax highlighting -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
@@ -281,10 +270,8 @@
 <!-- ═══════════════════════════════════════════════════════
      APP SCRIPTS (order matters)
 ════════════════════════════════════════════════════════════ -->
-<script src="/js/config.js"></script>
 <script src="/js/utils.js"></script>
 <script src="/js/api.js"></script>
-<script src="/js/puter_client.js"></script>
 <script src="/js/chat.js"></script>
 <script src="/js/ui.js"></script>
 <script src="/js/app.js"></script>

@@ -5,6 +5,11 @@
 
 window.Chat = (function () {
 
+  const BOT_AVATAR = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent-blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 2a2 2 0 0 1 2 2c0 .74-.4 1.39-1 1.73V7h1a7 7 0 0 1 7 7h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v1a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1H2a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h1a7 7 0 0 1 7-7h1V5.73A2 2 0 0 1 10 4a2 2 0 0 1 2-2z"/>
+          <circle cx="9" cy="13" r="1"/><circle cx="15" cy="13" r="1"/>
+        </svg>`;
+
   // Internal citation registry: msgId -> [{id,source,page,snippet}]
   const _citations = {};
 
@@ -50,10 +55,7 @@ window.Chat = (function () {
     el.dataset.msgId = msgId;
     el.innerHTML = `
       <div class="message__avatar">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent-blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M12 2a2 2 0 0 1 2 2c0 .74-.4 1.39-1 1.73V7h1a7 7 0 0 1 7 7h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v1a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1H2a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h1a7 7 0 0 1 7-7h1V5.73A2 2 0 0 1 10 4a2 2 0 0 1 2-2z"/>
-          <circle cx="9" cy="13" r="1"/><circle cx="15" cy="13" r="1"/>
-        </svg>
+        ${BOT_AVATAR}
       </div>
       <div class="message__body">
         <div class="thought-steps" id="thoughtSteps-${msgId}"></div>
@@ -61,10 +63,12 @@ window.Chat = (function () {
           <div class="md-content stream-cursor" id="streamContent-${msgId}"></div>
         </div>
         <div class="citation-cards" id="citationCards-${msgId}"></div>
+        <div class="message__badges" id="msgBadges-${msgId}"></div>
         <div class="message__actions">
-          <button class="btn btn--icon-sm" onclick="Chat.copyMessage('${msgId}')" data-tooltip="Copy response">
+          <button class="btn btn--icon-sm" onclick="Chat.copyMessage('${msgId}')" data-tooltip="Copy response" aria-label="Copy response">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
           </button>
+          <span class="message__extra-actions" id="msgExtra-${msgId}"></span>
           <div class="message__time" id="msgTime-${msgId}"></div>
         </div>
       </div>
@@ -74,6 +78,16 @@ window.Chat = (function () {
     _scrollToBottom(area);
 
     let _rawText = "";
+    let _renderTimer = null;
+
+    const _render = () => {
+      _renderTimer = null;
+      const target = document.getElementById(`streamContent-${msgId}`);
+      if (target) {
+        target.innerHTML = Utils.renderMarkdown(_rawText);
+        _scrollToBottom(area);
+      }
+    };
 
     return {
       msgId,
@@ -105,18 +119,38 @@ window.Chat = (function () {
         if (elapsed) stepEl.querySelector(".thought-step__time").textContent = elapsed;
       },
 
-      /** Stream a token into the content area */
+      /** Stream a token into the content area (re-rendered at most every 60 ms) */
       appendToken(token) {
         _rawText += token;
-        const el = document.getElementById(`streamContent-${msgId}`);
-        if (el) {
-          el.innerHTML = Utils.renderMarkdown(_rawText);
-          _scrollToBottom(area);
+        if (_renderTimer === null) _renderTimer = setTimeout(_render, 60);
+      },
+
+      /** Show model / cache / fallback badges under the bubble */
+      setBadges({ model, cached, fellBackFrom } = {}) {
+        const el = document.getElementById(`msgBadges-${msgId}`);
+        if (!el) return;
+        const parts = [];
+        if (model) parts.push(`<span class="badge">${Utils.escapeHtml(model)}</span>`);
+        if (cached) parts.push(`<span class="badge badge--cache" title="Served from the answer cache">⚡ cached</span>`);
+        if (fellBackFrom && fellBackFrom.length) {
+          parts.push(`<span class="badge badge--warn" title="Fell back from ${Utils.escapeHtml(fellBackFrom.join(", "))}">↪ fallback</span>`);
         }
+        el.innerHTML = parts.join("");
+      },
+
+      /** Add regenerate + 👍/👎 once the message has an id */
+      enableActions({ messageId, feedback, onRegenerate, onFeedback } = {}) {
+        const el = document.getElementById(`msgExtra-${msgId}`);
+        if (!el) return;
+        _renderActionButtons(el, { messageId, feedback, onRegenerate, onFeedback });
       },
 
       /** Finalize streaming: apply full markdown + syntax highlighting */
       finalize(citations = []) {
+        if (_renderTimer !== null) {
+          clearTimeout(_renderTimer);
+          _renderTimer = null;
+        }
         const el = document.getElementById(`streamContent-${msgId}`);
         if (el) {
           el.classList.remove("stream-cursor");
@@ -159,6 +193,10 @@ window.Chat = (function () {
 
       /** Replace content with an error message */
       showError(msg) {
+        if (_renderTimer !== null) {
+          clearTimeout(_renderTimer);
+          _renderTimer = null;
+        }
         const el = document.getElementById(`streamContent-${msgId}`);
         if (el) {
           el.classList.remove("stream-cursor");
@@ -210,10 +248,9 @@ window.Chat = (function () {
   }
 
   /** Restore a past session's messages into the chat area */
-  function renderHistory(messages) {
+  function renderHistory(messages, handlers = {}) {
     const area = document.getElementById("chatArea");
-    // Clear existing
-    area.innerHTML = "";
+    _resetArea(area);
 
     messages.forEach((msg) => {
       if (msg.role === "user") {
@@ -230,13 +267,13 @@ window.Chat = (function () {
       } else if (msg.role === "assistant") {
         const el = document.createElement("div");
         el.className = "message message--assistant";
-        const cits = msg.citations || [];
+        const histId = Utils.uuid();
+        _citations[histId] = msg.citations || [];
+        const cits = _citations[histId];
+        const meta = msg.meta || {};
         el.innerHTML = `
           <div class="message__avatar">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent-blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M12 2a2 2 0 0 1 2 2c0 .74-.4 1.39-1 1.73V7h1a7 7 0 0 1 7 7h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v1a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1H2a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h1a7 7 0 0 1 7-7h1V5.73A2 2 0 0 1 10 4a2 2 0 0 1 2-2z"/>
-              <circle cx="9" cy="13" r="1"/><circle cx="15" cy="13" r="1"/>
-            </svg>
+            ${BOT_AVATAR}
           </div>
           <div class="message__body">
             <div class="message__bubble">
@@ -244,16 +281,35 @@ window.Chat = (function () {
             </div>
             ${cits.length > 0 ? `
             <div class="citation-cards">
-              ${cits.map(c => `<div class="citation-card">📌 ${Utils.escapeHtml(c.source)}${c.page ? ` · p.${c.page}` : ""}</div>`).join("")}
+              ${cits.map(c => `<div class="citation-card" data-cid="${c.id}">📌 ${Utils.escapeHtml(c.source)}${c.page ? ` · p.${c.page}` : ""}</div>`).join("")}
             </div>` : ""}
+            <div class="message__badges">${meta.model ? `<span class="badge">${Utils.escapeHtml(meta.model)}</span>` : ""}${meta.cached ? `<span class="badge badge--cache">⚡ cached</span>` : ""}</div>
             <div class="message__actions">
+              <span class="message__extra-actions"></span>
               <div class="message__time">${Utils.formatTime(msg.created_at)}</div>
             </div>
           </div>
         `;
-        // Apply syntax highlighting
         area.appendChild(el);
         Utils.highlightCode(el);
+
+        // Citation badges + cards open the modal (restored history used to be inert)
+        const open = (id) => {
+          const cit = cits.find((c) => c.id === id);
+          if (cit) UI.showCitationModal(cit);
+        };
+        el.querySelectorAll(".citation").forEach((b) =>
+          b.addEventListener("click", () => open(parseInt(b.dataset.id, 10))));
+        el.querySelectorAll(".citation-card").forEach((c) =>
+          c.addEventListener("click", () => open(parseInt(c.dataset.cid, 10))));
+
+        if (msg.id && handlers.onFeedback) {
+          _renderActionButtons(el.querySelector(".message__extra-actions"), {
+            messageId: msg.id,
+            feedback: msg.feedback,
+            onFeedback: handlers.onFeedback,
+          });
+        }
       }
     });
 
@@ -267,11 +323,62 @@ window.Chat = (function () {
 
   function clearChat() {
     const area = document.getElementById("chatArea");
-    area.innerHTML = "";
+    _resetArea(area);
     _showWelcome();
   }
 
   // ── Private helpers ───────────────────────────────────────
+
+  /** Render regenerate / 👍 / 👎 buttons into `container` (idempotent). */
+  function _renderActionButtons(container, { messageId, feedback, onRegenerate, onFeedback }) {
+    if (!container) return;
+    container.innerHTML = "";
+    const mk = (label, title, extraClass = "") => {
+      const b = document.createElement("button");
+      b.className = `btn btn--icon-sm ${extraClass}`.trim();
+      b.type = "button";
+      b.textContent = label;
+      b.title = title;
+      b.setAttribute("aria-label", title);
+      return b;
+    };
+
+    if (onRegenerate) {
+      const regen = mk("↻", "Regenerate response", "message__regen");
+      regen.addEventListener("click", () => onRegenerate());
+      container.appendChild(regen);
+    }
+    if (onFeedback && messageId) {
+      let current = feedback || 0;
+      const up = mk("👍", "Good response");
+      const down = mk("👎", "Poor response");
+      const paint = () => {
+        up.classList.toggle("is-active", current === 1);
+        down.classList.toggle("is-active", current === -1);
+      };
+      const send = async (value) => {
+        const next = current === value ? 0 : value;
+        try {
+          await onFeedback(messageId, next);
+          current = next;
+          paint();
+        } catch (_) {}
+      };
+      up.addEventListener("click", () => send(1));
+      down.addEventListener("click", () => send(-1));
+      paint();
+      container.appendChild(up);
+      container.appendChild(down);
+    }
+  }
+
+  /** Remove all messages but keep the welcome screen node (it lives inside the chat area). */
+  function _resetArea(area) {
+    const welcome = document.getElementById("welcomeScreen");
+    if (welcome && welcome.parentNode === area) area.removeChild(welcome);
+    area.innerHTML = "";
+    if (welcome) area.appendChild(welcome);
+  }
 
   function _scrollToBottom(el) {
     requestAnimationFrame(() => {

@@ -131,7 +131,7 @@ window.UI = (function () {
 
   // ── Document list ─────────────────────────────────────────
 
-  function renderDocList(documents) {
+  function renderDocList(documents, onDelete) {
     const el = document.getElementById("docList");
     if (!el) return;
 
@@ -140,18 +140,61 @@ window.UI = (function () {
       return;
     }
 
-    const typeIcons = { pdf: "📄", docx: "📝", csv: "📊", xlsx: "📊", txt: "📃", url: "🌐" };
-    el.innerHTML = documents.map((d) => {
+    const typeIcons = { pdf: "📄", docx: "📝", csv: "📊", xlsx: "📊", txt: "📃", md: "📃", url: "🌐" };
+    el.innerHTML = "";
+    documents.forEach((d) => {
       const icon = typeIcons[d.file_type] || "📎";
       const name = d.filename.length > 22 ? d.filename.substring(0, 20) + "…" : d.filename;
-      return `
-        <div class="doc-item" title="${Utils.escapeHtml(d.filename)}">
-          <span class="doc-item__icon">${icon}</span>
-          <span class="doc-item__name">${Utils.escapeHtml(name)}</span>
-          <span class="doc-item__type">${(d.file_type || "").toUpperCase()}</span>
-        </div>
+      const row = document.createElement("div");
+      row.className = "doc-item";
+      row.title = `${d.filename} · ${d.chunk_count} chunks`;
+      row.innerHTML = `
+        <span class="doc-item__icon">${icon}</span>
+        <span class="doc-item__name">${Utils.escapeHtml(name)}</span>
+        <span class="doc-item__type">${Utils.escapeHtml((d.file_type || "").toUpperCase())}</span>
       `;
-    }).join("");
+      if (onDelete) {
+        const del = document.createElement("button");
+        del.className = "doc-item__delete";
+        del.type = "button";
+        del.title = "Remove document";
+        del.setAttribute("aria-label", `Remove ${d.filename}`);
+        del.textContent = "✕";
+        del.addEventListener("click", (e) => {
+          e.stopPropagation();
+          onDelete(d);
+        });
+        row.appendChild(del);
+      }
+      el.appendChild(row);
+    });
+  }
+
+  // ── Model selector (populated from GET /models) ───────────
+
+  function renderModelSelect(models, selected) {
+    const sel = document.getElementById("modelSelect");
+    if (!sel) return;
+    const groups = {};
+    models.forEach((m) => {
+      (groups[m.provider] = groups[m.provider] || []).push(m);
+    });
+    const names = { groq: "Groq (free)", google: "Google (free)" };
+    sel.innerHTML = "";
+    Object.keys(groups).forEach((provider) => {
+      const og = document.createElement("optgroup");
+      og.label = names[provider] || provider;
+      groups[provider].forEach((m) => {
+        const opt = document.createElement("option");
+        opt.value = m.id;
+        opt.textContent = `${m.label}${m.description ? " — " + m.description : ""}`;
+        opt.disabled = !m.available;
+        if (!m.available && m.reason) opt.title = m.reason;
+        og.appendChild(opt);
+      });
+      sel.appendChild(og);
+    });
+    if (selected) sel.value = selected;
   }
 
   // ── Upload toast ──────────────────────────────────────────
@@ -288,6 +331,7 @@ window.UI = (function () {
     toggleSidebar,
     renderSessionList,
     renderDocList,
+    renderModelSelect,
     showUploadToast,
     hideUploadToast,
     showToast,

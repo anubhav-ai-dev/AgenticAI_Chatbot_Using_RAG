@@ -1,5 +1,5 @@
 /* ============================================================
-   api.js — REST calls to the Python backend
+   api.js — REST + SSE calls to the Python backend
    ============================================================ */
 
 window.API = (function () {
@@ -7,39 +7,29 @@ window.API = (function () {
     return (window.CONFIG && window.CONFIG.BACKEND_URL) || "";
   }
 
-  async function request(path, options = {}) {
-    const url = `${getBaseUrl()}${path}`;
-    const defaultHeaders = {
-      "Content-Type": "application/json",
-      "Accept": "application/json",
-    };
+  async function _errorMessage(resp) {
+    let msg = `HTTP ${resp.status}`;
+    try {
+      const data = await resp.json();
+      if (typeof data.detail === "string") msg = data.detail;
+      else if (data.message) msg = data.message;
+    } catch (_) {}
+    return msg;
+  }
 
-    if (options.body instanceof FormData) {
-      delete defaultHeaders["Content-Type"]; // let browser set boundary
+  async function request(path, options = {}) {
+    const headers = { Accept: "application/json", ...(options.headers || {}) };
+    if (options.body && !(options.body instanceof FormData)) {
+      headers["Content-Type"] = "application/json";   // FormData: browser sets the boundary
     }
 
-    const config = {
-      ...options,
-      headers: {
-        ...defaultHeaders,
-        ...(options.headers || {}),
-      },
-    };
-
     try {
-      const resp = await fetch(url, config);
-      if (!resp.ok) {
-        let errorMsg = `HTTP ${resp.status}`;
-        try {
-          const errData = await resp.json();
-          errorMsg = errData.detail || errData.message || errorMsg;
-        } catch (_) {}
-        throw new Error(errorMsg);
-      }
+      const resp = await fetch(`${getBaseUrl()}${path}`, { ...options, headers });
+      if (!resp.ok) throw new Error(await _errorMessage(resp));
       if (resp.status === 204) return null;
       return await resp.json();
     } catch (err) {
-      console.error(`[API] Error on ${path}:`, err);
+      if (err.name !== "AbortError") console.error(`[API] Error on ${path}:`, err);
       throw err;
     }
   }
@@ -51,10 +41,7 @@ window.API = (function () {
   }
 
   function createSession(data) {
-    return request("/sessions", {
-      method: "POST",
-      body: JSON.stringify(data),
-    });
+    return request("/sessions", { method: "POST", body: JSON.stringify(data) });
   }
 
   function getSession(sessionId) {
@@ -62,22 +49,17 @@ window.API = (function () {
   }
 
   function updateSession(sessionId, data) {
-    return request(`/sessions/${sessionId}`, {
-      method: "PATCH",
-      body: JSON.stringify(data),
-    });
+    return request(`/sessions/${sessionId}`, { method: "PATCH", body: JSON.stringify(data) });
   }
 
   function deleteSession(sessionId) {
-    return request(`/sessions/${sessionId}`, {
-      method: "DELETE",
-    });
+    return request(`/sessions/${sessionId}`, { method: "DELETE" });
   }
 
-  function saveMessage(sessionId, message) {
-    return request(`/sessions/${sessionId}/messages`, {
+  function setFeedback(messageId, value) {
+    return request(`/messages/${messageId}/feedback`, {
       method: "POST",
-      body: JSON.stringify(message),
+      body: JSON.stringify({ value }),
     });
   }
 
@@ -90,10 +72,7 @@ window.API = (function () {
   function uploadFile(file, userId = "default") {
     const form = new FormData();
     form.append("file", file);
-    return request(`/upload?user_id=${encodeURIComponent(userId)}`, {
-      method: "POST",
-      body: form,
-    });
+    return request(`/upload?user_id=${encodeURIComponent(userId)}`, { method: "POST", body: form });
   }
 
   function uploadUrl(url, userId = "default") {
@@ -102,33 +81,66 @@ window.API = (function () {
     });
   }
 
-  // ── RAG Retrieval ─────────────────────────────────────────
-
-  function retrieve(query, userId = "default", topK = 5, threshold = 0.35) {
-    return request("/retrieve", {
-      method: "POST",
-      body: JSON.stringify({
-        query,
-        user_id: userId,
-        top_k: topK,
-        threshold,
-      }),
-    });
+  function deleteDocument(docId, userId = "default") {
+    return request(`/documents/${docId}?user_id=${encodeURIComponent(userId)}`, { method: "DELETE" });
   }
 
-  // ── Search ────────────────────────────────────────────────
+  // ── Models ────────────────────────────────────────────────
 
-  function search(query, maxResults = 5) {
-    return request("/search", {
-      method: "POST",
-      body: JSON.stringify({ query, max_results: maxResults }),
-    });
+  function getModels() {
+    return request("/models");
   }
 
-  // ── Health ────────────────────────────────────────────────
+  // ── Chat (server-sent events) ─────────────────────────────
 
-  function health() {
-    return request("/health");
+  /**
+   * POST /chat/stream and dispatch each SSE event to handlers[eventName](data).
+   * Events: meta, status, citations, model, token, error, done.
+   * Resolves when the stream ends; rejects on HTTP errors or abort.
+   */
+  async function chatStream(payload, handlers, signal) {
+    const resp = await fetch(`${getBaseUrl()}/chat/stream`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Accept: "text/event-stream" },
+      body: JSON.stringify(payload),
+      signal,
+    });
+    if (!resp.ok) throw new Error(await _errorMessage(resp));
+    if (!resp.body) throw new Error("Streaming is not supported by this browser.");
+
+    const reader = resp.body.getReader();
+    const decoder = new TextDecoder();
+    let buffer = "";
+
+    const dispatch = (block) => {
+      let event = "message";
+      const dataLines = [];
+      for (const line of block.split("\n")) {
+        if (line.startsWith("event:")) event = line.slice(6).trim();
+        else if (line.startsWith("data:")) dataLines.push(line.slice(5).trimStart());
+      }
+      if (!dataLines.length) return;
+      let data;
+      try {
+        data = JSON.parse(dataLines.join("\n"));
+      } catch (_) {
+        return;
+      }
+      const handler = handlers[event];
+      if (handler) handler(data);
+    };
+
+    for (;;) {
+      const { value, done } = await reader.read();
+      if (done) break;
+      buffer += decoder.decode(value, { stream: true });
+      let idx;
+      while ((idx = buffer.indexOf("\n\n")) !== -1) {
+        dispatch(buffer.slice(0, idx));
+        buffer = buffer.slice(idx + 2);
+      }
+    }
+    if (buffer.trim()) dispatch(buffer);
   }
 
   return {
@@ -137,12 +149,12 @@ window.API = (function () {
     getSession,
     updateSession,
     deleteSession,
-    saveMessage,
+    setFeedback,
     listDocuments,
     uploadFile,
     uploadUrl,
-    retrieve,
-    search,
-    health,
+    deleteDocument,
+    getModels,
+    chatStream,
   };
 })();
