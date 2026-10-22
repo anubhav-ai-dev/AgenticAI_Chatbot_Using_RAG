@@ -41,3 +41,7 @@ temp_*
 # ── OS ────────────────────────────────────────────────────────────────────────
 .DS_Store
 Thumbs.db
+
+# ── Redesign baseline (contains real local session titles) ───────────────────
+docs/redesign/baseline/api-shapes.txt
+docs/redesign/baseline/private/

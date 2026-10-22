@@ -143,22 +143,22 @@ class Settings(BaseSettings):
     rerank_provider: Literal["local", "cohere", "none"] = "local"
     rerank_model: str = ""
     rerank_enabled: bool = True
-    rerank_candidates: int = Field(default=8, ge=1, le=50)
-    rerank_max_chars: int = Field(default=600, ge=100)   # cross-encoder cost grows with length
-    rerank_timeout_s: float = 2.0
+    rerank_candidates: int = Field(default=12, ge=1, le=50)
+    rerank_max_chars: int = Field(default=1000, ge=100)   # cross-encoder cost grows with length
+    rerank_timeout_s: float = 4.0
 
     # RAG
-    chunk_size: int = Field(default=700, ge=100)
-    chunk_overlap: int = Field(default=100, ge=0)
+    chunk_size: int = Field(default=1000, ge=100)
+    chunk_overlap: int = Field(default=150, ge=0)
     rag_candidate_k: int = Field(default=30, ge=1, le=200)
-    rag_top_k: int = Field(default=5, ge=1, le=20)
+    rag_top_k: int = Field(default=8, ge=1, le=20)
     rrf_k: int = Field(default=60, ge=1)
     rag_dense_weight: float = 1.0
     rag_lexical_weight: float = 1.0
     rag_min_relevance: float = Field(default=0.2, ge=0.0, le=1.0)   # gate on blended relevance
     rag_cosine_floor: float = 0.5     # cosine at/below which dense similarity counts as 0 (bge-small)
     rag_cosine_ceil: float = 0.8      # cosine at/above which dense similarity counts as 1
-    retrieval_timeout_s: float = 4.0
+    retrieval_timeout_s: float = 8.0
     retrieval_cache_ttl_s: int = 300
 
     # Web search
@@ -171,7 +171,7 @@ class Settings(BaseSettings):
     # Conversation budgets (rough token estimates)
     history_max_messages: int = Field(default=10, ge=0)
     history_token_budget: int = 1200
-    context_token_budget: int = 2000
+    context_token_budget: int = 3000
     query_rewrite_enabled: bool = True
 
     # Semantic answer cache

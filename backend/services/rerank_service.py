@@ -10,12 +10,15 @@ from __future__ import annotations
 import asyncio
 import logging
 import threading
+import time
 from typing import Any, Callable, Optional
 
 from backend.client.rerank_client import RerankClient, build_rerank_client
 from backend.core.config import Settings
 
 logger = logging.getLogger(__name__)
+
+RETRY_AFTER_S = 60.0     # a failed model load is retried after this long, not remembered forever
 
 
 class RerankService:
@@ -26,12 +29,16 @@ class RerankService:
         self._backend: Optional[RerankClient] = None
         self._error: Optional[str] = None
         self._loaded = False
+        self._failed_at = 0.0
         self._lock = threading.Lock()
+
+    def _recently_failed(self) -> bool:
+        return self._error is not None and time.monotonic() - self._failed_at < RETRY_AFTER_S
 
     @property
     def enabled(self) -> bool:
         s = self._settings
-        return s.rerank_enabled and s.rerank_provider != "none" and self._error is None
+        return s.rerank_enabled and s.rerank_provider != "none" and not self._recently_failed()
 
     @property
     def ready(self) -> bool:
@@ -42,18 +49,20 @@ class RerankService:
         return self._settings.rerank_provider
 
     def _load(self) -> None:
-        if self._loaded or self._error is not None:
+        if self._loaded or self._recently_failed():
             return
         with self._lock:
-            if self._loaded or self._error is not None:
+            if self._loaded or self._recently_failed():
                 return
             s = self._settings
             try:
                 self._backend = self._factory(s)
                 self._loaded = True
+                self._error = None
                 logger.info("Reranker ready: %s:%s", s.rerank_provider, s.rerank_model_id)
             except Exception as exc:  # noqa: BLE001 — retrieval falls back to fused order
                 self._error = f"{type(exc).__name__}: {exc}"
+                self._failed_at = time.monotonic()
                 logger.warning("Reranker unavailable (%s) — using fused order", self._error)
 
     async def warmup(self) -> bool:

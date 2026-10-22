@@ -1,0 +1,32 @@
+# QA report 04 - Stage 4 (controller integration + view seam)
+
+## 1. Verdict: PASS WITH ISSUES
+All Stage 4 behaviours I exercised in headless Chrome (stubbed fetch, no real LLM/backend calls) work: welcome cards never send (12/12 interaction combos), Stop, regenerate-keeps-old-answer, input preserved on failure, no horizontal overflow at 8 widths x 2 themes, drawer + Escape + focus return, axe wcag2a/2aa/21aa zero violations, reduced-motion kills animations, sanitizer holds. One Major (error toast covers Send/Stop), one Minor (view seam hooks are dead code and comments are stale). No blocker.
+
+## 2. Scope
+Working tree vs 15e1d81, frontend/js/{app,api,ui,chat,utils}.js, index.html, css, docs/redesign/*, reference PNG. Not implemented vs reference: orbiting icons, bottom nav, notification/search/avatar controls, capability strip hidden <900px (documented in view-contract 16.4, intentional - no backing actions).
+
+## 3. Findings
+- **M1 (Major) Toast covers Send/Stop.** `frontend/css/components.css:1182` `.toast-region` fixed bottom-right 360px, `.toast` `pointer-events:auto`; error toasts live 8 s (`ui.js:~611`). At 1280x800 the Send/Stop button (x 1111-1151, y 735-775) is under the toast. Evidence: `elementFromPoint` at Stop centre returned `toast__text`; puppeteer `click('#stopBtn')` hit the toast, so Stop did not fire (screenshot `.../scratchpad/shots/toast-overlap.png`). Repro: failed send ("boom Your message is kept"), press Enter again to resend within 8 s, click Stop. Impact: Stop unreachable by mouse for up to 8 s exactly when users retry after an error. Keyboard Tab+Enter still works. Owner: frontend-developer (CSS: keep toasts above composer, e.g. bottom offset = composer height, or top-right).
+- **m1 (Minor) Seam hooks unused, stale comments.** `app.js` never calls `UI.onWelcomeCard`, `UI.focusComposer`, `UI.setComposerBusy`, `Chat.holdLastAnswer` (grep). The controller uses its own `#starterPrompts` listener (`app.js:145`), its own `_setLoading` (`app.js:737`) and own `oldAnswer` logic (`app.js:261/302/465`). No double handling: with no handler registered the ui.js capture listener returns early (`ui.js:~842`), so exactly one path runs (verified: 0 mutating requests). But the comment at `app.js:143` ("ui.js also clicks the matching .mode-tab first") is false, and `index.html:301` comment is stale. Owners: integration-developer (comment, or migrate), frontend-developer (remove or keep hooks). Recommended controller change if the seam is to be used: in `init()` replace the `#starterPrompts` listener with `UI.onWelcomeCard(({mode,prompt})=>{ if(mode)_setMode(mode); _fillComposer(prompt); })`. Not required for correctness.
+- **n1 (Nit)** Model selector shows the literal "undefined" if a /models entry lacks `label` (real backend always sends `label`, so only a stub/contract-drift risk). Owner: frontend-developer.
+- **n2 (Nit)** 1440x900 welcome: third example chip is partly under the composer until scrolled (scrolls inside the main area; no overflow).
+
+Ownership: no `frontend/**` edits from the wrong layer found; app.js has no markup/classes beyond ids; views contain no fetch/API (guard tests pass). Backend files (`parser.py`, `config.py`, `embedding_*`, `rerank_service.py`, `llm_service.py`, requirements.txt, tests/conftest.py, tests/test_llm.py, new tests/test_parser_formats.py) are modified in the tree: outside Stage 4 frontend scope; belong to backend-developer, not reviewed here. `.claude/` and the reference PNG are untracked at repo root (housekeeping).
+External origins (pre-existing CDNs: jsdelivr marked/dompurify, cdnjs highlight.js, Google Fonts) - none added this stage.
+
+## 4. Verified with evidence (puppeteer-core 23.11.1, axe-core 4.10.2 in scratch dir under /tmp; Chrome 148; static server on 127.0.0.1:8765, stopped)
+1. Welcome cards: 4 cards x {click, Enter, Space} = 12/12 OK: `localStorage.mode` == card mode, active mode tab matches, composer value == `data-prompt`, composer focused, welcome still visible, 0 user messages, 0 non-GET requests (no POST /sessions, no /chat/stream).
+2. Streaming: while streaming textarea enabled and focused, Stop visible, Send hidden; Stop aborts and marks "Stopped. This answer may be incomplete" (via JS click; see M1 for mouse). Failed first send (HTTP 500): draft "hello fail" kept, no user bubble, no assistant bubble. Regenerate with HTTP 500: old answer stays. Regenerate then Stop pre-token: old answer restored (same text). Regenerate success: old replaced by new. Duplicate-submit gate ok.
+3. Responsive (light and dark: 1440x900, 1280x800, 1024x768, 768x1024, 430x932, 390x844, 375x812, 320x700): `scrollWidth==clientWidth` at all 16, welcome and chat with long unbroken string, wide table, wide code block (table/code scroll inside their containers); composer and Send in viewport at all; drawer opens with focus inside, Escape closes and focus returns to `#sidebarToggle` (768 and below); 640x450 (~200% zoom) and 1366x650 no overflow, composer visible. Screenshots viewed: welcome 1440 light, chat 1280 dark, welcome 320 dark, drawer 390 light, chat 390 light, welcome 768 dark - all in scratchpad/shots/.
+4. axe wcag2a/2aa/21aa on chat state: 0 violations in all 16 runs (includes color-contrast). Reduced-motion: no element with a running animation. Theme: dark preference first paint `data-theme=dark` bg rgb(11,16,32) before JS; stored dark survives reload under light preference; focus ring 2px solid rgb(79,70,229) on keyboard focus.
+5. Sanitizer/XSS: hostile session title, filename, model label/id, badge fallback, citation title/snippet, `javascript:` citation url, `<img onerror>`/`<script>` in markdown: `window.__pwn` undefined, no dialogs, no injected img, external links `rel="noopener noreferrer" target=_blank`. No `href="#"`, `eval`, `document.write`, `new Function`; `Math.random` only in `utils.uuid`. No mock data/pin control found.
+
+## 5. Checks run
+- `find frontend/js -name '*.js' -exec node --check {} \;` exit 0
+- `venv/bin/pytest -q` exit 0, all pass, 1 skipped (xlwt missing; pre-existing)
+- `venv/bin/ruff check backend tests --select F,E9,B --ignore B008,B905,B011` "All checks passed"
+- Guard tests: none added (existing tests/test_frontend_*.py pass inside the full run).
+
+## 6. Not verified
+Real backend streaming/upload (no live calls by instruction); upload/URL/drag-drop and citation modal interactions in browser; screen-reader behaviour; own contrast recomputation from tokens (relied on axe); touch devices; DoD items about backend or docs/final report not assessed.

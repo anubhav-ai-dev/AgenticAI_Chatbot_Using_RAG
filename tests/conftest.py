@@ -179,7 +179,7 @@ class FakeProviderClient:
     """
     Minimal AsyncOpenAI look-alike. `script[model]` is a list of behaviours consumed
     one per call (the last one repeats): "ok", ("ok", text), ("raise", status),
-    ("hang",), ("empty",), ("think", text), ("midfail", text).
+    ("hang",), ("empty",), ("think", text), ("midfail", text), ("chunks", [deltas...]).
     """
 
     def __init__(self, script: Optional[dict[str, list]] = None,
@@ -221,6 +221,8 @@ class FakeProviderClient:
             items = [_chunk(None, usage)]
         elif kind == "think":
             items = [_chunk("<think>secret"), _chunk(" reasoning</think>"), _chunk(text), _chunk(None, usage)]
+        elif kind == "chunks":              # ("chunks", [exact text deltas...])
+            items = [_chunk(c) for c in step[1]] + [_chunk(None, usage)]
         elif kind == "reasoning":
             items = [_chunk(None, reasoning="hmm"), _chunk(text), _chunk(None, usage)]
         else:

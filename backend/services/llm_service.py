@@ -303,7 +303,7 @@ class LLMService:
             first = ""
             usage: Optional[dict[str, int]] = None
             exhausted = False
-            while not first:
+            while not first.strip():        # whitespace after </think> is not an answer yet
                 remaining = first_deadline - time.monotonic()
                 if remaining <= 0:
                     raise LLMError("timeout", model=spec.id)

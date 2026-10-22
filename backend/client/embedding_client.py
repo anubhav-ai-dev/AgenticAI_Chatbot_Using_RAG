@@ -32,7 +32,14 @@ class LocalEmbeddingClient:
         self._batch = batch_size
 
     def embed_documents(self, texts: list[str]) -> np.ndarray:
-        return l2_normalize(np.array(list(self._model.embed(texts, batch_size=self._batch))))
+        if not texts:
+            return np.zeros((0, 0), dtype=np.float32)
+        # similar lengths per batch → less padding; restore input order afterwards
+        order = sorted(range(len(texts)), key=lambda i: len(texts[i]))
+        vectors = np.array(list(self._model.embed([texts[i] for i in order], batch_size=self._batch)))
+        restored = np.empty_like(vectors)
+        restored[order] = vectors
+        return l2_normalize(restored)
 
     def embed_query(self, text: str) -> np.ndarray:
         return l2_normalize(np.array(list(self._model.query_embed(text))))[0]

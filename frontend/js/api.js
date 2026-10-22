@@ -12,9 +12,19 @@ window.API = (function () {
     try {
       const data = await resp.json();
       if (typeof data.detail === "string") msg = data.detail;
+      else if (Array.isArray(data.detail) && data.detail[0] && data.detail[0].msg) msg = data.detail[0].msg;
       else if (data.message) msg = data.message;
     } catch (_) {}
     return msg;
+  }
+
+  /** Error for a non-2xx response: carries `status` and `retryAfter` (seconds, from Retry-After) when present. */
+  async function _httpError(resp) {
+    const err = new Error(await _errorMessage(resp));
+    err.status = resp.status;
+    const ra = parseInt(resp.headers && resp.headers.get && resp.headers.get("Retry-After"), 10);
+    err.retryAfter = Number.isFinite(ra) && ra > 0 ? ra : null;
+    return err;
   }
 
   async function request(path, options = {}) {
@@ -25,7 +35,7 @@ window.API = (function () {
 
     try {
       const resp = await fetch(`${getBaseUrl()}${path}`, { ...options, headers });
-      if (!resp.ok) throw new Error(await _errorMessage(resp));
+      if (!resp.ok) throw await _httpError(resp);
       if (resp.status === 204) return null;
       return await resp.json();
     } catch (err) {
@@ -40,8 +50,8 @@ window.API = (function () {
     return request(`/sessions?user_id=${encodeURIComponent(userId)}`);
   }
 
-  function createSession(data) {
-    return request("/sessions", { method: "POST", body: JSON.stringify(data) });
+  function createSession(data, signal) {
+    return request("/sessions", { method: "POST", body: JSON.stringify(data), ...(signal ? { signal } : {}) });
   }
 
   function getSession(sessionId) {
@@ -87,6 +97,16 @@ window.API = (function () {
 
   // ── Models ────────────────────────────────────────────────
 
+  /** Service status (database, providers, embeddings…). Read-only. */
+  function getHealth() {
+    return request("/health");
+  }
+
+  /** Upload limits advertised by the server: { upload: { max_mb, extensions } }. 404 on an older backend. */
+  function getConfig() {
+    return request("/config");
+  }
+
   function getModels() {
     return request("/models");
   }
@@ -96,17 +116,19 @@ window.API = (function () {
   /**
    * POST /chat/stream and dispatch each SSE event to handlers[eventName](data).
    * Events: meta, status, citations, model, token, error, done.
-   * Resolves when the stream ends; rejects on HTTP errors or abort.
+   * Resolves when the stream ends; rejects on HTTP errors (err.status, err.retryAfter) or abort.
+   * opts.onOpen() is called once the server has accepted the request (HTTP 2xx, before any event).
    */
-  async function chatStream(payload, handlers, signal) {
+  async function chatStream(payload, handlers, signal, opts = {}) {
     const resp = await fetch(`${getBaseUrl()}/chat/stream`, {
       method: "POST",
       headers: { "Content-Type": "application/json", Accept: "text/event-stream" },
       body: JSON.stringify(payload),
       signal,
     });
-    if (!resp.ok) throw new Error(await _errorMessage(resp));
+    if (!resp.ok) throw await _httpError(resp);
     if (!resp.body) throw new Error("Streaming is not supported by this browser.");
+    if (typeof opts.onOpen === "function") opts.onOpen();
 
     const reader = resp.body.getReader();
     const decoder = new TextDecoder();
@@ -126,8 +148,9 @@ window.API = (function () {
       } catch (_) {
         return;
       }
-      const handler = handlers[event];
-      if (handler) handler(data);
+      // Own-property check: an event named __proto__/constructor/toString must not reach Object.prototype members.
+      // Framing is LF-only ("\n\n"); CRLF is unsupported because the backend emits LF only (backend/utils/sse.py).
+      if (Object.prototype.hasOwnProperty.call(handlers, event) && typeof handlers[event] === "function") handlers[event](data);
     };
 
     for (;;) {
@@ -155,6 +178,8 @@ window.API = (function () {
     uploadUrl,
     deleteDocument,
     getModels,
+    getHealth,
+    getConfig,
     chatStream,
   };
 })();

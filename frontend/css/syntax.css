@@ -1,0 +1,54 @@
+/* ============================================================
+   syntax.css — highlight.js token colours driven by --syn-* tokens
+   (css/main.css). Replaces the swapped CDN theme stylesheet: both
+   themes use this one file, so there is no second download and no
+   flash when data-theme changes. Mapping: design-spec.md section 3.6.
+   ============================================================ */
+
+.hljs {
+  color: var(--syn-default);
+  background: transparent;
+}
+
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-literal { color: var(--syn-keyword); }
+
+.hljs-string,
+.hljs-regexp,
+.hljs-addition { color: var(--syn-string); }
+
+.hljs-number,
+.hljs-symbol,
+.hljs-bullet { color: var(--syn-number); }
+
+.hljs-comment,
+.hljs-quote {
+  color: var(--syn-comment);
+  font-style: italic;
+}
+
+.hljs-title,
+.hljs-section,
+.hljs-function .hljs-title { color: var(--syn-title); }
+
+.hljs-built_in,
+.hljs-type,
+.hljs-class .hljs-title { color: var(--syn-builtin); }
+
+.hljs-attr,
+.hljs-attribute,
+.hljs-variable,
+.hljs-template-variable { color: var(--syn-attr); }
+
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class { color: var(--syn-tag); }
+
+.hljs-deletion { color: var(--syn-deletion); }
+
+.hljs-meta { color: var(--text-secondary); }
+
+.hljs-emphasis { font-style: italic; }
+.hljs-strong   { font-weight: 600; }

@@ -13,7 +13,7 @@ Google Gemini. Every model, threshold and limit is configured through environmen
 | Embeddings | Local ONNX (`BAAI/bge-small-en-v1.5`, `ms-marco-MiniLM-L-6`) — free, no quota; Cohere/Google switchable |
 | Memory | Server-side history window (token-budgeted); follow-ups rewritten into standalone queries |
 | Caching | Retrieval + web-search TTL caches, semantic answer cache (user/mode/doc-version scoped) |
-| UI | Streaming render, thought steps, citations modal, Stop, Regenerate, 👍/👎, document delete |
+| UI | Workspace dropdown (General · Documents · Research · Code), streaming chat with sources, My Documents panel, Settings, light/dark/system themes, responsive drawer/rail/desktop shell |
 | MCP | Optional stdio MCP server exposing document search, web search and `ask` |
 
 ## Quick start
@@ -81,6 +81,36 @@ frontend (vanilla JS, SSE)  ──POST /chat/stream──►  api/routes ──�
 Services are classes with constructor injection; `ServiceContainer.build(settings, overrides=…)`
 is the single composition root (tests and the MCP server reuse it).
 
+## Frontend
+
+Plain HTML, CSS and JavaScript served by FastAPI from `frontend/` (no build step, no framework). The page loads
+`marked`, `DOMPurify` and `highlight.js` from CDNs; everything else is local.
+
+```
+frontend/
+├── index.html            shell, inline icon sprite (Lucide, ISC), dialogs; first-paint snippet applies theme,
+│                         shell, workspace and preferences before any stylesheet paints (no flash)
+├── css/                  main (tokens: light + dark) · components · reference (shell look) · workspace
+│                         (workspace panels, My Documents, Settings) · animations · ai-viz · syntax
+└── js/
+    ├── api.js · app.js   the controller: State, every network call, streaming, uploads, sessions
+    ├── ui.js · chat.js   the view facade the controller talks to, and message rendering
+    ├── theme.js          light | dark | system
+    ├── components/       menu · dialog · model-select · notifications · prefs · radiogroup · documents ·
+    │                     workspaces · settings · motion · ai-viz   (view only: no fetch, no application state)
+    └── vendor/           gsap.min.js, pinned by SHA-256 (see NOTICE-gsap.txt)
+```
+
+* **Views never fetch.** `app.js` owns state and the network; components render what they are given and report
+  clicks through callbacks (`UI.onModeChange`, `UI.onMyDocuments`, `UI.onSettingsPane`, …). Tests enforce this.
+* **Workspace mode** is one dropdown above *New Chat* in the sidebar; it is the only place the four modes appear.
+* **Preferences** (text size, spacing, pop-up notices, Code language) live in this browser only (`pref.*`).
+  Theme has its own key. Nothing is sent to the server.
+* **Motion**: CSS for hover, focus and menus. GSAP is used only by `components/motion.js` for the workspace
+  entrance and transition; it loads lazily and never loads under *reduced motion*. Its license
+  (GreenSock "no charge") is not an OSI license: read `js/vendor/NOTICE-gsap.txt` before redistributing.
+* Three.js is deliberately not used: the CSS/SVG assistant orb does the job without a 3D runtime.
+
 ### Chat request lifecycle
 
 1. Rate-limit → persist the user turn → load a token-budgeted history window from the DB.
@@ -111,6 +141,7 @@ SSE events: `meta` · `status` · `citations` · `model` · `token` · `error` �
 | POST | `/retrieve` | Hybrid search `{query, top_k, threshold}` |
 | POST | `/search` | Tavily web search |
 | GET | `/health`, `/ping` | Component status (`healthy` · `degraded` · `unavailable`) |
+| GET | `/config` | Read-only upload limits `{upload: {max_mb, extensions}}` the UI validates against (`/upload` enforces them again) |
 
 Interactive docs: `http://localhost:8000/docs`.
 
@@ -139,7 +170,8 @@ kept in `data/index/rag.sqlite3`, so nothing needs re-uploading).
 ## Testing
 
 ```bash
-pytest                       # ~160 offline tests: fakes for LLM, embeddings, Tavily + architecture guards
+pytest                       # ~330 offline tests: fakes for LLM, embeddings, Tavily, architecture + frontend guards
+                             # (frontend browser scenarios use headless Chrome with a stubbed fetch and skip cleanly without it)
 pytest -m live -s            # real Groq/Gemini/Tavily + real local models: matrix, quality, latency
 ruff check backend tests --select F,E9,B --ignore B008,B905,B011
 ```

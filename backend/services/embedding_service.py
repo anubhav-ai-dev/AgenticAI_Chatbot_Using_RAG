@@ -11,6 +11,7 @@ from __future__ import annotations
 import asyncio
 import logging
 import threading
+import time
 from typing import Any, Callable, Optional
 
 import numpy as np
@@ -21,6 +22,8 @@ from backend.core.exceptions import EmbeddingUnavailable
 
 logger = logging.getLogger(__name__)
 
+RETRY_AFTER_S = 60.0     # a failed model load is retried after this long, not remembered forever
+
 
 class EmbeddingService:
     def __init__(self, settings: Settings,
@@ -29,6 +32,7 @@ class EmbeddingService:
         self._factory = client_factory or build_embedding_client
         self._backend: Optional[EmbeddingClient] = None
         self._error: Optional[str] = None
+        self._failed_at = 0.0
         self._lock = threading.Lock()
         self._dim: Optional[int] = None
 
@@ -50,20 +54,25 @@ class EmbeddingService:
     def ready(self) -> bool:
         return self._backend is not None
 
+    def _recently_failed(self) -> bool:
+        return self._error is not None and time.monotonic() - self._failed_at < RETRY_AFTER_S
+
     def _load(self) -> Optional[EmbeddingClient]:
-        """Instantiate the backend once; failures are remembered, never raised."""
-        if self._backend is not None or self._error is not None:
+        """Instantiate the backend; failures are remembered for RETRY_AFTER_S, never raised."""
+        if self._backend is not None or self._recently_failed():
             return self._backend
         with self._lock:
-            if self._backend is not None or self._error is not None:
+            if self._backend is not None or self._recently_failed():
                 return self._backend
             try:
                 backend = self._factory(self._settings)
                 self._dim = int(backend.embed_query("warmup").shape[-1])
                 self._backend = backend
+                self._error = None
                 logger.info("Embeddings ready: %s (dim=%s)", self.model_id, self._dim)
             except Exception as exc:  # noqa: BLE001 — degrade to lexical-only retrieval
                 self._error = f"{type(exc).__name__}: {exc}"
+                self._failed_at = time.monotonic()
                 logger.warning("Embeddings unavailable (%s) — lexical-only retrieval", self._error)
             return self._backend
 

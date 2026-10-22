@@ -1,0 +1,17 @@
+GSAP (GreenSock Animation Platform) 3.15.0 — vendored, unmodified
+-----------------------------------------------------------------
+File:     gsap.min.js  (dist/gsap.min.js from the official npm package "gsap@3.15.0")
+SHA-256:  92bb9a96476f983d212a2bc4f54c889039c1696dd4461d40a736860938570fbb
+Size:     72,927 bytes (about 28 KB gzipped)
+Source:   https://www.npmjs.com/package/gsap   Home: https://gsap.com
+License:  GreenSock "Standard 'no charge' license" — https://gsap.com/standard-license
+          This is NOT an OSI open-source license. It is free to use, including commercially, but has
+          its own terms (for example, it may not be used in a product that lets users visually build
+          animations, and the terms may change). Read it before redistributing this project.
+
+Why it is here: a short, coordinated entrance timeline for the welcome and workspace panels and a
+quick transition when the workspace changes (js/components/motion.js). It is loaded lazily, only
+when the user has not asked for reduced motion, and the interface works fully without it.
+
+Integrity: tests/test_frontend_motion.py pins the SHA-256 above. To update, replace the file with a
+new official build, update this notice and the pinned hash together.

@@ -26,7 +26,7 @@ from backend.services.document_service import DocumentService
 from backend.services.embedding_service import EmbeddingService
 from backend.services.index_store import HybridIndexStore
 from backend.services.llm_service import LLMService
-from backend.services.parser import DocumentParser
+from backend.services.parser import DocumentParser, ocr_available
 from backend.services.prompt_builder import PromptBuilder
 from backend.services.rerank_service import RerankService
 from backend.services.retrieval_service import RetrievalService
@@ -100,6 +100,7 @@ class ServiceContainer:
             safe("embeddings", self.embedder.warmup()),
             safe("reranker", self.reranker.warmup()),
             safe("llm-discovery", self.llm.discover()),
+            safe("ocr", asyncio.to_thread(ocr_available)),      # first scan/image skips the model load
         )
         await safe("reindex", self.documents.reindex_if_needed())
         logger.info("Warm-up complete")

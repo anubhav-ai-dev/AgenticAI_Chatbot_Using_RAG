@@ -202,6 +202,18 @@ class GenerateResponse(BaseModel):
     model:    str
 
 
+# ── Public config ─────────────────────────────────────────────────────────────
+
+class UploadLimits(BaseModel):
+    max_mb:     int                           # MAX_UPLOAD_MB: larger files are rejected with HTTP 413
+    extensions: list[str]                     # file types /upload accepts (parser.SUPPORTED_EXTENSIONS)
+
+
+class PublicConfig(BaseModel):
+    """Read-only facts the UI needs for client-side checks. The server still enforces all of them."""
+    upload: UploadLimits
+
+
 # ── Health ────────────────────────────────────────────────────────────────────
 
 class HealthResponse(BaseModel):

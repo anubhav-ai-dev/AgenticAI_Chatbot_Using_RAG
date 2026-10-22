@@ -46,6 +46,21 @@ from backend.core.container import ServiceContainer  # noqa: E402
 
 logger = logging.getLogger(__name__)
 
+# The frontend is plain files with no build step or hashed names. Without this header a browser reuses them for a
+# heuristic period, so right after an edit or deploy a page can run NEW scripts next to OLD ones and fail at startup
+# (for example, the model list stuck on "Loading models…"). `no-cache` means "revalidate every time": the ETag
+# makes that a cheap 304 when nothing changed.
+REVALIDATE = {"Cache-Control": "no-cache"}
+
+
+class RevalidatingStaticFiles(StaticFiles):
+    """StaticFiles whose responses the browser must revalidate (see REVALIDATE)."""
+
+    def file_response(self, *args, **kwargs):
+        response = super().file_response(*args, **kwargs)
+        response.headers.update(REVALIDATE)
+        return response
+
 
 def create_app(settings: Optional[Settings] = None,
                container: Optional[ServiceContainer] = None) -> FastAPI:
@@ -82,14 +97,14 @@ def create_app(settings: Optional[Settings] = None,
     for name in ("css", "js", "assets"):
         directory = FRONTEND_DIR / name
         if directory.is_dir():
-            app.mount(f"/{name}", StaticFiles(directory=str(directory)), name=name)
+            app.mount(f"/{name}", RevalidatingStaticFiles(directory=str(directory)), name=name)
 
     @app.get("/", include_in_schema=False)
     def serve_spa():
         index_path = FRONTEND_DIR / "index.html"
         if not index_path.exists():
             return {"message": "Frontend not found. API is running."}
-        return FileResponse(str(index_path))
+        return FileResponse(str(index_path), headers=REVALIDATE)
 
     return app
 

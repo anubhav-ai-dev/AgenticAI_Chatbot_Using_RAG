@@ -433,3 +433,37 @@ def test_migration_adds_columns_to_legacy_database(tmp_path):
     assert {"feedback", "meta"} <= cols
     assert sqlite3.connect(path).execute("SELECT content FROM messages").fetchone()[0] == "hello"
     db.dispose()
+
+
+def test_public_config_advertises_the_real_upload_limits(client_factory):
+    """GET /config is read-only and reports what /upload really enforces (the UI validates against it)."""
+    from backend.services.parser import SUPPORTED_EXTENSIONS
+
+    tc, _ = client_factory()
+    body = tc.get("/config").json()
+    assert set(body) == {"upload"}
+    assert body["upload"]["extensions"] == sorted(SUPPORTED_EXTENSIONS)
+    assert isinstance(body["upload"]["max_mb"], int) and body["upload"]["max_mb"] >= 1
+    # additive and read-only: no other verb is accepted, and nothing secret is exposed
+    assert tc.post("/config").status_code == 405
+    assert "key" not in str(body).lower()
+
+
+def test_public_config_limit_follows_the_setting(settings, build_container, client_factory):
+    tc, c = client_factory()
+    assert tc.get("/config").json()["upload"]["max_mb"] == c.settings.max_upload_mb
+
+
+def test_frontend_files_must_be_revalidated_so_a_page_never_mixes_old_and_new_scripts(client_factory):
+    """Regression: with no Cache-Control a browser reused stale scripts after an edit and startup failed
+    (model list stuck on "Loading models…"). Every frontend response now says no-cache and supports ETag/304."""
+    tc, _ = client_factory()
+    for path in ("/", "/js/app.js", "/js/ui.js", "/css/main.css"):
+        r = tc.get(path)
+        assert r.status_code == 200 and r.headers["cache-control"] == "no-cache", path
+    first = tc.get("/js/ui.js")
+    etag = first.headers["etag"]
+    again = tc.get("/js/ui.js", headers={"If-None-Match": etag})
+    assert again.status_code == 304 and again.headers["cache-control"] == "no-cache" and not again.content
+    # API responses are untouched
+    assert "cache-control" not in tc.get("/models").headers

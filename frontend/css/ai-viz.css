@@ -1,0 +1,302 @@
+/* ============================================================
+   ai-viz.css — AIVisualization (design-spec section 8)
+   State lives in svg[data-state]; only transform/opacity animate
+   continuously (stroke-dasharray is a one-shot transition).
+   Budget: <= 1 infinite animation per instance, none for finished
+   messages, none under reduced motion or while the tab is hidden.
+   ============================================================ */
+
+.ai-viz {
+  display: block;
+  flex-shrink: 0;
+  overflow: visible;
+}
+.ai-viz--lg { width: 96px; height: 96px; }
+.ai-viz--sm { width: 28px; height: 28px; }
+
+.ai-viz__halo { fill: var(--accent-subtle); transition: fill var(--dur-slow) var(--ease-inout); }
+.ai-viz__ring {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 1.5;
+  opacity: .35;
+  transition: opacity var(--dur-slow) var(--ease-inout), stroke var(--dur-slow) var(--ease-inout);
+}
+.ai-viz__spin { transform-origin: 48px 48px; }
+.ai-viz__arc {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-dasharray: 28 72;
+  transform: rotate(-90deg);
+  transform-origin: 48px 48px;
+  opacity: 0;
+  transition: opacity var(--dur-slow) var(--ease-inout), stroke-dasharray var(--dur-slow) var(--ease-inout);
+}
+.ai-viz__dot {
+  fill: var(--viz-cyan);
+  opacity: 0;
+  transition: opacity var(--dur-slow) var(--ease-inout);
+}
+.ai-viz__core {
+  fill: var(--accent);
+  transform-origin: 48px 48px;
+  transition: opacity var(--dur-slow) var(--ease-inout), fill var(--dur-slow) var(--ease-inout);
+}
+.ai-viz__alert {
+  fill: none;
+  stroke: var(--error);
+  stroke-width: 5;
+  stroke-linecap: round;
+  opacity: 0;
+  transform-origin: 48px 48px;
+  transition: opacity var(--dur-slow) var(--ease-inout);
+}
+
+/* The small avatar drops the halo and the dot (spec 8.2) */
+.ai-viz--sm .ai-viz__halo,
+.ai-viz--sm .ai-viz__dot { display: none; }
+.ai-viz--sm .ai-viz__ring { stroke-width: 3; }
+.ai-viz--sm .ai-viz__arc { stroke-width: 6; }
+
+/* ── States ──────────────────────────────────────────────── */
+
+/* idle: ring + core. Only the large (welcome) mark drifts; finished messages stay still. */
+.ai-viz--lg[data-state="idle"] .ai-viz__core {
+  animation: aiVizDrift 6000ms var(--ease-inout) infinite alternate;
+  will-change: transform;
+}
+
+.ai-viz[data-state="processing"] .ai-viz__ring { opacity: .6; }
+.ai-viz[data-state="processing"] .ai-viz__arc,
+.ai-viz[data-state="processing"] .ai-viz__dot { opacity: 1; }
+.ai-viz[data-state="processing"] .ai-viz__spin {
+  animation: spin 1400ms linear infinite;
+  will-change: transform;
+}
+
+.ai-viz[data-state="responding"] .ai-viz__ring { opacity: .6; }
+.ai-viz[data-state="responding"] .ai-viz__arc { opacity: 1; stroke-dasharray: 100 0; }
+.ai-viz[data-state="responding"] .ai-viz__core {
+  animation: aiVizBreathe 2000ms var(--ease-inout) infinite alternate;
+  will-change: transform, opacity;
+}
+
+.ai-viz[data-state="error"] .ai-viz__halo { fill: var(--error-bg); }
+.ai-viz[data-state="error"] .ai-viz__ring { stroke: var(--error); opacity: .6; }
+.ai-viz[data-state="error"] .ai-viz__core { opacity: 0; }
+.ai-viz[data-state="error"] .ai-viz__alert {
+  opacity: 1;
+  animation: aiVizSettle 240ms var(--ease-out) both;   /* one-shot, then static */
+}
+
+@keyframes aiVizDrift {
+  from { transform: translateY(0) scale(1); }
+  to   { transform: translateY(-2px) scale(1.03); }
+}
+@keyframes aiVizBreathe {
+  from { transform: scale(1);    opacity: .85; }
+  to   { transform: scale(1.04); opacity: 1; }
+}
+@keyframes aiVizSettle {
+  from { transform: scale(.96); }
+  to   { transform: scale(1); }
+}
+
+/* ============================================================
+   Hero scene (welcome): glossy orb, gradient orbit rings with planets,
+   satellite chips, sparkles. Sized in em so the scene scales with
+   font-size (see reference.css). Only transform / opacity animate. Every
+   animated rule lists `animation` first (guard test), and the reduced-motion /
+   hidden-tab rules below apply (all children live inside .ai-viz).
+   ============================================================ */
+.ai-viz--hero {
+  position: relative;
+  font-size: 16px;
+  width: 21em;
+  height: 10em;
+  --look-x: 0;
+  --look-y: 0;
+}
+.hero__glow {
+  position: absolute;
+  left: calc(50% - 6.5em);
+  top: calc(50% - 6.5em);
+  width: 13em;
+  height: 13em;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--orb-glow) 0%, transparent 64%);
+  opacity: .6;
+}
+.ai-viz--hero[data-state="idle"] .hero__glow { animation: heroGlow 4200ms var(--ease-inout) infinite alternate; }
+
+.hero__orb {
+  position: absolute;
+  left: calc(50% - 3em);
+  top: calc(50% - 3em);
+  width: 6em;
+  height: 6em;
+  border-radius: 50%;
+  background: var(--orb-fill);
+  box-shadow: 0 .9em 2.2em var(--orb-glow),
+              inset -.4em -.55em 1.1em -.1em var(--orb-rim),
+              inset .35em .45em .8em rgba(255, 255, 255, .38);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.ai-viz--hero[data-state="idle"] .hero__orb { animation: heroFloat 5200ms var(--ease-inout) infinite alternate; }
+/* GSAP owns the idle float when motion is allowed, so the CSS loop does not fight it. */
+html.is-gsap-float .ai-viz--hero[data-state="idle"] .hero__orb { animation: none !important; }
+.hero__face {
+  position: absolute;
+  left: 15%;
+  top: 22%;
+  width: 70%;
+  height: 56%;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at 50% 50%, var(--orb-face) 0%, transparent 72%);
+}
+.hero__shine {
+  position: absolute;
+  left: 13%;
+  top: 7%;
+  width: 46%;
+  height: 28%;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at 40% 40%, rgba(255, 255, 255, .55), transparent 70%);
+  transform: rotate(-22deg);
+}
+.hero__look {
+  position: relative;
+  transform: translate(calc(var(--look-x) * .42em), calc(var(--look-y) * .28em));
+  transition: transform var(--dur-base) var(--ease-out);
+}
+.hero__eyes { display: flex; gap: .78em; margin-top: .05em; }
+.hero__eye {
+  width: .62em;
+  height: 1.3em;
+  border-radius: .4em;
+  background: var(--orb-eye);
+  box-shadow: 0 0 .45em var(--orb-eye-glow), 0 0 1.1em var(--orb-eye-glow);
+}
+.ai-viz--hero[data-state="idle"] .hero__eye { animation: heroBlink 5600ms var(--ease-inout) infinite; }
+.ai-viz--hero[data-state="idle"] .hero__eye + .hero__eye { animation-delay: 40ms; }
+
+/* Orbit rings: a masked conic gradient (a bright arc with a faint full ring behind it) tilted into an
+   ellipse; the .hero__orbit wrapper spins it about its own axis so the arc travels around the orb,
+   the planet dot rides on the same edge. */
+.hero__tilt {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 0;
+  height: 0;
+  perspective: 40em;
+}
+.hero__tilt--a { transform: rotate(-24deg); }
+.hero__tilt--b { transform: rotate(24deg); }
+.hero__orbit {
+  animation: heroOrbit 9000ms linear infinite;
+  --tilt: 62deg;
+  position: absolute;
+  left: -7.2em;
+  top: -7.2em;
+  width: 14.4em;
+  height: 14.4em;
+  transform: rotateX(var(--tilt));
+}
+.hero__orbit--b {
+  animation-duration: 12500ms;
+  animation-direction: reverse;
+  --tilt: 66deg;
+  left: -6em;
+  top: -6em;
+  width: 12em;
+  height: 12em;
+}
+.hero__ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: conic-gradient(from 0deg, transparent 0deg, var(--ring-a1) 80deg, var(--ring-a2) 170deg, transparent 250deg, transparent 360deg);
+  box-shadow: inset 0 0 0 .1em var(--orb-ring);
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - .3em), black calc(100% - .27em));
+          mask: radial-gradient(farthest-side, transparent calc(100% - .3em), black calc(100% - .27em));
+}
+.hero__orbit--b .hero__ring {
+  background: conic-gradient(from 90deg, transparent 0deg, var(--ring-b1) 70deg, var(--ring-b2) 160deg, transparent 240deg, transparent 360deg);
+}
+.hero__planet {
+  position: absolute;
+  left: calc(50% - .3em);
+  top: -.3em;
+  width: .6em;
+  height: .6em;
+  border-radius: 50%;
+  background: var(--ring-a1);
+  box-shadow: 0 0 .7em var(--ring-a1);
+}
+.hero__orbit--b .hero__planet { background: var(--ring-b1); box-shadow: 0 0 .7em var(--ring-b1); }
+
+.hero__sat {
+  position: absolute;
+  width: 2.5em;
+  height: 2.5em;
+  border-radius: .8em;
+  background: var(--sat-bg);
+  color: var(--sat-fg);
+  box-shadow: var(--sat-shadow);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.hero__sat .icon { width: 1.25em; height: 1.25em; }
+.hero__sat--doc   { left: calc(50% - 8.9em); top: calc(50% - .1em); }
+.hero__sat--globe { left: calc(50% + 5.4em); top: calc(50% - 4em); border-radius: 50%; width: 2.3em; height: 2.3em; }
+.hero__sat--code  { left: calc(50% + 6.6em); top: calc(50% + .2em); }
+.ai-viz--hero[data-state="idle"] .hero__sat--doc   { animation: heroDrift 6200ms var(--ease-inout) infinite alternate; }
+.ai-viz--hero[data-state="idle"] .hero__sat--globe { animation: heroDrift 7000ms var(--ease-inout) -1800ms infinite alternate; }
+.ai-viz--hero[data-state="idle"] .hero__sat--code  { animation: heroDrift 6600ms var(--ease-inout) -3400ms infinite alternate; }
+
+.hero__spark { position: absolute; color: var(--accent-text); opacity: .75; }
+.hero__spark--a { left: calc(50% - 11.4em); top: calc(50% - 1.6em); }
+.hero__spark--b { left: calc(50% + 3.6em); top: calc(50% - 4.6em); transform: scale(.7); }
+.hero__spark--c { left: calc(50% + 9.4em); top: calc(50% + 2.8em); transform: scale(.55); }
+.ai-viz--hero[data-state="idle"] .hero__spark--a { animation: heroTwinkle 3200ms var(--ease-inout) infinite alternate; }
+.ai-viz--hero[data-state="idle"] .hero__spark--b { animation: heroTwinkle 2600ms var(--ease-inout) -900ms infinite alternate; }
+.ai-viz--hero[data-state="idle"] .hero__spark--c { animation: heroTwinkle 3800ms var(--ease-inout) -1700ms infinite alternate; }
+
+/* processing: quick glow pulse, faster orbits + blinking eyes; responding: breathing orb; error: red glow, dim eyes, rings hold */
+.ai-viz--hero[data-state="processing"] .hero__glow { animation: heroGlow 1100ms var(--ease-inout) infinite alternate; }
+.ai-viz--hero[data-state="processing"] .hero__eye { animation: heroBlink 2400ms var(--ease-inout) infinite; }
+.ai-viz--hero[data-state="processing"] .hero__orbit { animation-duration: 2600ms; }
+.ai-viz--hero[data-state="processing"] .hero__orbit--b { animation-duration: 3800ms; }
+.ai-viz--hero[data-state="responding"] .hero__orb { animation: heroBreathe 1400ms var(--ease-inout) infinite alternate; }
+.ai-viz--hero[data-state="responding"] .hero__glow { animation: heroGlow 1400ms var(--ease-inout) infinite alternate; }
+.ai-viz--hero[data-state="responding"] .hero__orbit { animation-duration: 5200ms; }
+.ai-viz--hero[data-state="error"] .hero__glow { background: radial-gradient(circle, var(--error) 0%, transparent 66%); opacity: .35; }
+.ai-viz--hero[data-state="error"] .hero__eye { opacity: .5; }
+.ai-viz--hero[data-state="error"] .hero__orbit { animation-play-state: paused; }
+
+@keyframes heroFloat   { from { transform: translateY(0); } to { transform: translateY(-.55em); } }
+@keyframes heroDrift   { from { transform: translate(0, 0) rotate(-3deg); } to { transform: translate(.35em, -.7em) rotate(3deg); } }
+@keyframes heroGlow    { from { transform: scale(.92); opacity: .42; } to { transform: scale(1.08); opacity: .78; } }
+@keyframes heroBreathe { from { transform: scale(1); } to { transform: scale(1.06); } }
+@keyframes heroBlink   { 0%, 92%, 100% { transform: scaleY(1); } 95.5% { transform: scaleY(.1); } }
+@keyframes heroTwinkle { from { transform: scale(.7) rotate(0deg); opacity: .25; } to { transform: scale(1.15) rotate(18deg); opacity: .95; } }
+@keyframes heroOrbit {
+  from { transform: rotateX(var(--tilt)) rotateZ(0deg); }
+  to   { transform: rotateX(var(--tilt)) rotateZ(360deg); }
+}
+
+/* ── Paused while the tab is hidden (AIViz sets html[data-page-hidden]) ── */
+html[data-page-hidden] .ai-viz *,
+html[data-page-hidden] .ai-viz { animation-play-state: paused !important; }
+
+/* ── Reduced motion: static frames that stay distinguishable (spec 8.4) ── */
+@media (prefers-reduced-motion: reduce) {
+  .ai-viz *,
+  .ai-viz { animation: none !important; transition: none !important; will-change: auto !important; }
+}

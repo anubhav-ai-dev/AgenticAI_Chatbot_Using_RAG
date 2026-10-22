@@ -5,7 +5,7 @@ Chat:      POST /chat/stream (SSE) · POST /chat (JSON) · POST /generate (legac
 Sessions:  /sessions CRUD · POST /sessions/{id}/messages · POST /messages/{id}/feedback
 Documents: POST /upload · GET /documents · DELETE /documents/{id}
 RAG/Web:   POST /retrieve · POST /search
-System:    GET /health · GET /models · GET /ping
+System:    GET /health · GET /models · GET /config · GET /ping
 """
 
 from __future__ import annotations
@@ -38,6 +38,7 @@ from backend.models.api import (
     HealthResponse,
     MessageCreate,
     MessageSchema,
+    PublicConfig,
     RetrieveRequest,
     RetrieveResponse,
     RetrievedChunk,
@@ -47,11 +48,13 @@ from backend.models.api import (
     SessionSchema,
     SessionSummary,
     SessionUpdate,
+    UploadLimits,
     UploadResponse,
 )
 from backend.services.chat_service import ChatCommand, ChatService
 from backend.services.document_service import DocumentService
 from backend.services.llm_service import LLMService
+from backend.services.parser import SUPPORTED_EXTENSIONS
 from backend.services.retrieval_service import RetrievalService
 from backend.services.search_service import WebSearchService
 from backend.services.session_service import SessionService
@@ -104,6 +107,13 @@ def ping():
 def health(c: ServiceContainer = Depends(get_container)):
     state, services, details = c.health()
     return HealthResponse(status=state, services=services, details=details)
+
+
+@router.get("/config", response_model=PublicConfig, tags=["System"])
+def public_config(c: ServiceContainer = Depends(get_container)):
+    """Upload limits for client-side validation (read-only; /upload enforces them again)."""
+    return PublicConfig(upload=UploadLimits(max_mb=c.settings.max_upload_mb,
+                                            extensions=sorted(SUPPORTED_EXTENSIONS)))
 
 
 @router.get("/models", tags=["System"])
@@ -246,7 +256,7 @@ async def upload_document(file: Optional[UploadFile] = File(None), url: Optional
                           user_id: str = UserId,
                           docs: DocumentService = Depends(get_document_service),
                           c: ServiceContainer = Depends(get_container)):
-    """Upload and index a document (PDF, DOCX, CSV, XLSX, TXT/MD) or a web URL."""
+    """Upload and index a document, image (OCR) or web URL. See parser.SUPPORTED_EXTENSIONS."""
     if not file and not url:
         raise HTTPException(status.HTTP_400_BAD_REQUEST, "Provide either a file or a URL.")
     try:

@@ -130,6 +130,70 @@ async def test_think_blocks_and_reasoning_deltas_never_reach_user(settings):
     assert (await collect(await llm.open_stream(MSGS, model="openai/gpt-oss-20b"))).strip() == "clean answer"
 
 
+# ── whitespace after a think block must not look like an empty response ──────
+# (G1/ST-4: `</think>` followed by a whitespace-only chunk made the first-token loop
+#  exit early, raise empty_response and fail over through every model.)
+
+async def _single_model_stream(settings, deltas):
+    groq = FakeProviderClient({"openai/gpt-oss-120b": [("chunks", deltas)]})
+    stream = await make_llm(settings, groq).open_stream(MSGS, model="openai/gpt-oss-120b")
+    return groq, stream, await collect(stream)
+
+
+async def test_whitespace_chunk_after_think_close_then_answer(settings):
+    groq, stream, text = await _single_model_stream(
+        settings, ["<think>pondering</think>", "\n\n", "Visible", " answer"])
+    assert text == "Visible answer"
+    assert stream.fell_back_from == [] and len(groq.calls) == 1        # no failover
+    assert "pondering" not in text and "<think>" not in text
+
+
+async def test_multiple_whitespace_only_chunks_before_the_answer(settings):
+    groq, stream, text = await _single_model_stream(
+        settings, ["<think>x</think>", "\n", " ", "\n\n", "Answer"])
+    assert text == "Answer" and stream.fell_back_from == [] and len(groq.calls) == 1
+
+
+async def test_split_think_tags_followed_by_whitespace_chunk(settings):
+    groq, stream, text = await _single_model_stream(
+        settings, ["<thi", "nk>hid", "den</th", "ink>", "\n\n", "Vis", "ible"])
+    assert text == "Visible" and stream.fell_back_from == [] and len(groq.calls) == 1
+
+
+async def test_leading_whitespace_only_chunk_without_think_tags(settings):
+    groq, stream, text = await _single_model_stream(settings, ["\n", "Hi", " there"])
+    assert text == "Hi there" and stream.fell_back_from == [] and len(groq.calls) == 1
+
+
+async def test_whitespace_inside_the_answer_is_preserved(settings):
+    _, _, text = await _single_model_stream(
+        settings, ["<think>x</think>", "\n\n", "Line1\n\n", "Line2  ", "end", "\n\n", "tail"])
+    assert text == "Line1\n\nLine2  end\n\ntail"
+
+
+async def test_normal_response_without_think_tags_is_unchanged(settings):
+    groq, stream, text = await _single_model_stream(settings, ["Hello", " world", "!"])
+    assert text == "Hello world!" and stream.fell_back_from == [] and len(groq.calls) == 1
+
+
+@pytest.mark.parametrize("deltas", [
+    ["<think>only thinking</think>", "\n\n"],         # nothing visible after the block
+    ["  ", "\n"],                                     # whitespace only, no think tags
+    ["<think>only thinking</think>"],                  # block closes, then the stream ends
+])
+async def test_genuinely_empty_visible_output_still_fails_over(settings, deltas):
+    groq = FakeProviderClient({"openai/gpt-oss-120b": [("chunks", deltas)]})
+    stream = await make_llm(settings, groq).open_stream(MSGS, model="openai/gpt-oss-120b")
+    assert (await collect(stream)).startswith("answer from openai/gpt-oss-20b")
+    assert stream.fell_back_from == ["openai/gpt-oss-120b"]
+
+
+async def test_unclosed_think_block_is_still_surfaced_not_failed_over(settings):
+    groq, stream, text = await _single_model_stream(settings, ["<think>step one ", "step two"])
+    assert "step one" in text and "step two" in text
+    assert stream.fell_back_from == [] and len(groq.calls) == 1
+
+
 async def test_gemma_gets_system_prompt_merged(settings):
     google = FakeProviderClient()
     llm = make_llm(settings, None, google, llm_fallback_chain="gemma-4-31b-it")

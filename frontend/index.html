@@ -1,258 +1,808 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="AI Assistant Pro — Multipurpose AI chatbot with hybrid RAG, web search, streaming and free-model fallback" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, interactive-widget=resizes-content" />
+  <meta name="description" content="AI Assistant Pro — a multipurpose AI chatbot with document Q&amp;A, web search and streaming answers" />
+  <meta name="color-scheme" content="light dark" />
+  <meta name="theme-color" content="#FFFFFF" />
   <title>AI Assistant Pro</title>
+
+  <!-- No-flash theme: resolve the saved preference (light | dark | system) before
+       any stylesheet paints. Must stay inline and first. Logic mirrors js/theme.js
+       (design-spec 3.2-3.3, view-contract section 6). -->
+  <script>
+  (function () {
+    var r = document.documentElement, p = "system";
+    try {
+      var s = localStorage.getItem("theme");
+      if (localStorage.getItem("themeVersion") !== "2") {
+        s = (s === "light") ? "light" : "system";
+        localStorage.setItem("theme", s);
+        localStorage.setItem("themeVersion", "2");
+      }
+      p = (s === "light" || s === "dark") ? s : "system";
+    } catch (e) {}
+    var dark = p === "dark" || (p === "system" && window.matchMedia("(prefers-color-scheme: dark)").matches);
+    // Sidebar shell (drawer < 768, rail 768-1023, expanded or user-collapsed rail >= 1024).
+    // Mirrors getShell() in js/ui.js so the first paint already has the right layout.
+    var w = window.innerWidth, sh = "expanded";
+    if (w < 768) sh = "drawer";
+    else if (w < 1024) sh = "rail";
+    else { try { if (localStorage.getItem("sidebarState") === "rail") sh = "rail"; } catch (e) {} }
+    r.dataset.shell = sh;
+    // Workspace (stored mode) and appearance preferences, so the first paint is already right
+    try {
+      var m = localStorage.getItem("mode");
+      r.dataset.workspace = (m === "document" || m === "research" || m === "code") ? m : "general";
+      var f = localStorage.getItem("pref.fontSize"), d = localStorage.getItem("pref.density");
+      if (f === "small" || f === "large") r.dataset.font = f;
+      if (d === "compact") r.dataset.density = d;
+    } catch (e) {}
+    // Motion: hide the workspace content until the entrance timeline starts (js/components/motion.js).
+    // Skipped for reduced motion, and lifted after 2.5 s no matter what, so content can never stay hidden.
+    if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      r.classList.add("motion-pending");
+      setTimeout(function () { r.classList.remove("motion-pending") }, 2500);
+    }
+    r.dataset.theme = dark ? "dark" : "light";
+    r.dataset.themePref = p;
+    r.style.colorScheme = dark ? "dark" : "light";
+    var m = document.querySelector('meta[name="theme-color"]');
+    if (m) m.setAttribute("content", dark ? "#0A1024" : "#FFFFFF");
+  })();
+  </script>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" />
 
   <!-- Stylesheets -->
   <link rel="stylesheet" href="/css/main.css" />
   <link rel="stylesheet" href="/css/animations.css" />
   <link rel="stylesheet" href="/css/components.css" />
+  <link rel="stylesheet" href="/css/ai-viz.css" />
+  <link rel="stylesheet" href="/css/reference.css" />
+  <link rel="stylesheet" href="/css/workspace.css" />
+  <!-- Syntax highlighting tokens (both themes, driven by CSS variables) -->
+  <link rel="stylesheet" href="/css/syntax.css" />
 
-  <!-- Syntax highlighting -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" id="hljs-theme" />
-
-  <!-- Favicon (inline SVG data URI) -->
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🤖</text></svg>" />
+  <link rel="icon" type="image/svg+xml" href="/assets/logo.svg" />
 </head>
 
 <body>
 
+<a class="skip-link" href="#chatInput">Skip to message composer</a>
+
+<!-- ═══════════════════════════════════════════════════════
+     ICON SPRITE (inline SVG, Lucide, ISC license — see
+     /assets/LICENSE-lucide.txt). Path data is unmodified.
+     Use: <svg class="icon" aria-hidden="true"><use href="#i-NAME"/></svg>
+════════════════════════════════════════════════════════════ -->
+<svg class="icon-sprite" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+  <symbol id="i-sparkles" viewBox="0 0 24 24"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"/><path d="M20 2v4"/><path d="M22 4h-4"/><circle cx="4" cy="20" r="2"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5v14"/></symbol>
+  <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 5h16"/><path d="M4 12h16"/><path d="M4 19h16"/></symbol>
+  <symbol id="i-message-circle" viewBox="0 0 24 24"><path d="M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719"/></symbol>
+  <symbol id="i-file-text" viewBox="0 0 24 24"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></symbol>
+  <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></symbol>
+  <!-- Lucide code-2 (v1.60.0). The package also ships this drawing as code-xml; the paths are identical. -->
+  <symbol id="i-code-xml" viewBox="0 0 24 24"><path d="m18 16 4-4-4-4"/><path d="m6 8-4 4 4 4"/><path d="m14.5 4-5 16"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></symbol>
+  <symbol id="i-trash-2" viewBox="0 0 24 24"><path d="M10 11v6"/><path d="M14 11v6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></symbol>
+  <symbol id="i-pencil" viewBox="0 0 24 24"><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/><path d="m15 5 4 4"/></symbol>
+  <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></symbol>
+  <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/></symbol>
+  <symbol id="i-monitor" viewBox="0 0 24 24"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+  <symbol id="i-chevron-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+  <symbol id="i-paperclip" viewBox="0 0 24 24"><path d="m16 6-8.414 8.586a2 2 0 0 0 2.829 2.829l8.414-8.586a4 4 0 1 0-5.657-5.657l-8.379 8.551a6 6 0 1 0 8.485 8.485l8.379-8.551"/></symbol>
+  <symbol id="i-link" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></symbol>
+  <symbol id="i-arrow-up" viewBox="0 0 24 24"><path d="m5 12 7-7 7 7"/><path d="M12 19V5"/></symbol>
+  <symbol id="i-square" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="3" rx="2"/></symbol>
+  <symbol id="i-copy" viewBox="0 0 24 24"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></symbol>
+  <symbol id="i-rotate-ccw" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></symbol>
+  <symbol id="i-thumbs-up" viewBox="0 0 24 24"><path d="M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L12 2a3.13 3.13 0 0 1 3 3.88Z"/><path d="M7 10v12"/></symbol>
+  <symbol id="i-thumbs-down" viewBox="0 0 24 24"><path d="M9 18.12 10 14H4.17a2 2 0 0 1-1.92-2.56l2.33-8A2 2 0 0 1 6.5 2H20a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-2.76a2 2 0 0 0-1.79 1.11L12 22a3.13 3.13 0 0 1-3-3.88Z"/><path d="M17 14V2"/></symbol>
+  <symbol id="i-zap" viewBox="0 0 24 24"><path d="M15.914 4a1.5 1.5 0 00-2.474-1.561l-9 9A1.5 1.5 0 005.5 14h4.002a.5.5 0 01.471.666L8.086 20a1.5 1.5 0 002.475 1.56l9-9A1.5 1.5 0 0018.5 10h-3.997a.5.5 0 01-.472-.667z"/></symbol>
+  <symbol id="i-shuffle" viewBox="0 0 24 24"><path d="m18 14 4 4-4 4"/><path d="m18 2 4 4-4 4"/><path d="M2 18h1.973a4 4 0 0 0 3.3-1.7l5.454-8.6a4 4 0 0 1 3.3-1.7H22"/><path d="M2 6h1.972a4 4 0 0 1 3.6 2.2"/><path d="M22 18h-6.041a4 4 0 0 1-3.3-1.8l-.359-.45"/></symbol>
+  <symbol id="i-file-search" viewBox="0 0 24 24"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><circle cx="11.5" cy="14.5" r="2.5"/><path d="M13.3 16.3 15 18"/></symbol>
+  <symbol id="i-circle-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m16 9-5.5 5.5L8 12"/></symbol>
+  <symbol id="i-circle-alert" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></symbol>
+  <symbol id="i-loader-circle" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></symbol>
+  <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></symbol>
+  <symbol id="i-upload" viewBox="0 0 24 24"><path d="M12 3v12"/><path d="m17 8-5-5-5 5"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/></symbol>
+  <symbol id="i-file-spreadsheet" viewBox="0 0 24 24"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><path d="M8 13h2"/><path d="M14 13h2"/><path d="M8 17h2"/><path d="M14 17h2"/></symbol>
+  <symbol id="i-file" viewBox="0 0 24 24"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/></symbol>
+  <symbol id="i-user" viewBox="0 0 24 24"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></symbol>
+  <symbol id="i-panel-left-close" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M9 3v18"/><path d="m16 15-3-3 3-3"/></symbol>
+  <symbol id="i-panel-left-open" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M9 3v18"/><path d="m14 9 3 3-3 3"/></symbol>
+  <symbol id="i-external-link" viewBox="0 0 24 24"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></symbol>
+  <symbol id="i-arrow-down" viewBox="0 0 24 24"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></symbol>
+  <symbol id="i-triangle-alert" viewBox="0 0 24 24"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></symbol>
+  <symbol id="i-house" viewBox="0 0 24 24"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></symbol>
+  <symbol id="i-chevrons-left" viewBox="0 0 24 24"><path d="m11 17-5-5 5-5"/><path d="m18 17-5-5 5-5"/></symbol>
+  <symbol id="i-chevron-right" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol>
+  <symbol id="i-chevron-up" viewBox="0 0 24 24"><path d="m18 15-6-6-6 6"/></symbol>
+  <symbol id="i-bell" viewBox="0 0 24 24"><path d="M10.268 21a2 2 0 0 0 3.464 0"/><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/></symbol>
+  <symbol id="i-settings" viewBox="0 0 24 24"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"/><circle cx="12" cy="12" r="3"/></symbol>
+  <symbol id="i-folder" viewBox="0 0 24 24"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/></symbol>
+  <symbol id="i-list-filter" viewBox="0 0 24 24"><path d="M2 5h20"/><path d="M6 12h12"/><path d="M9 19h6"/></symbol>
+  <symbol id="i-send" viewBox="0 0 24 24"><path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"/><path d="m21.854 2.147-10.94 10.939"/></symbol>
+  <symbol id="i-box" viewBox="0 0 24 24"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></symbol>
+  <symbol id="i-shield-check" viewBox="0 0 24 24"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></symbol>
+  <symbol id="i-arrow-right" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></symbol>
+  <!-- Custom brand mark (not Lucide): solid triangle with a notch. Filled so it stays crisp at 16–22px. -->
+  <symbol id="i-brand" viewBox="0 0 24 24"><path fill="currentColor" stroke="none" fill-rule="evenodd" d="M12 2.6 21.4 20.6H2.6L12 2.6zm0 6.4 3.15 6.3h-6.3L12 9z"/></symbol>
+  <symbol id="i-align-left" viewBox="0 0 24 24"><path d="M21 5H3"/><path d="M15 12H3"/><path d="M17 19H3"/></symbol>
+  <symbol id="i-table-2" viewBox="0 0 24 24"><path d="M3 9h18"/><path d="M9 3v18"/><rect x="3" y="3" width="18" height="18" rx="2"/></symbol>
+  <symbol id="i-message-circle-question-mark" viewBox="0 0 24 24"><path d="M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></symbol>
+  <symbol id="i-lightbulb" viewBox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></symbol>
+  <symbol id="i-trending-up" viewBox="0 0 24 24"><path d="M16 7h6v6"/><path d="m22 7-8.5 8.5-5-5L2 17"/></symbol>
+  <symbol id="i-chart-column" viewBox="0 0 24 24"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></symbol>
+  <symbol id="i-cpu" viewBox="0 0 24 24"><path d="M12 20v2"/><path d="M12 2v2"/><path d="M17 20v2"/><path d="M17 2v2"/><path d="M2 12h2"/><path d="M2 17h2"/><path d="M2 7h2"/><path d="M20 12h2"/><path d="M20 17h2"/><path d="M20 7h2"/><path d="M7 20v2"/><path d="M7 2v2"/><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="8" y="8" width="8" height="8" rx="1"/></symbol>
+  <symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></symbol>
+  <symbol id="i-book-open" viewBox="0 0 24 24"><path d="M12 5v16"/><path d="M20.001 19A2 2 0 0022 17V5a2 2 0 00-1.999-2L16 3.002A5 5 0 0012 5a5 5 0 00-4-2H4a2 2 0 00-2 2v12a2 2 0 001.999 2H8a5 5 0 014 2 5 5 0 014-2z"/></symbol>
+  <symbol id="i-bug" viewBox="0 0 24 24"><path d="M12 20v-9"/><path d="M14 7a4 4 0 0 1 4 4v3a6 6 0 0 1-12 0v-3a4 4 0 0 1 4-4z"/><path d="M14.12 3.88 16 2"/><path d="M21 21a4 4 0 0 0-3.81-4"/><path d="M21 5a4 4 0 0 1-3.55 3.97"/><path d="M22 13h-4"/><path d="M3 21a4 4 0 0 1 3.81-4"/><path d="M3 5a4 4 0 0 0 3.55 3.97"/><path d="M6 13H2"/><path d="m8 2 1.88 1.88"/><path d="M9 7.13V6a3 3 0 1 1 6 0v1.13"/></symbol>
+  <symbol id="i-gauge" viewBox="0 0 24 24"><path d="m12 14 4-4"/><path d="M3.34 19a10 10 0 1 1 17.32 0"/></symbol>
+  <symbol id="i-flask-conical" viewBox="0 0 24 24"><path d="M14 2v6a2 2 0 0 0 .245.96l5.51 10.08A2 2 0 0 1 18 22H6a2 2 0 0 1-1.755-2.96l5.51-10.08A2 2 0 0 0 10 8V2"/><path d="M6.453 15h11.094"/><path d="M8.5 2h7"/></symbol>
+  <symbol id="i-palette" viewBox="0 0 24 24"><path d="M12 22a1 1 0 0 1 0-20 10 9 0 0 1 10 9 5 5 0 0 1-5 5h-2.25a1.75 1.75 0 0 0-1.4 2.8l.3.4a1.75 1.75 0 0 1-1.4 2.8z"/><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/></symbol>
+  <symbol id="i-plug" viewBox="0 0 24 24"><path d="M12 22v-5"/><path d="M15 8V2"/><path d="M17 8a1 1 0 0 1 1 1v4a4 4 0 0 1-4 4h-4a4 4 0 0 1-4-4V9a1 1 0 0 1 1-1z"/><path d="M9 8V2"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></symbol>
+  <symbol id="i-circle-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></symbol>
+  <symbol id="i-keyboard" viewBox="0 0 24 24"><path d="M10 8h.01"/><path d="M12 12h.01"/><path d="M14 8h.01"/><path d="M16 12h.01"/><path d="M18 8h.01"/><path d="M6 8h.01"/><path d="M7 16h10"/><path d="M8 12h.01"/><rect width="20" height="16" x="2" y="4" rx="2"/></symbol>
+  <symbol id="i-refresh-cw" viewBox="0 0 24 24"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></symbol>
+  <symbol id="i-sliders-horizontal" viewBox="0 0 24 24"><path d="M10 5H3"/><path d="M12 19H3"/><path d="M14 3v4"/><path d="M16 17v4"/><path d="M21 12h-9"/><path d="M21 19h-5"/><path d="M21 5h-7"/><path d="M8 10v4"/><path d="M8 12H3"/></symbol>
+  <symbol id="i-type" viewBox="0 0 24 24"><path d="M12 4v16"/><path d="M4 7V5a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v2"/><path d="M9 20h6"/></symbol>
+  <symbol id="i-file-image" viewBox="0 0 24 24"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><circle cx="10" cy="12" r="2"/><path d="m20 17-1.296-1.296a2.41 2.41 0 0 0-3.408 0L9 22"/></symbol>
+  <symbol id="i-file-code" viewBox="0 0 24 24"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><path d="M10 12.5 8 15l2 2.5"/><path d="m14 12.5 2 2.5-2 2.5"/></symbol>
+  <symbol id="i-presentation" viewBox="0 0 24 24"><path d="M2 3h20"/><path d="M21 3v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V3"/><path d="m7 21 5-5 5 5"/></symbol>
+  <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></symbol>
+  <symbol id="i-scan-text" viewBox="0 0 24 24"><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/><path d="M7 8h8"/><path d="M7 12h10"/><path d="M7 16h6"/></symbol>
+  <symbol id="i-sparkle" viewBox="0 0 24 24"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"/></symbol>
+</svg>
+
 <!-- ═══════════════════════════════════════════════════════
      DRAG & DROP OVERLAY
 ════════════════════════════════════════════════════════════ -->
-<div class="dropzone-overlay" id="dropzoneOverlay">
+<div class="dropzone-overlay" id="dropzoneOverlay" aria-hidden="true">
   <div class="dropzone-overlay__inner">
-    <div class="dropzone-overlay__icon animate-float">📂</div>
+    <div class="dropzone-overlay__icon"><svg class="icon icon--24" aria-hidden="true"><use href="#i-upload"/></svg></div>
     <div class="dropzone-overlay__title">Drop your file here</div>
-    <div class="dropzone-overlay__sub">Supports PDF, DOCX, CSV, XLSX, TXT and web URLs</div>
+    <div class="dropzone-overlay__sub">Supports PDF, Office and text documents, HTML, JSON and images (JPG, PNG and more)</div>
   </div>
 </div>
 
 <!-- ═══════════════════════════════════════════════════════
      UPLOAD TOAST  (shown during file processing)
 ════════════════════════════════════════════════════════════ -->
-<div class="upload-toast" id="uploadToast" style="display:none">
-  <div class="upload-toast__title">📤 Processing document…</div>
+<div class="upload-toast" id="uploadToast" role="status" hidden>
+  <div class="upload-toast__title"><svg class="icon icon--16 icon--spin" aria-hidden="true"><use href="#i-loader-circle"/></svg> <span id="uploadToastTitle">Processing document… large or scanned files can take a minute</span></div>
   <div class="upload-toast__name" id="uploadToastName"></div>
-  <div class="progress-bar"><div class="progress-bar__fill" id="uploadProgress"></div></div>
+  <div class="progress-bar" aria-hidden="true"><div class="progress-bar__fill" id="uploadProgress"></div></div>
 </div>
 
 <!-- ═══════════════════════════════════════════════════════
-     CITATION MODAL
+     LIVE STATUS (visually hidden; announces stages, never tokens)
 ════════════════════════════════════════════════════════════ -->
-<div class="modal-backdrop" id="citationModal" style="display:none">
-  <div class="modal animate-scale-in">
+<div class="sr-only" id="liveStatus" role="status" aria-live="polite" aria-atomic="true"></div>
+
+<!-- ═══════════════════════════════════════════════════════
+     CITATION MODAL (native <dialog>; the dialog element is the
+     full-viewport backdrop layer, so e.target === #citationModal
+     on an outside click)
+════════════════════════════════════════════════════════════ -->
+<dialog class="dialog" id="citationModal" aria-labelledby="citationModalTitle" aria-modal="true">
+  <div class="modal">
     <div class="modal__header">
-      <span class="modal__title">📌 Source Reference</span>
-      <button class="btn btn--icon" id="citationModalClose" aria-label="Close">✕</button>
+      <h2 class="modal__title" id="citationModalTitle"><svg class="icon" aria-hidden="true"><use href="#i-file-text"/></svg> Source reference</h2>
+      <button class="btn btn--icon" id="citationModalClose" type="button" aria-label="Close"><svg class="icon" aria-hidden="true"><use href="#i-x"/></svg></button>
     </div>
     <div class="citation-modal__source" id="citationSource"></div>
     <div class="citation-modal__snippet" id="citationSnippet"></div>
   </div>
-</div>
+</dialog>
 
 <!-- ═══════════════════════════════════════════════════════
      URL INGEST MODAL
 ════════════════════════════════════════════════════════════ -->
-<div class="modal-backdrop" id="urlModal" style="display:none">
-  <div class="modal animate-scale-in">
+<dialog class="dialog" id="urlModal" aria-labelledby="urlModalTitle" aria-describedby="urlModalHelp" aria-modal="true">
+  <div class="modal">
     <div class="modal__header">
-      <span class="modal__title">🌐 Add Web URL</span>
-      <button class="btn btn--icon" id="urlModalClose" aria-label="Close">✕</button>
+      <h2 class="modal__title" id="urlModalTitle"><svg class="icon" aria-hidden="true"><use href="#i-link"/></svg> Add web URL</h2>
+      <button class="btn btn--icon" id="urlModalClose" type="button" aria-label="Close"><svg class="icon" aria-hidden="true"><use href="#i-x"/></svg></button>
     </div>
-    <p class="text-sm text-secondary" style="margin-bottom:14px">
-      Paste a web page URL to index its content for document Q&amp;A.
+    <label class="field-label" for="urlInput">Web page URL</label>
+    <input class="input" type="url" id="urlInput" placeholder="https://example.com/article" autocomplete="off" aria-describedby="urlModalHelp" />
+    <p class="text-sm text-secondary mt-2" id="urlModalHelp">
+      The page is indexed for document Q&amp;A.
     </p>
-    <input class="input" type="url" id="urlInput" placeholder="https://example.com/article" />
-    <div style="display:flex;gap:8px;margin-top:12px;justify-content:flex-end">
-      <button class="btn btn--ghost" id="urlModalCancel">Cancel</button>
-      <button class="btn btn--primary" id="urlModalSubmit">Index URL</button>
+    <div class="modal__actions">
+      <button class="btn btn--secondary" id="urlModalCancel" type="button">Cancel</button>
+      <button class="btn btn--primary" id="urlModalSubmit" type="button">Index URL</button>
     </div>
   </div>
-</div>
+</dialog>
 
 <!-- ═══════════════════════════════════════════════════════
-     MOBILE SIDEBAR BACKDROP
+     MY DOCUMENTS (file management; a side panel on desktop, a full sheet on mobile).
+     #docSection / #docList are rendered by ui.js renderDocList from GET /documents.
 ════════════════════════════════════════════════════════════ -->
-<div id="sidebarBackdrop" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:190;"
-     onclick="UI.closeSidebar()"></div>
+<dialog class="dialog dialog--panel" id="docsDialog" aria-labelledby="docsDialogTitle" aria-modal="true">
+  <div class="panel">
+    <div class="panel__header">
+      <div class="panel__titles">
+        <h2 class="panel__title" id="docsDialogTitle">My Documents</h2>
+        <p class="panel__sub" id="docsDialogSub">Files and web pages you have indexed.</p>
+      </div>
+      <button class="btn btn--icon" id="docsDialogClose" type="button" aria-label="Close My Documents"><svg class="icon" aria-hidden="true"><use href="#i-x"/></svg></button>
+    </div>
+    <div class="panel__toolbar">
+      <div class="search-field search-field--grow">
+        <svg class="icon icon--16 search-field__icon" aria-hidden="true"><use href="#i-search"/></svg>
+        <input class="input input--search" type="search" id="docSearch" placeholder="Filter by file name" aria-label="Filter documents by file name" autocomplete="off" />
+      </div>
+      <button class="btn btn--primary btn--sm" id="docsUploadBtn" type="button"><svg class="icon icon--16" aria-hidden="true"><use href="#i-upload"/></svg><span>Upload</span></button>
+    </div>
+    <div class="panel__body" id="docSection">
+      <div class="doc-list" id="docList" data-doc-list="full"></div>
+    </div>
+    <div class="panel__foot">
+      <button class="btn btn--ghost btn--sm" id="docsAddUrl" type="button"><svg class="icon icon--16" aria-hidden="true"><use href="#i-link"/></svg><span>Add a web page</span></button>
+    </div>
+  </div>
+</dialog>
+
+<!-- ═══════════════════════════════════════════════════════
+     SETTINGS (SettingsLayout: section list + panes; every control here is wired in ui.js)
+════════════════════════════════════════════════════════════ -->
+<dialog class="dialog dialog--settings" id="settingsDialog" aria-labelledby="settingsTitle" aria-modal="true">
+  <div class="settings">
+    <div class="settings__head">
+      <h2 class="settings__title" id="settingsTitle">Settings</h2>
+      <button class="btn btn--icon" id="settingsClose" type="button" aria-label="Close settings"><svg class="icon" aria-hidden="true"><use href="#i-x"/></svg></button>
+    </div>
+    <div class="settings__body">
+      <div class="settings__nav" role="tablist" aria-orientation="vertical" aria-label="Settings sections">
+        <button class="settings__tab" type="button" role="tab" id="setTab-profile" aria-controls="setPane-profile" aria-selected="false" tabindex="-1" data-pane="profile"><svg class="icon icon--16" aria-hidden="true"><use href="#i-user"/></svg><span>Profile</span></button>
+        <button class="settings__tab" type="button" role="tab" id="setTab-appearance" aria-controls="setPane-appearance" aria-selected="true" tabindex="0" data-pane="appearance"><svg class="icon icon--16" aria-hidden="true"><use href="#i-palette"/></svg><span>Appearance</span></button>
+        <button class="settings__tab" type="button" role="tab" id="setTab-models" aria-controls="setPane-models" aria-selected="false" tabindex="-1" data-pane="models"><svg class="icon icon--16" aria-hidden="true"><use href="#i-sliders-horizontal"/></svg><span>Model preferences</span></button>
+        <button class="settings__tab" type="button" role="tab" id="setTab-notifications" aria-controls="setPane-notifications" aria-selected="false" tabindex="-1" data-pane="notifications"><svg class="icon icon--16" aria-hidden="true"><use href="#i-bell"/></svg><span>Notifications</span></button>
+        <button class="settings__tab" type="button" role="tab" id="setTab-integrations" aria-controls="setPane-integrations" aria-selected="false" tabindex="-1" data-pane="integrations"><svg class="icon icon--16" aria-hidden="true"><use href="#i-plug"/></svg><span>Integrations</span></button>
+        <button class="settings__tab" type="button" role="tab" id="setTab-privacy" aria-controls="setPane-privacy" aria-selected="false" tabindex="-1" data-pane="privacy"><svg class="icon icon--16" aria-hidden="true"><use href="#i-shield"/></svg><span>Privacy</span></button>
+        <button class="settings__tab" type="button" role="tab" id="setTab-help" aria-controls="setPane-help" aria-selected="false" tabindex="-1" data-pane="help"><svg class="icon icon--16" aria-hidden="true"><use href="#i-circle-help"/></svg><span>Help &amp; support</span></button>
+      </div>
+      <div class="settings__panes">
+        <section class="pane" role="tabpanel" id="setPane-profile" aria-labelledby="setTab-profile" tabindex="0" hidden>
+          <h3 class="pane__title">Profile</h3>
+          <p class="pane__desc">How this browser identifies you to the server.</p>
+          <div class="field field--row">
+            <div class="field__text"><span class="field__label">User ID</span><span class="field__help">Your chats and documents are stored under this ID.</span></div>
+            <span class="field__control"><code class="code-chip" id="setUserId">default</code><button class="btn btn--secondary btn--sm" id="setCopyUserId" type="button"><svg class="icon icon--16" aria-hidden="true"><use href="#i-copy"/></svg><span>Copy</span></button></span>
+          </div>
+          <p class="pane__note">There are no accounts or passwords in this app. The ID is created by your browser and is not a sign-in.</p>
+        </section>
+        <section class="pane" role="tabpanel" id="setPane-appearance" aria-labelledby="setTab-appearance" tabindex="0">
+          <h3 class="pane__title">Appearance</h3>
+          <p class="pane__desc">Choose how AI Assistant Pro looks on this device.</p>
+          <div class="field">
+            <div class="field__text"><span class="field__label" id="setThemeLabel">Theme</span><span class="field__help">System follows your device setting and updates when it changes.</span></div>
+            <div class="theme-options" id="setTheme" role="radiogroup" aria-labelledby="setThemeLabel">
+              <button class="theme-opt" type="button" role="radio" aria-checked="false" data-value="light" tabindex="-1"><span class="theme-opt__preview theme-opt__preview--light" aria-hidden="true"><span class="theme-opt__side"></span><span class="theme-opt__main"><i></i><i></i><i></i></span></span><span class="theme-opt__label"><svg class="icon icon--16" aria-hidden="true"><use href="#i-sun"/></svg><span>Light</span></span></button>
+              <button class="theme-opt" type="button" role="radio" aria-checked="false" data-value="dark" tabindex="-1"><span class="theme-opt__preview theme-opt__preview--dark" aria-hidden="true"><span class="theme-opt__side"></span><span class="theme-opt__main"><i></i><i></i><i></i></span></span><span class="theme-opt__label"><svg class="icon icon--16" aria-hidden="true"><use href="#i-moon"/></svg><span>Dark</span></span></button>
+              <button class="theme-opt" type="button" role="radio" aria-checked="false" data-value="system" tabindex="-1"><span class="theme-opt__preview theme-opt__preview--system" aria-hidden="true"><span class="theme-opt__side"></span><span class="theme-opt__main"><i></i><i></i><i></i></span></span><span class="theme-opt__label"><svg class="icon icon--16" aria-hidden="true"><use href="#i-monitor"/></svg><span>System</span></span></button>
+            </div>
+          </div>
+          <div class="field field--row">
+            <div class="field__text"><span class="field__label" id="setFontLabel">Text size</span><span class="field__help">Scales text across the app.</span></div>
+            <span class="field__control"><div class="seg" id="setFont" role="radiogroup" aria-labelledby="setFontLabel">
+              <button class="seg__btn" type="button" role="radio" aria-checked="false" data-value="small" tabindex="-1">Small</button>
+              <button class="seg__btn" type="button" role="radio" aria-checked="true" data-value="medium" tabindex="0">Medium</button>
+              <button class="seg__btn" type="button" role="radio" aria-checked="false" data-value="large" tabindex="-1">Large</button>
+            </div></span>
+          </div>
+          <div class="field field--row">
+            <div class="field__text"><span class="field__label" id="setDensityLabel">Chat spacing</span><span class="field__help">Compact fits more of a long conversation on screen.</span></div>
+            <span class="field__control"><div class="seg" id="setDensity" role="radiogroup" aria-labelledby="setDensityLabel">
+              <button class="seg__btn" type="button" role="radio" aria-checked="true" data-value="comfortable" tabindex="0">Comfortable</button>
+              <button class="seg__btn" type="button" role="radio" aria-checked="false" data-value="compact" tabindex="-1">Compact</button>
+            </div></span>
+          </div>
+        </section>
+        <section class="pane" role="tabpanel" id="setPane-models" aria-labelledby="setTab-models" tabindex="0" hidden>
+          <h3 class="pane__title">Model preferences</h3>
+          <p class="pane__desc">Choose which model answers by default.</p>
+          <div class="field">
+            <div class="field__text"><label class="field__label" for="setModel">Default model</label><span class="field__help" id="setModelHelp">If a model fails before it starts answering, the next available model is tried automatically. The model that answered is shown under the reply.</span></div>
+            <select class="input select" id="setModel" aria-describedby="setModelHelp"><option value="">Loading models…</option></select>
+          </div>
+          <p class="pane__note">Web search runs for time-sensitive questions and always in Research. Use the Web Search switch beside the message box to turn it off in other workspaces.</p>
+        </section>
+        <section class="pane" role="tabpanel" id="setPane-notifications" aria-labelledby="setTab-notifications" tabindex="0" hidden>
+          <h3 class="pane__title">Notifications</h3>
+          <p class="pane__desc">Control the pop-up notices that appear in a corner of the screen.</p>
+          <div class="field field--row">
+            <div class="field__text"><span class="field__label" id="setToastLabel">Pop-up notices</span><span class="field__help">Errors are always shown. Every notice is also kept in the bell menu.</span></div>
+            <span class="field__control"><div class="seg" id="setToasts" role="radiogroup" aria-labelledby="setToastLabel">
+              <button class="seg__btn" type="button" role="radio" aria-checked="true" data-value="all" tabindex="0">All notices</button>
+              <button class="seg__btn" type="button" role="radio" aria-checked="false" data-value="errors" tabindex="-1">Errors only</button>
+            </div></span>
+          </div>
+          <div class="field field--row">
+            <div class="field__text"><span class="field__label">Notification history</span><span class="field__help" id="setNotifCount">Notices from this session.</span></div>
+            <span class="field__control"><button class="btn btn--secondary btn--sm" id="setClearNotif" type="button">Clear history</button></span>
+          </div>
+        </section>
+        <section class="pane" role="tabpanel" id="setPane-integrations" aria-labelledby="setTab-integrations" tabindex="0" hidden>
+          <h3 class="pane__title">Integrations</h3>
+          <p class="pane__desc">Status of the services this server uses. “Key configured” means a key is present, not that it has been verified.</p>
+          <ul class="status-list" id="setServices"></ul>
+          <p class="pane__note" id="setServicesNote" role="status"></p>
+          <button class="btn btn--secondary btn--sm" id="setRefreshServices" type="button"><svg class="icon icon--16" aria-hidden="true"><use href="#i-refresh-cw"/></svg><span>Refresh status</span></button>
+        </section>
+        <section class="pane" role="tabpanel" id="setPane-privacy" aria-labelledby="setTab-privacy" tabindex="0" hidden>
+          <h3 class="pane__title">Privacy</h3>
+          <p class="pane__desc">What is stored and where your messages go.</p>
+          <ul class="bullets">
+            <li>Chats and uploaded documents are stored on the server under your user ID. Delete a chat from the sidebar and a document from My Documents.</li>
+            <li>To answer, your message and relevant excerpts of your documents are sent to the provider of the selected model (Groq or Google).</li>
+            <li>When web search is used, the search text is sent to Tavily.</li>
+            <li>Theme, text size, spacing and notification preferences are saved in this browser only.</li>
+          </ul>
+          <button class="btn btn--secondary btn--sm" id="setOpenDocs" type="button"><svg class="icon icon--16" aria-hidden="true"><use href="#i-folder"/></svg><span>Manage documents</span></button>
+        </section>
+        <section class="pane" role="tabpanel" id="setPane-help" aria-labelledby="setTab-help" tabindex="0" hidden>
+          <h3 class="pane__title">Help &amp; support</h3>
+          <p class="pane__desc">Shortcuts and where to find more.</p>
+          <h4 class="pane__sub">Keyboard shortcuts</h4>
+          <dl class="kbd-list">
+            <div><dt><kbd>Enter</kbd></dt><dd>Send the message</dd></div>
+            <div><dt><kbd>Shift</kbd> + <kbd>Enter</kbd></dt><dd>New line in the message box</dd></div>
+            <div><dt><kbd>↑</kbd> <kbd>↓</kbd></dt><dd>Move through the options of an open menu</dd></div>
+            <div><dt><kbd>Esc</kbd></dt><dd>Close a menu, dialog or the navigation drawer</dd></div>
+          </dl>
+          <a class="btn btn--secondary btn--sm" href="/docs" target="_blank" rel="noopener noreferrer"><svg class="icon icon--16" aria-hidden="true"><use href="#i-external-link"/></svg><span>API reference</span></a>
+        </section>
+      </div>
+    </div>
+  </div>
+</dialog>
+
+<!-- ═══════════════════════════════════════════════════════
+     SIDEBAR SCRIM (drawer / tablet overlay; click handled in ui.js)
+════════════════════════════════════════════════════════════ -->
+<div class="sidebar-backdrop" id="sidebarBackdrop" aria-hidden="true"></div>
 
 <!-- ═══════════════════════════════════════════════════════
      MAIN APP LAYOUT
 ════════════════════════════════════════════════════════════ -->
 <div class="app-layout">
 
-  <!-- ── SIDEBAR ────────────────────────────────────────── -->
-  <aside class="sidebar" id="sidebar" aria-label="Navigation sidebar">
+  <!-- ── SIDEBAR ──────────────────────────────────────────
+       Expanded 256px (>= 1024) | icon rail 72px (tablet, or collapsed by the user)
+       | off-canvas drawer (< 768). Shell state is html[data-shell]; while open as an
+       overlay ui.js adds .mobile-open, role=dialog, aria-modal and makes <main> inert. -->
+  <aside class="sidebar" id="sidebar" aria-label="Sidebar">
 
-    <!-- Header: Logo + New Chat -->
+    <!-- Brand + collapse / close -->
     <div class="sidebar__header">
       <div class="sidebar__logo" aria-hidden="true">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M12 2a2 2 0 0 1 2 2c0 .74-.4 1.39-1 1.73V7h1a7 7 0 0 1 7 7h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v1a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1H2a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h1a7 7 0 0 1 7-7h1V5.73A2 2 0 0 1 10 4a2 2 0 0 1 2-2z"/>
-          <circle cx="9" cy="13" r="1"/><circle cx="15" cy="13" r="1"/>
-        </svg>
+        <svg class="icon icon--brand" aria-hidden="true"><use href="#i-brand"/></svg>
       </div>
-      <span class="sidebar__title">AI Assistant Pro</span>
-      <button class="new-chat-btn" id="newChatBtn" aria-label="New chat">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-        New
+      <div class="sidebar__brand">
+        <span class="sidebar__title">AI Assistant Pro</span>
+        <span class="sidebar__tagline">Smarter. Faster. Together.</span>
+      </div>
+      <button class="btn btn--icon-sm sidebar__collapse" id="sidebarCollapse" type="button"
+              aria-label="Collapse sidebar">
+        <svg class="icon" aria-hidden="true"><use href="#i-chevrons-left"/></svg>
       </button>
     </div>
 
-    <!-- Search sessions -->
-    <div class="sidebar__search">
-      <input class="input input--search" type="search" id="sessionSearch" placeholder="Search chats…" aria-label="Search sessions" />
+    <!-- Workspace mode: ONE dropdown, directly ABOVE New Chat. The four modes (General, Documents,
+         Research, Code) live in its menu (components/menu.js, opened by ui.js); they are never
+         rendered as permanent rows or as header tabs. data-mode / label / icon follow the active
+         mode (UI.setActiveMode); the controller owns the mode (UI.onModeChange). -->
+    <div class="sidebar__mode">
+      <button class="mode-select" id="modeSelect" type="button" data-mode="general"
+              aria-haspopup="menu" aria-expanded="false" aria-label="Workspace mode: General"
+              data-rail-tip="Workspace: General">
+        <span class="mode-select__icon" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#i-message-circle"/></svg></span>
+        <span class="mode-select__label" id="modeSelectLabel">General</span>
+        <svg class="icon icon--16 mode-select__chevron" aria-hidden="true"><use href="#i-chevron-down"/></svg>
+      </button>
     </div>
 
-    <!-- Session list -->
-    <nav class="sidebar__sessions stagger" id="sessionList" aria-label="Chat sessions">
-      <!-- Populated dynamically -->
-    </nav>
+    <!-- New chat: immediately below the mode dropdown -->
+    <!-- data-rail-tip sits on the wrapper, not the button: the button clips its overflow and uses ::after for its sheen -->
+    <div class="sidebar__new" data-rail-tip="New chat">
+      <button class="new-chat-btn" id="newChatBtn" type="button">
+        <svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg>
+        <span class="new-chat-btn__label">New Chat</span>
+      </button>
+    </div>
 
-    <!-- Uploaded documents -->
-    <div class="sidebar__docs" id="docSection">
-      <div class="session-group-label">📚 My Documents</div>
-      <div id="docList">
-        <div class="text-xs text-muted" style="padding:4px 0">No documents indexed yet</div>
+    <!-- Recent conversations: collapsible heading (view-only disclosure) -->
+    <h2 class="sidebar__heading">
+      <button class="sidebar__heading-btn" id="recentToggle" type="button" aria-expanded="true" aria-controls="recentPanel">
+        <span>Recent Conversations</span>
+        <svg class="icon icon--16" aria-hidden="true"><use href="#i-chevron-up"/></svg>
+      </button>
+    </h2>
+
+    <div class="sidebar__recent" id="recentPanel">
+      <!-- Search sessions (title filter, performed by the controller) + time-range filter (view) -->
+      <div class="sidebar__search">
+        <div class="search-field">
+          <svg class="icon icon--16 search-field__icon" aria-hidden="true"><use href="#i-search"/></svg>
+          <input class="input input--search" type="search" id="sessionSearch" placeholder="Search conversations..." aria-label="Search conversations" autocomplete="off" />
+          <button class="search-field__filter" id="sessionFilterBtn" type="button" aria-label="Filter conversations by date"
+                  aria-haspopup="menu" aria-expanded="false">
+            <svg class="icon icon--16" aria-hidden="true"><use href="#i-list-filter"/></svg>
+          </button>
+        </div>
       </div>
+
+      <!-- Session list -->
+      <nav class="sidebar__sessions" id="sessionList" aria-label="Chat sessions">
+        <!-- Populated dynamically -->
+      </nav>
     </div>
 
-    <!-- Footer: User ID + Theme toggle -->
+    <!-- My Documents card -->
+    <div class="sidebar__docs-card">
+      <button class="docs-card" id="myDocsBtn" type="button" aria-haspopup="dialog" aria-controls="docsDialog" data-rail-tip="My Documents">
+        <span class="docs-card__icon" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#i-folder"/></svg></span>
+        <span class="docs-card__text">
+          <span class="docs-card__title">My Documents</span>
+          <span class="docs-card__sub" id="docsCardSub">Manage your files</span>
+        </span>
+        <svg class="icon icon--16 docs-card__chevron" aria-hidden="true"><use href="#i-chevron-right"/></svg>
+      </button>
+    </div>
+
+    <!-- Footer: client user id + settings (theme menu) -->
     <div class="sidebar__footer">
-      <span style="font-size:12px;color:var(--text-muted);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" id="userIdDisplay">
-        user: default
-      </span>
-      <button class="theme-toggle" id="themeToggle" data-tooltip="Toggle theme" aria-label="Toggle dark/light theme">🌙</button>
+      <div class="sidebar__user">
+        <span class="avatar" id="sidebarAvatar" aria-hidden="true">D</span>
+        <span class="sidebar__user-text">
+          <span class="sidebar__user-name" id="userIdDisplay">default</span>
+          <span class="sidebar__user-sub">User ID</span>
+        </span>
+      </div>
+      <!-- Settings: opens the settings dialog (appearance, models, notifications, integrations, privacy, help) -->
+      <button class="btn btn--icon-sm sidebar__settings" id="settingsBtn" type="button"
+              aria-label="Settings" aria-haspopup="dialog" aria-controls="settingsDialog" data-rail-tip="Settings">
+        <svg class="icon" aria-hidden="true"><use href="#i-settings"/></svg>
+      </button>
     </div>
   </aside>
 
   <!-- ── MAIN ───────────────────────────────────────────── -->
-  <main class="main" role="main">
+  <main class="main" id="main">
 
-    <!-- Top bar: hamburger + mode tabs + model selector -->
-    <header class="topbar" role="banner">
+    <!-- Top bar: workspace tabs, model selector, theme, notifications, search, avatar -->
+    <header class="topbar">
 
-      <!-- Mobile hamburger -->
-      <button class="sidebar-toggle" id="sidebarToggle" aria-label="Open sidebar" aria-expanded="false">
-        <span></span><span></span><span></span>
+      <!-- Opens the drawer (< 768) / tablet overlay, or expands the collapsed rail (>= 1024).
+           Hidden when the sidebar is expanded. -->
+      <button class="sidebar-toggle" id="sidebarToggle" type="button" aria-label="Open navigation"
+              aria-expanded="false" aria-controls="sidebar">
+        <svg class="icon sidebar-toggle__menu" aria-hidden="true"><use href="#i-menu"/></svg>
+        <svg class="icon sidebar-toggle__rail" aria-hidden="true"><use href="#i-panel-left-open"/></svg>
       </button>
 
-      <!-- Mode tabs -->
-      <nav class="mode-tabs" id="modeTabs" aria-label="Agent modes" role="tablist">
-        <button class="mode-tab active" data-mode="general" role="tab" aria-selected="true">
-          <span>💬</span><span>General</span>
-        </button>
-        <button class="mode-tab" data-mode="document" role="tab" aria-selected="false">
-          <span>📄</span><span>Document</span>
-        </button>
-        <button class="mode-tab" data-mode="research" role="tab" aria-selected="false">
-          <span>🌐</span><span>Research</span>
-        </button>
-        <button class="mode-tab" data-mode="code" role="tab" aria-selected="false">
-          <span>🧮</span><span>Code</span>
-        </button>
-      </nav>
+      <!-- Mobile brand (centred in the header below 640px) -->
+      <div class="topbar__brand" aria-hidden="true">
+        <span class="topbar__brand-logo"><svg class="icon icon--16 icon--brand" aria-hidden="true"><use href="#i-brand"/></svg></span>
+        <span class="topbar__brand-name">AI Assistant Pro</span>
+      </div>
 
-      <!-- Spacer -->
-      <div style="flex:1"></div>
+      <!-- Current workspace: a read-only label (the selector itself is the sidebar dropdown).
+           Kept in sync by UI.setActiveMode. -->
+      <p class="topbar__title" id="contextTitle" data-mode="general">
+        <span class="topbar__title-icon" aria-hidden="true"><svg class="icon icon--16" aria-hidden="true"><use href="#i-message-circle"/></svg></span>
+        <span id="contextName">General</span>
+      </p>
 
-      <!-- Model selector -->
-      <select class="model-select" id="modelSelect" aria-label="Select AI model">
-        <option value="">Loading models…</option>
-      </select>
+      <div class="topbar__spacer"></div>
+
+      <!-- Model selector: the native <select> stays the source of truth;
+           js/components/model-select.js adds the listbox trigger in front of it. -->
+      <div class="select-wrap" id="modelSelectWrap">
+        <select class="model-select" id="modelSelect" aria-label="Select AI model">
+          <option value="">Loading models…</option>
+        </select>
+      </div>
+
+      <!-- Theme: Light | Dark segmented switch (view preference, js/theme.js) and a single
+           toggle button for narrow screens -->
+      <div class="theme-seg" role="group" aria-label="Theme">
+        <button class="theme-seg__btn" id="themeLight" type="button" aria-label="Light theme" aria-pressed="false">
+          <svg class="icon icon--16" aria-hidden="true"><use href="#i-sun"/></svg>
+        </button>
+        <button class="theme-seg__btn" id="themeDark" type="button" aria-label="Dark theme" aria-pressed="false">
+          <svg class="icon icon--16" aria-hidden="true"><use href="#i-moon"/></svg>
+        </button>
+      </div>
+      <button class="top-icon-btn theme-quick" id="themeQuick" type="button" aria-label="Switch to dark theme">
+        <svg class="icon" aria-hidden="true"><use href="#i-moon"/></svg>
+      </button>
+
+      <!-- Notifications popover (recent in-app notices; components/notifications.js) -->
+      <button class="top-icon-btn notif-btn" id="notifBtn" type="button" aria-label="Notifications"
+              aria-haspopup="dialog" aria-expanded="false">
+        <svg class="icon" aria-hidden="true"><use href="#i-bell"/></svg>
+        <span class="notif-btn__dot" id="notifDot" hidden></span>
+      </button>
+
+      <!-- Search conversations: opens the sidebar if needed and focuses #sessionSearch -->
+      <button class="top-icon-btn top-search-btn" id="topSearchBtn" type="button" aria-label="Search conversations">
+        <svg class="icon" aria-hidden="true"><use href="#i-search"/></svg>
+      </button>
+
+      <!-- Current user (initial of the client-side user id; not a login) -->
+      <span class="avatar avatar--top" id="topAvatar" role="img" aria-label="User: default">D</span>
 
     </header>
 
-    <!-- Chat message area -->
-    <section class="chat-area" id="chatArea" role="log" aria-live="polite" aria-label="Chat messages">
+    <!-- Chat message area: announcements come from #liveStatus, not from re-rendered tokens -->
+    <div class="chat-stage">
+    <div class="aurora" aria-hidden="true"><span class="aurora__blob aurora__blob--a"></span><span class="aurora__blob aurora__blob--b"></span><span class="aurora__blob aurora__blob--c"></span></div>
+    <section class="chat-area" id="chatArea" role="log" aria-live="off" aria-label="Chat messages">
       <!-- Welcome screen shown when no messages exist -->
       <div class="welcome" id="welcomeScreen">
-        <div class="welcome__logo">🤖</div>
-        <h1 class="welcome__title">AI Assistant Pro</h1>
+        <!-- General workspace: hero, four task cards, capabilities (display:contents so the layout is unchanged) -->
+        <div class="welcome__general" id="wsGeneral">
+        <!-- Hero orb. The sparkles icon is the fallback until js/components/ai-viz.js mounts it. -->
+        <div class="welcome__viz" id="welcomeViz" aria-hidden="true"><svg class="icon icon--32" aria-hidden="true"><use href="#i-sparkles"/></svg></div>
+        <p class="welcome__badge"><span class="welcome__badge-dot" aria-hidden="true"></span>AI Assistant Pro</p>
+        <h1 class="welcome__title">What can I <span class="welcome__accent">help</span> you with?</h1>
         <p class="welcome__sub">
-          Your multipurpose AI with document intelligence, real-time web search, and streaming answers from free models with automatic fallback.
+          <span class="welcome__sub-line">Chat, analyze documents, research the web, and write code —</span>
+          <span class="welcome__sub-line">all in one powerful workspace.</span>
         </p>
+
+        <!-- Feature cards. #starterPrompts + .welcome__starter[data-prompt] are bound by app.js
+             (click -> mode switch + composer fill, never sends). The "Starts with" line stays in the
+             DOM for assistive tech and the aria-label, but is visually hidden to match the reference. -->
         <div class="welcome__starters" id="starterPrompts">
-          <button class="welcome__starter" data-prompt="Summarize the uploaded document">📄 Summarize my document</button>
-          <button class="welcome__starter" data-prompt="Search the web for the latest AI news">🌐 Latest AI news</button>
-          <button class="welcome__starter" data-prompt="Write a Python function to sort a list of dictionaries by a key">🧮 Python sort function</button>
-          <button class="welcome__starter" data-prompt="Explain quantum computing in simple terms">⚛️ Explain quantum computing</button>
-          <button class="welcome__starter" data-prompt="What are the best practices for building a REST API?">🔧 REST API best practices</button>
-          <button class="welcome__starter" data-prompt="Help me write a professional email">✉️ Draft a professional email</button>
+          <button class="welcome__starter feature-card" type="button" data-mode="general"
+                  data-prompt="Explain quantum computing in simple terms"
+                  aria-label="General Chat. Switches to General and fills the message box with: Explain quantum computing in simple terms">
+            <span class="feature-card__icon"><svg class="icon icon--24" aria-hidden="true"><use href="#i-message-circle"/></svg></span>
+            <span class="feature-card__body">
+              <span class="feature-card__title">General Chat</span>
+              <span class="feature-card__desc">Ask questions, brainstorm, and explore ideas.</span>
+              <span class="feature-card__try sr-only">Starts with: “Explain quantum computing in simple terms”</span>
+            </span>
+            <span class="feature-card__foot">
+              <span class="feature-card__action">Start Chat <svg class="icon icon--16" aria-hidden="true"><use href="#i-arrow-right"/></svg></span>
+              <span class="feature-card__go" aria-hidden="true"><svg class="icon icon--16" aria-hidden="true"><use href="#i-chevron-right"/></svg></span>
+            </span>
+          </button>
+          <button class="welcome__starter feature-card" type="button" data-action="upload" data-mode="document"
+                  data-prompt="Summarize the uploaded document"
+                  aria-label="Analyze Documents. Switches to Documents and fills the message box with: Summarize the uploaded document">
+            <span class="feature-card__icon"><svg class="icon icon--24" aria-hidden="true"><use href="#i-file-text"/></svg></span>
+            <span class="feature-card__body">
+              <span class="feature-card__title">Analyze Documents</span>
+              <span class="feature-card__desc">Upload files and extract useful information.</span>
+              <span class="feature-card__try sr-only">Starts with: “Summarize the uploaded document”</span>
+            </span>
+            <span class="feature-card__foot">
+              <span class="feature-card__action">Upload Files <svg class="icon icon--16" aria-hidden="true"><use href="#i-arrow-right"/></svg></span>
+              <span class="feature-card__go" aria-hidden="true"><svg class="icon icon--16" aria-hidden="true"><use href="#i-chevron-right"/></svg></span>
+            </span>
+          </button>
+          <button class="welcome__starter feature-card" type="button" data-mode="research"
+                  data-prompt="Search the web for the latest AI news"
+                  aria-label="Web Research. Switches to Research and fills the message box with: Search the web for the latest AI news">
+            <span class="feature-card__icon"><svg class="icon icon--24" aria-hidden="true"><use href="#i-globe"/></svg></span>
+            <span class="feature-card__body">
+              <span class="feature-card__title">Web Research</span>
+              <span class="feature-card__desc">Explore topics using search and research tools.</span>
+              <span class="feature-card__try sr-only">Starts with: “Search the web for the latest AI news”</span>
+            </span>
+            <span class="feature-card__foot">
+              <span class="feature-card__action">Start Research <svg class="icon icon--16" aria-hidden="true"><use href="#i-arrow-right"/></svg></span>
+              <span class="feature-card__go" aria-hidden="true"><svg class="icon icon--16" aria-hidden="true"><use href="#i-chevron-right"/></svg></span>
+            </span>
+          </button>
+          <button class="welcome__starter feature-card" type="button" data-mode="code"
+                  data-prompt="Write a Python function to sort a list of dictionaries by a key"
+                  aria-label="Write &amp; Debug Code. Switches to Code and fills the message box with: Write a Python function to sort a list of dictionaries by a key">
+            <span class="feature-card__icon"><svg class="icon icon--24" aria-hidden="true"><use href="#i-code-xml"/></svg></span>
+            <span class="feature-card__body">
+              <span class="feature-card__title">Write &amp; Debug Code</span>
+              <span class="feature-card__desc">Generate, explain, and review code.</span>
+              <span class="feature-card__try sr-only">Starts with: “Write a Python function to sort a list of dictionaries by a key”</span>
+            </span>
+            <span class="feature-card__foot">
+              <span class="feature-card__action">Open Code <svg class="icon icon--16" aria-hidden="true"><use href="#i-arrow-right"/></svg></span>
+              <span class="feature-card__go" aria-hidden="true"><svg class="icon icon--16" aria-hidden="true"><use href="#i-chevron-right"/></svg></span>
+            </span>
+          </button>
         </div>
+
+        <!-- Capability strip: static copy (no live data). Upload types = backend SUPPORTED_EXTENSIONS. -->
+        <ul class="capabilities" aria-label="Capabilities">
+          <li class="capabilities__item"><svg class="icon icon--24" aria-hidden="true"><use href="#i-box"/></svg><span><span class="capabilities__title">Multiple AI Models</span><span class="capabilities__desc">Choose the best model for your task</span></span></li>
+          <li class="capabilities__item"><svg class="icon icon--24" aria-hidden="true"><use href="#i-file-text"/></svg><span><span class="capabilities__title">File Upload</span><span class="capabilities__desc">PDF, DOCX, TXT, images and more</span></span></li>
+          <li class="capabilities__item"><svg class="icon icon--24" aria-hidden="true"><use href="#i-globe"/></svg><span><span class="capabilities__title">Web Search</span><span class="capabilities__desc">Get real-time information</span></span></li>
+          <li class="capabilities__item"><svg class="icon icon--24" aria-hidden="true"><use href="#i-shield-check"/></svg><span><span class="capabilities__title">Safe Uploads</span><span class="capabilities__desc">File type and size are checked</span></span></li>
+        </ul>
+        </div>
+
+        <!-- Workspace panels: the empty state of Documents, Research and Code. CSS shows exactly one, driven by
+             html[data-workspace]. Every [data-fill] / [data-template] control only puts text into the composer
+             (ui.js); nothing is ever sent from here. -->
+        <section class="workspace" id="wsDocument" data-mode="document" aria-labelledby="wsDocumentTitle">
+          <header class="workspace__head">
+            <span class="workspace__tile" aria-hidden="true"><svg class="icon icon--24" aria-hidden="true"><use href="#i-file-text"/></svg></span>
+            <div class="workspace__titles">
+              <h1 class="workspace__title" id="wsDocumentTitle">Document Assistant</h1>
+              <p class="workspace__sub">Upload files and extract useful information.</p>
+            </div>
+          </header>
+
+          <button class="dropzone" id="docDropzone" type="button" aria-describedby="docDropHint">
+            <span class="dropzone__icon" aria-hidden="true"><svg class="icon icon--24" aria-hidden="true"><use href="#i-upload"/></svg></span>
+            <span class="dropzone__title" id="docDropTitle">Drop your files here or click to upload</span>
+            <span class="dropzone__hint" id="docDropHint">PDF, Word, PowerPoint, spreadsheets, text, HTML, JSON and images (text is read with OCR).</span>
+          </button>
+
+          <section class="workspace__section" aria-labelledby="wsDocListTitle">
+            <div class="workspace__section-head">
+              <h2 class="workspace__h" id="wsDocListTitle">Your documents <span class="workspace__count" id="wsDocCount" hidden></span></h2>
+              <span class="workspace__tools">
+                <button class="btn btn--ghost btn--sm" id="wsAddUrl" type="button"><svg class="icon icon--16" aria-hidden="true"><use href="#i-link"/></svg><span>Add web page</span></button>
+                <button class="btn btn--ghost btn--sm" id="wsManageDocs" type="button"><svg class="icon icon--16" aria-hidden="true"><use href="#i-folder"/></svg><span>Manage</span></button>
+              </span>
+            </div>
+            <div class="doc-list doc-list--compact" id="wsDocList" data-doc-list="compact"></div>
+          </section>
+
+          <section class="workspace__section" aria-labelledby="wsDocActionsTitle">
+            <h2 class="workspace__h" id="wsDocActionsTitle">What would you like to do?</h2>
+            <div class="chip-row" role="group" aria-labelledby="wsDocActionsTitle">
+            <button class="chip" type="button" data-fill="Summarize my documents and list the key points." data-needs-docs><svg class="icon icon--16" aria-hidden="true"><use href="#i-align-left"/></svg><span>Summarize</span></button>
+            <button class="chip" type="button" data-fill="Extract the key facts, figures, names and dates from my documents as a table." data-needs-docs><svg class="icon icon--16" aria-hidden="true"><use href="#i-table-2"/></svg><span>Extract data</span></button>
+            <button class="chip" type="button" data-fill="Using my documents, answer this question: " data-needs-docs><svg class="icon icon--16" aria-hidden="true"><use href="#i-message-circle-question-mark"/></svg><span>Ask questions</span></button>
+            <button class="chip" type="button" data-fill="What are the most important insights, risks and action items in my documents?" data-needs-docs><svg class="icon icon--16" aria-hidden="true"><use href="#i-lightbulb"/></svg><span>Find insights</span></button>
+            </div>
+            <p class="workspace__note" id="docActionsNote">Upload a document to enable these actions.</p>
+          </section>
+        </section>
+
+        <section class="workspace" id="wsResearch" data-mode="research" aria-labelledby="wsResearchTitle">
+          <header class="workspace__head">
+            <span class="workspace__tile" aria-hidden="true"><svg class="icon icon--24" aria-hidden="true"><use href="#i-globe"/></svg></span>
+            <div class="workspace__titles">
+              <h1 class="workspace__title" id="wsResearchTitle">Research Assistant</h1>
+              <p class="workspace__sub">Get up-to-date information from the web.</p>
+            </div>
+          </header>
+          <p class="workspace__note workspace__note--info"><svg class="icon icon--16" aria-hidden="true"><use href="#i-info"/></svg><span>Every question in Research searches the web, and the sources behind an answer are listed with it.</span></p>
+          <section class="workspace__section" aria-labelledby="wsTopicsTitle">
+            <h2 class="workspace__h" id="wsTopicsTitle">Popular research topics</h2>
+            <div class="topic-grid">
+            <button class="topic" type="button" data-fill="What are the latest trends in AI? Summarize the most important developments with sources."><span class="topic__icon" aria-hidden="true"><svg class="icon icon--20" aria-hidden="true"><use href="#i-trending-up"/></svg></span><span class="topic__text"><span class="topic__label">Latest AI trends</span><span class="topic__hint">What is changing right now</span></span></button>
+            <button class="topic" type="button" data-fill="Research the market for [topic]: size, key players, growth and recent trends. Cite your sources." data-select="[topic]"><span class="topic__icon" aria-hidden="true"><svg class="icon icon--20" aria-hidden="true"><use href="#i-chart-column"/></svg></span><span class="topic__text"><span class="topic__label">Market research</span><span class="topic__hint">Size, players, direction</span></span></button>
+            <button class="topic" type="button" data-fill="What are the most important technology updates from the past month? Group them by area and cite sources."><span class="topic__icon" aria-hidden="true"><svg class="icon icon--20" aria-hidden="true"><use href="#i-cpu"/></svg></span><span class="topic__text"><span class="topic__label">Technology updates</span><span class="topic__hint">Releases and announcements</span></span></button>
+            <button class="topic" type="button" data-fill="Compare the main competitors of [company or product]: positioning, pricing and strengths. Cite your sources." data-select="[company or product]"><span class="topic__icon" aria-hidden="true"><svg class="icon icon--20" aria-hidden="true"><use href="#i-target"/></svg></span><span class="topic__text"><span class="topic__label">Competitor analysis</span><span class="topic__hint">Compare positioning</span></span></button>
+            </div>
+          </section>
+        </section>
+
+        <section class="workspace" id="wsCode" data-mode="code" aria-labelledby="wsCodeTitle">
+          <header class="workspace__head">
+            <span class="workspace__tile" aria-hidden="true"><svg class="icon icon--24" aria-hidden="true"><use href="#i-code-xml"/></svg></span>
+            <div class="workspace__titles">
+              <h1 class="workspace__title" id="wsCodeTitle">Code Assistant</h1>
+              <p class="workspace__sub">Generate, explain and debug code.</p>
+            </div>
+          </header>
+          <section class="workspace__section" aria-labelledby="wsLangTitle">
+            <h2 class="workspace__h" id="wsLangTitle">Language</h2>
+            <div class="seg" id="codeLang" role="radiogroup" aria-labelledby="wsLangTitle">
+            <button class="seg__btn" type="button" role="radio" aria-checked="true" data-value="any" tabindex="0">Any</button>
+            <button class="seg__btn" type="button" role="radio" aria-checked="false" data-value="python" tabindex="-1">Python</button>
+            <button class="seg__btn" type="button" role="radio" aria-checked="false" data-value="javascript" tabindex="-1">JavaScript</button>
+            <button class="seg__btn" type="button" role="radio" aria-checked="false" data-value="typescript" tabindex="-1">TypeScript</button>
+            <button class="seg__btn" type="button" role="radio" aria-checked="false" data-value="java" tabindex="-1">Java</button>
+            <button class="seg__btn" type="button" role="radio" aria-checked="false" data-value="cpp" tabindex="-1">C++</button>
+            </div>
+          </section>
+          <section class="workspace__section" aria-labelledby="wsCodeStartTitle">
+            <h2 class="workspace__h" id="wsCodeStartTitle">Start with</h2>
+            <div class="chip-row" role="group" aria-labelledby="wsCodeStartTitle">
+            <button class="chip" type="button" data-template="write"><svg class="icon icon--16" aria-hidden="true"><use href="#i-sparkles"/></svg><span>Write code</span></button>
+            <button class="chip" type="button" data-template="explain"><svg class="icon icon--16" aria-hidden="true"><use href="#i-book-open"/></svg><span>Explain this code</span></button>
+            <button class="chip" type="button" data-template="fix"><svg class="icon icon--16" aria-hidden="true"><use href="#i-bug"/></svg><span>Fix errors</span></button>
+            <button class="chip" type="button" data-template="optimize"><svg class="icon icon--16" aria-hidden="true"><use href="#i-gauge"/></svg><span>Optimize</span></button>
+            <button class="chip" type="button" data-template="tests"><svg class="icon icon--16" aria-hidden="true"><use href="#i-flask-conical"/></svg><span>Write tests</span></button>
+            </div>
+            <p class="workspace__note"><svg class="icon icon--16" aria-hidden="true"><use href="#i-info"/></svg><span>Paste your code into the message box (Shift+Enter adds a line). Generated code is shown for you to copy; it is never run.</span></p>
+          </section>
+        </section>
       </div>
     </section>
 
-    <!-- Input dock -->
-    <footer class="input-dock" role="contentinfo">
+    <!-- Shown only when the user has scrolled away from the newest message (chat.js) -->
+    <button class="jump-latest" id="jumpLatest" type="button" aria-label="Jump to latest message" hidden>
+      <svg class="icon icon--16" aria-hidden="true"><use href="#i-arrow-down"/></svg><span>Jump to latest</span>
+    </button>
+    </div><!-- /.chat-stage -->
+
+    <!-- Composer dock (in flow: the page never scrolls, the chat area does) -->
+    <div class="input-dock" role="group" aria-label="Message composer">
       <div class="dock-inner">
-        <div class="dock-row">
+        <div class="composer">
 
-          <!-- Left tools -->
-          <div class="dock-tools">
-            <!-- Attach file -->
-            <button class="btn btn--icon" id="attachBtn" data-tooltip="Attach file" aria-label="Attach file">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48"/>
-              </svg>
-            </button>
-            <!-- Hidden file input -->
-            <input type="file" id="fileInput" accept=".pdf,.docx,.csv,.xlsx,.txt,.md" style="display:none" aria-label="File input" />
-
-            <!-- Add URL -->
-            <button class="btn btn--icon" id="addUrlBtn" data-tooltip="Index web URL" aria-label="Add web URL">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="12" r="10"/>
-                <line x1="2" y1="12" x2="22" y2="12"/>
-                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
-              </svg>
-            </button>
-
-            <!-- Web search toggle -->
-            <button class="btn btn--icon" id="searchToggle" data-tooltip="Web search" aria-label="Toggle web search" aria-pressed="true" style="color:var(--accent-green)">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="11" cy="11" r="8"/>
-                <path d="m21 21-4.35-4.35"/>
-              </svg>
-            </button>
-          </div>
-
-          <!-- Main textarea -->
+          <!-- Main textarea (auto-grows; app.js also writes style.height) -->
           <textarea
             class="chat-input"
             id="chatInput"
-            placeholder="Message AI Assistant Pro…"
+            placeholder="Ask anything..."
             rows="1"
             aria-label="Message input"
             aria-multiline="true"
           ></textarea>
 
-          <!-- Send button -->
-          <button class="dock-send" id="sendBtn" aria-label="Send message">
-            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path d="M22 2 11 13M22 2 15 22l-4-9-9-4 20-7z"/>
-            </svg>
-          </button>
+          <div class="composer__bar">
+            <div class="dock-tools">
+              <!-- Attach file -->
+              <button class="btn btn--icon" id="attachBtn" type="button" data-tooltip="Attach file" aria-label="Attach file">
+                <svg class="icon icon--18" aria-hidden="true"><use href="#i-paperclip"/></svg>
+              </button>
+              <!-- Hidden file input -->
+              <input type="file" id="fileInput" multiple accept=".pdf,.docx,.pptx,.odt,.rtf,.csv,.xlsx,.xls,.txt,.md,.rst,.html,.htm,.json,.png,.jpg,.jpeg,.webp,.bmp,.tif,.tiff,.gif" hidden aria-label="File input" />
 
-          <!-- Stop button (shown while a response is streaming) -->
-          <button class="dock-send dock-stop" id="stopBtn" aria-label="Stop generating" title="Stop generating" style="display:none">
-            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <rect x="6" y="6" width="12" height="12" rx="2" fill="currentColor" stroke="none"/>
-            </svg>
-          </button>
+              <span class="dock-divider" aria-hidden="true"></span>
 
-        </div>
+              <!-- Add URL (globe icon in the reference) -->
+              <button class="btn btn--icon" id="addUrlBtn" type="button" data-tooltip="Index web URL" aria-label="Add web URL">
+                <svg class="icon icon--18" aria-hidden="true"><use href="#i-globe"/></svg>
+              </button>
 
-        <div class="dock-hint">
-          <kbd>Enter</kbd> to send &nbsp;·&nbsp; <kbd>Shift+Enter</kbd> for newline &nbsp;·&nbsp;
-          Drag &amp; drop files to upload
+              <!-- Web search: toggle button (aria-pressed is written by app.js) drawn as a switch -->
+              <button class="web-toggle" id="searchToggle" type="button" aria-pressed="true">
+                <svg class="icon icon--16" aria-hidden="true"><use href="#i-search"/></svg>
+                <span class="toggle-label">Web Search</span>
+                <span class="switch" aria-hidden="true"><span class="switch__thumb"></span></span>
+              </button>
+            </div>
+
+            <div class="composer__right">
+              <!-- Model chip: mirrors #modelSelect and opens the same listbox (ModelSelect.bindChip) -->
+              <button class="model-chip" id="composerModel" type="button" aria-haspopup="listbox" aria-expanded="false" aria-label="AI model" disabled>
+                <span class="model-chip__logo" aria-hidden="true"></span>
+                <span class="model-chip__label"></span>
+                <svg class="icon icon--16 model-chip__chevron" aria-hidden="true"><use href="#i-chevron-down"/></svg>
+              </button>
+
+              <div class="composer__send">
+                <!-- Send button -->
+                <button class="dock-send" id="sendBtn" type="button" aria-label="Send message">
+                  <svg class="icon" aria-hidden="true"><use href="#i-send"/></svg>
+                </button>
+
+                <!-- Stop button (shown while a response is streaming).
+                     Inline display:none is intentional: app.js _setLoading writes
+                     style.display = "" to show it, so the hidden default must be inline
+                     (view-contract section 7). -->
+                <button class="dock-send dock-stop" id="stopBtn" type="button" aria-label="Stop generating" title="Stop generating" style="display:none">
+                  <svg class="icon icon--16 icon--filled" aria-hidden="true"><use href="#i-square"/></svg>
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-    </footer>
+    </div>
   </main><!-- /.main -->
 
 </div><!-- /.app-layout -->
@@ -264,15 +814,28 @@
 <script src="https://cdn.jsdelivr.net/npm/marked@12/marked.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/dompurify@3/dist/purify.min.js"></script>
 
-<!-- Syntax highlighting -->
+<!-- Syntax highlighting (script only; colours come from /css/syntax.css) -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 
 <!-- ═══════════════════════════════════════════════════════
      APP SCRIPTS (order matters)
 ════════════════════════════════════════════════════════════ -->
+<script src="/js/icons.js"></script>
 <script src="/js/utils.js"></script>
 <script src="/js/api.js"></script>
 <script src="/js/chat.js"></script>
+<script src="/js/theme.js"></script>
+<script src="/js/components/menu.js"></script>
+<script src="/js/components/dialog.js"></script>
+<script src="/js/components/model-select.js"></script>
+<script src="/js/components/ai-viz.js"></script>
+<script src="/js/components/notifications.js"></script>
+<script src="/js/components/prefs.js"></script>
+<script src="/js/components/radiogroup.js"></script>
+<script src="/js/components/documents.js"></script>
+<script src="/js/components/workspaces.js"></script>
+<script src="/js/components/settings.js"></script>
+<script src="/js/components/motion.js"></script>
 <script src="/js/ui.js"></script>
 <script src="/js/app.js"></script>
 

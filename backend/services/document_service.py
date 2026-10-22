@@ -9,10 +9,11 @@ import asyncio
 import logging
 import os
 import tempfile
+import time
 import uuid
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any
+from typing import Any, Optional
 
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 
@@ -75,11 +76,13 @@ class DocumentService:
                 except OSError:
                     pass
 
+        t0 = time.perf_counter()
         try:
             pages = await asyncio.to_thread(_parse)
         except DocumentParseError as exc:
             raise IngestError(str(exc), 415 if "Unsupported file type" in str(exc) else 422) from exc
-        return await self._index_pages(user_id, safe_name, ext or "bin", pages)
+        return await self._index_pages(user_id, safe_name, ext or "bin", pages,
+                                       {"parse": time.perf_counter() - t0})
 
     async def ingest_url(self, user_id: str, url: str) -> IngestResult:
         try:
@@ -104,8 +107,13 @@ class DocumentService:
         return chunks
 
     async def _index_pages(self, user_id: str, source: str, file_type: str,
-                           pages: list[dict[str, Any]]) -> IngestResult:
+                           pages: list[dict[str, Any]],
+                           timings: Optional[dict[str, float]] = None) -> IngestResult:
+        timings = timings if timings is not None else {}
+        started = time.perf_counter()
+        t = started
         chunks = await asyncio.to_thread(self._chunk, pages)
+        timings["chunk"], t = time.perf_counter() - t, time.perf_counter()
         if not chunks:
             raise IngestError(f"No readable text could be extracted from '{source}'.", 422)
         if len(chunks) > MAX_CHUNKS_PER_DOCUMENT:
@@ -114,6 +122,7 @@ class DocumentService:
 
         doc_id = str(uuid.uuid4())
         vectors, indexing = await self._embed(user_id, [c.text for c in chunks])
+        timings["embed"], t = time.perf_counter() - t, time.perf_counter()
 
         try:
             await asyncio.to_thread(
@@ -122,6 +131,7 @@ class DocumentService:
         except Exception as exc:  # noqa: BLE001
             logger.exception("Index write failed for %s", source)
             raise IngestError("Failed to build the search index for this document.", 500) from exc
+        timings["index"], t = time.perf_counter() - t, time.perf_counter()
 
         try:
             replaced = await asyncio.to_thread(self._record_document, user_id, doc_id, source,
@@ -133,6 +143,10 @@ class DocumentService:
 
         for old_id in replaced:                       # re-upload replaces the previous copy
             await asyncio.to_thread(self._store.delete_document, user_id, old_id)
+        timings["record"] = time.perf_counter() - t
+        timings["total"] = sum(timings.values())
+        logger.info("Upload timings %s: chunks=%d pages=%d indexing=%s %s", file_type, len(chunks),
+                    len(pages), indexing, " ".join(f"{k}={v:.2f}s" for k, v in timings.items()))
         return IngestResult(doc_id, source, file_type, len(chunks), indexing)
 
     async def _embed(self, user_id: str, texts: list[str]):
