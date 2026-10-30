@@ -1,0 +1,201 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "RAG chat runtime",
+    "locale": "en",
+    "output": ".archify/architecture-rag-runtime-20261029-181400/rag-runtime.html",
+    "quality_profile": "showcase",
+    "repository": {
+      "url": "https://github.com/anubhav-ai-dev/AgenticAI_Chatbot_Using_RAG.git",
+      "provider": "github",
+      "revision": "42a5f4e7e1f3691c2ddf8f14e218dfc2ff05b1cf"
+    }
+  },
+  "components": [
+    {
+      "id": "chatUi",
+      "type": "frontend",
+      "label": "Chat UI",
+      "sublabel": "browser SSE client",
+      "pos": [40, 198],
+      "size": [148, 64],
+      "sources": [
+        { "path": "frontend/js/api.js", "line": 122, "end_line": 128, "label": "POST /chat/stream" },
+        { "path": "frontend/js/app.js", "line": 11, "end_line": 15, "label": "client user id" },
+        { "path": "frontend/js/app.js", "line": 392, "end_line": 400, "label": "chat payload" }
+      ]
+    },
+    {
+      "id": "httpApi",
+      "type": "backend",
+      "label": "FastAPI",
+      "sublabel": "HTTP and SSE",
+      "tag": "no login",
+      "pos": [313, 194],
+      "size": [168, 72],
+      "sources": [
+        { "path": "backend/main.py", "line": 87, "end_line": 94, "label": "CORS and routes" },
+        { "path": "backend/api/routes.py", "line": 71, "end_line": 78, "label": "token bucket" },
+        { "path": "backend/api/routes.py", "line": 130, "end_line": 148, "label": "stream handler" }
+      ]
+    },
+    {
+      "id": "chatSvc",
+      "type": "backend",
+      "label": "ChatService",
+      "sublabel": "route, prompt, stream",
+      "pos": [590, 176],
+      "size": [210, 108],
+      "sources": [
+        { "path": "backend/services/chat_service.py", "line": 85, "end_line": 164, "label": "route decision" },
+        { "path": "backend/services/chat_service.py", "line": 166, "end_line": 255, "label": "context and stream" },
+        { "path": "backend/services/chat_service.py", "line": 284, "end_line": 299, "label": "persist reply" }
+      ]
+    },
+    {
+      "id": "llmProviders",
+      "type": "external",
+      "label": "Groq and Gemini",
+      "sublabel": "chat completions",
+      "pos": [980, 196],
+      "size": [176, 68],
+      "sources": [
+        { "path": "backend/client/llm_client.py", "line": 40, "end_line": 66, "label": "provider stream" },
+        { "path": "backend/core/config.py", "line": 121, "end_line": 122, "label": "provider hosts" },
+        { "path": "backend/services/llm_service.py", "line": 248, "end_line": 279, "label": "fallback chain" }
+      ]
+    },
+    {
+      "id": "chatDb",
+      "type": "database",
+      "label": "Chat database",
+      "sublabel": "SQLite WAL",
+      "pos": [313, 400],
+      "size": [168, 72],
+      "sources": [
+        { "path": "backend/core/database.py", "line": 25, "end_line": 48, "label": "SQLite engine" },
+        { "path": "backend/services/session_service.py", "line": 92, "end_line": 111, "label": "write message" },
+        { "path": "backend/core/config.py", "line": 217, "end_line": 219, "label": "chatbot.db" }
+      ]
+    },
+    {
+      "id": "retrieval",
+      "type": "backend",
+      "label": "Retrieval",
+      "sublabel": "fuse, rerank, gate",
+      "pos": [590, 400],
+      "size": [210, 72],
+      "sources": [
+        { "path": "backend/services/retrieval_service.py", "line": 88, "end_line": 112, "label": "search entry" },
+        { "path": "backend/services/retrieval_service.py", "line": 119, "end_line": 166, "label": "hybrid and rerank" }
+      ]
+    },
+    {
+      "id": "tavily",
+      "type": "external",
+      "label": "Tavily",
+      "sublabel": "web search API",
+      "pos": [980, 404],
+      "size": [176, 64],
+      "sources": [
+        { "path": "backend/client/search_client.py", "line": 22, "end_line": 36, "label": "POST /search" },
+        { "path": "backend/core/config.py", "line": 123, "end_line": 123, "label": "Tavily host" },
+        { "path": "backend/services/chat_service.py", "line": 349, "end_line": 354, "label": "research search" }
+      ]
+    },
+    {
+      "id": "localModels",
+      "type": "backend",
+      "label": "Local ONNX",
+      "sublabel": "embed and rerank",
+      "pos": [313, 588],
+      "size": [168, 68],
+      "sources": [
+        { "path": "backend/client/embedding_client.py", "line": 25, "end_line": 31, "label": "local embeddings" },
+        { "path": "backend/client/rerank_client.py", "line": 20, "end_line": 27, "label": "local rerank" },
+        { "path": "backend/core/config.py", "line": 230, "end_line": 247, "label": "model ids" }
+      ]
+    },
+    {
+      "id": "hybridIndex",
+      "type": "database",
+      "label": "Hybrid index",
+      "sublabel": "FTS5 and FAISS",
+      "pos": [590, 588],
+      "size": [210, 68],
+      "sources": [
+        { "path": "backend/services/index_store.py", "line": 91, "end_line": 97, "label": "rag.sqlite3" },
+        { "path": "backend/services/index_store.py", "line": 224, "end_line": 234, "label": "dense search" },
+        { "path": "backend/services/index_store.py", "line": 250, "end_line": 258, "label": "BM25 search" }
+      ]
+    }
+  ],
+  "boundaries": [
+    {
+      "kind": "region",
+      "label": "Server process",
+      "wraps": ["httpApi", "chatSvc", "chatDb", "retrieval", "localModels", "hybridIndex"]
+    },
+    {
+      "kind": "security-group",
+      "label": "Unauthenticated HTTP",
+      "wraps": ["httpApi"]
+    },
+    {
+      "kind": "region",
+      "label": "Provider APIs",
+      "wraps": ["llmProviders", "tavily"]
+    }
+  ],
+  "connections": [
+    { "id": "ui-to-api", "from": "chatUi", "to": "httpApi", "label": "SSE /chat/stream", "variant": "emphasis" },
+    { "id": "api-to-chat", "from": "httpApi", "to": "chatSvc", "label": "dispatch", "variant": "emphasis" },
+    { "id": "chat-to-llm", "from": "chatSvc", "to": "llmProviders", "label": "HTTPS stream", "variant": "emphasis" },
+    { "id": "chat-to-db", "from": "chatSvc", "to": "chatDb", "label": "SQL", "fromSide": "bottom", "toSide": "top" },
+    { "id": "chat-to-rag", "from": "chatSvc", "to": "retrieval", "label": "if has docs", "fromSide": "bottom", "toSide": "top" },
+    { "id": "chat-to-web", "from": "chatSvc", "to": "tavily", "label": "when web", "fromSide": "right", "toSide": "left" },
+    { "id": "rag-to-index", "from": "retrieval", "to": "hybridIndex", "label": "BM25 + cosine", "fromSide": "bottom", "toSide": "top" },
+    { "id": "rag-to-onnx", "from": "retrieval", "to": "localModels", "label": "embed / rerank", "fromSide": "bottom", "toSide": "top" }
+  ],
+  "cards": [
+    {
+      "dot": "emerald",
+      "title": "Primary path",
+      "items": [
+        "The browser POSTs /chat/stream and reads SSE: meta, status, citations, model, token, done.",
+        "The route rate-limits, requires an LLM key, and rejects an unknown session before ChatService runs.",
+        "ChatService stores the user turn, builds the prompt, streams tokens, then stores the assistant reply."
+      ]
+    },
+    {
+      "dot": "cyan",
+      "title": "Context branches",
+      "items": [
+        "Greetings skip both branches. Otherwise retrieval runs only when that user has documents.",
+        "Web search runs in research mode, or when the toggle is on and the query looks time-sensitive.",
+        "Retrieval and search run together. Either one can fail and the answer still continues.",
+        "A follow-up is rewritten first. A semantic cache can answer before either branch runs."
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "Trust",
+      "items": [
+        "There is no login. The browser keeps userId in localStorage and sends it, defaulting to \"default\".",
+        "CORS uses the configured allowlist. The token bucket key is the client IP plus that user id.",
+        "Groq, Gemini, and Tavily keys stay in server settings and leave only on outbound HTTPS."
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "On the nodes",
+      "items": [
+        "Before the first token, the LLM call walks a fallback chain with a breaker and a quota guard.",
+        "Local model ids are BAAI/bge-small-en-v1.5 and Xenova/ms-marco-MiniLM-L-6-v2.",
+        "Google and Cohere appear in those same maps; this path draws the local ONNX backends.",
+        "Chat history is chatbot.db. Chunk text is rag.sqlite3, with one FAISS file per user."
+      ]
+    }
+  ]
+}

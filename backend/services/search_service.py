@@ -14,7 +14,7 @@ from typing import Optional
 
 import httpx
 
-from backend.client.search_client import TavilyClient
+from backend.client.search_client import SerperClient, TavilyClient
 from backend.core.config import Settings
 from backend.models.api import SearchResult
 from backend.utils.cache import TTLCache
@@ -32,14 +32,16 @@ class SearchOutcome:
 
 
 class WebSearchService:
-    def __init__(self, settings: Settings, client: TavilyClient) -> None:
+    def __init__(self, settings: Settings, client: TavilyClient,
+                 fallback: Optional[SerperClient] = None) -> None:
         self._s = settings
         self._client = client
+        self._fallback = fallback
         self._cache: TTLCache = TTLCache(maxsize=256, ttl_s=settings.search_cache_ttl_s)
 
     @property
     def available(self) -> bool:
-        return self._client.configured
+        return self._client.configured or bool(self._fallback and self._fallback.configured)
 
     async def search(self, query: str, max_results: Optional[int] = None,
                      depth: Optional[str] = None) -> SearchOutcome:
@@ -53,20 +55,37 @@ class WebSearchService:
         if hit is not None:
             return SearchOutcome(hit, "ok", (time.perf_counter() - t0) * 1000, cached=True)
 
-        try:
-            raw = await asyncio.wait_for(self._client.search(query, n, depth), self._s.search_timeout_s)
-            results = [
-                SearchResult(title=r.get("title", "") or "", url=r.get("url", "") or "",
-                             snippet=r.get("content", "") or "", score=float(r.get("score") or 0.0))
-                for r in raw
-            ]
-        except (asyncio.TimeoutError, httpx.TimeoutException):
-            return SearchOutcome(status="timeout", elapsed_ms=(time.perf_counter() - t0) * 1000)
-        except Exception as exc:  # noqa: BLE001 — search is optional context
-            logger.warning("Tavily error: %s", type(exc).__name__)
-            return SearchOutcome(status="error", elapsed_ms=(time.perf_counter() - t0) * 1000)
-        self._cache.set(key, results)
-        return SearchOutcome(results, "ok", (time.perf_counter() - t0) * 1000)
+        status = "error"
+        if self._client.configured:
+            try:
+                raw = await asyncio.wait_for(self._client.search(query, n, depth),
+                                             self._s.search_timeout_s)
+                results = _map_results(raw)
+                self._cache.set(key, results)
+                return SearchOutcome(results, "ok", (time.perf_counter() - t0) * 1000)
+            except (asyncio.TimeoutError, httpx.TimeoutException):
+                status = "timeout"
+            except Exception as exc:  # noqa: BLE001 — search is optional context
+                logger.warning("Tavily error: %s", type(exc).__name__)
+                status = "error"
+
+        if self._fallback is not None and self._fallback.configured:
+            try:
+                raw = await asyncio.wait_for(self._fallback.search(query, n),
+                                             self._s.search_timeout_s)
+                results = _map_results(raw)
+                self._cache.set(key, results)
+                logger.info("web search used Serper fallback")
+                return SearchOutcome(results, "ok", (time.perf_counter() - t0) * 1000)
+            except (asyncio.TimeoutError, httpx.TimeoutException):
+                if not self._client.configured:
+                    status = "timeout"
+            except Exception as exc:  # noqa: BLE001 — search is optional context
+                logger.warning("Serper error: %s", type(exc).__name__)
+                if not self._client.configured:
+                    status = "error"
+
+        return SearchOutcome(status=status, elapsed_ms=(time.perf_counter() - t0) * 1000)
 
     async def multi_search(self, queries: list[str], max_results_each: int = 3,
                            depth: Optional[str] = None) -> SearchOutcome:
@@ -104,3 +123,11 @@ class WebSearchService:
         if lowered.startswith(("what is", "what are", "explain", "how does", "how do")):
             queries.append(f"{q} examples overview")
         return queries[:3]
+
+
+def _map_results(raw: list) -> list[SearchResult]:
+    return [
+        SearchResult(title=r.get("title", "") or "", url=r.get("url", "") or "",
+                     snippet=r.get("content", "") or "", score=float(r.get("score") or 0.0))
+        for r in raw
+    ]

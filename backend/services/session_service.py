@@ -134,6 +134,17 @@ class SessionService:
                 return rows[0].content
             return None
 
+    def get_owned_message(self, message_id: str, user_id: str) -> Optional[MessageSchema]:
+        """Assistant message owned by `user_id`, or None. Used to rebuild a download."""
+        with self._db.session() as s:
+            msg = (s.query(Message)
+                   .join(ChatSession, ChatSession.id == Message.session_id)
+                   .filter(Message.id == message_id, ChatSession.user_id == user_id)
+                   .first())
+            if msg is None or msg.role != "assistant":
+                return None
+            return MessageSchema.model_validate(msg)
+
     def set_feedback(self, message_id: str, value: int) -> MessageSchema:
         with self._db.session() as s:
             msg = s.query(Message).filter(Message.id == message_id).first()

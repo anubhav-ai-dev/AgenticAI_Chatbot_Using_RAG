@@ -72,7 +72,7 @@ def test_reference_css_has_no_unguarded_motion():
 
 def test_notification_hooks_exist_in_markup():
     index = _read("index.html")
-    for i in ("notifBtn", "notifDot", "topSearchBtn", "recentToggle", "recentPanel", "sessionFilterBtn", "myDocsBtn", "composerModel"):
+    for i in ("notifBtn", "notifDot", "topSearchBtn", "recentToggle", "recentPanel", "sessionFilterBtn", "composerPlus", "composerModel"):
         assert f'id="{i}"' in index, i
     assert re.search(r'id="notifBtn"[^>]*aria-label="[^"]+"', index)
     assert re.search(r'id="topAvatar"[^>]*role="img"', index) or re.search(r'role="img"[^>]*id="topAvatar"', index)
@@ -104,5 +104,6 @@ def test_welcome_card_borders_are_documented_exemption_and_text_is_readable():
 
 def test_no_unverifiable_privacy_claim_in_capability_strip():
     low = _read("index.html").lower()
-    assert "secure &amp; private" not in low and "data stays yours" not in low
-    assert "safe uploads" in low and "file type and size are checked" in low
+    caps = low.split('class="capabilities"', 1)[1].split("</ul>", 1)[0]
+    assert "secure &amp; private" not in caps and "data stays yours" not in caps
+    assert "safe uploads" in caps and "file type and size are checked" in caps

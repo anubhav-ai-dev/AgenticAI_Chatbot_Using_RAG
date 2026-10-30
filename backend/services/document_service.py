@@ -91,6 +91,12 @@ class DocumentService:
             raise IngestError(str(exc), 422) from exc
         return await self._index_pages(user_id, url, "url", pages)
 
+    async def ingest_text(self, user_id: str, filename: str, text: str,
+                          file_type: str = "github") -> IngestResult:
+        pages = [{"page_number": 1, "text": text or "",
+                  "metadata": {"parser": file_type, "path": filename}}]
+        return await self._index_pages(user_id, filename, file_type, pages)
+
     def _chunk(self, pages: list[dict[str, Any]]) -> list[ChunkIn]:
         chunks: list[ChunkIn] = []
         for page in pages:

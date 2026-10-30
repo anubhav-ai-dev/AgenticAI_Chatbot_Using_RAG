@@ -194,6 +194,26 @@ def test_search_endpoint_ok_disabled_and_error(client_factory, settings):
     assert tc.post("/search", json={"query": ""}).status_code == 422
 
 
+def test_search_falls_back_to_serper_when_tavily_fails(client_factory, settings):
+    organic = [{"title": "Serper Hit", "link": "https://example.com/serper", "snippet": "Fallback snippet."}]
+    tc, _ = client_factory(
+        settings_obj=settings.model_copy(update={"serper_api_key": "test-serper"}),
+        tavily=tavily_transport(status=500, serper_results=organic),
+    )
+    r = tc.post("/search", json={"query": "news", "max_results": 2}).json()
+    assert r["status"] == "ok" and r["results"][0]["url"] == "https://example.com/serper"
+
+
+def test_search_uses_serper_when_tavily_is_unconfigured(client_factory, settings):
+    organic = [{"title": "Serper Only", "link": "https://example.com/s", "snippet": "s"}]
+    tc, _ = client_factory(
+        settings_obj=settings.model_copy(update={"tavily_api_key": None, "serper_api_key": "test-serper"}),
+        tavily=tavily_transport(status=500, serper_results=organic),
+    )
+    r = tc.post("/search", json={"query": "news"}).json()
+    assert r["status"] == "ok" and r["results"][0]["title"] == "Serper Only"
+
+
 # ── chat pipeline ────────────────────────────────────────────────────────────
 
 def test_chat_direct_route_streams_and_persists(client_factory):
@@ -249,6 +269,19 @@ def test_chat_web_route_and_graceful_search_failure(client_factory, settings):
                   and e["data"]["state"] == "done")
     assert status["error"] == "error"
     assert "web search was unavailable" in groq2.calls[0]["messages"][0]["content"].lower()
+
+    groq3 = FakeProviderClient()
+    organic = [{"title": "Serper Hit", "link": "https://example.com/serper", "snippet": "Fallback snippet."}]
+    tc3, _ = client_factory(
+        llm_client=groq3,
+        settings_obj=settings.model_copy(update={"serper_api_key": "test-serper"}),
+        tavily=tavily_transport(status=500, serper_results=organic),
+    )
+    sid3 = new_session(tc3)["id"]
+    _, ev3 = chat(tc3, sid3, "latest news today")
+    cits3 = next(e["data"]["items"] for e in ev3 if e["event"] == "citations")
+    assert cits3[0]["url"] == "https://example.com/serper"
+    assert "Serper Hit" in groq3.calls[0]["messages"][0]["content"]
 
 
 def test_chat_research_mode_always_searches_multi_query(client_factory):
@@ -441,7 +474,8 @@ def test_public_config_advertises_the_real_upload_limits(client_factory):
 
     tc, _ = client_factory()
     body = tc.get("/config").json()
-    assert set(body) == {"upload"}
+    assert set(body) == {"upload", "github_oauth"}
+    assert body["github_oauth"] is False
     assert body["upload"]["extensions"] == sorted(SUPPORTED_EXTENSIONS)
     assert isinstance(body["upload"]["max_mb"], int) and body["upload"]["max_mb"] >= 1
     # additive and read-only: no other verb is accepted, and nothing secret is exposed

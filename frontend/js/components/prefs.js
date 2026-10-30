@@ -1,6 +1,6 @@
 /* ============================================================
    components/prefs.js — view preferences saved in THIS browser only
-   (text size, chat spacing, pop-up notices, Code workspace language).
+   (text size, chat spacing, pop-up notices).
    Storage keys are "pref.<name>". Nothing here is sent to the server,
    and the theme has its own module (theme.js).
    Prefs.get(name) / Prefs.set(name, value) / Prefs.onChange(fn) / Prefs.apply()
@@ -14,7 +14,6 @@ window.Prefs = (function () {
     fontSize: { values: ["small", "medium", "large"], def: "medium" },
     density:  { values: ["comfortable", "compact"], def: "comfortable" },
     toasts:   { values: ["all", "errors"], def: "all" },
-    codeLang: { values: ["any", "python", "javascript", "typescript", "java", "cpp"], def: "any" },
   };
   const KEY = (name) => "pref." + name;
   const _listeners = [];

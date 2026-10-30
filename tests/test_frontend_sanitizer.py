@@ -61,6 +61,13 @@ def test_markdown_goes_through_sanitizer_wrapper():
     assert not re.search(r"marked\.parse\([^)]*\)\s*;?\s*\n?\s*return", UTILS)
 
 
+def test_artifact_preview_rebuilds_markdown_like_chat():
+    assert "function renderArtifactHtml" in UTILS
+    assert "renderMarkdown(_artifactMarkdown(doc))" in UTILS
+    assert 'block.type === "list"' in UTILS and 'block.type === "code"' in UTILS
+    assert 'format === "txt"' in UTILS and 'format === "xlsx"' in UTILS
+
+
 def test_purify_config_keeps_http_only_and_forbids_active_tags():
     assert "ALLOWED_URI_REGEXP: /^https?:/i" in UTILS
     assert "ALLOW_DATA_ATTR: false" in UTILS

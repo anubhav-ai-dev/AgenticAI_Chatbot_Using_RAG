@@ -5,6 +5,7 @@ Server-side so every client (web UI, API, MCP) gets identical behaviour.
 
 from __future__ import annotations
 
+import re
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from typing import Any, Optional, Sequence
@@ -17,6 +18,17 @@ from backend.utils.text import CHARS_PER_TOKEN, estimate_tokens
 MAX_HISTORY_MESSAGE_CHARS = 1500
 MAX_WEB_SNIPPET_CHARS = 700
 MAX_CITATION_SNIPPET_CHARS = 400
+
+QUALITY_CONTRACT = (
+    "## Response quality\n"
+    "Answer the user's actual question first. Be direct, specific, and concise. "
+    "Do not repeat the request, pad with filler, or invent facts. "
+    "Distinguish confirmed findings from assumptions. "
+    "Prefer 3–7 bullets or a few short paragraphs unless the task needs more. "
+    "For bugs: Problem → Root cause → Evidence → Fix. "
+    "For implementations: what changed, which files, how it was checked. "
+    "Inspect available code, logs, and files before guessing."
+)
 
 MODE_PROMPTS: dict[str, str] = {
     "general": (
@@ -37,12 +49,59 @@ MODE_PROMPTS: dict[str, str] = {
         "with clear section headings."
     ),
     "code": (
-        "## Code & Data Analyst Mode\n"
-        "You are an expert software engineer and data scientist. Provide clean, well-commented, "
-        "production-quality code. Explain your approach and any edge cases. Use markdown code "
-        "blocks with language tags."
+        "## Senior engineer\n"
+        "You are a language-independent senior software engineer. Infer the language, "
+        "framework, or page type from the prompt and any pasted code (including HTML, CSS, "
+        "and other web work). Provide production-quality code. Reuse existing functions and "
+        "architecture. Make the smallest justified change. Use markdown code fences with "
+        "language tags. Never claim a fix works unless the evidence supports it. "
+        "Generated code is shown for the user to copy; it is never run here."
     ),
 }
+
+SPECIALIST_PROMPTS: dict[str, str] = {
+    "document": (
+        "## Document designer\n"
+        "You produce professional, marketing-standard documents: clear title, short intro, "
+        "hierarchical headings, scannable lists, comparison tables, consistent heading case. "
+        "No leftover raw asterisks outside real markdown emphasis. Follow the user's "
+        "formatting instructions when they give any; otherwise use a clean default."
+    ),
+    "code": MODE_PROMPTS["code"],
+    "debug": (
+        "## Incident debugger\n"
+        "Read logs line by line. Default to a simple explanation unless the user asks for "
+        "the technical version.\n"
+        "Simple version (default), as short bullets:\n"
+        "- Problem: what broke, in plain language\n"
+        "- Root cause: the actual reason, with the evidence line(s)\n"
+        "- Why it happens: the condition that triggers it\n"
+        "- Seen before?: yes/no/unknown, and why\n"
+        "- Fix: the minimum change, with a short example if it helps\n"
+        "Add a mermaid diagram only when it clarifies the path. "
+        "If asked for the technical version, add stack, components, exact evidence lines, "
+        "and the precise patch. Do not dump the whole log."
+    ),
+    "research": MODE_PROMPTS["research"],
+    "codebase": (
+        "## Codebase owner\n"
+        "You already know this repository from the brief and retrieved files. "
+        "Match existing patterns, naming, and architecture. Suggest concrete file-level "
+        "changes. Do not ask the user to re-explain the project."
+    ),
+    "general": MODE_PROMPTS["general"],
+}
+
+_LOG_HINT = re.compile(
+    r"("
+    r"\b(?:debug(?: these)? logs?|stacktrace|stack trace|traceback|exception|"
+    r"error log|server log|access log)\b"
+    r"|^\s*(?:traceback|error|fatal|panic|exception)\b"
+    r"|^\s*\d{4}-\d{2}-\d{2}[T ]\d{2}:\d{2}"
+    r")",
+    re.IGNORECASE | re.MULTILINE,
+)
+_CODE_FENCE = re.compile(r"```[\w+#.-]*\n")
 
 GROUNDING_RULES = (
     "## Using the context\n"
@@ -51,6 +110,25 @@ GROUNDING_RULES = (
     "- Cite sources inline with their bracket numbers, e.g. [1] or [2].\n"
     "- If the context does not contain the answer, say so instead of inventing facts."
 )
+
+
+def select_specialist(mode: str, query: str, *, file_intent: bool = False,
+                      has_repo: bool = False) -> Optional[str]:
+    """Heuristic specialist for this turn. No extra model call."""
+    text = query or ""
+    if file_intent:
+        return "document"
+    if _LOG_HINT.search(text):
+        return "debug"
+    if has_repo and (mode == "code" or _CODE_FENCE.search(text)):
+        return "codebase"
+    if mode == "code" or _CODE_FENCE.search(text):
+        return "code"
+    if mode == "research":
+        return "research"
+    if mode == "document":
+        return None
+    return "general"
 
 
 @dataclass
@@ -67,7 +145,8 @@ class PromptBuilder:
     def build(self, *, mode: str, query: str, history: Sequence[dict[str, str]],
               rag_items: Sequence[RetrievedItem] = (),
               web_results: Sequence[SearchResult] = (),
-              notes: Sequence[str] = (), now: Optional[datetime] = None) -> BuiltPrompt:
+              notes: Sequence[str] = (), now: Optional[datetime] = None,
+              specialist: Optional[str] = None, repo_brief: str = "") -> BuiltPrompt:
         now = now or datetime.now(timezone.utc)
         citations: list[dict[str, Any]] = []
         context_blocks: list[str] = []
@@ -101,11 +180,18 @@ class PromptBuilder:
                 "url": res.url, "snippet": res.snippet[:MAX_CITATION_SNIPPET_CHARS],
             })
 
+        role = specialist if specialist is not None else select_specialist(mode, query)
         system = [
             f"You are AI Assistant Pro, an expert multipurpose AI assistant. "
             f"Current time: {now.strftime('%A, %d %B %Y %H:%M UTC')}.",
+            QUALITY_CONTRACT,
             MODE_PROMPTS.get(mode, MODE_PROMPTS["general"]),
         ]
+        extra = SPECIALIST_PROMPTS.get(role)
+        if extra and extra != MODE_PROMPTS.get(mode):
+            system.append(extra)
+        if repo_brief:
+            system.append("## Repository context\n" + repo_brief.strip())
         if context_blocks:
             system.append(GROUNDING_RULES)
             system.append("## Context\n\n" + "\n\n".join(context_blocks))

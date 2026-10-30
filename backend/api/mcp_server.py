@@ -22,7 +22,7 @@ from backend.services.chat_service import ChatCommand
 
 server = MCPServer("rag-chatbot", instructions=(
     "Search the user's indexed documents (hybrid BM25 + vector with reranking), search the web, "
-    "or ask the full chatbot pipeline."))
+    "connect a GitHub repository, or ask the full chatbot pipeline."))
 
 
 class _Runtime:
@@ -72,6 +72,32 @@ async def web_search(query: str, max_results: int = 5) -> dict[str, Any]:
     outcome = await c.search.search(query, max(1, min(max_results, 10)))
     return {"status": outcome.status,
             "results": [r.model_dump() for r in outcome.results]}
+
+
+@server.tool()
+async def connect_github_repo(url: str, user_id: str = "default",
+                              token: str = "") -> dict[str, Any]:
+    """Index a GitHub repository into the user's document store and keep a repo brief."""
+    c = await _runtime.get()
+    row = await c.github.connect(user_id, url, token or None)
+    return {"id": row.id, "owner": row.owner, "repo": row.repo, "branch": row.branch,
+            "file_count": row.file_count}
+
+
+@server.tool()
+async def list_github_repos(user_id: str = "default") -> list[dict[str, Any]]:
+    """List GitHub repositories connected for this user."""
+    c = await _runtime.get()
+    rows = await asyncio.to_thread(c.github.list_repos, user_id)
+    return [{"id": r.id, "owner": r.owner, "repo": r.repo, "branch": r.branch,
+             "file_count": r.file_count} for r in rows]
+
+
+@server.tool()
+async def github_context(user_id: str = "default") -> str:
+    """Return the stored briefs for connected GitHub repositories."""
+    c = await _runtime.get()
+    return await asyncio.to_thread(c.github.combined_brief, user_id)
 
 
 @server.tool()

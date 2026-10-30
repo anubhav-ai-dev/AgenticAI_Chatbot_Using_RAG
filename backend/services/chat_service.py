@@ -17,8 +17,24 @@ from typing import Any, AsyncIterator, Optional
 
 from backend.core.config import MODES, Settings
 from backend.core.exceptions import LLMError
+from backend.services.artifact import (
+    ArtifactError,
+    FILE_ANSWER_NOTE,
+    FILE_RESTYLE_NOTE,
+    FILE_SAVE_NOTE,
+    document_from_markdown,
+    document_source,
+    is_bare_save,
+    is_restyle,
+    log_ready,
+    preferred_format,
+    should_author_document,
+    style_note,
+    topic_title,
+    wants_file,
+)
 from backend.services.llm_service import LLMService
-from backend.services.prompt_builder import PromptBuilder
+from backend.services.prompt_builder import PromptBuilder, select_specialist
 from backend.services.retrieval_service import RetrievalResult, RetrievalService
 from backend.services.search_service import SearchOutcome, WebSearchService
 from backend.services.session_service import SessionService
@@ -115,7 +131,8 @@ def _error(code: str, message: str, retryable: bool = True, **extra: Any) -> Eve
 class ChatService:
     def __init__(self, settings: Settings, llm: LLMService, retrieval: RetrievalService,
                  search: WebSearchService, prompts: PromptBuilder, sessions: SessionService,
-                 semantic_cache: SemanticCache, router: Optional[QueryRouter] = None) -> None:
+                 semantic_cache: SemanticCache, router: Optional[QueryRouter] = None,
+                 github: Any = None) -> None:
         self._s = settings
         self._llm = llm
         self._retrieval = retrieval
@@ -124,6 +141,7 @@ class ChatService:
         self._sessions = sessions
         self._cache = semantic_cache
         self._router = router or QueryRouter()
+        self._github = github
 
     # ── public entry points ──────────────────────────────────────────────────
 
@@ -174,11 +192,15 @@ class ChatService:
             yield _event("status", stage="rewriting", state="done",
                          elapsed_ms=timings["rewrite_ms"], detail=search_query[:120])
 
-        # semantic answer cache (standalone, non-live queries only)
+        file_intent = wants_file(text)
+
+        # semantic answer cache (standalone, non-live queries only). File turns never
+        # replay a cached chat answer — that would skip the preview attachment.
         qvec = None
         cache_scope = None
         if (self._s.semantic_cache_enabled and not followup and not decision.use_web
-                and not cmd.regenerate and not self._router.needs_fresh_info(text)):
+                and not cmd.regenerate and not file_intent
+                and not self._router.needs_fresh_info(text)):
             qvec = await self._retrieval.embed_query(text)
             if qvec is not None:
                 cache_scope = (user_id, mode, model, self._retrieval.version(user_id), has_docs)
@@ -233,6 +255,18 @@ class ChatService:
         effective_route = RouteDecision(bool(rag_items), bool(web_results)).label
 
         notes: list[str] = []
+        has_prev = any((m.get("role") == "assistant" and (m.get("content") or "").strip())
+                       for m in history)
+        if file_intent:
+            if is_restyle(text) and has_prev:
+                notes.append(FILE_RESTYLE_NOTE)
+            elif is_bare_save(text) and has_prev:
+                notes.append(FILE_SAVE_NOTE)
+            else:
+                notes.append(FILE_ANSWER_NOTE)
+            extra_style = style_note(text)
+            if extra_style:
+                notes.append(extra_style)
         if mode == "document" and not has_docs:
             notes.append("The user has not uploaded any documents. Say so and suggest uploading "
                          "one; you may still answer from general knowledge if you state that clearly.")
@@ -244,15 +278,26 @@ class ChatService:
         elif decision.use_web and web is not None and not web_results:
             notes.append("Web search returned no results; answer from your own knowledge and say so.")
 
+        repo_brief = ""
+        if self._github is not None:
+            try:
+                repo_brief = await asyncio.to_thread(self._github.combined_brief, user_id)
+            except Exception:  # noqa: BLE001 — chat still answers without the brief
+                logger.info("repo brief skipped")
+        specialist = select_specialist(
+            mode, text, file_intent=file_intent, has_repo=bool(repo_brief))
         prompt = self._prompts.build(mode=mode, query=text, history=history, rag_items=rag_items,
-                                     web_results=web_results, notes=notes)
+                                     web_results=web_results, notes=notes, specialist=specialist,
+                                     repo_brief=repo_brief)
         if prompt.citations:
             yield _event("citations", items=prompt.citations)
 
         # generate
         yield _event("status", stage="generating", state="start")
+        file_tokens = min(8192, max(self._s.llm_max_tokens, 4096)) if file_intent else None
         try:
-            llm_stream = await self._llm.open_stream(prompt.messages, model=model)
+            llm_stream = await self._llm.open_stream(prompt.messages, model=model,
+                                                     max_tokens=file_tokens)
         except LLMError as err:
             yield _error(err.code, err.message, retryable=err.retryable,
                          attempts=err.attempts, retry_after=err.retry_after)
@@ -274,6 +319,10 @@ class ChatService:
                 stream_error = err
             answer = "".join(parts)
             timings["total_ms"] = (time.perf_counter() - t_start) * 1000
+            artifact = None
+            artifact_error = None
+            if stream_error is None and answer.strip():
+                artifact, artifact_error = self._maybe_artifact(text, answer, history)
             msg_meta = {
                 "model": llm_stream.model, "route": effective_route, "mode": mode,
                 "fell_back_from": llm_stream.fell_back_from, "cached": False,
@@ -281,6 +330,10 @@ class ChatService:
                 "usage": llm_stream.usage,
                 "partial": stream_error is not None,
             }
+            file_format = preferred_format(text) if artifact is not None else None
+            if artifact is not None:
+                msg_meta["artifact"] = artifact
+                msg_meta["artifact_format"] = file_format
             message_id = None
             if answer.strip():
                 message_id = await self._persist(cmd.session_id, answer, prompt.citations, msg_meta)
@@ -289,10 +342,16 @@ class ChatService:
                 yield _error(stream_error.code, stream_error.message, retryable=True,
                              partial=bool(answer.strip()), message_id=message_id)
                 return
+            if artifact is not None:
+                yield _event("artifact", message_id=message_id, title=artifact["title"],
+                             blocks=artifact["blocks"], format=file_format)
+            elif artifact_error:
+                yield _event("artifact", error=artifact_error)
             if (cache_scope is not None and qvec is not None and answer.strip()
-                    and not llm_stream.fell_back_from):
+                    and not llm_stream.fell_back_from and artifact_error is None):
                 self._cache.store(cache_scope, qvec, CachedAnswer(
-                    answer, prompt.citations, llm_stream.model, effective_route))
+                    answer, prompt.citations, llm_stream.model, effective_route, artifact,
+                    file_format))
             yield _event("done", message_id=message_id, model=llm_stream.model,
                          fell_back_from=llm_stream.fell_back_from, cached=False,
                          route=effective_route, persisted=message_id is not None,
@@ -341,7 +400,14 @@ class ChatService:
         timings["total_ms"] = (time.perf_counter() - t_start) * 1000
         meta = {"model": hit.model, "route": hit.route, "cached": True,
                 "timings": {k: round(v, 1) for k, v in timings.items()}}
+        if hit.artifact:
+            meta["artifact"] = hit.artifact
+            if hit.artifact_format:
+                meta["artifact_format"] = hit.artifact_format
         message_id = await self._persist(cmd.session_id, hit.text, hit.citations, meta)
+        if hit.artifact:
+            yield _event("artifact", message_id=message_id, title=hit.artifact["title"],
+                         blocks=hit.artifact["blocks"], format=hit.artifact_format or "md")
         yield _event("done", message_id=message_id, model=hit.model, fell_back_from=[],
                      cached=True, route=hit.route, persisted=message_id is not None,
                      timings=meta["timings"], usage=None)
@@ -375,6 +441,23 @@ class ChatService:
         except Exception as exc:  # noqa: BLE001
             logger.info("Query rewrite skipped (%s)", type(exc).__name__)
             return fallback
+
+    def _maybe_artifact(self, user_text: str, answer: str,
+                        history: list[dict[str, str]]) -> tuple[Optional[dict[str, Any]], Optional[str]]:
+        """Return (document, None) or (None, error). Built from the answer, not a second model call."""
+        if not should_author_document(user_text, answer):
+            return None, None
+        try:
+            source = document_source(user_text, answer, history)
+            doc = document_from_markdown(source, fallback_title=topic_title(user_text, history))
+        except ArtifactError as err:
+            logger.info("artifact skipped (%s)", type(err).__name__)
+            return None, err.message
+        except Exception as exc:  # noqa: BLE001 — the chat answer still completes
+            logger.info("artifact skipped (%s)", type(exc).__name__)
+            return None, "The document could not be created."
+        log_ready(doc)
+        return doc, None
 
     async def _persist(self, session_id: str, text: str, citations: list[dict[str, Any]],
                        meta: dict[str, Any]) -> Optional[str]:

@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "receiptId": "f48b05cd-583c-4dec-8164-c6a3eccad882",
+  "status": "current",
+  "command": "deliver",
+  "type": "architecture",
+  "input": "/home/anubhav/personal-proj/AgenticAI_Chatbot_Using_RAG/.archify/architecture-rag-runtime-20261029-181400/candidate.json",
+  "output": "/home/anubhav/personal-proj/AgenticAI_Chatbot_Using_RAG/.archify/architecture-rag-runtime-20261029-181400/rag-runtime.html",
+  "specification": {
+    "sha256": "1f9ba5b3901475d5c2708fb26ed280220e9428e8f4b2977899691437a492a549",
+    "bytes": 8336
+  },
+  "artifact": {
+    "sha256": "503a45ad88c3b9f9f1ebe24e4c92d3820bf63f0313b40f28d62f83fc0677af9f",
+    "bytes": 854049
+  }
+}

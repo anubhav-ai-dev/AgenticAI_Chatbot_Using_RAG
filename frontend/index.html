@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-view="intro">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, interactive-widget=resizes-content" />
@@ -31,6 +31,8 @@
     else if (w < 1024) sh = "rail";
     else { try { if (localStorage.getItem("sidebarState") === "rail") sh = "rail"; } catch (e) {} }
     r.dataset.shell = sh;
+    // Introduction page until #app (Get Started). Set before paint so the chatbot does not flash.
+    r.dataset.view = (location.hash === "#app") ? "app" : "intro";
     // Workspace (stored mode) and appearance preferences, so the first paint is already right
     try {
       var m = localStorage.getItem("mode");
@@ -56,7 +58,7 @@
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" />
 
   <!-- Stylesheets -->
   <link rel="stylesheet" href="/css/main.css" />
@@ -65,6 +67,7 @@
   <link rel="stylesheet" href="/css/ai-viz.css" />
   <link rel="stylesheet" href="/css/reference.css" />
   <link rel="stylesheet" href="/css/workspace.css" />
+  <link rel="stylesheet" href="/css/intro.css" />
   <!-- Syntax highlighting tokens (both themes, driven by CSS variables) -->
   <link rel="stylesheet" href="/css/syntax.css" />
 
@@ -100,6 +103,7 @@
   <symbol id="i-chevron-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
   <symbol id="i-paperclip" viewBox="0 0 24 24"><path d="m16 6-8.414 8.586a2 2 0 0 0 2.829 2.829l8.414-8.586a4 4 0 1 0-5.657-5.657l-8.379 8.551a6 6 0 1 0 8.485 8.485l8.379-8.551"/></symbol>
   <symbol id="i-link" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></symbol>
+  <symbol id="i-github" viewBox="0 0 24 24"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></symbol>
   <symbol id="i-arrow-up" viewBox="0 0 24 24"><path d="m5 12 7-7 7 7"/><path d="M12 19V5"/></symbol>
   <symbol id="i-square" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="3" rx="2"/></symbol>
   <symbol id="i-copy" viewBox="0 0 24 24"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></symbol>
@@ -132,6 +136,7 @@
   <symbol id="i-list-filter" viewBox="0 0 24 24"><path d="M2 5h20"/><path d="M6 12h12"/><path d="M9 19h6"/></symbol>
   <symbol id="i-send" viewBox="0 0 24 24"><path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"/><path d="m21.854 2.147-10.94 10.939"/></symbol>
   <symbol id="i-box" viewBox="0 0 24 24"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></symbol>
+  <symbol id="i-database" viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5V19A9 3 0 0 0 21 19V5"/><path d="M3 12A9 3 0 0 0 21 12"/></symbol>
   <symbol id="i-shield-check" viewBox="0 0 24 24"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></symbol>
   <symbol id="i-arrow-right" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></symbol>
   <!-- Custom brand mark (not Lucide): solid triangle with a notch. Filled so it stays crisp at 16–22px. -->
@@ -222,6 +227,34 @@
     <div class="modal__actions">
       <button class="btn btn--secondary" id="urlModalCancel" type="button">Cancel</button>
       <button class="btn btn--primary" id="urlModalSubmit" type="button">Index URL</button>
+    </div>
+  </div>
+</dialog>
+
+<!-- ═══════════════════════════════════════════════════════
+     GITHUB REPO CONNECT
+════════════════════════════════════════════════════════════ -->
+<dialog class="dialog" id="githubModal" aria-labelledby="githubModalTitle" aria-describedby="githubModalHelp" aria-modal="true">
+  <div class="modal">
+    <div class="modal__header">
+      <h2 class="modal__title" id="githubModalTitle"><svg class="icon" aria-hidden="true"><use href="#i-github"/></svg> Connect GitHub repo</h2>
+      <button class="btn btn--icon" id="githubModalClose" type="button" aria-label="Close"><svg class="icon" aria-hidden="true"><use href="#i-x"/></svg></button>
+    </div>
+    <label class="field-label" for="githubUrl">Repository URL</label>
+    <input class="input" type="url" id="githubUrl" placeholder="Paste the repository URL" autocomplete="off" aria-describedby="githubModalHelp" />
+    <label class="field-label mt-2" for="githubToken">Personal access token (optional)</label>
+    <input class="input" type="password" id="githubToken" placeholder="Needed for private repos" autocomplete="off" />
+    <p class="text-sm text-secondary mt-2" id="githubModalHelp">
+      Source files are indexed for coding help. Tokens are sent once and are never kept in this browser.
+    </p>
+    <p class="text-sm text-secondary mt-2" id="githubDeviceHelp" hidden>
+      Open <a id="githubDeviceLink" target="_blank" rel="noopener noreferrer">the device login page</a>
+      and enter <strong id="githubUserCode"></strong>.
+    </p>
+    <div class="modal__actions">
+      <button class="btn btn--secondary" id="githubOauth" type="button" hidden>Sign in with GitHub</button>
+      <button class="btn btn--secondary" id="githubModalCancel" type="button">Cancel</button>
+      <button class="btn btn--primary" id="githubModalSubmit" type="button">Connect</button>
     </div>
   </div>
 </dialog>
@@ -340,13 +373,16 @@
           <p class="pane__desc">Status of the services this server uses. “Key configured” means a key is present, not that it has been verified.</p>
           <ul class="status-list" id="setServices"></ul>
           <p class="pane__note" id="setServicesNote" role="status"></p>
+          <h4 class="pane__title" id="setGithubTitle">GitHub repositories</h4>
+          <ul class="status-list" id="setGithubRepos"></ul>
+          <p class="pane__note" id="setGithubNote" role="status"></p>
           <button class="btn btn--secondary btn--sm" id="setRefreshServices" type="button"><svg class="icon icon--16" aria-hidden="true"><use href="#i-refresh-cw"/></svg><span>Refresh status</span></button>
         </section>
         <section class="pane" role="tabpanel" id="setPane-privacy" aria-labelledby="setTab-privacy" tabindex="0" hidden>
           <h3 class="pane__title">Privacy</h3>
           <p class="pane__desc">What is stored and where your messages go.</p>
           <ul class="bullets">
-            <li>Chats and uploaded documents are stored on the server under your user ID. Delete a chat from the sidebar and a document from My Documents.</li>
+            <li>Chats and uploaded documents are stored on the server under your user ID. Delete a chat from the sidebar, and a document from My Documents in the message box.</li>
             <li>To answer, your message and relevant excerpts of your documents are sent to the provider of the selected model (Groq or Google).</li>
             <li>When web search is used, the search text is sent to Tavily.</li>
             <li>Theme, text size, spacing and notification preferences are saved in this browser only.</li>
@@ -378,7 +414,123 @@
 <!-- ═══════════════════════════════════════════════════════
      MAIN APP LAYOUT
 ════════════════════════════════════════════════════════════ -->
-<div class="app-layout">
+<!-- ═══════════════════════════════════════════════════════
+     INTRODUCTION (shown until Get Started → #app)
+     The chatbot shell below stays in the DOM so the existing app boots.
+════════════════════════════════════════════════════════════ -->
+<div class="intro" id="intro">
+  <a class="skip-link" href="#introStart">Skip to Get Started</a>
+  <header class="intro__header">
+    <a class="intro__brand" href="#intro">
+      <img src="/assets/logo.svg" width="32" height="32" alt="" />
+      <span>AI Assistant Pro</span>
+    </a>
+    <nav class="intro__nav" id="introNav" aria-label="Introduction">
+      <a href="#intro-features">Features</a>
+      <a href="#intro-how">How It Works</a>
+      <a href="#intro-security">Security</a>
+      <a href="#intro-about">About</a>
+    </nav>
+    <div class="intro__tools">
+      <button class="intro__icon-btn" id="introTheme" type="button" aria-label="Switch to dark theme">
+        <svg class="icon intro__theme-icon intro__theme-icon--moon" aria-hidden="true"><use href="#i-moon"/></svg>
+        <svg class="icon intro__theme-icon intro__theme-icon--sun" aria-hidden="true" hidden><use href="#i-sun"/></svg>
+      </button>
+      <button class="intro__icon-btn intro__menu-btn" id="introMenu" type="button" aria-expanded="false" aria-controls="introNav">
+        <svg class="icon" aria-hidden="true"><use href="#i-menu"/></svg>
+        <span class="sr-only">Menu</span>
+      </button>
+    </div>
+  </header>
+
+  <div class="intro__main" id="intro-main">
+    <div class="intro__grid">
+      <div class="intro__copy">
+        <p class="intro__badge"><svg class="icon icon--16" aria-hidden="true"><use href="#i-sparkle"/></svg><span>Agentic RAG Platform</span></p>
+        <h1 class="intro__title" id="intro-about"><span class="intro__title-line">Your AI co-pilot</span><span class="intro__title-line">for <span class="intro__accent">smarter work.</span></span></h1>
+        <p class="intro__lead">Ask questions, get accurate answers, search your documents, and do more with your data.</p>
+        <button class="intro__cta" id="introStart" type="button">
+          <span>Get Started</span>
+          <svg class="icon icon--16 intro__cta-arrow" aria-hidden="true"><use href="#i-arrow-right"/></svg>
+        </button>
+      </div>
+
+      <div class="intro__stage" id="intro-how" role="img" aria-label="Preview of AI Assistant Pro summarizing key points from your documents.">
+        <div class="intro__glow" aria-hidden="true"></div>
+        <svg class="intro__orbits" viewBox="0 0 560 460" aria-hidden="true" focusable="false">
+          <ellipse cx="280" cy="220" rx="210" ry="150" />
+          <ellipse cx="300" cy="230" rx="150" ry="200" transform="rotate(-18 300 230)" />
+        </svg>
+        <span class="intro__spark intro__spark--a" aria-hidden="true"><svg class="icon icon--16"><use href="#i-sparkle"/></svg></span>
+        <span class="intro__spark intro__spark--b" aria-hidden="true"><svg class="icon icon--16"><use href="#i-sparkles"/></svg></span>
+        <span class="intro__spark intro__spark--c" aria-hidden="true"><svg class="icon icon--16"><use href="#i-sparkle"/></svg></span>
+        <div class="intro__chip intro__chip--doc" aria-hidden="true"><svg class="icon icon--24"><use href="#i-file-text"/></svg></div>
+        <div class="intro__chip intro__chip--db" aria-hidden="true"><svg class="icon icon--24"><use href="#i-database"/></svg></div>
+        <div class="intro__panel" aria-hidden="true">
+          <div class="intro__panel-bar">
+            <img src="/assets/logo.svg" width="22" height="22" alt="" />
+            <span>AI Assistant Pro</span>
+            <svg class="icon icon--16 intro__panel-user" aria-hidden="true"><use href="#i-user"/></svg>
+          </div>
+          <div class="intro__thread">
+            <p class="intro__msg">Summarize the key points from my documents</p>
+            <div class="intro__reply">
+              <p>Here are the key points from your documents...</p>
+              <span class="intro__line"></span>
+              <span class="intro__line intro__line--mid"></span>
+              <span class="intro__line intro__line--short"></span>
+            </div>
+          </div>
+          <div class="intro__ask">
+            <span>Ask anything...</span>
+            <span class="intro__send"><svg class="icon icon--16" aria-hidden="true"><use href="#i-arrow-up"/></svg></span>
+          </div>
+        </div>
+        <p class="intro__caption">Search / Analyze / Create / Achieve</p>
+      </div>
+
+      <section class="intro__lower" aria-labelledby="introFeaturesTitle">
+        <div class="intro__features-head">
+          <h2 class="intro__features-title" id="introFeaturesTitle">Powerful features</h2>
+          <p class="intro__features-sub">Everything you need to work smarter, all in one place.</p>
+        </div>
+        <ul class="intro__features" id="intro-features">
+          <li class="intro__feature">
+            <span class="intro__feature-icon"><svg class="icon" aria-hidden="true"><use href="#i-message-circle"/></svg></span>
+            <span class="intro__feature-text">
+              <span class="intro__feature-title">Chat with your documents</span>
+              <span class="intro__feature-desc">Get instant answers from your knowledge base</span>
+            </span>
+          </li>
+          <li class="intro__feature">
+            <span class="intro__feature-icon"><svg class="icon" aria-hidden="true"><use href="#i-search"/></svg></span>
+            <span class="intro__feature-text">
+              <span class="intro__feature-title">RAG powered search</span>
+              <span class="intro__feature-desc">Find relevant information, fast</span>
+            </span>
+          </li>
+          <li class="intro__feature" id="intro-security">
+            <span class="intro__feature-icon"><svg class="icon" aria-hidden="true"><use href="#i-shield-check"/></svg></span>
+            <span class="intro__feature-text">
+              <span class="intro__feature-title">Secure &amp; private</span>
+              <span class="intro__feature-desc">Your data stays with you</span>
+            </span>
+          </li>
+          <li class="intro__feature">
+            <span class="intro__feature-icon"><svg class="icon" aria-hidden="true"><use href="#i-zap"/></svg></span>
+            <span class="intro__feature-text">
+              <span class="intro__feature-title">Built for productivity</span>
+              <span class="intro__feature-desc">Save time, work smarter</span>
+            </span>
+          </li>
+        </ul>
+      </section>
+    </div>
+  </div>
+</div>
+
+<div class="app-layout" id="appShell" inert>
+<script>if(document.documentElement.dataset.view==="app")document.getElementById("appShell").removeAttribute("inert");</script>
 
   <!-- ── SIDEBAR ──────────────────────────────────────────
        Expanded 256px (>= 1024) | icon rail 72px (tablet, or collapsed by the user)
@@ -401,21 +553,7 @@
       </button>
     </div>
 
-    <!-- Workspace mode: ONE dropdown, directly ABOVE New Chat. The four modes (General, Documents,
-         Research, Code) live in its menu (components/menu.js, opened by ui.js); they are never
-         rendered as permanent rows or as header tabs. data-mode / label / icon follow the active
-         mode (UI.setActiveMode); the controller owns the mode (UI.onModeChange). -->
-    <div class="sidebar__mode">
-      <button class="mode-select" id="modeSelect" type="button" data-mode="general"
-              aria-haspopup="menu" aria-expanded="false" aria-label="Workspace mode: General"
-              data-rail-tip="Workspace: General">
-        <span class="mode-select__icon" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#i-message-circle"/></svg></span>
-        <span class="mode-select__label" id="modeSelectLabel">General</span>
-        <svg class="icon icon--16 mode-select__chevron" aria-hidden="true"><use href="#i-chevron-down"/></svg>
-      </button>
-    </div>
-
-    <!-- New chat: immediately below the mode dropdown -->
+    <!-- New chat -->
     <!-- data-rail-tip sits on the wrapper, not the button: the button clips its overflow and uses ::after for its sheen -->
     <div class="sidebar__new" data-rail-tip="New chat">
       <button class="new-chat-btn" id="newChatBtn" type="button">
@@ -449,18 +587,6 @@
       <nav class="sidebar__sessions" id="sessionList" aria-label="Chat sessions">
         <!-- Populated dynamically -->
       </nav>
-    </div>
-
-    <!-- My Documents card -->
-    <div class="sidebar__docs-card">
-      <button class="docs-card" id="myDocsBtn" type="button" aria-haspopup="dialog" aria-controls="docsDialog" data-rail-tip="My Documents">
-        <span class="docs-card__icon" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#i-folder"/></svg></span>
-        <span class="docs-card__text">
-          <span class="docs-card__title">My Documents</span>
-          <span class="docs-card__sub" id="docsCardSub">Manage your files</span>
-        </span>
-        <svg class="icon icon--16 docs-card__chevron" aria-hidden="true"><use href="#i-chevron-right"/></svg>
-      </button>
     </div>
 
     <!-- Footer: client user id + settings (theme menu) -->
@@ -500,7 +626,7 @@
         <span class="topbar__brand-name">AI Assistant Pro</span>
       </div>
 
-      <!-- Current workspace: a read-only label (the selector itself is the sidebar dropdown).
+      <!-- Current workspace: a read-only label (the selector is the composer dropdown).
            Kept in sync by UI.setActiveMode. -->
       <p class="topbar__title" id="contextTitle" data-mode="general">
         <span class="topbar__title-icon" aria-hidden="true"><svg class="icon icon--16" aria-hidden="true"><use href="#i-message-circle"/></svg></span>
@@ -612,13 +738,13 @@
             </span>
           </button>
           <button class="welcome__starter feature-card" type="button" data-mode="code"
-                  data-prompt="Write a Python function to sort a list of dictionaries by a key"
-                  aria-label="Write &amp; Debug Code. Switches to Code and fills the message box with: Write a Python function to sort a list of dictionaries by a key">
+                  data-prompt="Write a function to sort a list of dictionaries by a key"
+                  aria-label="Write &amp; Debug Code. Switches to Code and fills the message box with: Write a function to sort a list of dictionaries by a key">
             <span class="feature-card__icon"><svg class="icon icon--24" aria-hidden="true"><use href="#i-code-xml"/></svg></span>
             <span class="feature-card__body">
               <span class="feature-card__title">Write &amp; Debug Code</span>
               <span class="feature-card__desc">Generate, explain, and review code.</span>
-              <span class="feature-card__try sr-only">Starts with: “Write a Python function to sort a list of dictionaries by a key”</span>
+              <span class="feature-card__try sr-only">Starts with: “Write a function to sort a list of dictionaries by a key”</span>
             </span>
             <span class="feature-card__foot">
               <span class="feature-card__action">Open Code <svg class="icon icon--16" aria-hidden="true"><use href="#i-arrow-right"/></svg></span>
@@ -705,17 +831,6 @@
               <p class="workspace__sub">Generate, explain and debug code.</p>
             </div>
           </header>
-          <section class="workspace__section" aria-labelledby="wsLangTitle">
-            <h2 class="workspace__h" id="wsLangTitle">Language</h2>
-            <div class="seg" id="codeLang" role="radiogroup" aria-labelledby="wsLangTitle">
-            <button class="seg__btn" type="button" role="radio" aria-checked="true" data-value="any" tabindex="0">Any</button>
-            <button class="seg__btn" type="button" role="radio" aria-checked="false" data-value="python" tabindex="-1">Python</button>
-            <button class="seg__btn" type="button" role="radio" aria-checked="false" data-value="javascript" tabindex="-1">JavaScript</button>
-            <button class="seg__btn" type="button" role="radio" aria-checked="false" data-value="typescript" tabindex="-1">TypeScript</button>
-            <button class="seg__btn" type="button" role="radio" aria-checked="false" data-value="java" tabindex="-1">Java</button>
-            <button class="seg__btn" type="button" role="radio" aria-checked="false" data-value="cpp" tabindex="-1">C++</button>
-            </div>
-          </section>
           <section class="workspace__section" aria-labelledby="wsCodeStartTitle">
             <h2 class="workspace__h" id="wsCodeStartTitle">Start with</h2>
             <div class="chip-row" role="group" aria-labelledby="wsCodeStartTitle">
@@ -724,6 +839,7 @@
             <button class="chip" type="button" data-template="fix"><svg class="icon icon--16" aria-hidden="true"><use href="#i-bug"/></svg><span>Fix errors</span></button>
             <button class="chip" type="button" data-template="optimize"><svg class="icon icon--16" aria-hidden="true"><use href="#i-gauge"/></svg><span>Optimize</span></button>
             <button class="chip" type="button" data-template="tests"><svg class="icon icon--16" aria-hidden="true"><use href="#i-flask-conical"/></svg><span>Write tests</span></button>
+            <button class="chip" type="button" data-template="debug"><svg class="icon icon--16" aria-hidden="true"><use href="#i-file-search"/></svg><span>Debug logs</span></button>
             </div>
             <p class="workspace__note"><svg class="icon icon--16" aria-hidden="true"><use href="#i-info"/></svg><span>Paste your code into the message box (Shift+Enter adds a line). Generated code is shown for you to copy; it is never run.</span></p>
           </section>
@@ -754,18 +870,28 @@
 
           <div class="composer__bar">
             <div class="dock-tools">
-              <!-- Attach file -->
-              <button class="btn btn--icon" id="attachBtn" type="button" data-tooltip="Attach file" aria-label="Attach file">
-                <svg class="icon icon--18" aria-hidden="true"><use href="#i-paperclip"/></svg>
+              <!-- Add menu: upload, web URL, and My Documents (Claude-style +, adapted to this app) -->
+              <button class="btn btn--icon composer-plus" id="composerPlus" type="button"
+                      data-tooltip="Add files or documents" aria-label="Add files or documents"
+                      aria-haspopup="menu" aria-expanded="false">
+                <svg class="icon icon--18" aria-hidden="true"><use href="#i-plus"/></svg>
               </button>
-              <!-- Hidden file input -->
-              <input type="file" id="fileInput" multiple accept=".pdf,.docx,.pptx,.odt,.rtf,.csv,.xlsx,.xls,.txt,.md,.rst,.html,.htm,.json,.png,.jpg,.jpeg,.webp,.bmp,.tif,.tiff,.gif" hidden aria-label="File input" />
+              <!-- Hidden file input. #attachBtn and #addUrlBtn stay in the DOM so the documents
+                   dialog and workspace panels keep one upload / URL path. They are not tab stops. -->
+              <input type="file" id="fileInput" multiple accept=".pdf,.docx,.pptx,.odt,.rtf,.csv,.xlsx,.xls,.txt,.md,.rst,.html,.htm,.json,.log,.png,.jpg,.jpeg,.webp,.bmp,.tif,.tiff,.gif" hidden aria-label="File input" />
+              <button id="attachBtn" type="button" hidden aria-label="Attach file"></button>
+              <button id="addUrlBtn" type="button" hidden aria-label="Add web URL"></button>
+              <button id="addGithubBtn" type="button" hidden aria-label="Connect GitHub repo"></button>
+              <!-- Count line for the My Documents menu caption (documents.js writes it) -->
+              <span id="docsCardSub" hidden>Manage your files</span>
 
-              <span class="dock-divider" aria-hidden="true"></span>
-
-              <!-- Add URL (globe icon in the reference) -->
-              <button class="btn btn--icon" id="addUrlBtn" type="button" data-tooltip="Index web URL" aria-label="Add web URL">
-                <svg class="icon icon--18" aria-hidden="true"><use href="#i-globe"/></svg>
+              <!-- Workspace mode: ONE dropdown. The four modes live in its menu. It sits in the
+                   composer, boxed like Web Search. data-mode / label / icon follow UI.setActiveMode. -->
+              <button class="mode-select" id="modeSelect" type="button" data-mode="general"
+                      aria-haspopup="menu" aria-expanded="false" aria-label="Workspace mode: General">
+                <span class="mode-select__icon" aria-hidden="true"><svg class="icon icon--16" aria-hidden="true"><use href="#i-message-circle"/></svg></span>
+                <span class="mode-select__label" id="modeSelectLabel">General</span>
+                <svg class="icon icon--16 mode-select__chevron" aria-hidden="true"><use href="#i-chevron-down"/></svg>
               </button>
 
               <!-- Web search: toggle button (aria-pressed is written by app.js) drawn as a switch -->
@@ -805,6 +931,28 @@
     </div>
   </main><!-- /.main -->
 
+  <!-- Document preview. Closed until a file card opens it. Not a route. -->
+  <div class="artifact-scrim" id="artifactScrim" aria-hidden="true"></div>
+  <aside class="artifact-pane" id="artifactPane" role="complementary" aria-label="Document preview" aria-hidden="true" inert>
+    <div class="artifact-pane__resize" id="artifactResize" role="separator" aria-orientation="vertical" aria-label="Resize document preview" tabindex="0"></div>
+    <header class="artifact-pane__header">
+      <h2 class="artifact-pane__title" id="artifactTitle">Document</h2>
+      <label class="sr-only" for="artifactFormat">Download format</label>
+      <select class="artifact-pane__format" id="artifactFormat">
+        <option value="md">Markdown (.md)</option>
+        <option value="txt">Plain text (.txt)</option>
+        <option value="xlsx">Excel (.xlsx)</option>
+        <option value="docx">Word (.docx)</option>
+        <option value="pdf">PDF (.pdf)</option>
+      </select>
+      <button class="btn btn--primary" id="artifactDownload" type="button">Download</button>
+      <button class="btn btn--icon" id="artifactClose" type="button" aria-label="Close preview">
+        <svg class="icon icon--16" aria-hidden="true"><use href="#i-x"/></svg>
+      </button>
+    </header>
+    <div class="artifact-pane__body" id="artifactBody"></div>
+  </aside>
+
 </div><!-- /.app-layout -->
 
 <!-- ═══════════════════════════════════════════════════════
@@ -836,6 +984,7 @@
 <script src="/js/components/workspaces.js"></script>
 <script src="/js/components/settings.js"></script>
 <script src="/js/components/motion.js"></script>
+<script src="/js/intro.js"></script>
 <script src="/js/ui.js"></script>
 <script src="/js/app.js"></script>
 

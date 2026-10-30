@@ -1,7 +1,9 @@
 /* ============================================================
    components/menu.js — anchored popover menu with roving focus
    Menu.open({ anchor, label, items, onSelect, align, matchWidth?, className? }) -> handle
-     items: [{ id, label, caption?, icon?, checked? }]  (role=menuitemradio)
+     items: [{ id, label, caption?, icon?, checked?, role?, type? }]
+       role "menuitem" is an action (no check); anything else is menuitemradio.
+       type "separator" draws a divider and is not focusable.
      matchWidth: panel is at least as wide as the anchor (dropdowns); className: extra modifier class
      onSelect(id) is called after the menu closed and focus returned.
    Menu.close() / Menu.isOpen(anchor?)
@@ -35,8 +37,9 @@ window.Menu = (function () {
     const vw = document.documentElement.clientWidth;
     const vh = document.documentElement.clientHeight;
 
-    // Prefer below; flip above when there is not enough room
+    // Prefer below; flip above when there is not enough room (the composer menu sits on the bottom edge)
     const below = a.bottom + gap + m.height <= vh - gap;
+    menu.classList.toggle("menu--above", !below);
     const top = below ? a.bottom + gap : Math.max(gap, a.top - gap - m.height);
 
     let left = align === "start" ? a.left : a.right - m.width;
@@ -58,12 +61,21 @@ window.Menu = (function () {
     // (never narrower than the default panel: a collapsed rail trigger is only 40px wide)
     if (matchWidth) menu.style.minWidth = Math.max(176, Math.round(anchor.getBoundingClientRect().width)) + "px";
 
-    const buttons = items.map((item) => {
+    const buttons = [];
+    items.forEach((item) => {
+      if (item.type === "separator") {
+        const sep = document.createElement("div");
+        sep.className = "menu__sep";
+        sep.setAttribute("role", "separator");
+        menu.appendChild(sep);
+        return;
+      }
+      const action = item.role === "menuitem";
       const b = document.createElement("button");
       b.type = "button";
       b.className = "menu__item";
-      b.setAttribute("role", "menuitemradio");
-      b.setAttribute("aria-checked", String(!!item.checked));
+      b.setAttribute("role", action ? "menuitem" : "menuitemradio");
+      if (!action) b.setAttribute("aria-checked", String(!!item.checked));
       b.tabIndex = -1;
       b.dataset.menuId = item.id;
 
@@ -81,15 +93,16 @@ window.Menu = (function () {
         text.appendChild(cap);
       }
       b.appendChild(text);
-      b.appendChild(Icons.el("check", { size: 16, cls: "menu__check" }));
+      if (!action) b.appendChild(Icons.el("check", { size: 16, cls: "menu__check" }));
 
       b.addEventListener("click", () => {
         close();
         if (onSelect) onSelect(item.id);
       });
       menu.appendChild(b);
-      return b;
+      buttons.push(b);
     });
+    if (!buttons.length) { menu.remove(); return null; }
 
     document.body.appendChild(menu);
     anchor.setAttribute("aria-expanded", "true");

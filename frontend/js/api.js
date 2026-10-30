@@ -95,6 +95,33 @@ window.API = (function () {
     return request(`/documents/${docId}?user_id=${encodeURIComponent(userId)}`, { method: "DELETE" });
   }
 
+  function listGithubRepos(userId = "default") {
+    return request(`/github/repos?user_id=${encodeURIComponent(userId)}`);
+  }
+
+  function connectGithub(url, token, userId = "default") {
+    const body = { url, user_id: userId };
+    if (token) body.token = token;
+    return request("/github/connect", { method: "POST", body: JSON.stringify(body) });
+  }
+
+  function deleteGithubRepo(repoId, userId = "default") {
+    return request(`/github/repos/${encodeURIComponent(repoId)}?user_id=${encodeURIComponent(userId)}`, {
+      method: "DELETE",
+    });
+  }
+
+  function startGithubDevice() {
+    return request("/github/oauth/device", { method: "POST", body: JSON.stringify({}) });
+  }
+
+  function pollGithubDevice(deviceCode, userId = "default") {
+    return request("/github/oauth/poll", {
+      method: "POST",
+      body: JSON.stringify({ device_code: deviceCode, user_id: userId }),
+    });
+  }
+
   // ── Models ────────────────────────────────────────────────
 
   /** Service status (database, providers, embeddings…). Read-only. */
@@ -115,7 +142,7 @@ window.API = (function () {
 
   /**
    * POST /chat/stream and dispatch each SSE event to handlers[eventName](data).
-   * Events: meta, status, citations, model, token, error, done.
+   * Events: meta, status, citations, model, token, artifact, error, done.
    * Resolves when the stream ends; rejects on HTTP errors (err.status, err.retryAfter) or abort.
    * opts.onOpen() is called once the server has accepted the request (HTTP 2xx, before any event).
    */
@@ -166,6 +193,33 @@ window.API = (function () {
     if (buffer.trim()) dispatch(buffer);
   }
 
+  function _downloadName(header, format) {
+    const star = /filename\*=UTF-8''([^;]+)/i.exec(header || "");
+    if (star) {
+      try { return decodeURIComponent(star[1].trim()); } catch (_) {}
+    }
+    const plain = /filename="([^"]+)"/i.exec(header || "");
+    if (plain) return plain[1];
+    return "document." + (format || "md");
+  }
+
+  /** GET the file built for this message. Resolves after the browser download starts. */
+  async function downloadArtifact(messageId, format, userId = "default") {
+    const params = new URLSearchParams({ format: format || "md", user_id: userId || "default" });
+    const resp = await fetch(`${getBaseUrl()}/messages/${encodeURIComponent(messageId)}/download?${params}`);
+    if (!resp.ok) throw await _httpError(resp);
+    const blob = await resp.blob();
+    const href = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = href;
+    link.download = _downloadName(resp.headers.get("Content-Disposition"), format);
+    link.rel = "noopener";
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    setTimeout(() => URL.revokeObjectURL(href), 1000);
+  }
+
   return {
     listSessions,
     createSession,
@@ -177,9 +231,15 @@ window.API = (function () {
     uploadFile,
     uploadUrl,
     deleteDocument,
+    listGithubRepos,
+    connectGithub,
+    deleteGithubRepo,
+    startGithubDevice,
+    pollGithubDevice,
     getModels,
     getHealth,
     getConfig,
     chatStream,
+    downloadArtifact,
   };
 })();

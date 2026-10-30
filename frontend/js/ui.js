@@ -112,8 +112,8 @@ window.UI = (function () {
     if (bd) bd.classList.add("is-open");
     _setMainInert(true);
     _syncSidebarChrome();
-    // The mode dropdown is the first workspace control in the drawer
-    const first = $("modeSelect") || _focusables(sb)[0];
+    // New Chat is the first control in the drawer (the workspace dropdown lives in the composer)
+    const first = $("newChatBtn") || _focusables(sb)[0];
     if (first) first.focus();
   }
 
@@ -487,7 +487,11 @@ window.UI = (function () {
     toast.hidden = true;
     _clearUploadError();
     if (window.Workspaces) Workspaces.setUploadBusy(false);
-    if (hadFocus) { const a = $("attachBtn"); if (a) a.focus(); }
+    if (hadFocus) {
+      const plus = $("composerPlus");
+      const target = plus && plus.getClientRects().length ? plus : $("attachBtn");
+      if (target) target.focus();
+    }
   }
 
   /**
@@ -691,6 +695,29 @@ window.UI = (function () {
     Dialog.close($("urlModal"));
   }
 
+  function showGithubModal() {
+    const modal = $("githubModal");
+    if (!modal) return;
+    const url = $("githubUrl");
+    const token = $("githubToken");
+    const help = $("githubDeviceHelp");
+    if (!modal.open) {
+      if (url) url.value = "";
+      if (token) token.value = "";
+      if (help) help.hidden = true;
+    }
+    Dialog.open(modal, { initialFocus: url });
+  }
+
+  function hideGithubModal() {
+    Dialog.close($("githubModal"));
+  }
+
+  function setGithubOauth(on) {
+    const btn = $("githubOauth");
+    if (btn) btn.hidden = !on;
+  }
+
   // ── Confirmation dialog (replaces window.confirm) ─────────
 
   /**
@@ -735,7 +762,7 @@ window.UI = (function () {
 
   // ── Active mode tab ───────────────────────────────────────
 
-  // ── Workspace mode dropdown (sidebar, above New Chat) ─────
+  // ── Workspace mode dropdown (composer, beside Web Search) ─
   // One trigger (#modeSelect) opens a menu with the four workspaces. The view owns only the
   // presentation: the controller registers UI.onModeChange(fn) and answers with UI.setActiveMode(mode).
 
@@ -769,8 +796,55 @@ window.UI = (function () {
       onSelect: (id) => {
         if (id === _mode) return;
         if (_modeHandler) _modeHandler(id);
-        closeSidebar();   // no-op unless the drawer / overlay is open; focus returns to the menu button
       },
+    });
+  }
+
+  /** Caption for My Documents inside the add menu. documents.js keeps #docsCardSub current. */
+  function _docsMenuCaption() {
+    const el = $("docsCardSub");
+    const text = el && el.textContent ? el.textContent.trim() : "";
+    return text && text !== "Manage your files" ? text : "View and manage indexed files";
+  }
+
+  /** Composer “+” menu: upload, add a URL, and My Documents. Actions reuse the existing paths. */
+  function toggleComposerMenu() {
+    const btn = $("composerPlus");
+    if (!btn) return;
+    if (Menu.isOpen(btn)) { Menu.close(); return; }
+    Menu.open({
+      anchor: btn,
+      label: "Add to chat",
+      align: "start",
+      className: "menu--composer",
+      items: [
+        { id: "upload", role: "menuitem", label: "Upload or add files", icon: "paperclip" },
+        { id: "url", role: "menuitem", label: "Add web URL", icon: "link" },
+        { id: "github", role: "menuitem", label: "Connect GitHub repo", icon: "github" },
+        { type: "separator" },
+        { id: "docs", role: "menuitem", label: "My Documents", icon: "folder", caption: _docsMenuCaption() },
+      ],
+      onSelect: (id) => {
+        if (id === "upload") { const a = $("attachBtn"); if (a) a.click(); }
+        else if (id === "url") { const a = $("addUrlBtn"); if (a) a.click(); }
+        else if (id === "github") { const a = $("addGithubBtn"); if (a) a.click(); }
+        else if (id === "docs") {
+          if (window.DocsView) DocsView.open();
+          if (_myDocsHandler) _myDocsHandler();
+        }
+      },
+    });
+  }
+
+  function _wireComposerMenu() {
+    const btn = $("composerPlus");
+    if (!btn) return;
+    btn.addEventListener("click", toggleComposerMenu);
+    btn.addEventListener("keydown", (e) => {
+      if ((e.key === "ArrowDown" || e.key === "ArrowUp") && !Menu.isOpen(btn)) {
+        e.preventDefault();
+        toggleComposerMenu();
+      }
     });
   }
 
@@ -807,9 +881,8 @@ window.UI = (function () {
     if (btn) {
       btn.dataset.mode = m.id;
       btn.setAttribute("aria-label", `Workspace mode: ${m.label}`);
-      btn.setAttribute("data-rail-tip", `Workspace: ${m.label}`);
       const icon = btn.querySelector(".mode-select__icon");
-      _paintModeIcon(icon, m.icon, 20, switched);
+      _paintModeIcon(icon, m.icon, 16, switched);
       const label = $("modeSelectLabel");
       if (label) label.textContent = m.label;
     }
@@ -871,6 +944,7 @@ window.UI = (function () {
     });
 
     _wireModeSelect();
+    _wireComposerMenu();
     if (window.DocsView) DocsView.init();
     if (window.Workspaces) Workspaces.init();
     if (window.SettingsView) SettingsView.init();
@@ -996,12 +1070,7 @@ window.UI = (function () {
       });
     });
 
-    // My Documents card: opens the file-management panel; the controller refreshes the list
-    const docs = $("myDocsBtn");
-    if (docs) docs.addEventListener("click", () => {
-      if (window.DocsView) DocsView.open();
-      if (_myDocsHandler) _myDocsHandler();
-    });
+    // My Documents lives in the composer add menu (_wireComposerMenu).
 
     // Theme: Light | Dark segmented switch and the narrow-screen quick toggle (view preference)
     const light = $("themeLight"), night = $("themeDark"), quick = $("themeQuick");
@@ -1068,6 +1137,12 @@ window.UI = (function () {
   /** Render the Integrations section from a GET /health body, or { loading } / { error }. */
   function renderIntegrations(data, opts) {
     if (window.SettingsView) SettingsView.renderIntegrations(data, opts);
+  }
+
+  function renderGithubRepos(repos, opts) {
+    if (window.SettingsView && typeof SettingsView.renderGithubRepos === "function") {
+      SettingsView.renderGithubRepos(repos, opts);
+    }
   }
 
   function openDocuments() {
@@ -1149,6 +1224,10 @@ window.UI = (function () {
     hideCitationModal,
     showUrlModal,
     hideUrlModal,
+    showGithubModal,
+    hideGithubModal,
+    setGithubOauth,
+    renderGithubRepos,
     confirm: confirmDialog,
     initDropzone,
     setActiveMode,

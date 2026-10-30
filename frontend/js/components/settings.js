@@ -8,7 +8,8 @@
      default model            -> the existing #modelSelect (its change event reaches the controller)
      integrations             -> GET /health, fetched by the controller (SettingsView.onPane)
    View only: it never fetches and keeps no application state.
-     SettingsView.open(pane?) / .setUserId(id) / .syncModels() / .renderIntegrations(data, opts) / .onPane(fn)
+     SettingsView.open(pane?) / .setUserId(id) / .syncModels() / .renderIntegrations(data, opts)
+     / .renderGithubRepos(repos, opts) / .onPane(fn)
    ============================================================ */
 
 window.SettingsView = (function () {
@@ -132,6 +133,8 @@ window.SettingsView = (function () {
     { key: "groq",       name: "Groq",          hint: "Chat models" },
     { key: "google",     name: "Google Gemini", hint: "Chat models" },
     { key: "tavily",     name: "Tavily",        hint: "Web search" },
+    { key: "serper",     name: "Serper",        hint: "Web search fallback" },
+    { key: "github",     name: "GitHub",        hint: "Repository connect" },
     { key: "embeddings", name: "Embeddings",    hint: "Document search" },
     { key: "reranker",   name: "Reranker",      hint: "Orders search results" },
     { key: "database",   name: "Database",      hint: "Chats and documents" },
@@ -141,8 +144,12 @@ window.SettingsView = (function () {
   function _badge(key, value) {
     const v = String(value == null ? "" : value);
     if (key === "database") return v === "connected" ? ["Connected", "ok", "circle-check"] : ["Unavailable", "bad", "circle-alert"];
-    if (key === "groq" || key === "google" || key === "tavily") {
+    if (key === "groq" || key === "google" || key === "tavily" || key === "serper") {
       return v === "configured" ? ["Key configured", "ok", "circle-check"] : ["No API key", "warn", "triangle-alert"];
+    }
+    if (key === "github") {
+      if (v === "oauth_ready") return ["OAuth ready", "ok", "circle-check"];
+      if (v === "pat_only") return ["Token or public repos", "warn", "info"];
     }
     if (v === "ready") return ["Ready", "ok", "circle-check"];
     if (v === "loading") return ["Loading", "warn", "loader-circle"];
@@ -181,6 +188,38 @@ window.SettingsView = (function () {
       list.appendChild(li);
     });
     if (note) note.textContent = data.status ? `Overall status: ${data.status}.` : "";
+  }
+
+  function renderGithubRepos(repos, opts) {
+    const list = $("setGithubRepos"), note = $("setGithubNote");
+    if (!list) return;
+    const o = opts || {};
+    list.textContent = "";
+    if (o.error) {
+      if (note) note.textContent = "Could not load connected repositories.";
+      return;
+    }
+    const rows = Array.isArray(repos) ? repos : [];
+    if (!rows.length) {
+      if (note) note.textContent = "No GitHub repositories connected.";
+      return;
+    }
+    if (note) note.textContent = "";
+    rows.forEach((r) => {
+      const li = _el("li", "status-row");
+      const text = _el("span", "status-row__text");
+      text.appendChild(_el("span", "status-row__name", (r.owner || "") + "/" + (r.repo || "")));
+      text.appendChild(_el("span", "status-row__hint",
+        (r.branch ? r.branch + " · " : "") + (r.file_count == null ? "" : r.file_count + " files")));
+      const btn = _el("button", "btn btn--ghost btn--sm", "Disconnect");
+      btn.type = "button";
+      btn.addEventListener("click", () => {
+        if (typeof o.onDisconnect === "function") o.onDisconnect(r.id);
+      });
+      li.appendChild(text);
+      li.appendChild(btn);
+      list.appendChild(li);
+    });
   }
 
   // ── Public ────────────────────────────────────────────────
@@ -251,5 +290,5 @@ window.SettingsView = (function () {
     select("appearance");
   }
 
-  return { init, open, close, select, setUserId, syncModels, renderIntegrations, onPane };
+  return { init, open, close, select, setUserId, syncModels, renderIntegrations, renderGithubRepos, onPane };
 })();

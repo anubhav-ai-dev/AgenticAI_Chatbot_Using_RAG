@@ -118,6 +118,7 @@ window.Chat = (function () {
         <div class="message__bubble">
           <div class="md-content" id="streamContent-${msgId}"></div>
         </div>
+        <div class="file-card-slot" id="fileCard-${msgId}" hidden></div>
         <div class="sources" id="citationCards-${msgId}" hidden></div>
         <div class="message__badges" id="msgBadges-${msgId}"></div>
         <div class="message__actions">
@@ -419,6 +420,21 @@ window.Chat = (function () {
       /** Drive the avatar visualization directly: idle | processing | responding | error */
       setVizState(state) { _setViz(el, state); },
 
+      /** Attach the document that arrived on the artifact event. An error is a note, not a file card. */
+      attachArtifact(data) {
+        if (!data) return;
+        if (data.error) {
+          _setNote(el, String(data.error));
+          return;
+        }
+        const slot = document.getElementById(`fileCard-${msgId}`);
+        _mountFileCard(slot, data, data.message_id, data.format);
+        const opener = slot && slot.querySelector(".file-card__open");
+        openArtifact({
+          doc: data, messageId: data.message_id || "", opener: opener || undefined, format: data.format,
+        });
+      },
+
       getRawText() { return _rawText; },
     };
   }
@@ -568,6 +584,7 @@ window.Chat = (function () {
     _fillSources(el.querySelector(".sources"), cits, histId);
 
     // Real persisted flags (chat_service stores partial / stopped in the message meta)
+    if (meta.artifact) _mountFileCard(el.querySelector(".file-card-slot"), meta.artifact, msg.id, meta.artifact_format);
     if (meta.stopped) _setNote(el, "Stopped. This answer may be incomplete.");
     else if (meta.partial) _setNote(el, "Response was interrupted. This answer may be incomplete.");
 
@@ -806,6 +823,320 @@ window.Chat = (function () {
     };
   }
 
+  // ── Document preview (one pane, opened from a file card) ──
+
+  let _artifactOpen = false;
+  let _artifactOpener = null;
+  let _artifactMessageId = "";
+  let _artifactDoc = null;
+  let _onArtifactDownload = null;
+  const _FORMAT_LABEL = { md: "Markdown", txt: "Plain text", xlsx: "Excel", docx: "Word", pdf: "PDF" };
+  let _artifactWired = false;
+  const _artifactNarrow = window.matchMedia("(max-width: 767px)");
+
+  function _downloadFormat(value) {
+    return ["md", "txt", "xlsx", "docx", "pdf"].indexOf(value) >= 0 ? value : "md";
+  }
+
+  function fileKeywordFormat(text) {
+    const t = String(text || "");
+    if (!t) return "";
+    if (/\bpdf\b|\.pdf\b/i.test(t)) return "pdf";
+    if (/\b(?:docx|word)\b|\.docx\b/i.test(t)) return "docx";
+    if (/\b(?:xlsx|xlxs|xls|excel|spreadsheet|csv)\b|\.(?:xlsx|xlxs|xls|csv)\b/i.test(t)) return "xlsx";
+    if (/\b(?:plain\s+text|text\s+files?)\b|\.txt\b/i.test(t)) return "txt";
+    if (/\bmarkdown\b|\.md\b/i.test(t)) return "md";
+    if (/\bdocument\b/i.test(t)) return "md";
+    return "";
+  }
+
+  function prepareFilePreview(text) {
+    const fmt = fileKeywordFormat(text);
+    if (!fmt) return;
+    openArtifact({
+      doc: { title: "Document", blocks: [{ type: "paragraph", text: "Preparing your file…" }] },
+      messageId: "",
+      format: fmt,
+    });
+  }
+
+  function _formatLabel(format) {
+    return _FORMAT_LABEL[_downloadFormat(format)];
+  }
+
+  function _cardKind(format) {
+    return _downloadFormat(format) === "xlsx" ? "Spreadsheet" : "Document";
+  }
+
+  function _paneTitle(doc, format) {
+    return String((doc && doc.title) || "Document") + " " + _formatLabel(format);
+  }
+
+  function _mountFileCard(slot, doc, messageId, format) {
+    if (!slot) return;
+    slot.textContent = "";
+    if (!doc || !doc.title || !Array.isArray(doc.blocks) || !doc.blocks.length) {
+      slot.hidden = true;
+      return;
+    }
+    slot.hidden = false;
+    const chosen = _downloadFormat(format);
+    const card = _el("div", "file-card");
+    card.setAttribute("role", "group");
+    card.setAttribute("aria-label", doc.title);
+    card.appendChild(chosen === "xlsx" ? Icons.el("file-spreadsheet", { size: 20 }) : Icons.el("file-text", { size: 20 }));
+    const text = _el("div", "file-card__text");
+    text.appendChild(_el("div", "file-card__name", String(doc.title)));
+    text.appendChild(_el("div", "file-card__type", _cardKind(chosen) + " · " + _formatLabel(chosen)));
+    card.appendChild(text);
+    const save = _el("button", "btn btn--icon file-card__save");
+    save.type = "button";
+    save.setAttribute("aria-label", "Download " + doc.title);
+    save.appendChild(Icons.el("arrow-down", { size: 16 }));
+    save.addEventListener("click", (event) => {
+      event.stopPropagation();
+      _saveArtifact(save, messageId || "", chosen);
+    });
+    const btn = _el("button", "btn btn--icon file-card__open");
+    btn.type = "button";
+    btn.setAttribute("aria-label", "Open preview of " + doc.title);
+    btn.appendChild(Icons.el("arrow-right", { size: 16 }));
+    const open = () => openArtifact({ doc, messageId: messageId || "", opener: btn, format: chosen });
+    btn.addEventListener("click", (event) => { event.stopPropagation(); open(); });
+    card.addEventListener("click", open);
+    card.appendChild(save);
+    card.appendChild(btn);
+    slot.appendChild(card);
+  }
+
+  function _saveArtifact(btn, messageId, format) {
+    if (typeof _onArtifactDownload !== "function") return;
+    btn.disabled = true;
+    Promise.resolve(_onArtifactDownload(messageId, format)).finally(() => {
+      if (btn.isConnected) btn.disabled = false;
+    });
+  }
+
+  function _artifactFocusables(root) {
+    const sel = 'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+    return Array.from(root.querySelectorAll(sel)).filter((n) => n.getClientRects().length > 0);
+  }
+
+  function _setChatCovered(cover) {
+    const main = document.getElementById("main");
+    if (!main || !("inert" in main)) return;
+    const sidebarOpen = window.UI && typeof UI.isSidebarOpen === "function" && UI.isSidebarOpen();
+    main.inert = !!(cover || sidebarOpen);
+  }
+
+  function _syncArtifactLayer() {
+    const pane = document.getElementById("artifactPane");
+    if (!pane || !_artifactOpen) return;
+    if (_artifactNarrow.matches) {
+      pane.setAttribute("role", "dialog");
+      pane.setAttribute("aria-modal", "true");
+    } else {
+      pane.setAttribute("role", "complementary");
+      pane.removeAttribute("aria-modal");
+    }
+    _setChatCovered(_artifactNarrow.matches);
+  }
+
+  function _paintArtifactPreview(doc, format) {
+    const body = document.getElementById("artifactBody");
+    const title = document.getElementById("artifactTitle");
+    if (!body || !doc) return;
+    const fmt = _downloadFormat(format);
+    if (title) title.textContent = _paneTitle(doc, fmt);
+    body.className = "artifact-pane__body artifact-pane__body--" + fmt;
+    body.innerHTML = Utils.renderArtifactHtml(doc, fmt);
+    if (window.Utils && typeof Utils.highlightCode === "function") Utils.highlightCode(body);
+  }
+
+  function openArtifact({ doc, messageId, opener, format }) {
+    _wireArtifactPane();
+    const pane = document.getElementById("artifactPane");
+    const body = document.getElementById("artifactBody");
+    const title = document.getElementById("artifactTitle");
+    const scrim = document.getElementById("artifactScrim");
+    if (!pane || !body || !title || !doc) return;
+    _artifactOpener = opener || null;
+    _artifactMessageId = messageId || "";
+    _artifactDoc = doc;
+    const formatEl = document.getElementById("artifactFormat");
+    if (formatEl) formatEl.value = _downloadFormat(format);
+    _paintArtifactPreview(doc, format);
+    pane.classList.add("is-open");
+    pane.setAttribute("aria-hidden", "false");
+    pane.inert = false;
+    if (scrim) scrim.classList.add("is-open");
+    _artifactOpen = true;
+    _syncArtifactLayer();
+    const closeBtn = document.getElementById("artifactClose");
+    if (closeBtn) closeBtn.focus();
+  }
+
+  function closeArtifact() {
+    if (!_artifactOpen) return;
+    const pane = document.getElementById("artifactPane");
+    const scrim = document.getElementById("artifactScrim");
+    const opener = _artifactOpener;
+    if (pane) {
+      pane.classList.remove("is-open");
+      pane.setAttribute("aria-hidden", "true");
+      pane.setAttribute("role", "complementary");
+      pane.removeAttribute("aria-modal");
+      pane.inert = true;
+    }
+    if (scrim) scrim.classList.remove("is-open");
+    _artifactOpen = false;
+    _setChatCovered(false);
+    if (opener && document.contains(opener) && typeof opener.focus === "function") opener.focus();
+  }
+
+  function _onArtifactKey(e) {
+    if (!_artifactOpen) return;
+    if (e.key === "Escape") {
+      if (document.querySelector("dialog[open]")) return;
+      if (window.Menu && typeof Menu.isOpen === "function" && Menu.isOpen()) return;
+      e.preventDefault();
+      e.stopPropagation();
+      closeArtifact();
+      return;
+    }
+    if (e.key !== "Tab" || !_artifactNarrow.matches) return;
+    const pane = document.getElementById("artifactPane");
+    if (!pane) return;
+    const nodes = _artifactFocusables(pane);
+    if (!nodes.length) { e.preventDefault(); return; }
+    const first = nodes[0];
+    const last = nodes[nodes.length - 1];
+    const active = document.activeElement;
+    const inside = pane.contains(active);
+    if (!inside || (e.shiftKey && active === first) || (!e.shiftKey && active === last)) {
+      e.preventDefault();
+      (e.shiftKey ? last : first).focus();
+    }
+  }
+
+  function _downloadArtifact(btn) {
+    const formatEl = document.getElementById("artifactFormat");
+    const format = formatEl ? formatEl.value : "md";
+    if (_artifactDoc) {
+      const title = document.getElementById("artifactTitle");
+      if (title) title.textContent = _paneTitle(_artifactDoc, format);
+    }
+    _saveArtifact(btn, _artifactMessageId, format);
+  }
+
+  const ARTIFACT_W_KEY = "artifactWidth";
+  const ARTIFACT_W_MIN = 280;
+
+  function _artifactMax() {
+    return Math.max(ARTIFACT_W_MIN, Math.round(window.innerWidth * 0.75));
+  }
+
+  function _clampArtifactWidth(px) {
+    return Math.max(ARTIFACT_W_MIN, Math.min(_artifactMax(), Math.round(px)));
+  }
+
+  function _applyArtifactWidth(px, persist) {
+    const pane = document.getElementById("artifactPane");
+    const handle = document.getElementById("artifactResize");
+    if (!pane) return;
+    const w = _clampArtifactWidth(px);
+    pane.style.setProperty("--artifact-w", w + "px");
+    if (handle) {
+      handle.setAttribute("aria-valuenow", String(w));
+      handle.setAttribute("aria-valuemin", String(ARTIFACT_W_MIN));
+      handle.setAttribute("aria-valuemax", String(_artifactMax()));
+    }
+    if (persist) {
+      try { localStorage.setItem(ARTIFACT_W_KEY, String(w)); } catch (_) { /* private mode */ }
+    }
+  }
+
+  function _resetArtifactWidth() {
+    const pane = document.getElementById("artifactPane");
+    if (pane) pane.style.removeProperty("--artifact-w");
+    try { localStorage.removeItem(ARTIFACT_W_KEY); } catch (_) { /* private mode */ }
+    const handle = document.getElementById("artifactResize");
+    if (handle && pane) {
+      const w = Math.round(pane.getBoundingClientRect().width);
+      handle.setAttribute("aria-valuenow", String(w));
+    }
+  }
+
+  function _restoreArtifactWidth() {
+    try {
+      const v = parseInt(localStorage.getItem(ARTIFACT_W_KEY), 10);
+      if (Number.isFinite(v)) _applyArtifactWidth(v, false);
+    } catch (_) { /* private mode */ }
+  }
+
+  function _wireArtifactResize(handle) {
+    if (!handle || handle.dataset.wired) return;
+    handle.dataset.wired = "1";
+    handle.setAttribute("aria-valuemin", String(ARTIFACT_W_MIN));
+    handle.addEventListener("pointerdown", (e) => {
+      if (_artifactNarrow.matches || e.button) return;
+      const pane = document.getElementById("artifactPane");
+      if (!pane) return;
+      e.preventDefault();
+      handle.setPointerCapture(e.pointerId);
+      const startX = e.clientX;
+      const startW = pane.getBoundingClientRect().width;
+      const move = (ev) => { _applyArtifactWidth(startW + (startX - ev.clientX), false); };
+      const up = (ev) => {
+        handle.releasePointerCapture(ev.pointerId);
+        handle.removeEventListener("pointermove", move);
+        handle.removeEventListener("pointerup", up);
+        _applyArtifactWidth(pane.getBoundingClientRect().width, true);
+      };
+      handle.addEventListener("pointermove", move);
+      handle.addEventListener("pointerup", up);
+    });
+    handle.addEventListener("dblclick", () => { _resetArtifactWidth(); });
+    handle.addEventListener("keydown", (e) => {
+      if (_artifactNarrow.matches) return;
+      const pane = document.getElementById("artifactPane");
+      if (!pane) return;
+      const w = pane.getBoundingClientRect().width;
+      if (e.key === "ArrowLeft") { e.preventDefault(); _applyArtifactWidth(w + 16, true); }
+      else if (e.key === "ArrowRight") { e.preventDefault(); _applyArtifactWidth(w - 16, true); }
+      else if (e.key === "Home") { e.preventDefault(); _resetArtifactWidth(); }
+    });
+  }
+
+  function _wireArtifactPane() {
+    if (_artifactWired) return;
+    const pane = document.getElementById("artifactPane");
+    const scrim = document.getElementById("artifactScrim");
+    const closeBtn = document.getElementById("artifactClose");
+    const downloadBtn = document.getElementById("artifactDownload");
+    if (!pane || !scrim || !closeBtn || !downloadBtn) return;
+    _artifactWired = true;
+    closeBtn.addEventListener("click", closeArtifact);
+    scrim.addEventListener("click", closeArtifact);
+    downloadBtn.addEventListener("click", () => _downloadArtifact(downloadBtn));
+    const formatEl = document.getElementById("artifactFormat");
+    if (formatEl) formatEl.addEventListener("change", () => {
+      if (_artifactDoc) _paintArtifactPreview(_artifactDoc, formatEl.value);
+    });
+    document.addEventListener("keydown", _onArtifactKey, true);
+    if (_artifactNarrow.addEventListener) _artifactNarrow.addEventListener("change", _syncArtifactLayer);
+    _restoreArtifactWidth();
+    _wireArtifactResize(document.getElementById("artifactResize"));
+  }
+
+  /** Controller hook: onDownload(messageId, format) builds the file. The pane never fetches. */
+  function bindArtifact(handlers) {
+    _onArtifactDownload = handlers && typeof handlers.onDownload === "function" ? handlers.onDownload : null;
+    _wireArtifactPane();
+  }
+
+  _wireArtifactPane();
+
   return {
     appendUserMessage,
     holdLastAnswer,
@@ -816,5 +1147,8 @@ window.Chat = (function () {
     clearChat,
     copyMessage,
     getCitation,
+    bindArtifact,
+    fileKeywordFormat,
+    prepareFilePreview,
   };
 })();

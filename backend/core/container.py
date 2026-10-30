@@ -17,12 +17,13 @@ import httpx
 from fastapi import Depends, Request
 
 from backend.client.http import build_http_client
-from backend.client.search_client import TavilyClient
+from backend.client.search_client import SerperClient, TavilyClient
 from backend.client.web_client import WebPageClient
 from backend.core.config import Settings
 from backend.core.database import Database
 from backend.services.chat_service import ChatService, QueryRouter
 from backend.services.document_service import DocumentService
+from backend.services.github_service import GitHubService
 from backend.services.embedding_service import EmbeddingService
 from backend.services.index_store import HybridIndexStore
 from backend.services.llm_service import LLMService
@@ -59,8 +60,12 @@ class ServiceContainer:
         self.quota: QuotaGuard = o.get("quota") or QuotaGuard()
         self.llm: LLMService = o.get("llm") or LLMService(settings, self.quota, self.http)
         self.search: WebSearchService = o.get("search") or WebSearchService(
-            settings, TavilyClient(settings.tavily_api_key, settings.tavily_base_url,
-                                   self.http, settings.search_timeout_s))
+            settings,
+            TavilyClient(settings.tavily_api_key, settings.tavily_base_url,
+                         self.http, settings.search_timeout_s),
+            SerperClient(settings.serper_api_key, settings.serper_base_url,
+                         self.http, settings.search_timeout_s),
+        )
         self.prompts: PromptBuilder = o.get("prompts") or PromptBuilder(settings)
         self.sessions: SessionService = o.get("sessions") or SessionService(settings, self.db)
         self.semantic_cache: SemanticCache = o.get("semantic_cache") or SemanticCache(
@@ -68,9 +73,13 @@ class ServiceContainer:
             settings.semantic_cache_threshold)
         self.rate_limiter: RateLimiter = o.get("rate_limiter") or RateLimiter(
             settings.rate_limit_rpm_per_user)
+        self.download_limiter: RateLimiter = o.get("download_limiter") or RateLimiter(
+            settings.rate_limit_rpm_per_user)
+        self.github: GitHubService = o.get("github") or GitHubService(
+            settings, self.db, self.http, self.documents, self.llm)
         self.chat: ChatService = o.get("chat") or ChatService(
             settings, self.llm, self.retrieval, self.search, self.prompts,
-            self.sessions, self.semantic_cache, QueryRouter())
+            self.sessions, self.semantic_cache, QueryRouter(), github=self.github)
 
         self._background: list[asyncio.Task] = []
 
@@ -130,7 +139,9 @@ class ServiceContainer:
         providers = self.settings.provider_configs()
         for name, cfg in providers.items():
             services[name] = "configured" if cfg.configured else "missing_key"
-        services["tavily"] = "configured" if self.search.available else "missing_key"
+        services["tavily"] = "configured" if self.settings.tavily_api_key else "missing_key"
+        services["serper"] = "configured" if self.settings.serper_api_key else "missing_key"
+        services["github"] = "oauth_ready" if self.github.oauth_configured else "pat_only"
 
         emb = self.embedder.status()
         rer = self.reranker.status()
@@ -179,3 +190,7 @@ def get_search_service(c: ServiceContainer = Depends(get_container)) -> WebSearc
 
 def get_llm_service(c: ServiceContainer = Depends(get_container)) -> LLMService:
     return c.llm
+
+
+def get_github_service(c: ServiceContainer = Depends(get_container)) -> GitHubService:
+    return c.github

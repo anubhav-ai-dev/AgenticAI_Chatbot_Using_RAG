@@ -165,6 +165,130 @@ window.Utils = (function () {
     return tpl.innerHTML;
   }
 
+  function _artifactMarkdown(doc) {
+    const lines = [];
+    if (doc.title) lines.push("# " + String(doc.title), "");
+    (doc.blocks || []).forEach((block) => {
+      if (!block || typeof block !== "object") return;
+      if (block.type === "heading") {
+        const level = Math.min(3, Math.max(2, Number(block.level) || 2));
+        lines.push("#".repeat(level) + " " + (block.text == null ? "" : String(block.text)), "");
+      } else if (block.type === "paragraph") {
+        lines.push(block.text == null ? "" : String(block.text), "");
+      } else if (block.type === "list" && Array.isArray(block.items)) {
+        block.items.forEach((item, i) => {
+          const prefix = block.ordered ? (i + 1) + ". " : "- ";
+          lines.push(prefix + (item == null ? "" : String(item)));
+        });
+        lines.push("");
+      } else if (block.type === "code") {
+        lines.push("```" + String(block.language || "").trim(), block.text == null ? "" : String(block.text), "```", "");
+      } else if (block.type === "table" && Array.isArray(block.columns)) {
+        const cols = block.columns.map((c) => String(c == null ? "" : c).replace(/\|/g, "\\|"));
+        lines.push("| " + cols.join(" | ") + " |");
+        lines.push("| " + cols.map(() => "---").join(" | ") + " |");
+        (Array.isArray(block.rows) ? block.rows : []).forEach((row) => {
+          const cells = cols.map((_, i) => String(row && row[i] != null ? row[i] : "").replace(/\|/g, "\\|"));
+          lines.push("| " + cells.join(" | ") + " |");
+        });
+        lines.push("");
+      }
+    });
+    return lines.join("\n");
+  }
+
+  function _stripInline(text) {
+    return String(text == null ? "" : text)
+      .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1")
+      .replace(/`([^`]+)`/g, "$1")
+      .replace(/(\*\*|__)(.+?)\1/g, "$2")
+      .replace(/\*(.*?)\*/g, "$1")
+      .replace(/_(.*?)_/g, "$1");
+  }
+
+  function _artifactPlain(doc) {
+    const lines = [];
+    const title = _stripInline(doc.title || "Document");
+    lines.push(title, "=".repeat(Math.min(48, Math.max(3, title.length))), "");
+    (doc.blocks || []).forEach((block) => {
+      if (!block || typeof block !== "object") return;
+      if (block.type === "heading") {
+        const heading = _stripInline(block.text);
+        lines.push(heading, "-".repeat(Math.min(40, Math.max(3, heading.length))), "");
+      } else if (block.type === "paragraph") {
+        lines.push(_stripInline(block.text), "");
+      } else if (block.type === "list" && Array.isArray(block.items)) {
+        block.items.forEach((item, i) => {
+          const prefix = block.ordered ? "  " + (i + 1) + ". " : "  • ";
+          lines.push(prefix + _stripInline(item));
+        });
+        lines.push("");
+      } else if (block.type === "code") {
+        String(block.text == null ? "" : block.text).split("\n").forEach((row) => {
+          lines.push("    " + row);
+        });
+        lines.push("");
+      } else if (block.type === "table" && Array.isArray(block.columns)) {
+        lines.push("  " + block.columns.map(_stripInline).join("\t"));
+        (Array.isArray(block.rows) ? block.rows : []).forEach((row) => {
+          const cells = block.columns.map((_, i) => _stripInline(row && row[i] != null ? row[i] : ""));
+          lines.push("  " + cells.join("\t"));
+        });
+        lines.push("");
+      }
+    });
+    return lines.join("\n").replace(/\s+$/, "") + "\n";
+  }
+
+  function _artifactSheet(doc) {
+    const cell = (value) => escapeHtml(_stripInline(value));
+    const parts = [];
+    if (doc.title) {
+      parts.push("<table><thead><tr><th>" + cell(doc.title) + "</th></tr></thead></table>");
+    }
+    (doc.blocks || []).forEach((block) => {
+      if (!block || typeof block !== "object") return;
+      if (block.type === "heading") {
+        parts.push("<table><thead><tr><th>" + cell(block.text) + "</th></tr></thead></table>");
+      } else if (block.type === "paragraph") {
+        parts.push("<table><tbody><tr><td>" + cell(block.text).replace(/\n/g, "<br>") + "</td></tr></tbody></table>");
+      } else if (block.type === "list" && Array.isArray(block.items)) {
+        const rows = block.items.map((item, i) => {
+          const prefix = block.ordered ? (i + 1) + ". " : "• ";
+          return "<tr><td>" + cell(prefix + String(item == null ? "" : item)) + "</td></tr>";
+        }).join("");
+        parts.push("<table><tbody>" + rows + "</tbody></table>");
+      } else if (block.type === "code") {
+        parts.push("<table><tbody><tr><td><pre>" + escapeHtml(String(block.text || "")) + "</pre></td></tr></tbody></table>");
+      } else if (block.type === "table" && Array.isArray(block.columns)) {
+        const head = "<tr>" + block.columns.map((c) => "<th>" + cell(c) + "</th>").join("") + "</tr>";
+        const body = (Array.isArray(block.rows) ? block.rows : []).map((row) => {
+          return "<tr>" + block.columns.map((_, i) => "<td>" + cell(row && row[i] != null ? row[i] : "") + "</td>").join("") + "</tr>";
+        }).join("");
+        parts.push("<table><thead>" + head + "</thead><tbody>" + body + "</tbody></table>");
+      }
+    });
+    return parts.join("");
+  }
+
+  /**
+   * Preview HTML for a structured document. Reconstruct markdown from blocks and
+   * run the same marked + DOMPurify path as chat so **bold** becomes real emphasis.
+   * Plain text and Excel use a format-matched layout; PDF/Word share the document view.
+   */
+  function renderArtifactHtml(doc, format) {
+    if (!doc || !Array.isArray(doc.blocks)) return "";
+    if (format === "txt") {
+      const html = "<pre>" + escapeHtml(_artifactPlain(doc)) + "</pre>";
+      return window.DOMPurify ? sanitizeMarkdownHtml(html) : html;
+    }
+    if (format === "xlsx") {
+      const html = _artifactSheet(doc);
+      return window.DOMPurify ? sanitizeMarkdownHtml(html) : html;
+    }
+    return renderMarkdown(_artifactMarkdown(doc));
+  }
+
   /** Markdown → sanitised HTML. Falls back to escaped text if a library is missing. */
   function renderMarkdown(text) {
     if (!text) return "";
@@ -301,6 +425,7 @@ window.Utils = (function () {
 
   return {
     renderMarkdown,
+    renderArtifactHtml,
     highlightCode,
     copyText,
     escapeHtml,

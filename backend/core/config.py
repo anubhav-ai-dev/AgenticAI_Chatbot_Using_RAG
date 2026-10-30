@@ -115,12 +115,16 @@ class Settings(BaseSettings):
     groq_api_key: Optional[str] = None
     google_api_key: Optional[str] = None
     tavily_api_key: Optional[str] = None
+    serper_api_key: Optional[str] = None
     cohere_api_key: Optional[str] = None
+    github_client_id: Optional[str] = None
+    github_client_secret: Optional[str] = None
 
     # Provider endpoints (OpenAI-compatible chat/completions)
     groq_base_url: str = "https://api.groq.com/openai/v1"
     google_base_url: str = "https://generativelanguage.googleapis.com/v1beta/openai"
     tavily_base_url: str = "https://api.tavily.com"
+    serper_base_url: str = "https://google.serper.dev"
 
     # LLM
     llm_default_model: str = "openai/gpt-oss-120b"
@@ -277,7 +281,7 @@ class Settings(BaseSettings):
                 warnings.append(f"LLM_FALLBACK_CHAIN entry {model_id!r} is not in the registry (ignored)")
         if not any(p.configured for p in self.provider_configs().values()):
             warnings.append("No LLM provider key set (GROQ_API_KEY / GOOGLE_API_KEY): chat will return 503")
-        if not self.tavily_api_key:
+        if not self.tavily_api_key and not self.serper_api_key:
             warnings.append("TAVILY_API_KEY not set: web search disabled")
         return warnings
 
@@ -285,7 +289,7 @@ class Settings(BaseSettings):
         """Settings snapshot safe to log (keys reduced to set/unset)."""
         data = self.model_dump()
         for key in list(data):
-            if key.endswith("_api_key"):
+            if key.endswith("_api_key") or key.endswith("_secret"):
                 data[key] = "set" if data[key] else "unset"
         data.pop("llm_models", None)
         return data

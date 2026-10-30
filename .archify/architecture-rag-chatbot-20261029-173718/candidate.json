@@ -1,0 +1,230 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "Agentic RAG chatbot",
+    "locale": "en",
+    "output": ".archify/architecture-rag-chatbot-20261029-173718/rag-chatbot-architecture.html",
+    "quality_profile": "showcase",
+    "repository": {
+      "url": "https://github.com/anubhav-ai-dev/AgenticAI_Chatbot_Using_RAG.git",
+      "provider": "github",
+      "revision": "42a5f4e7e1f3691c2ddf8f14e218dfc2ff05b1cf"
+    },
+    "views": [
+      {
+        "id": "chat",
+        "label": "Chat request",
+        "focus": ["browser", "api", "chat", "sqlite", "retrieval", "index", "tavily", "llm"],
+        "note": "Route the question, optionally read the index or Tavily, then stream an answer."
+      },
+      {
+        "id": "upload",
+        "label": "Document upload",
+        "focus": ["browser", "api", "docs", "sqlite", "index"],
+        "note": "Parse and chunk, write FAISS and FTS, then store the document row."
+      },
+      {
+        "id": "mcp",
+        "label": "MCP tools",
+        "focus": ["mcp", "chat", "retrieval", "tavily", "llm"],
+        "note": "The stdio server reuses the same container and skips the HTTP routes."
+      }
+    ]
+  },
+  "components": [
+    {
+      "id": "browser",
+      "type": "frontend",
+      "label": "Browser",
+      "sublabel": "SPA",
+      "pos": [20, 196],
+      "size": [150, 64],
+      "sources": [
+        { "path": "frontend/index.html", "line": 1, "end_line": 9, "label": "SPA page" },
+        { "path": "frontend/js/app.js", "line": 1, "end_line": 20, "label": "Chat state" },
+        { "path": "frontend/js/api.js", "line": 116, "end_line": 129, "label": "POST /chat/stream" }
+      ]
+    },
+    {
+      "id": "mcp",
+      "type": "external",
+      "label": "MCP client",
+      "sublabel": "stdio, optional",
+      "pos": [644, 18],
+      "size": [180, 56],
+      "sources": [
+        { "path": "backend/api/mcp_server.py", "line": 1, "end_line": 8, "label": "Optional stdio entry" },
+        { "path": "backend/api/mcp_server.py", "line": 50, "end_line": 89, "label": "Tools on the container" },
+        { "path": "backend/api/mcp_server.py", "line": 92, "end_line": 94, "label": "stdio run" }
+      ]
+    },
+    {
+      "id": "api",
+      "type": "backend",
+      "label": "FastAPI",
+      "sublabel": "HTTP :8000",
+      "pos": [248, 196],
+      "size": [164, 64],
+      "sources": [
+        { "path": "backend/main.py", "line": 65, "end_line": 107, "label": "App, CORS, static SPA" },
+        { "path": "backend/api/routes.py", "line": 71, "end_line": 89, "label": "429 and LLM errors" },
+        { "path": "backend/api/routes.py", "line": 130, "end_line": 148, "label": "SSE chat route" }
+      ]
+    },
+    {
+      "id": "chat",
+      "type": "backend",
+      "label": "Chat pipeline",
+      "sublabel": "route and stream",
+      "pos": [524, 196],
+      "size": [420, 68],
+      "sources": [
+        { "path": "backend/services/chat_service.py", "line": 159, "end_line": 225, "label": "Route, cache, RAG, web" },
+        { "path": "backend/services/chat_service.py", "line": 252, "end_line": 307, "label": "Generate and persist" },
+        { "path": "backend/services/chat_service.py", "line": 349, "end_line": 377, "label": "Web and rewrite" }
+      ]
+    },
+    {
+      "id": "llm",
+      "type": "external",
+      "label": "Groq and Gemini",
+      "sublabel": "chat completions",
+      "pos": [1072, 196],
+      "size": [156, 64],
+      "sources": [
+        { "path": "backend/core/config.py", "line": 120, "end_line": 122, "label": "Provider base URLs" },
+        { "path": "backend/client/llm_client.py", "line": 40, "end_line": 65, "label": "OpenAI-compatible call" },
+        { "path": "backend/services/llm_service.py", "line": 234, "end_line": 279, "label": "Failover before tokens" }
+      ]
+    },
+    {
+      "id": "docs",
+      "type": "backend",
+      "label": "Document ingest",
+      "sublabel": "parse and chunk",
+      "pos": [248, 408],
+      "size": [164, 64],
+      "sources": [
+        { "path": "backend/api/routes.py", "line": 254, "end_line": 276, "label": "POST /upload" },
+        { "path": "backend/services/document_service.py", "line": 59, "end_line": 83, "label": "Parse uploaded file" },
+        { "path": "backend/services/document_service.py", "line": 123, "end_line": 145, "label": "Index, then DB row" }
+      ]
+    },
+    {
+      "id": "sqlite",
+      "type": "database",
+      "label": "SQLite",
+      "sublabel": "chatbot.db",
+      "pos": [524, 408],
+      "size": [176, 64],
+      "sources": [
+        { "path": "backend/core/config.py", "line": 217, "end_line": 219, "label": "Default database URL" },
+        { "path": "backend/core/database.py", "line": 25, "end_line": 60, "label": "Engine and rollback" },
+        { "path": "backend/services/session_service.py", "line": 92, "end_line": 98, "label": "Save a message" }
+      ]
+    },
+    {
+      "id": "retrieval",
+      "type": "backend",
+      "label": "Hybrid retrieval",
+      "sublabel": "RRF then rerank",
+      "pos": [776, 408],
+      "size": [168, 64],
+      "sources": [
+        { "path": "backend/services/retrieval_service.py", "line": 88, "end_line": 139, "label": "Dense and lexical search" },
+        { "path": "backend/services/retrieval_service.py", "line": 157, "end_line": 164, "label": "Rerank or fused order" },
+        { "path": "backend/services/embedding_service.py", "line": 1, "end_line": 6, "label": "Local, Google, or Cohere" }
+      ]
+    },
+    {
+      "id": "tavily",
+      "type": "external",
+      "label": "Tavily",
+      "sublabel": "api.tavily.com",
+      "pos": [1072, 408],
+      "size": [156, 64],
+      "sources": [
+        { "path": "backend/core/container.py", "line": 61, "end_line": 63, "label": "Search client wiring" },
+        { "path": "backend/client/search_client.py", "line": 22, "end_line": 42, "label": "POST /search, one retry" },
+        { "path": "backend/services/chat_service.py", "line": 349, "end_line": 354, "label": "Research or single search" }
+      ]
+    },
+    {
+      "id": "index",
+      "type": "database",
+      "label": "FAISS + FTS",
+      "sublabel": "rag.sqlite3",
+      "pos": [776, 592],
+      "size": [168, 64],
+      "sources": [
+        { "path": "backend/services/index_store.py", "line": 81, "end_line": 97, "label": "Open index files" },
+        { "path": "backend/services/index_store.py", "line": 147, "end_line": 184, "label": "Atomic chunk write" },
+        { "path": "backend/services/retrieval_service.py", "line": 124, "end_line": 130, "label": "Dense and BM25 reads" }
+      ]
+    }
+  ],
+  "boundaries": [
+    {
+      "kind": "region",
+      "label": "Single Python process",
+      "wraps": ["api", "chat", "docs", "sqlite", "retrieval"],
+      "pad": 16
+    }
+  ],
+  "connections": [
+    { "id": "browser-api", "from": "browser", "to": "api", "label": "HTTPS", "variant": "emphasis" },
+    { "id": "api-chat", "from": "api", "to": "chat", "label": "if admitted", "variant": "emphasis" },
+    { "id": "chat-llm", "from": "chat", "to": "llm", "label": "on cache miss", "variant": "emphasis" },
+    { "id": "mcp-chat", "from": "mcp", "to": "chat", "label": "stdio ask", "fromSide": "bottom", "toSide": "top" },
+    { "id": "api-docs", "from": "api", "to": "docs", "label": "POST /upload", "fromSide": "bottom", "toSide": "top" },
+    { "id": "chat-sqlite", "from": "chat", "to": "sqlite", "label": "save turns", "fromSide": "bottom", "toSide": "top" },
+    { "id": "chat-retrieval", "from": "chat", "to": "retrieval", "label": "if use_rag", "fromSide": "bottom", "toSide": "top" },
+    { "id": "chat-tavily", "from": "chat", "to": "tavily", "label": "if use_web", "fromSide": "right", "toSide": "left" },
+    { "id": "docs-sqlite", "from": "docs", "to": "sqlite", "label": "doc row", "fromSide": "right", "toSide": "left" },
+    { "id": "docs-index", "from": "docs", "to": "index", "label": "add chunks", "fromSide": "bottom", "toSide": "left" },
+    { "id": "retrieval-index", "from": "retrieval", "to": "index", "label": "BM25 + FAISS", "fromSide": "bottom", "toSide": "top" }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "Chat path",
+      "items": [
+        "The SPA POSTs /chat/stream and reads meta, status, citations, tokens, error, and done",
+        "Smalltalk stays direct; research uses docs and the web; otherwise RAG runs when the user has docs",
+        "Web runs only for a fresh query while the toggle is on and Tavily has a key",
+        "An in-memory semantic cache can skip generation; web, follow-ups, and regenerates bypass it"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "Local data",
+      "items": [
+        "Default database is data/chatbot.db: sessions, messages, and document rows",
+        "Chunk text and FTS5 live in data/index/rag.sqlite3; vectors are per-user FAISS files",
+        "Embeddings default to local BAAI/bge-small ONNX; Google or Cohere only if configured",
+        "If the document row fails after indexing, those chunks are deleted"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "Failures",
+      "items": [
+        "Chat routes return 429 over the per-user limit and 503 when no LLM key is set",
+        "Models fail over before the first token; a mid-stream error can still save a partial answer",
+        "A retrieval or Tavily failure is logged and generation continues without that context",
+        "SQLAlchemy rolls back its unit of work; chunk inserts commit or roll back together"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "Other doors",
+      "items": [
+        "MCP also calls retrieval.search, documents.list_documents, and search.search on the same container",
+        "Startup warm-up is one asyncio task: embeddings, reranker, model discovery, OCR, then reindex",
+        "URL upload fetches HTML behind an SSRF check; there is no login and user_id defaults to default",
+        "/sessions, /retrieve, /search, and /generate call these services without the chat router"
+      ]
+    }
+  ]
+}

@@ -14,6 +14,10 @@
   from { opacity: 0; transform: translateY(8px); }
   to   { opacity: 1; transform: translateY(0); }
 }
+@keyframes menuInAbove {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
 
 @keyframes iconSwap {
   from { opacity: 0; transform: translateY(4px); }
@@ -247,11 +251,36 @@ html.motion-run .input-dock .composer { transition: none !important; }
 /* Composer: send button pulses a ring while there is a draft to send */
 .composer:has(.chat-input:not(:placeholder-shown)) #sendBtn::after { animation: sendPulse 1.8s var(--ease-out) infinite; }
 
+/* Introduction illustration: slow transform-only float. Entrance is GSAP (motion.js). */
+@keyframes intro-float-panel {
+  from { transform: translateY(0); }
+  to   { transform: translateY(-6px); }
+}
+@keyframes intro-float-doc {
+  from { transform: translateY(0) rotate(-8deg); }
+  to   { transform: translateY(-5px) rotate(-8deg); }
+}
+@keyframes intro-float-db {
+  from { transform: translateY(0) rotate(8deg); }
+  to   { transform: translateY(7px) rotate(8deg); }
+}
+@keyframes intro-float-orbit {
+  from { transform: translateY(0); }
+  to   { transform: translateY(4px); }
+}
+.intro__panel { animation: intro-float-panel 5.6s var(--ease-inout) infinite alternate; }
+.intro__chip--doc { animation: intro-float-doc 6.4s var(--ease-inout) infinite alternate; }
+.intro__chip--db { animation: intro-float-db 7.2s var(--ease-inout) -1.6s infinite alternate; }
+.intro__orbits { animation: intro-float-orbit 9s var(--ease-inout) infinite alternate; }
+
 /* Paused while the tab is hidden (AIViz owns html[data-page-hidden]) */
 html[data-page-hidden] .aurora__blob,
 html[data-page-hidden] .new-chat-btn::after,
 html[data-page-hidden] .notif-btn__dot::after,
-html[data-page-hidden] .composer:has(.chat-input:not(:placeholder-shown)) #sendBtn::after { animation-play-state: paused !important; }
+html[data-page-hidden] .composer:has(.chat-input:not(:placeholder-shown)) #sendBtn::after,
+html[data-page-hidden] .intro__panel,
+html[data-page-hidden] .intro__chip,
+html[data-page-hidden] .intro__orbits { animation-play-state: paused !important; }
 
 /* Reduce motion */
 @media (prefers-reduced-motion: reduce) {
@@ -269,6 +298,11 @@ html[data-page-hidden] .composer:has(.chat-input:not(:placeholder-shown)) #sendB
   .aurora__blob,
   .new-chat-btn::after,
   .notif-btn__dot::after,
-  .composer:has(.chat-input:not(:placeholder-shown)) #sendBtn::after { animation: none; }
+  .composer:has(.chat-input:not(:placeholder-shown)) #sendBtn::after,
+  .intro__panel,
+  .intro__chip,
+  .intro__orbits { animation: none; }
   .skeleton { animation: none; }
+  .artifact-pane,
+  .artifact-scrim { transition: none; }
 }

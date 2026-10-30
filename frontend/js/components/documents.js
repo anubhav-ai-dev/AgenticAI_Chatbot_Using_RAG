@@ -16,6 +16,7 @@ window.DocsView = (function () {
 
   const TYPE_ICON = {
     pdf: "file-text", docx: "file-text", odt: "file-text", rtf: "file-text", txt: "file-text", md: "file-text", rst: "file-text",
+    log: "file-text", github: "github",
     pptx: "presentation", csv: "file-spreadsheet", xlsx: "file-spreadsheet", xls: "file-spreadsheet",
     json: "file-code", html: "file-code", htm: "file-code", url: "globe",
     png: "file-image", jpg: "file-image", jpeg: "file-image", webp: "file-image", bmp: "file-image",

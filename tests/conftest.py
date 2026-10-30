@@ -237,8 +237,8 @@ class FakeProviderClient:
 
 @pytest.fixture
 def settings(tmp_path, monkeypatch) -> Settings:
-    for key in ("GROQ_API_KEY", "GOOGLE_API_KEY", "TAVILY_API_KEY", "COHERE_API_KEY", "LLM_MODELS",
-                "LLM_DEFAULT_MODEL", "LLM_FALLBACK_CHAIN", "DATABASE_URL"):
+    for key in ("GROQ_API_KEY", "GOOGLE_API_KEY", "TAVILY_API_KEY", "SERPER_API_KEY", "COHERE_API_KEY",
+                "LLM_MODELS", "LLM_DEFAULT_MODEL", "LLM_FALLBACK_CHAIN", "DATABASE_URL"):
         monkeypatch.delenv(key, raising=False)
     return Settings(
         _env_file=None, data_dir=str(tmp_path / "data"), groq_api_key="test-groq",
@@ -250,15 +250,21 @@ def settings(tmp_path, monkeypatch) -> Settings:
 
 
 def tavily_transport(results: Optional[list[dict]] = None, status: int = 200,
-                     counter: Optional[list] = None) -> httpx.MockTransport:
+                     counter: Optional[list] = None,
+                     serper_results: Optional[list[dict]] = None) -> httpx.MockTransport:
     results = results if results is not None else [
         {"title": "Example News", "url": "https://example.com/news", "content": "Latest news snippet.", "score": 0.9},
         {"title": "Another Source", "url": "https://example.org/a", "content": "Another snippet.", "score": 0.5},
     ]
 
     def handler(request: httpx.Request) -> httpx.Response:
+        url = str(request.url)
         if counter is not None:
             counter.append(json.loads(request.content))
+        if "serper.dev" in url:
+            if serper_results is None:
+                return httpx.Response(status if status != 200 else 500, json={"error": "nope"})
+            return httpx.Response(200, json={"organic": serper_results})
         if status != 200:
             return httpx.Response(status, json={"error": "nope"})
         return httpx.Response(200, json={"results": results})

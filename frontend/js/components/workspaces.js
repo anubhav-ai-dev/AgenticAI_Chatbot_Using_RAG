@@ -20,22 +20,14 @@ window.Workspaces = (function () {
     code:     "Describe what to build, or paste code to explain or debug...",
   };
 
-  // Code workspace: language preference only shapes the text that is put in the composer
-  const LANG = {
-    any:        { name: "",           fence: "" },
-    python:     { name: "Python",     fence: "python" },
-    javascript: { name: "JavaScript", fence: "javascript" },
-    typescript: { name: "TypeScript", fence: "typescript" },
-    java:       { name: "Java",       fence: "java" },
-    cpp:        { name: "C++",        fence: "cpp" },
-  };
-  const fenced = (lead, lang, tail) => `${lead}\n\n\`\`\`${lang.fence}\n\n\`\`\`${tail || ""}`;
+  const fenced = (lead, tail) => `${lead}\n\n\`\`\`\n\n\`\`\`${tail || ""}`;
   const TEMPLATE = {
-    write:    (l) => `Write a ${l.name ? l.name + " " : ""}function that `,
-    explain:  (l) => fenced("Explain what this code does, step by step:", l),
-    fix:      (l) => fenced("Find and fix the bug in this code, and explain what was wrong:", l, "\n\nError message (if any):\n"),
-    optimize: (l) => fenced("Optimize this code for readability and performance, and explain your changes:", l),
-    tests:    (l) => fenced("Write unit tests for this code:", l),
+    write:    () => "Write a function that ",
+    explain:  () => fenced("Explain what this code does, step by step:"),
+    fix:      () => fenced("Find and fix the bug in this code, and explain what was wrong:", "\n\nError message (if any):\n"),
+    optimize: () => fenced("Optimize this code for readability and performance, and explain your changes:"),
+    tests:    () => fenced("Write unit tests for this code:"),
+    debug:    () => fenced("Debug these logs. Identify the problem, root cause, why it happens, whether it has shown up before, and the fix. Explain in simple terms unless I ask for the technical version."),
   };
 
   let _docCount = 0;
@@ -51,16 +43,12 @@ window.Workspaces = (function () {
     if (select) {
       const i = text.indexOf(select);
       if (i !== -1) { start = i; end = i + select.length; }       // the placeholder is selected: typing replaces it
-    } else if (fence) {
+    } else if (typeof fence === "string") {
       const marker = "```" + fence + "\n";
       const i = text.indexOf(marker);
       if (i !== -1) start = end = i + marker.length;              // caret on the empty line inside the code fence
     }
     try { input.setSelectionRange(start, end); } catch (_) { /* not selectable */ }
-  }
-
-  function _currentLang() {
-    return LANG[(window.Prefs && Prefs.get("codeLang")) || "any"] || LANG.any;
   }
 
   function _onClick(e) {
@@ -75,7 +63,7 @@ window.Workspaces = (function () {
     }
     if (t.dataset.template) {
       const make = TEMPLATE[t.dataset.template];
-      if (make) { const lang = _currentLang(); fill(make(lang), { fence: lang.fence }); }
+      if (make) fill(make(), { fence: "" });
       return;
     }
     fill(t.dataset.fill || "", { select: t.dataset.select || "" });
@@ -157,11 +145,6 @@ window.Workspaces = (function () {
     const root = $("welcomeScreen");
     if (root) root.addEventListener("click", _onClick);
 
-    const lang = $("codeLang");
-    if (lang && window.RadioGroup) {
-      RadioGroup.set(lang, (window.Prefs && Prefs.get("codeLang")) || "any");
-      RadioGroup.wire(lang, (v) => { if (window.Prefs) Prefs.set("codeLang", v); });
-    }
     _wireDropzone();
 
     const addUrl = $("wsAddUrl");

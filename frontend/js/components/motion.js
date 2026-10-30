@@ -143,8 +143,56 @@ window.Motion = (function () {
     _play(window.gsap, general);
   }
 
+  let _introCtx = null;
+  let _introPlayed = false;
+
+  /**
+   * One introduction entrance. A later call (theme change, hash return) does not replay it.
+   * The heading starts partly visible so the words stay readable. Scale is applied on the
+   * vars object, not as a layout property. Reduced motion never reaches this function.
+   */
+  function _playIntro(gsap) {
+    if (_introPlayed) return;
+    const header = document.querySelector(".intro__header");
+    const badge = document.querySelector(".intro__badge");
+    const lines = Array.from(document.querySelectorAll(".intro__title-line"));
+    const lead = document.querySelector(".intro__lead");
+    const cta = document.querySelector(".intro__cta");
+    const feats = Array.from(document.querySelectorAll(".intro__feature"));
+    const stage = document.querySelector(".intro__stage");
+    if (!header && !lines.length && !stage) return;
+    _introPlayed = true;
+    if (_introCtx) { _introCtx.revert(); _introCtx = null; }
+    const end = { ease: "power3.out", clearProps: "opacity,transform" };
+    _introCtx = gsap.context(() => {
+      const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
+      if (header) tl.fromTo(header, { opacity: 0, y: -12 }, Object.assign({ opacity: 1, y: 0, duration: 0.32 }, end), 0);
+      if (badge) tl.fromTo(badge, { opacity: 0, y: 12 }, Object.assign({ opacity: 1, y: 0, duration: 0.3 }, end), 0.08);
+      if (lines.length) tl.fromTo(lines, { opacity: 0.55, y: 12 }, Object.assign({ opacity: 1, y: 0, duration: 0.34, stagger: 0.08 }, end), 0.14);
+      if (lead) tl.fromTo(lead, { opacity: 0, y: 12 }, Object.assign({ opacity: 1, y: 0, duration: 0.28 }, end), 0.28);
+      if (cta) tl.fromTo(cta, { opacity: 0, y: 10 }, Object.assign({ opacity: 1, y: 0, duration: 0.28 }, end), 0.36);
+      if (feats.length) tl.fromTo(feats, { opacity: 0, y: 12 }, Object.assign({ opacity: 1, y: 0, duration: 0.28, stagger: 0.05 }, end), 0.44);
+      if (stage) {
+        const from = { opacity: 0, y: 16 };
+        from.scale = 0.97;
+        const to = Object.assign({ opacity: 1, y: 0, duration: 0.46 }, end);
+        to.scale = 1;
+        tl.fromTo(stage, from, to, 0.2);
+      }
+    });
+  }
+
+  function intro() {
+    if (reduce.matches || _introPlayed) return;
+    _load().then((gsap) => _playIntro(gsap)).catch(() => {});
+  }
+
   if (reduce.addEventListener) reduce.addEventListener("change", () => {
-    if (reduce.matches) { _revert(); _release(); }
+    if (reduce.matches) {
+      _revert();
+      _release();
+      if (_introCtx) { _introCtx.revert(); _introCtx = null; }
+    }
   });
   document.addEventListener("visibilitychange", () => {
     if (!_floatTween) return;
@@ -153,5 +201,5 @@ window.Motion = (function () {
   });
   window.addEventListener("pagehide", _revert);
 
-  return { enter, welcome, workspaceChanged };
+  return { enter, welcome, workspaceChanged, intro };
 })();

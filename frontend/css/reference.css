@@ -242,7 +242,7 @@
 .topbar { gap: var(--sp-3); padding: 0 var(--sp-5); }
 .topbar__brand { display: none; }
 
-/* Current workspace label (read-only; the selector is the sidebar dropdown) */
+/* Current workspace label (read-only; the selector is the composer dropdown) */
 .topbar__title {
   display: inline-flex;
   align-items: center;
@@ -628,11 +628,41 @@
 .composer:focus-within { outline-offset: 1px; box-shadow: var(--shadow-soft), var(--shadow-accent); }
 .chat-input { padding: 14px var(--sp-5) var(--sp-1); border-radius: var(--r-xl) var(--r-xl) 0 0; }
 .composer__bar { padding: 2px var(--sp-3) var(--sp-2) var(--sp-3); gap: var(--sp-3); }
-.dock-tools { gap: var(--sp-1); }
+.dock-tools { gap: var(--sp-2); }
 .dock-tools .btn--icon { width: 36px; height: 36px; border-radius: var(--r-md); color: var(--text); }
 .dock-divider { width: 1px; height: 20px; margin: 0 var(--sp-2); background: var(--border-ui); flex-shrink: 0; }
 
+/* Add button: same hit target as the old attach control. Opening the menu turns + into ×. */
+.composer-plus .icon { transition: transform var(--dur-base) var(--ease-out); }
+.composer-plus[aria-expanded="true"] { background: var(--surface-subtle); color: var(--text); }
+.composer-plus[aria-expanded="true"] .icon { transform: rotate(45deg); }
+
+/* Workspace dropdown, boxed to match the Web Search pill beside it */
+.composer .mode-select {
+  position: relative;
+  width: auto;
+  flex: 0 0 auto;
+  min-height: 0;
+  height: 34px;
+  gap: var(--sp-2);
+  padding: 0 var(--sp-3);
+  border-radius: var(--r-pill);
+  box-shadow: none;
+  font-size: var(--fs-caption);
+  font-weight: 500;
+}
+.composer .mode-select__icon {
+  width: auto;
+  height: auto;
+  background: transparent;
+  border-radius: 0;
+  color: var(--mode-fg, var(--accent-text));
+}
+.composer .mode-select__label { flex: 0 1 auto; }
+.composer .mode-select:focus-visible { outline-offset: 2px; }
+
 .web-toggle {
+  position: relative;
   display: inline-flex;
   align-items: center;
   gap: var(--sp-2);
@@ -846,21 +876,34 @@
 
   .input-dock { padding: var(--sp-2) var(--sp-3) max(var(--sp-3), env(safe-area-inset-bottom, 0px)); }
   .chat-input { padding: var(--sp-3) var(--sp-4) var(--sp-1); }
-  .composer__bar { padding: var(--sp-1) var(--sp-2) var(--sp-2); gap: var(--sp-2); }
+  .composer__bar { flex-wrap: wrap; row-gap: var(--sp-2); padding: var(--sp-1) var(--sp-2) var(--sp-2); gap: var(--sp-2); }
+  .dock-tools { flex: 1 1 100%; }
+  .composer__right { width: 100%; justify-content: flex-end; }
   .dock-divider { display: none; }
   .composer__right { gap: var(--sp-2); }
   .model-chip { min-width: 44px; justify-content: center; padding: 0 var(--sp-2); }   /* logo only: the toolbar has no room for the label */
   .model-chip__label,
   .model-chip__chevron { display: none; }
   .web-toggle { padding: 0 var(--sp-2) 0 var(--sp-2); gap: var(--sp-1); }
+  .composer .mode-select { height: 36px; padding: 0 var(--sp-2); gap: var(--sp-1); max-width: 46vw; }
   .dock-send { width: 44px; height: 44px; }
   #searchToggle .toggle-label { position: static; width: auto; height: auto; margin: 0; overflow: visible; clip: auto; }
 }
 @media (max-width: 389px) {
   .topbar__brand { padding-right: var(--sp-3); gap: 6px; }
   .topbar__brand-name { font-size: 0.8125rem; }
-  .web-toggle { gap: 4px; padding: 0 6px; }
-  #searchToggle .toggle-label { font-size: 0.6875rem; }
+  .web-toggle { gap: 4px; padding: 0 8px; }
+  /* The switch still shows the state. The name stays for assistive tech. */
+  #searchToggle .toggle-label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+  }
+  .composer .mode-select { max-width: none; }
   .input-dock { padding-left: var(--sp-2); padding-right: var(--sp-2); }
   .composer__right { gap: 4px; }
   .composer__bar { flex-wrap: wrap; row-gap: var(--sp-1); padding: var(--sp-1) 4px var(--sp-2); gap: 4px; }   /* below ~360px the right group drops to its own row instead of overlapping */
@@ -874,6 +917,8 @@
   .docs-card,
   .web-toggle,
   .model-chip,
+  .composer .mode-select,
+  .composer-plus,
   .search-field__filter,
   .sidebar__heading-btn { min-height: 44px; }
   .top-icon-btn,

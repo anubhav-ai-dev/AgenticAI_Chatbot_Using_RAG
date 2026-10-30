@@ -82,6 +82,8 @@ class CachedAnswer:
     citations: list[dict[str, Any]] = field(default_factory=list)
     model: str = ""
     route: str = "direct"
+    artifact: Optional[dict[str, Any]] = None
+    artifact_format: Optional[str] = None
 
 
 @dataclass

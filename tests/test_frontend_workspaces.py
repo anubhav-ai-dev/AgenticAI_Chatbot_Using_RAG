@@ -131,11 +131,31 @@ def test_text_is_rem_based_so_the_text_size_setting_scales_everything():
     assert 'html[data-font="large"]' in _read("css/workspace.css")
 
 
+def test_code_workspace_is_language_agnostic_and_has_debug_logs():
+    assert 'id="codeLang"' not in INDEX
+    assert 'data-template="debug"' in INDEX and "Debug logs" in INDEX
+    assert "codeLang" not in _read("js/components/prefs.js")
+    assert "Debug these logs" in _read("js/components/workspaces.js")
+
+
+def test_composer_github_item_and_resizable_preview_exist():
+    assert "Connect GitHub repo" in _read("js/ui.js")
+    for i in ("githubModal", "githubUrl", "githubToken", "githubOauth", "artifactResize"):
+        assert f'id="{i}"' in INDEX, i
+    chat = _read("js/chat.js")
+    assert "artifactWidth" in chat
+    assert "_paintArtifactPreview" in chat
+    assert "Utils.renderArtifactHtml(doc, fmt)" in chat
+    assert "function prepareFilePreview" in chat
+    assert "Chat.prepareFilePreview(text)" in _read("js/app.js")
+    assert 'role="separator"' in INDEX
+
+
 def test_preference_markup_matches_the_allowed_values():
     prefs = _read("js/components/prefs.js")
     spec = {k: re.findall(r'"([a-z]+)"', v) for k, v in
             re.findall(r"(\w+):\s*\{ values: \[([^\]]+)\]", prefs)}
-    groups = {"fontSize": "setFont", "density": "setDensity", "toasts": "setToasts", "codeLang": "codeLang"}
+    groups = {"fontSize": "setFont", "density": "setDensity", "toasts": "setToasts"}
     for pref, gid in groups.items():
         block = INDEX.split(f'id="{gid}"')[1].split("</div>")[0]
         offered = re.findall(r'data-value="([a-z]+)"', block)
@@ -185,9 +205,10 @@ function files(list){var dt=new DataTransfer();list.forEach(function(f){dt.items
 async function run(){
  if(!window.marked||!window.DOMPurify){R.nolibs=true;return}
  await tick(400);
- // 1. the dropdown is the only mode control and sits above New Chat
- var a=$('modeSelect').getBoundingClientRect(),b=$('newChatBtn').getBoundingClientRect();
- R.layout={above:a.bottom<=b.top,tabs:document.querySelectorAll('.mode-tab,.top-tab').length};
+ // 1. the dropdown is the only mode control and sits in the composer, after +, before Web Search
+ var mode=$('modeSelect').getBoundingClientRect(),web=$('searchToggle').getBoundingClientRect(),plus=$('composerPlus').getBoundingClientRect();
+ var box=document.querySelector('.composer').getBoundingClientRect();
+ R.layout={inComposer:mode.top>=box.top-1&&mode.bottom<=box.bottom+1,besideSearch:Math.abs(mode.top-web.top)<16&&mode.right<=web.left+8,afterPlus:plus.right<=mode.left+8,notInSidebar:!$('sidebar').contains($('modeSelect'))&&!$('myDocsBtn'),tabs:document.querySelectorAll('.mode-tab,.top-tab').length};
  // 2. keyboard opens it; 4 radios; the selected one is marked
  $('modeSelect').focus();key($('modeSelect'),'ArrowDown');await tick(60);
  var items=[].slice.call(document.querySelectorAll('.menu--mode [role="menuitemradio"]'));
@@ -207,9 +228,8 @@ async function run(){
  R.docEmpty.afterClick={value:$('chatInput').value,focus:document.activeElement.id};
  // 5. Code: a template puts the caret inside the fence and sends nothing
  await pick('code');
- [].slice.call(document.querySelectorAll('#codeLang [role="radio"]')).filter(function(r){return r.dataset.value==='python'})[0].click();
  document.querySelector('[data-template="explain"]').click();await tick(60);
- var ci=$('chatInput');R.code={value:ci.value,inFence:/```python\n$/.test(ci.value.slice(0,ci.selectionStart)),lang:localStorage.getItem('pref.codeLang')};
+ var ci=$('chatInput');R.code={value:ci.value,inFence:/```\n$/.test(ci.value.slice(0,ci.selectionStart)),debug:!!document.querySelector('[data-template="debug"]')};
  // 6. Research: the switch is locked on, with feedback; unlocked again elsewhere
  await pick('research');
  var t0=$('searchToggle');t0.click();await tick(100);
@@ -217,8 +237,8 @@ async function run(){
  document.querySelector('.topic[data-select="[topic]"]').click();await tick(60);
  R.research.selected=ci.value.slice(ci.selectionStart,ci.selectionEnd);
  await pick('general');R.research.unlocked=!$('searchToggle').hasAttribute('aria-disabled');
- // 7. My Documents panel opens and refreshes from the server; Esc returns focus
- window.__calls.length=0;$('myDocsBtn').focus();$('myDocsBtn').click();await tick(200);
+ // 7. My Documents opens from the composer add menu and refreshes from the server; Esc returns focus
+ window.__calls.length=0;$('composerPlus').click();await tick(40);document.querySelector('.menu--composer [data-menu-id="docs"]').click();await tick(200);
  R.docsPanel={open:$('docsDialog').open,refreshed:window.__calls.some(function(c){return c.path==='/documents'}),focus:document.activeElement.id,mode:localStorage.getItem('mode')};
  $('docsDialog').close();await tick(100);R.docsPanel.focusBack=document.activeElement.id;
  // 8. Settings: each control has a real effect
@@ -240,7 +260,7 @@ async function run(){
  files([new File([''],'empty.txt')]);await tick(100);
  R.empty={posts:nonGet(),toast:[].slice.call(document.querySelectorAll('.toast')).pop().textContent};
  window.__S.docs.push({id:'dx',filename:'dup.txt',file_type:'txt',chunk_count:1,indexed_at:new Date().toISOString()});
- $('myDocsBtn').click();await tick(200);$('docsDialog').close();await tick(60);
+ $('composerPlus').click();await tick(40);document.querySelector('.menu--composer [data-menu-id="docs"]').click();await tick(200);$('docsDialog').close();await tick(60);
  // NOTE: waits below are bounded by outcome, generously: headless virtual time can delay a dialog's async close event by seconds
  window.__calls.length=0;files([new File(['hello'],'dup.txt')]);await until(function(){return document.querySelector('.modal--confirm')},30000);
  R.dup={confirm:!!document.querySelector('.modal--confirm'),title:(document.querySelector('.modal--confirm .modal__title')||{}).textContent,focus:document.activeElement.textContent,posts:nonGet()};
@@ -326,7 +346,8 @@ def test_stub_run_reached_no_server_and_threw_nothing(ws):
 
 
 def test_stub_dropdown_is_the_only_mode_control_and_is_keyboard_operable(ws):
-    assert ws["layout"] == {"above": True, "tabs": 0}
+    lay = ws["layout"]
+    assert lay["tabs"] == 0 and lay["inComposer"] and lay["besideSearch"] and lay["afterPlus"] and lay["notInSidebar"]
     assert ws["menu"]["labels"] == ["General", "Documents", "Research", "Code"]
     assert ws["menu"]["checked"] == 1 and ws["menu"]["expanded"] == "true" and ws["menu"]["focus"] == "General"
     assert ws["escape"] == {"closed": True, "focus": "modeSelect", "expanded": "false"}
@@ -347,7 +368,8 @@ def test_stub_panel_actions_only_fill_the_composer(ws):
     assert ws["docEmpty"]["disabled"] and ws["docEmpty"]["note"] == "Upload a document to enable these actions."
     assert ws["docEmpty"]["dz"] == "BUTTON"
     assert ws["docEmpty"]["afterClick"] == {"value": "", "focus": "docDropzone"}   # unavailable: explained, nothing filled
-    assert ws["code"]["inFence"] and ws["code"]["lang"] == "python" and "```python" in ws["code"]["value"]
+    assert ws["code"]["inFence"] and ws["code"]["debug"] and "```python" not in ws["code"]["value"]
+    assert "```" in ws["code"]["value"]
     assert ws["research"]["selected"] == "[topic]"
 
 
@@ -358,7 +380,7 @@ def test_stub_research_locks_the_web_switch_and_other_modes_unlock_it(ws):
 
 def test_stub_my_documents_panel_refreshes_and_returns_focus(ws):
     p = ws["docsPanel"]
-    assert p["open"] and p["refreshed"] and p["focus"] == "docSearch" and p["focusBack"] == "myDocsBtn"
+    assert p["open"] and p["refreshed"] and p["focus"] == "docSearch" and p["focusBack"] == "composerPlus"
     assert p["mode"] == "general", "opening My Documents must not switch the workspace"
 
 

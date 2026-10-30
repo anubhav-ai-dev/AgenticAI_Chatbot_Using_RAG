@@ -1,6 +1,6 @@
 """
 Multi-format document parser.
-Supports: PDF (with OCR for scanned pages), DOCX, PPTX, ODT, RTF, CSV, XLSX/XLS, TXT/MD/RST,
+Supports: PDF (with OCR for scanned pages), DOCX, PPTX, ODT, RTF, CSV, XLSX/XLS, TXT/MD/RST/LOG,
 HTML, JSON, images (OCR) and web URLs.
 Returns a list of {page_number, text, metadata} dicts ("pages").
 """
@@ -23,7 +23,7 @@ logger = logging.getLogger(__name__)
 
 IMAGE_EXTENSIONS = {"png", "jpg", "jpeg", "webp", "bmp", "tif", "tiff", "gif"}
 DOCUMENT_EXTENSIONS = {"pdf", "docx", "pptx", "odt", "rtf", "csv", "xlsx", "xls", "txt", "md",
-                       "rst", "html", "htm", "json"}
+                       "rst", "html", "htm", "json", "log"}
 SUPPORTED_EXTENSIONS = DOCUMENT_EXTENSIONS | IMAGE_EXTENSIONS
 MAX_PDF_PAGES = 1000
 MAX_OCR_PDF_PAGES = 30          # scanned pages OCR'd per PDF (OCR is CPU-heavy)
@@ -53,7 +53,8 @@ class DocumentParser:
         handlers = {
             "pdf": self._parse_pdf, "docx": self._parse_docx, "csv": self._parse_csv,
             "xlsx": self._parse_excel, "xls": self._parse_excel, "txt": self._parse_text,
-            "md": self._parse_text, "rst": self._parse_text, "pptx": self._parse_pptx,
+            "md": self._parse_text, "rst": self._parse_text, "log": self._parse_text,
+            "pptx": self._parse_pptx,
             "odt": self._parse_odt, "rtf": self._parse_rtf, "html": self._parse_html,
             "htm": self._parse_html, "json": self._parse_json,
         }

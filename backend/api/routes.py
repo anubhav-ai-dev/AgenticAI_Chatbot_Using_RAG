@@ -4,6 +4,8 @@ HTTP layer — thin handlers that delegate to injected services.
 Chat:      POST /chat/stream (SSE) · POST /chat (JSON) · POST /generate (legacy)
 Sessions:  /sessions CRUD · POST /sessions/{id}/messages · POST /messages/{id}/feedback
 Documents: POST /upload · GET /documents · DELETE /documents/{id}
+GitHub:    POST /github/connect · GET /github/repos · DELETE /github/repos/{id}
+           POST /github/oauth/device · POST /github/oauth/poll
 RAG/Web:   POST /retrieve · POST /search
 System:    GET /health · GET /models · GET /config · GET /ping
 """
@@ -11,7 +13,7 @@ System:    GET /health · GET /models · GET /config · GET /ping
 from __future__ import annotations
 
 import logging
-from typing import AsyncIterator, List, Optional
+from typing import AsyncIterator, List, Literal, Optional
 
 from fastapi import APIRouter, Depends, File, HTTPException, Query, Request, UploadFile, status
 from fastapi.responses import Response, StreamingResponse
@@ -22,6 +24,7 @@ from backend.core.container import (
     get_chat_service,
     get_container,
     get_document_service,
+    get_github_service,
     get_llm_service,
     get_retrieval_service,
     get_search_service,
@@ -35,6 +38,10 @@ from backend.models.api import (
     FeedbackRequest,
     GenerateRequest,
     GenerateResponse,
+    GithubConnectRequest,
+    GithubDevicePoll,
+    GithubDeviceStart,
+    GithubRepoSchema,
     HealthResponse,
     MessageCreate,
     MessageSchema,
@@ -51,8 +58,15 @@ from backend.models.api import (
     UploadLimits,
     UploadResponse,
 )
+from backend.services.artifact import (
+    ArtifactError,
+    content_disposition,
+    render_download,
+    validate_document,
+)
 from backend.services.chat_service import ChatCommand, ChatService
 from backend.services.document_service import DocumentService
+from backend.services.github_service import GitHubService
 from backend.services.llm_service import LLMService
 from backend.services.parser import SUPPORTED_EXTENSIONS
 from backend.services.retrieval_service import RetrievalService
@@ -69,8 +83,19 @@ UserId = Query(default="default", min_length=1, max_length=128)
 # ── helpers ───────────────────────────────────────────────────────────────────
 
 def _throttle(c: ServiceContainer, request: Request, user_id: str) -> None:
-    ip = request.client.host if request.client else "unknown"
-    allowed, retry_after = c.rate_limiter.allow(f"{ip}|{user_id}")
+    _limit(c.rate_limiter, f"{_client_ip(request)}|{user_id}")
+
+
+def _throttle_download(c: ServiceContainer, request: Request, user_id: str) -> None:
+    _limit(c.download_limiter, f"download|{_client_ip(request)}|{user_id}")
+
+
+def _client_ip(request: Request) -> str:
+    return request.client.host if request.client else "unknown"
+
+
+def _limit(limiter, key: str) -> None:
+    allowed, retry_after = limiter.allow(key)
     if not allowed:
         raise HTTPException(
             status_code=status.HTTP_429_TOO_MANY_REQUESTS,
@@ -113,7 +138,8 @@ def health(c: ServiceContainer = Depends(get_container)):
 def public_config(c: ServiceContainer = Depends(get_container)):
     """Upload limits for client-side validation (read-only; /upload enforces them again)."""
     return PublicConfig(upload=UploadLimits(max_mb=c.settings.max_upload_mb,
-                                            extensions=sorted(SUPPORTED_EXTENSIONS)))
+                                            extensions=sorted(SUPPORTED_EXTENSIONS)),
+                        github_oauth=c.github.oauth_configured)
 
 
 @router.get("/models", tags=["System"])
@@ -132,7 +158,7 @@ async def chat_stream(payload: ChatRequest, request: Request,
                       chat: ChatService = Depends(get_chat_service),
                       sessions: SessionService = Depends(get_session_service),
                       c: ServiceContainer = Depends(get_container)):
-    """Server-sent events: meta · status · citations · model · token · error · done."""
+    """Server-sent events: meta · status · citations · model · token · artifact · error · done."""
     _throttle(c, request, payload.user_id)
     if not c.llm.configured:
         raise HTTPException(status.HTTP_503_SERVICE_UNAVAILABLE,
@@ -240,6 +266,32 @@ def save_message(session_id: str, payload: MessageCreate,
         raise HTTPException(status.HTTP_404_NOT_FOUND, "Session not found.") from exc
 
 
+def _prepare_download(raw: dict, fmt: str) -> tuple[bytes, str, str]:
+    return render_download(validate_document(raw), fmt)
+
+
+@router.get("/messages/{message_id}/download", tags=["Messages"])
+async def download_message(message_id: str, request: Request,
+                           file_format: Literal["md", "txt", "xlsx", "docx", "pdf"] = Query(alias="format"),
+                           user_id: str = UserId,
+                           sessions: SessionService = Depends(get_session_service),
+                           c: ServiceContainer = Depends(get_container)):
+    """Build one file from the message's stored document. Bytes are not kept on disk."""
+    _throttle_download(c, request, user_id)
+    msg = await run_in_threadpool(sessions.get_owned_message, message_id, user_id)
+    raw = (msg.meta or {}).get("artifact") if msg is not None else None
+    if not isinstance(raw, dict):
+        raise HTTPException(status.HTTP_404_NOT_FOUND, "Document not found.")
+    try:
+        data, media, filename = await run_in_threadpool(_prepare_download, raw, file_format)
+    except ArtifactError as exc:
+        raise HTTPException(status.HTTP_422_UNPROCESSABLE_ENTITY, exc.message) from exc
+    return Response(content=data, media_type=media, headers={
+        "Content-Disposition": content_disposition(filename),
+        "Cache-Control": "no-store",
+    })
+
+
 @router.post("/messages/{message_id}/feedback", response_model=MessageSchema, tags=["Messages"])
 def message_feedback(message_id: str, payload: FeedbackRequest,
                      sessions: SessionService = Depends(get_session_service)):
@@ -287,6 +339,53 @@ async def delete_document(doc_id: str, user_id: str = UserId,
     if not await docs.delete_document(user_id, doc_id):
         raise HTTPException(status.HTTP_404_NOT_FOUND, "Document not found.")
     return Response(status_code=status.HTTP_204_NO_CONTENT)
+
+
+# ── GitHub ────────────────────────────────────────────────────────────────────
+
+def _github_row(row) -> GithubRepoSchema:
+    return GithubRepoSchema(id=row.id, owner=row.owner, repo=row.repo, branch=row.branch,
+                            file_count=row.file_count, connected_at=row.connected_at)
+
+
+@router.post("/github/connect", response_model=GithubRepoSchema, tags=["GitHub"])
+async def github_connect(payload: GithubConnectRequest, user_id: str = UserId,
+                         gh: GitHubService = Depends(get_github_service)):
+    try:
+        row = await gh.connect(payload.user_id or user_id, payload.url, payload.token)
+    except IngestError as exc:
+        raise HTTPException(exc.status_code, exc.message) from exc
+    return _github_row(row)
+
+
+@router.get("/github/repos", response_model=List[GithubRepoSchema], tags=["GitHub"])
+def github_repos(user_id: str = UserId, gh: GitHubService = Depends(get_github_service)):
+    return [_github_row(row) for row in gh.list_repos(user_id)]
+
+
+@router.delete("/github/repos/{repo_id}", status_code=status.HTTP_204_NO_CONTENT, tags=["GitHub"])
+async def github_delete(repo_id: str, user_id: str = UserId,
+                        gh: GitHubService = Depends(get_github_service)):
+    if not await gh.delete_repo(user_id, repo_id):
+        raise HTTPException(status.HTTP_404_NOT_FOUND, "Repository not found.")
+    return Response(status_code=status.HTTP_204_NO_CONTENT)
+
+
+@router.post("/github/oauth/device", response_model=GithubDeviceStart, tags=["GitHub"])
+async def github_device_start(gh: GitHubService = Depends(get_github_service)):
+    try:
+        return await gh.start_device_flow()
+    except IngestError as exc:
+        raise HTTPException(exc.status_code, exc.message) from exc
+
+
+@router.post("/github/oauth/poll", tags=["GitHub"])
+async def github_device_poll(payload: GithubDevicePoll, user_id: str = UserId,
+                             gh: GitHubService = Depends(get_github_service)):
+    try:
+        return await gh.poll_device_flow(payload.user_id or user_id, payload.device_code)
+    except IngestError as exc:
+        raise HTTPException(exc.status_code, exc.message) from exc
 
 
 # ── RAG retrieval & web search ────────────────────────────────────────────────

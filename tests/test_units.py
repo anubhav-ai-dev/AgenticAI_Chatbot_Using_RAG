@@ -11,7 +11,7 @@ from backend.core.config import MODES, Settings
 from backend.core.exceptions import DocumentParseError
 from backend.services.chat_service import QueryRouter
 from backend.services.parser import DocumentParser
-from backend.services.prompt_builder import PromptBuilder
+from backend.services.prompt_builder import PromptBuilder, QUALITY_CONTRACT, select_specialist
 from backend.services.retrieval_service import RetrievedItem
 from backend.utils.cache import CachedAnswer, SemanticCache, TTLCache
 from backend.utils.rate_limiter import QuotaGuard, RateLimiter
@@ -258,6 +258,7 @@ def test_prompt_builder_context_and_budgets(settings):
     system = built.messages[0]["content"]
     assert built.messages[0]["role"] == "system" and built.messages[-1] == {"role": "user", "content": "q?"}
     assert "Document Expert Mode" in system and "[1]" in system
+    assert "Response quality" in system and QUALITY_CONTRACT.split("\n", 1)[0] in system
     assert len(system) < 300 * 3 + 2500                          # context respects the budget
     assert all(c["id"] == i + 1 for i, c in enumerate(built.citations))
     assert {c["type"] for c in built.citations} <= {"doc", "web"}
@@ -268,6 +269,17 @@ def test_prompt_builder_context_and_budgets(settings):
 def test_prompt_builder_without_context_has_no_grounding_block(settings):
     built = PromptBuilder(settings).build(mode="general", query="hi", history=[])
     assert "## Context" not in built.messages[0]["content"] and built.citations == []
+    assert "Response quality" in built.messages[0]["content"]
+
+
+def test_specialist_router_picks_task_prompts():
+    assert select_specialist("general", "write a proposal", file_intent=True) == "document"
+    assert select_specialist("code", "fix this function") == "code"
+    assert select_specialist("general", "Debug these logs\nTraceback (most recent call last):") == "debug"
+    assert select_specialist("code", "```python\nprint(1)\n```", has_repo=True) == "codebase"
+    assert select_specialist("research", "what is happening in the market") == "research"
+    assert select_specialist("document", "what does the refund policy say") is None
+    assert select_specialist("general", "hello") == "general"
 
 
 # ── parser ───────────────────────────────────────────────────────────────────

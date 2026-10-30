@@ -39,7 +39,7 @@ def _image(tmp_path, name: str, fmt: str):
 
 
 def test_supported_extensions_cover_images_and_office_formats():
-    assert {"jpg", "jpeg", "png", "pptx", "html", "json", "rtf", "odt", "xls"} <= SUPPORTED_EXTENSIONS
+    assert {"jpg", "jpeg", "png", "pptx", "html", "json", "rtf", "odt", "xls", "log"} <= SUPPORTED_EXTENSIONS
 
 
 def test_unsupported_extension_still_rejected(parser, tmp_path):
@@ -47,6 +47,13 @@ def test_unsupported_extension_still_rejected(parser, tmp_path):
     f.write_bytes(b"MZ")
     with pytest.raises(DocumentParseError, match="Unsupported file type"):
         parser.parse_file(str(f), "a.exe")
+
+
+def test_log_files_are_parsed_as_text(parser, tmp_path):
+    f = tmp_path / "app.log"
+    f.write_text("2026-01-01T12:00:00 ERROR connection refused\n" + "stack line\n" * 12)
+    pages = parser.parse_file(str(f), "app.log")
+    assert pages and "ERROR connection refused" in pages[0]["text"]
 
 
 def test_pptx_slides_notes_and_tables(parser, tmp_path):

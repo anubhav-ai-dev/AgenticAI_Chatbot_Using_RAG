@@ -41,6 +41,17 @@
     // binding (for example, a stale cached script that lacks a function this file expects) can never leave the model
     // list on "Loading models…" or the chat list empty. Each loader reports its own errors.
     const loading = Promise.all([_loadModels(), _loadSessions({ notify: true }), _loadDocuments(), _loadConfig()]);
+    Chat.bindArtifact({
+      onDownload(messageId, format) {
+        if (!messageId) {
+          UI.showToast("This document could not be saved.", "error");
+          return;
+        }
+        return API.downloadArtifact(messageId, format, State.userId).catch((err) => {
+          UI.showToast(err.message || "Download failed.", "error");
+        });
+      },
+    });
     _bindEvents();
     await loading;
   }
@@ -130,6 +141,18 @@
       if (e.target === document.getElementById("urlModal")) UI.hideUrlModal();
     });
 
+    document.getElementById("addGithubBtn").addEventListener("click", UI.showGithubModal);
+    document.getElementById("githubModalClose").addEventListener("click", () => { _resetGithubOauth(); UI.hideGithubModal(); });
+    document.getElementById("githubModalCancel").addEventListener("click", () => { _resetGithubOauth(); UI.hideGithubModal(); });
+    document.getElementById("githubModalSubmit").addEventListener("click", _onGithubSubmit);
+    document.getElementById("githubOauth").addEventListener("click", _onGithubOauth);
+    document.getElementById("githubUrl").addEventListener("keydown", (e) => {
+      if (e.key === "Enter" && !e.isComposing) _onGithubSubmit();
+    });
+    document.getElementById("githubModal").addEventListener("click", (e) => {
+      if (e.target === document.getElementById("githubModal")) { _resetGithubOauth(); UI.hideGithubModal(); }
+    });
+
     // Web search toggle (the view styles [aria-pressed])
     const searchToggle = document.getElementById("searchToggle");
     searchToggle.setAttribute("aria-pressed", String(State.webSearch));
@@ -164,7 +187,7 @@
       if (mode === "document") _openFilePicker();   // runs inside the click/keypress activation
     });
 
-    // "My Documents" (sidebar card): the view opens the panel; refresh the list from GET /documents.
+    // "My Documents" (composer add menu): the view opens the panel; refresh the list from GET /documents.
     // The mode is not switched: documents are searched in every workspace.
     UI.onMyDocuments(() => { _loadDocuments(); });
 
@@ -342,6 +365,7 @@
       document.querySelectorAll("#chatArea .message__regen").forEach((b) => b.remove());
       renderer = Chat.startAssistantMessage();
       accepted = true;
+      if (text) Chat.prepareFilePreview(text);
     };
 
     /** Remove this send's assistant bubble and, if the server never stored the turn, the optimistic user bubble. */
@@ -419,6 +443,7 @@
           citations: (d) => { citations = d.items || []; },
           model: (d) => { modelInfo = { model: d.model, fellBackFrom: d.fell_back_from || [] }; },
           token: (d) => { renderer.appendToken(d.text); },
+          artifact: (d) => { renderer.attachArtifact(d); },
           error: (d) => { streamError = d; },
           done: (d) => { doneInfo = d; },
         }),
@@ -679,7 +704,7 @@
   }
 
   // ── Document handling ──────────────────────────────────────
-  const ALLOWED = ["pdf", "docx", "pptx", "odt", "rtf", "csv", "xlsx", "xls", "txt", "md", "rst", "html", "htm", "json", "png", "jpg", "jpeg", "webp", "bmp", "tif", "tiff", "gif"];
+  const ALLOWED = ["pdf", "docx", "pptx", "odt", "rtf", "csv", "xlsx", "xls", "txt", "md", "rst", "html", "htm", "json", "log", "png", "jpg", "jpeg", "webp", "bmp", "tif", "tiff", "gif"];
 
   function _fmtBytes(n) {
     if (n < 1024) return `${n} B`;
@@ -699,6 +724,7 @@
         };
         UI.setUploadLimits(State.limits.maxMb);
       }
+      UI.setGithubOauth(!!(cfg && cfg.github_oauth));
     } catch (_) {
       // older backend without /config: no client-side size pre-check
     }
@@ -841,6 +867,98 @@
       UI.renderIntegrations(await API.getHealth());
     } catch (err) {
       UI.renderIntegrations(null, { error: err.message });
+    }
+    _loadGithubRepos();
+  }
+
+  async function _loadGithubRepos() {
+    try {
+      UI.renderGithubRepos(await API.listGithubRepos(State.userId), { onDisconnect: _disconnectGithub });
+    } catch (_) {
+      UI.renderGithubRepos(null, { error: true });
+    }
+  }
+
+  async function _disconnectGithub(repoId) {
+    if (!repoId) return;
+    try {
+      await API.deleteGithubRepo(repoId, State.userId);
+      UI.showToast("Repository disconnected.", "success");
+      _loadGithubRepos();
+      _loadDocuments();
+    } catch (err) {
+      UI.showToast(err.message || "Could not disconnect the repository.", "error");
+    }
+  }
+
+  async function _onGithubSubmit() {
+    const urlEl = document.getElementById("githubUrl");
+    const tokenEl = document.getElementById("githubToken");
+    const btn = document.getElementById("githubModalSubmit");
+    const url = urlEl ? urlEl.value.trim() : "";
+    const token = tokenEl ? tokenEl.value.trim() : "";
+    if (!url) { UI.showToast("Enter a GitHub repository URL.", "error"); return; }
+    if (btn) btn.disabled = true;
+    try {
+      UI.showToast("Indexing repository…", "info");
+      await API.connectGithub(url, token, State.userId);
+      if (tokenEl) tokenEl.value = "";
+      _resetGithubOauth();
+      UI.hideGithubModal();
+      UI.showToast("Repository connected.", "success");
+      _loadDocuments();
+      _loadGithubRepos();
+    } catch (err) {
+      UI.showToast(err.message || "Could not connect the repository.", "error");
+    } finally {
+      if (btn) btn.disabled = false;
+    }
+  }
+
+  let _githubDeviceCode = "";
+
+  function _resetGithubOauth() {
+    _githubDeviceCode = "";
+    const btn = document.getElementById("githubOauth");
+    if (btn) btn.textContent = "Sign in with GitHub";
+  }
+
+  async function _onGithubOauth() {
+    const help = document.getElementById("githubDeviceHelp");
+    const codeEl = document.getElementById("githubUserCode");
+    const link = document.getElementById("githubDeviceLink");
+    const btn = document.getElementById("githubOauth");
+    if (_githubDeviceCode) {
+      try {
+        const data = await API.pollGithubDevice(_githubDeviceCode, State.userId);
+        if (data.status === "connected") {
+          _resetGithubOauth();
+          UI.showToast("GitHub connected. Paste a repository URL and click Connect.", "success");
+          return;
+        }
+        UI.showToast("GitHub is still waiting. Approve the code, then click I've authorized.", "info");
+      } catch (err) {
+        _resetGithubOauth();
+        UI.showToast(err.message || "GitHub sign-in did not complete.", "error");
+      }
+      return;
+    }
+    try {
+      const start = await API.startGithubDevice();
+      _githubDeviceCode = start.device_code || "";
+      if (codeEl) codeEl.textContent = start.user_code || "";
+      const href = window.Utils && typeof Utils.safeUrl === "function"
+        ? Utils.safeUrl(start.verification_uri) : null;
+      if (link && href) {
+        link.href = href;
+        link.textContent = "Open the device login page";
+      }
+      if (help) help.hidden = false;
+      if (btn) btn.textContent = "I've authorized";
+      UI.showToast("Approve the sign-in on GitHub, then click I've authorized.", "info");
+    } catch (err) {
+      _resetGithubOauth();
+      UI.showToast(err.message || "GitHub sign-in did not complete.", "error");
     }
   }
 

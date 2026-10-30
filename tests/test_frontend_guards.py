@@ -715,7 +715,8 @@ run().catch(function(e){R.crash=String(e&&e.stack||e)}).then(function(){var o=do
 })();
 """
 
-_SEED = ("window.__seedFn=function(S,mk){var now=new Date().toISOString();S.sessions.push(mk({id:'sH',title:'History',messages:["
+_SEED = ("try{history.replaceState(null,'','#app')}catch(e){}"
+         "window.__seedFn=function(S,mk){var now=new Date().toISOString();S.sessions.push(mk({id:'sH',title:'History',messages:["
          "{id:'u1',session_id:'sH',role:'user',content:'Q1',created_at:now},{id:'a1',session_id:'sH',role:'assistant',content:'OLD ANSWER',created_at:now,meta:{model:'m1'}}]}))};")
 
 

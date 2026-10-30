@@ -56,6 +56,28 @@ class Document(Base):
     id          = Column(String, primary_key=True, default=_uuid)
     user_id     = Column(String, nullable=False, default="default", index=True)
     filename    = Column(String, nullable=False)
-    file_type   = Column(String, nullable=False)          # pdf | docx | csv | txt | url
+    file_type   = Column(String, nullable=False)          # pdf | docx | csv | txt | url | github
     chunk_count = Column(Integer, default=0)
     indexed_at  = Column(DateTime, default=utcnow)
+
+
+class GithubCredential(Base):
+    __tablename__ = "github_credentials"
+
+    user_id    = Column(String, primary_key=True)
+    token      = Column(Text, nullable=False)
+    source     = Column(String, nullable=False, default="pat")   # pat | oauth
+    updated_at = Column(DateTime, default=utcnow, onupdate=utcnow)
+
+
+class RepoContext(Base):
+    __tablename__ = "repo_contexts"
+
+    id            = Column(String, primary_key=True, default=_uuid)
+    user_id       = Column(String, nullable=False, default="default", index=True)
+    owner         = Column(String, nullable=False)
+    repo          = Column(String, nullable=False)
+    branch        = Column(String, nullable=False, default="main")
+    brief         = Column(Text, nullable=False, default="")
+    file_count    = Column(Integer, default=0)
+    connected_at  = Column(DateTime, default=utcnow)

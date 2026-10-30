@@ -1,8 +1,9 @@
-"""Static guards for the application shell: the workspace-mode dropdown and its relation to New Chat.
+"""Static guards for the application shell: the workspace-mode dropdown and the sidebar.
 
 Product requirement under test: the four workspaces (General, Documents, Research, Code) are chosen in ONE
-dropdown that sits ABOVE the New Chat button in the sidebar. They must never come back as permanent sidebar
-rows or as a segmented toggle in the top header. Stdlib + the project's own config only; no browser.
+dropdown in the message composer, beside Web Search. They must never come back as permanent sidebar
+rows, as a segmented toggle in the top header, or as a second selector in the sidebar. Stdlib + the
+project's own config only; no browser.
 """
 import re
 from pathlib import Path
@@ -24,21 +25,22 @@ def _sidebar():
     return re.search(r'<aside class="sidebar".*?</aside>', INDEX, re.S).group(0)
 
 
-def test_mode_dropdown_precedes_new_chat_inside_the_sidebar():
+def test_mode_dropdown_sits_in_the_composer_beside_web_search():
     sb = _sidebar()
-    mode, new = sb.find('id="modeSelect"'), sb.find('id="newChatBtn"')
-    assert mode != -1 and new != -1, "both controls must live in the sidebar"
-    assert mode < new, "the mode dropdown must come BEFORE (above) New Chat"
-    between = sb[mode:new]
-    assert "<h2" not in between and "<nav" not in between, "nothing may separate the dropdown from New Chat except its wrapper"
+    assert 'id="modeSelect"' not in sb, "the workspace dropdown must not live in the sidebar"
+    assert 'id="myDocsBtn"' not in sb, "My Documents must not live in the sidebar"
+    tools = re.search(r'<div class="dock-tools">(.*?)</div>', INDEX, re.S).group(1)
+    plus, mode, search = tools.find('id="composerPlus"'), tools.find('id="modeSelect"'), tools.find('id="searchToggle"')
+    assert plus != -1 and mode != -1 and search != -1
+    assert plus < mode < search, "composer order: add menu, workspace dropdown, web search"
 
 
-def test_new_chat_follows_the_dropdown_directly_in_the_header_order():
+def test_sidebar_order_is_brand_new_chat_recent_and_user():
     sb = _sidebar()
-    order = [sb.find(k) for k in ('class="sidebar__header"', 'id="modeSelect"', 'id="newChatBtn"',
-                                  'id="recentToggle"', 'id="myDocsBtn"', 'class="sidebar__footer"')]
+    order = [sb.find(k) for k in ('class="sidebar__header"', 'id="newChatBtn"',
+                                  'id="recentToggle"', 'class="sidebar__footer"')]
     assert all(i != -1 for i in order), order
-    assert order == sorted(order), "sidebar order: brand, mode, new chat, recent, my documents, user"
+    assert order == sorted(order), "sidebar order: brand, new chat, recent, user"
 
 
 def test_trigger_is_a_menu_button_with_state_and_a_name():
@@ -81,9 +83,9 @@ def test_controller_owns_the_mode_and_the_view_only_reports_it():
     assert "_modeHandler(id)" in ui_fn, "selection must be reported to the controller"
 
 
-def test_drawer_focuses_the_mode_dropdown_first():
+def test_drawer_focuses_new_chat_first():
     open_fn = UI[UI.index("function openSidebar"):UI.index("function closeSidebar")]
-    assert '$("modeSelect")' in open_fn
+    assert '$("newChatBtn")' in open_fn
 
 
 def test_rail_tooltip_for_new_chat_lives_on_the_wrapper_not_the_clipping_button():
@@ -103,7 +105,5 @@ def test_rail_tooltip_for_new_chat_lives_on_the_wrapper_not_the_clipping_button(
 
 def test_every_control_with_a_rail_tip_also_has_an_accessible_name():
     sb = _sidebar()
-    assert 'aria-label="Workspace mode:' in sb                       # dropdown
     assert '<span class="new-chat-btn__label">New Chat</span>' in sb  # label stays in the DOM (visually hidden in the rail)
     assert 'aria-label="Settings"' in sb
-    assert "docs-card__title\">My Documents" in sb

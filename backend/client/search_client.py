@@ -1,4 +1,4 @@
-"""Tavily web-search HTTP client (async, pooled, one retry on transient failures)."""
+"""Web-search HTTP clients (async, pooled, one retry on transient failures)."""
 
 from __future__ import annotations
 
@@ -37,6 +37,51 @@ class TavilyClient:
             except httpx.TimeoutException:
                 raise
             except httpx.TransportError as exc:                # stale keep-alive / connection reset
+                last = exc
+                if attempt == 1:
+                    raise
+        raise last or RuntimeError("search failed")
+
+
+class SerperClient:
+    def __init__(self, api_key: Optional[str], base_url: str, http: httpx.AsyncClient,
+                 timeout_s: float = 6.0) -> None:
+        self._key = api_key
+        self._base = base_url.rstrip("/")
+        self._http = http
+        self._timeout_s = timeout_s
+
+    @property
+    def configured(self) -> bool:
+        return bool(self._key)
+
+    async def search(self, query: str, max_results: int) -> list[dict[str, Any]]:
+        """Raw result dicts (title, url, content, score). Raises httpx errors on failure."""
+        body = {"q": query, "num": max(1, min(max_results, 10))}
+        last: Optional[Exception] = None
+        for attempt in range(2):
+            try:
+                resp = await self._http.post(
+                    f"{self._base}/search",
+                    headers={"X-API-KEY": self._key, "Content-Type": "application/json"},
+                    json=body, timeout=self._timeout_s)
+                if resp.status_code >= 500 and attempt == 0:
+                    last = httpx.HTTPStatusError("5xx", request=resp.request, response=resp)
+                    continue
+                resp.raise_for_status()
+                organic = list(resp.json().get("organic") or [])
+                out: list[dict[str, Any]] = []
+                for i, item in enumerate(organic[:max_results]):
+                    out.append({
+                        "title": item.get("title") or "",
+                        "url": item.get("link") or "",
+                        "content": item.get("snippet") or "",
+                        "score": 1.0 / (i + 1),
+                    })
+                return out
+            except httpx.TimeoutException:
+                raise
+            except httpx.TransportError as exc:
                 last = exc
                 if attempt == 1:
                     raise

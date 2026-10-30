@@ -212,6 +212,37 @@ class UploadLimits(BaseModel):
 class PublicConfig(BaseModel):
     """Read-only facts the UI needs for client-side checks. The server still enforces all of them."""
     upload: UploadLimits
+    github_oauth: bool = False
+
+
+class GithubConnectRequest(BaseModel):
+    url: str = Field(min_length=8, max_length=400)
+    token: Optional[str] = Field(default=None, max_length=256)
+    user_id: str = Field(default="default", min_length=1, max_length=128)
+
+
+class GithubRepoSchema(BaseModel):
+    id: str
+    owner: str
+    repo: str
+    branch: str
+    file_count: int
+    connected_at: datetime
+
+    model_config = {"from_attributes": True}
+
+
+class GithubDeviceStart(BaseModel):
+    user_code: str
+    verification_uri: str
+    expires_in: int
+    interval: int
+    device_code: str
+
+
+class GithubDevicePoll(BaseModel):
+    device_code: str = Field(min_length=4, max_length=128)
+    user_id: str = Field(default="default", min_length=1, max_length=128)
 
 
 # ── Health ────────────────────────────────────────────────────────────────────
