@@ -1,0 +1,19 @@
+{
+  "projectRoot": "F:\\Personal Projects\\AgenticAI_Chatbot_Using_RAG",
+  "batchFiles": [
+    {"path": "backend/agent.py", "language": "python", "sizeLines": 470, "fileCategory": "code"},
+    {"path": "backend/client.py", "language": "python", "sizeLines": 84, "fileCategory": "code"},
+    {"path": "backend/config.py", "language": "python", "sizeLines": 93, "fileCategory": "code"},
+    {"path": "backend/rag/embeddings.py", "language": "python", "sizeLines": 74, "fileCategory": "code"},
+    {"path": "backend/rag/retriever.py", "language": "python", "sizeLines": 101, "fileCategory": "code"},
+    {"path": "backend/services/vector_store.py", "language": "python", "sizeLines": 90, "fileCategory": "code"}
+  ],
+  "batchImportData": {
+    "backend/agent.py": ["backend/config.py"],
+    "backend/client.py": ["backend/config.py"],
+    "backend/config.py": [],
+    "backend/rag/embeddings.py": ["backend/config.py"],
+    "backend/rag/retriever.py": ["backend/config.py", "backend/rag/embeddings.py", "backend/services/vector_store.py"],
+    "backend/services/vector_store.py": ["backend/config.py"]
+  }
+}

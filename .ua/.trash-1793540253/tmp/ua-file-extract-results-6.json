@@ -1,0 +1,5334 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 6,
+  "filesSkipped": [],
+  "filesUnreadable": [],
+  "analysisOutcomes": {
+    "structure": {
+      "succeeded": 6,
+      "failed": 0
+    },
+    "callGraph": {
+      "succeeded": 6,
+      "failed": 0,
+      "skipped": 0
+    }
+  },
+  "results": [
+    {
+      "path": "tests/browser_harness.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 76,
+      "nonEmptyLines": 66,
+      "functions": [
+        {
+          "name": "run_scenario",
+          "startLine": 20,
+          "endLine": 76,
+          "params": [
+            "scenario",
+            "tmp_path_factory",
+            "name",
+            "extra_flags"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "run_scenario",
+          "line": 20,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "run_scenario",
+          "callee": "next",
+          "lineNumber": 21
+        },
+        {
+          "caller": "run_scenario",
+          "callee": "map",
+          "lineNumber": 21
+        },
+        {
+          "caller": "run_scenario",
+          "callee": "pytest.skip",
+          "lineNumber": 23
+        },
+        {
+          "caller": "run_scenario",
+          "callee": "_STUB.replace",
+          "lineNumber": 24
+        },
+        {
+          "caller": "run_scenario",
+          "callee": "scenario.replace",
+          "lineNumber": 25
+        },
+        {
+          "caller": "do_GET",
+          "callee": "self.path.split",
+          "lineNumber": 33
+        },
+        {
+          "caller": "do_GET",
+          "callee": "(FE / path.lstrip(\"/\")).resolve",
+          "lineNumber": 35
+        },
+        {
+          "caller": "do_GET",
+          "callee": "path.lstrip",
+          "lineNumber": 35
+        },
+        {
+          "caller": "do_GET",
+          "callee": "FE.resolve",
+          "lineNumber": 36
+        },
+        {
+          "caller": "do_GET",
+          "callee": "f.is_file",
+          "lineNumber": 36
+        },
+        {
+          "caller": "do_GET",
+          "callee": "blocked.append",
+          "lineNumber": 37
+        },
+        {
+          "caller": "do_GET",
+          "callee": "self.send_response",
+          "lineNumber": 38
+        },
+        {
+          "caller": "do_GET",
+          "callee": "self.end_headers",
+          "lineNumber": 39
+        },
+        {
+          "caller": "do_GET",
+          "callee": "f.read_bytes",
+          "lineNumber": 41
+        },
+        {
+          "caller": "do_GET",
+          "callee": "data.decode(\"utf-8\").replace(\"<head>\", injected, 1).replace(\"</body>\", tail, 1).encode",
+          "lineNumber": 43
+        },
+        {
+          "caller": "do_GET",
+          "callee": "data.decode(\"utf-8\").replace(\"<head>\", injected, 1).replace",
+          "lineNumber": 43
+        },
+        {
+          "caller": "do_GET",
+          "callee": "data.decode(\"utf-8\").replace",
+          "lineNumber": 43
+        },
+        {
+          "caller": "do_GET",
+          "callee": "data.decode",
+          "lineNumber": 43
+        },
+        {
+          "caller": "do_GET",
+          "callee": "self.send_response",
+          "lineNumber": 44
+        },
+        {
+          "caller": "do_GET",
+          "callee": "{\".html\": \"text/html\", \".js\": \"text/javascript\", \".css\": \"text/css\", \".svg\": \"image/svg+xml\"}.get",
+          "lineNumber": 45
+        },
+        {
+          "caller": "do_GET",
+          "callee": "self.send_header",
+          "lineNumber": 46
+        },
+        {
+          "caller": "do_GET",
+          "callee": "self.end_headers",
+          "lineNumber": 47
+        },
+        {
+          "caller": "do_GET",
+          "callee": "self.wfile.write",
+          "lineNumber": 48
+        },
+        {
+          "caller": "_refuse",
+          "callee": "blocked.append",
+          "lineNumber": 51
+        },
+        {
+          "caller": "_refuse",
+          "callee": "self.send_response",
+          "lineNumber": 52
+        },
+        {
+          "caller": "_refuse",
+          "callee": "self.end_headers",
+          "lineNumber": 53
+        },
+        {
+          "caller": "run_scenario",
+          "callee": "_hs.ThreadingHTTPServer",
+          "lineNumber": 57
+        },
+        {
+          "caller": "run_scenario",
+          "callee": "_th.Thread(target=srv.serve_forever, daemon=True).start",
+          "lineNumber": 58
+        },
+        {
+          "caller": "run_scenario",
+          "callee": "_th.Thread",
+          "lineNumber": 58
+        },
+        {
+          "caller": "run_scenario",
+          "callee": "tmp_path_factory.mktemp",
+          "lineNumber": 59
+        },
+        {
+          "caller": "run_scenario",
+          "callee": "_sp.run",
+          "lineNumber": 61
+        },
+        {
+          "caller": "run_scenario",
+          "callee": "pytest.skip",
+          "lineNumber": 65
+        },
+        {
+          "caller": "run_scenario",
+          "callee": "srv.shutdown",
+          "lineNumber": 67
+        },
+        {
+          "caller": "run_scenario",
+          "callee": "re.search",
+          "lineNumber": 68
+        },
+        {
+          "caller": "run_scenario",
+          "callee": "pytest.skip",
+          "lineNumber": 70
+        },
+        {
+          "caller": "run_scenario",
+          "callee": "_json.loads",
+          "lineNumber": 71
+        },
+        {
+          "caller": "run_scenario",
+          "callee": "_html.unescape",
+          "lineNumber": 71
+        },
+        {
+          "caller": "run_scenario",
+          "callee": "m.group",
+          "lineNumber": 71
+        },
+        {
+          "caller": "run_scenario",
+          "callee": "res.get",
+          "lineNumber": 72
+        },
+        {
+          "caller": "run_scenario",
+          "callee": "pytest.skip",
+          "lineNumber": 73
+        },
+        {
+          "caller": "run_scenario",
+          "callee": "res.get",
+          "lineNumber": 74
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "tests/test_frontend_followup.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 563,
+      "nonEmptyLines": 481,
+      "functions": [
+        {
+          "name": "test_m3_card_aria_label_starts_with_the_visible_title",
+          "startLine": 22,
+          "endLine": 28,
+          "params": []
+        },
+        {
+          "name": "test_n3_show_error_does_not_announce_and_retry_is_announced_once",
+          "startLine": 31,
+          "endLine": 38,
+          "params": []
+        },
+        {
+          "name": "test_n4_sse_dispatch_only_calls_own_function_handlers",
+          "startLine": 41,
+          "endLine": 45,
+          "params": []
+        },
+        {
+          "name": "test_m1_resend_is_decided_in_the_controller_and_only_after_accept_sets_failed",
+          "startLine": 48,
+          "endLine": 58,
+          "params": []
+        },
+        {
+          "name": "test_m2_create_session_receives_the_abort_signal",
+          "startLine": 61,
+          "endLine": 64,
+          "params": []
+        },
+        {
+          "name": "test_n1_busy_notice_is_throttled_and_used_by_send_and_session_select",
+          "startLine": 67,
+          "endLine": 71,
+          "params": []
+        },
+        {
+          "name": "fu",
+          "startLine": 316,
+          "endLine": 372,
+          "params": [
+            "tmp_path_factory"
+          ]
+        },
+        {
+          "name": "test_stub_followup_nothing_reached_a_server",
+          "startLine": 375,
+          "endLine": 376,
+          "params": [
+            "fu"
+          ]
+        },
+        {
+          "name": "test_stub_m1_unedited_resend_uses_regenerate_and_keeps_one_user_bubble",
+          "startLine": 382,
+          "endLine": 390,
+          "params": [
+            "fu"
+          ]
+        },
+        {
+          "name": "test_stub_m1_failed_state_is_cleared_after_success_new_chat_session_switch_and_edit",
+          "startLine": 393,
+          "endLine": 398,
+          "params": [
+            "fu"
+          ]
+        },
+        {
+          "name": "test_stub_m1_http_level_failure_never_uses_regenerate",
+          "startLine": 401,
+          "endLine": 402,
+          "params": [
+            "fu"
+          ]
+        },
+        {
+          "name": "test_stub_m1_cooldown_blocks_early_resend_then_regenerates",
+          "startLine": 405,
+          "endLine": 408,
+          "params": [
+            "fu"
+          ]
+        },
+        {
+          "name": "test_stub_m1_retry_button_regenerates_and_no_duplicate_bubble",
+          "startLine": 411,
+          "endLine": 412,
+          "params": [
+            "fu"
+          ]
+        },
+        {
+          "name": "test_stub_m2_stop_while_session_creation_is_pending_keeps_the_draft",
+          "startLine": 415,
+          "endLine": 419,
+          "params": [
+            "fu"
+          ]
+        },
+        {
+          "name": "test_stub_m2_creation_finishing_after_stop_keeps_the_session_and_sends_nothing",
+          "startLine": 422,
+          "endLine": 425,
+          "params": [
+            "fu"
+          ]
+        },
+        {
+          "name": "test_stub_new_chat_while_session_creation_is_pending_sends_nothing",
+          "startLine": 428,
+          "endLine": 430,
+          "params": [
+            "fu"
+          ]
+        },
+        {
+          "name": "test_stub_n1_four_enters_mid_stream_give_one_toast_and_no_extra_requests",
+          "startLine": 433,
+          "endLine": 438,
+          "params": [
+            "fu"
+          ]
+        },
+        {
+          "name": "test_stub_n2_stop_before_first_token_restores_draft_and_leaves_no_empty_bubble",
+          "startLine": 441,
+          "endLine": 447,
+          "params": [
+            "fu"
+          ]
+        },
+        {
+          "name": "test_stub_n2_stop_after_first_token_keeps_partial_and_state_is_not_failed",
+          "startLine": 450,
+          "endLine": 455,
+          "params": [
+            "fu"
+          ]
+        },
+        {
+          "name": "test_stub_n3_error_is_announced_once_by_the_alert_box_only",
+          "startLine": 458,
+          "endLine": 464,
+          "params": [
+            "fu"
+          ]
+        },
+        {
+          "name": "test_stub_n4_sse_dispatch_ignores_inherited_and_special_event_names",
+          "startLine": 467,
+          "endLine": 470,
+          "params": [
+            "fu"
+          ]
+        },
+        {
+          "name": "test_stub_zero_event_close_is_not_persisted_and_unedited_send_is_a_normal_send",
+          "startLine": 475,
+          "endLine": 481,
+          "params": [
+            "fu"
+          ]
+        },
+        {
+          "name": "test_stub_error_without_meta_is_not_persisted_and_unedited_send_is_a_normal_send",
+          "startLine": 484,
+          "endLine": 491,
+          "params": [
+            "fu"
+          ]
+        },
+        {
+          "name": "test_stub_stop_before_any_event_restores_draft_drops_bubbles_and_resends_normally",
+          "startLine": 494,
+          "endLine": 500,
+          "params": [
+            "fu"
+          ]
+        },
+        {
+          "name": "test_stub_persisted_error_keeps_user_bubble_and_resend_regenerates_with_empty_message",
+          "startLine": 503,
+          "endLine": 512,
+          "params": [
+            "fu"
+          ]
+        },
+        {
+          "name": "test_stub_regenerate_stopped_before_first_token_restores_old_answer_in_place",
+          "startLine": 515,
+          "endLine": 525,
+          "params": [
+            "fu"
+          ]
+        },
+        {
+          "name": "test_stub_regenerate_restore_must_not_leak_into_a_different_chat",
+          "startLine": 528,
+          "endLine": 530,
+          "params": [
+            "fu"
+          ]
+        },
+        {
+          "name": "test_stub_regenerate_then_delete_current_session_leaves_an_empty_chat_and_only_a_stubbed_delete",
+          "startLine": 533,
+          "endLine": 537,
+          "params": [
+            "fu"
+          ]
+        },
+        {
+          "name": "test_stub_regenerate_then_new_chat_then_stop_after_tokens_leaks_nothing",
+          "startLine": 540,
+          "endLine": 543,
+          "params": [
+            "fu"
+          ]
+        },
+        {
+          "name": "test_stub_nothing_was_ever_sent_to_a_real_server",
+          "startLine": 546,
+          "endLine": 547,
+          "params": [
+            "fu"
+          ]
+        },
+        {
+          "name": "test_stub_retry_countdown_announces_itself_once_and_no_double_announcement",
+          "startLine": 550,
+          "endLine": 552,
+          "params": [
+            "fu"
+          ]
+        },
+        {
+          "name": "test_stub_double_send_double_stop_and_stop_done_race_are_clean",
+          "startLine": 555,
+          "endLine": 559,
+          "params": [
+            "fu"
+          ]
+        },
+        {
+          "name": "test_stub_sessions_post_payload_keeps_its_four_keys",
+          "startLine": 562,
+          "endLine": 563,
+          "params": [
+            "fu"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "test_m3_card_aria_label_starts_with_the_visible_title",
+          "line": 22,
+          "isDefault": false
+        },
+        {
+          "name": "test_n3_show_error_does_not_announce_and_retry_is_announced_once",
+          "line": 31,
+          "isDefault": false
+        },
+        {
+          "name": "test_n4_sse_dispatch_only_calls_own_function_handlers",
+          "line": 41,
+          "isDefault": false
+        },
+        {
+          "name": "test_m1_resend_is_decided_in_the_controller_and_only_after_accept_sets_failed",
+          "line": 48,
+          "isDefault": false
+        },
+        {
+          "name": "test_m2_create_session_receives_the_abort_signal",
+          "line": 61,
+          "isDefault": false
+        },
+        {
+          "name": "test_n1_busy_notice_is_throttled_and_used_by_send_and_session_select",
+          "line": 67,
+          "isDefault": false
+        },
+        {
+          "name": "fu",
+          "line": 315,
+          "isDefault": false
+        },
+        {
+          "name": "test_stub_followup_nothing_reached_a_server",
+          "line": 375,
+          "isDefault": false
+        },
+        {
+          "name": "test_stub_m1_unedited_resend_uses_regenerate_and_keeps_one_user_bubble",
+          "line": 382,
+          "isDefault": false
+        },
+        {
+          "name": "test_stub_m1_failed_state_is_cleared_after_success_new_chat_session_switch_and_edit",
+          "line": 393,
+          "isDefault": false
+        },
+        {
+          "name": "test_stub_m1_http_level_failure_never_uses_regenerate",
+          "line": 401,
+          "isDefault": false
+        },
+        {
+          "name": "test_stub_m1_cooldown_blocks_early_resend_then_regenerates",
+          "line": 405,
+          "isDefault": false
+        },
+        {
+          "name": "test_stub_m1_retry_button_regenerates_and_no_duplicate_bubble",
+          "line": 411,
+          "isDefault": false
+        },
+        {
+          "name": "test_stub_m2_stop_while_session_creation_is_pending_keeps_the_draft",
+          "line": 415,
+          "isDefault": false
+        },
+        {
+          "name": "test_stub_m2_creation_finishing_after_stop_keeps_the_session_and_sends_nothing",
+          "line": 422,
+          "isDefault": false
+        },
+        {
+          "name": "test_stub_new_chat_while_session_creation_is_pending_sends_nothing",
+          "line": 428,
+          "isDefault": false
+        },
+        {
+          "name": "test_stub_n1_four_enters_mid_stream_give_one_toast_and_no_extra_requests",
+          "line": 433,
+          "isDefault": false
+        },
+        {
+          "name": "test_stub_n2_stop_before_first_token_restores_draft_and_leaves_no_empty_bubble",
+          "line": 441,
+          "isDefault": false
+        },
+        {
+          "name": "test_stub_n2_stop_after_first_token_keeps_partial_and_state_is_not_failed",
+          "line": 450,
+          "isDefault": false
+        },
+        {
+          "name": "test_stub_n3_error_is_announced_once_by_the_alert_box_only",
+          "line": 458,
+          "isDefault": false
+        },
+        {
+          "name": "test_stub_n4_sse_dispatch_ignores_inherited_and_special_event_names",
+          "line": 467,
+          "isDefault": false
+        },
+        {
+          "name": "test_stub_zero_event_close_is_not_persisted_and_unedited_send_is_a_normal_send",
+          "line": 475,
+          "isDefault": false
+        },
+        {
+          "name": "test_stub_error_without_meta_is_not_persisted_and_unedited_send_is_a_normal_send",
+          "line": 484,
+          "isDefault": false
+        },
+        {
+          "name": "test_stub_stop_before_any_event_restores_draft_drops_bubbles_and_resends_normally",
+          "line": 494,
+          "isDefault": false
+        },
+        {
+          "name": "test_stub_persisted_error_keeps_user_bubble_and_resend_regenerates_with_empty_message",
+          "line": 503,
+          "isDefault": false
+        },
+        {
+          "name": "test_stub_regenerate_stopped_before_first_token_restores_old_answer_in_place",
+          "line": 515,
+          "isDefault": false
+        },
+        {
+          "name": "test_stub_regenerate_restore_must_not_leak_into_a_different_chat",
+          "line": 528,
+          "isDefault": false
+        },
+        {
+          "name": "test_stub_regenerate_then_delete_current_session_leaves_an_empty_chat_and_only_a_stubbed_delete",
+          "line": 533,
+          "isDefault": false
+        },
+        {
+          "name": "test_stub_regenerate_then_new_chat_then_stop_after_tokens_leaks_nothing",
+          "line": 540,
+          "isDefault": false
+        },
+        {
+          "name": "test_stub_nothing_was_ever_sent_to_a_real_server",
+          "line": 546,
+          "isDefault": false
+        },
+        {
+          "name": "test_stub_retry_countdown_announces_itself_once_and_no_double_announcement",
+          "line": 550,
+          "isDefault": false
+        },
+        {
+          "name": "test_stub_double_send_double_stop_and_stop_done_race_are_clean",
+          "line": 555,
+          "isDefault": false
+        },
+        {
+          "name": "test_stub_sessions_post_payload_keeps_its_four_keys",
+          "line": 562,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "test_m3_card_aria_label_starts_with_the_visible_title",
+          "callee": "re.findall",
+          "lineNumber": 23
+        },
+        {
+          "caller": "test_m3_card_aria_label_starts_with_the_visible_title",
+          "callee": "len",
+          "lineNumber": 24
+        },
+        {
+          "caller": "test_m3_card_aria_label_starts_with_the_visible_title",
+          "callee": "re.search(r'<span class=\"feature-card__title\">([^<]+)</span>', inner).group(1).strip",
+          "lineNumber": 26
+        },
+        {
+          "caller": "test_m3_card_aria_label_starts_with_the_visible_title",
+          "callee": "re.search(r'<span class=\"feature-card__title\">([^<]+)</span>', inner).group",
+          "lineNumber": 26
+        },
+        {
+          "caller": "test_m3_card_aria_label_starts_with_the_visible_title",
+          "callee": "re.search",
+          "lineNumber": 26
+        },
+        {
+          "caller": "test_m3_card_aria_label_starts_with_the_visible_title",
+          "callee": "label.startswith",
+          "lineNumber": 27
+        },
+        {
+          "caller": "test_m3_card_aria_label_starts_with_the_visible_title",
+          "callee": "label.startswith",
+          "lineNumber": 28
+        },
+        {
+          "caller": "test_n3_show_error_does_not_announce_and_retry_is_announced_once",
+          "callee": "(FE / \"js/chat.js\").read_text",
+          "lineNumber": 32
+        },
+        {
+          "caller": "test_n3_show_error_does_not_announce_and_retry_is_announced_once",
+          "callee": "re.search",
+          "lineNumber": 33
+        },
+        {
+          "caller": "test_n3_show_error_does_not_announce_and_retry_is_announced_once",
+          "callee": "_code",
+          "lineNumber": 35
+        },
+        {
+          "caller": "test_n3_show_error_does_not_announce_and_retry_is_announced_once",
+          "callee": "m.group",
+          "lineNumber": 35
+        },
+        {
+          "caller": "test_n3_show_error_does_not_announce_and_retry_is_announced_once",
+          "callee": "re.findall",
+          "lineNumber": 37
+        },
+        {
+          "caller": "test_n4_sse_dispatch_only_calls_own_function_handlers",
+          "callee": "_code",
+          "lineNumber": 42
+        },
+        {
+          "caller": "test_n4_sse_dispatch_only_calls_own_function_handlers",
+          "callee": "re.search",
+          "lineNumber": 44
+        },
+        {
+          "caller": "test_m1_resend_is_decided_in_the_controller_and_only_after_accept_sets_failed",
+          "callee": "_app_fn",
+          "lineNumber": 49
+        },
+        {
+          "caller": "test_m1_resend_is_decided_in_the_controller_and_only_after_accept_sets_failed",
+          "callee": "m.start",
+          "lineNumber": 53
+        },
+        {
+          "caller": "test_m1_resend_is_decided_in_the_controller_and_only_after_accept_sets_failed",
+          "callee": "re.finditer",
+          "lineNumber": 53
+        },
+        {
+          "caller": "test_m1_resend_is_decided_in_the_controller_and_only_after_accept_sets_failed",
+          "callee": "len",
+          "lineNumber": 54
+        },
+        {
+          "caller": "test_m1_resend_is_decided_in_the_controller_and_only_after_accept_sets_failed",
+          "callee": "all",
+          "lineNumber": 55
+        },
+        {
+          "caller": "test_m1_resend_is_decided_in_the_controller_and_only_after_accept_sets_failed",
+          "callee": "body.index",
+          "lineNumber": 55
+        },
+        {
+          "caller": "test_m1_resend_is_decided_in_the_controller_and_only_after_accept_sets_failed",
+          "callee": "_app_fn",
+          "lineNumber": 58
+        },
+        {
+          "caller": "test_m2_create_session_receives_the_abort_signal",
+          "callee": "_app_fn",
+          "lineNumber": 62
+        },
+        {
+          "caller": "test_m2_create_session_receives_the_abort_signal",
+          "callee": "_app_fn",
+          "lineNumber": 63
+        },
+        {
+          "caller": "test_m2_create_session_receives_the_abort_signal",
+          "callee": "_app_fn",
+          "lineNumber": 64
+        },
+        {
+          "caller": "test_n1_busy_notice_is_throttled_and_used_by_send_and_session_select",
+          "callee": "_app_fn",
+          "lineNumber": 68
+        },
+        {
+          "caller": "test_n1_busy_notice_is_throttled_and_used_by_send_and_session_select",
+          "callee": "_app_fn",
+          "lineNumber": 69
+        },
+        {
+          "caller": "test_n1_busy_notice_is_throttled_and_used_by_send_and_session_select",
+          "callee": "_app_fn",
+          "lineNumber": 70
+        },
+        {
+          "caller": "fu",
+          "callee": "next",
+          "lineNumber": 317
+        },
+        {
+          "caller": "fu",
+          "callee": "map",
+          "lineNumber": 317
+        },
+        {
+          "caller": "fu",
+          "callee": "pytest.skip",
+          "lineNumber": 319
+        },
+        {
+          "caller": "fu",
+          "callee": "_STUB.replace",
+          "lineNumber": 320
+        },
+        {
+          "caller": "fu",
+          "callee": "_SCENARIO.replace",
+          "lineNumber": 321
+        },
+        {
+          "caller": "do_GET",
+          "callee": "self.path.split",
+          "lineNumber": 329
+        },
+        {
+          "caller": "do_GET",
+          "callee": "(FE / path.lstrip(\"/\")).resolve",
+          "lineNumber": 331
+        },
+        {
+          "caller": "do_GET",
+          "callee": "path.lstrip",
+          "lineNumber": 331
+        },
+        {
+          "caller": "do_GET",
+          "callee": "FE.resolve",
+          "lineNumber": 332
+        },
+        {
+          "caller": "do_GET",
+          "callee": "f.is_file",
+          "lineNumber": 332
+        },
+        {
+          "caller": "do_GET",
+          "callee": "blocked.append",
+          "lineNumber": 333
+        },
+        {
+          "caller": "do_GET",
+          "callee": "self.send_response",
+          "lineNumber": 334
+        },
+        {
+          "caller": "do_GET",
+          "callee": "self.end_headers",
+          "lineNumber": 335
+        },
+        {
+          "caller": "do_GET",
+          "callee": "f.read_bytes",
+          "lineNumber": 337
+        },
+        {
+          "caller": "do_GET",
+          "callee": "data.decode(\"utf-8\").replace(\"<head>\", injected, 1).replace(\"</body>\", tail, 1).encode",
+          "lineNumber": 339
+        },
+        {
+          "caller": "do_GET",
+          "callee": "data.decode(\"utf-8\").replace(\"<head>\", injected, 1).replace",
+          "lineNumber": 339
+        },
+        {
+          "caller": "do_GET",
+          "callee": "data.decode(\"utf-8\").replace",
+          "lineNumber": 339
+        },
+        {
+          "caller": "do_GET",
+          "callee": "data.decode",
+          "lineNumber": 339
+        },
+        {
+          "caller": "do_GET",
+          "callee": "self.send_response",
+          "lineNumber": 340
+        },
+        {
+          "caller": "do_GET",
+          "callee": "{\".html\": \"text/html\", \".js\": \"text/javascript\", \".css\": \"text/css\", \".svg\": \"image/svg+xml\"}.get",
+          "lineNumber": 341
+        },
+        {
+          "caller": "do_GET",
+          "callee": "self.send_header",
+          "lineNumber": 342
+        },
+        {
+          "caller": "do_GET",
+          "callee": "self.end_headers",
+          "lineNumber": 343
+        },
+        {
+          "caller": "do_GET",
+          "callee": "self.wfile.write",
+          "lineNumber": 344
+        },
+        {
+          "caller": "_refuse",
+          "callee": "blocked.append",
+          "lineNumber": 347
+        },
+        {
+          "caller": "_refuse",
+          "callee": "self.send_response",
+          "lineNumber": 348
+        },
+        {
+          "caller": "_refuse",
+          "callee": "self.end_headers",
+          "lineNumber": 349
+        },
+        {
+          "caller": "fu",
+          "callee": "_hs.ThreadingHTTPServer",
+          "lineNumber": 353
+        },
+        {
+          "caller": "fu",
+          "callee": "_th.Thread(target=srv.serve_forever, daemon=True).start",
+          "lineNumber": 354
+        },
+        {
+          "caller": "fu",
+          "callee": "_th.Thread",
+          "lineNumber": 354
+        },
+        {
+          "caller": "fu",
+          "callee": "tmp_path_factory.mktemp",
+          "lineNumber": 355
+        },
+        {
+          "caller": "fu",
+          "callee": "_sp.run",
+          "lineNumber": 357
+        },
+        {
+          "caller": "fu",
+          "callee": "pytest.skip",
+          "lineNumber": 361
+        },
+        {
+          "caller": "fu",
+          "callee": "srv.shutdown",
+          "lineNumber": 363
+        },
+        {
+          "caller": "fu",
+          "callee": "re.search",
+          "lineNumber": 364
+        },
+        {
+          "caller": "fu",
+          "callee": "pytest.skip",
+          "lineNumber": 366
+        },
+        {
+          "caller": "fu",
+          "callee": "_json.loads",
+          "lineNumber": 367
+        },
+        {
+          "caller": "fu",
+          "callee": "_html.unescape",
+          "lineNumber": 367
+        },
+        {
+          "caller": "fu",
+          "callee": "m.group",
+          "lineNumber": 367
+        },
+        {
+          "caller": "fu",
+          "callee": "res.get",
+          "lineNumber": 368
+        },
+        {
+          "caller": "fu",
+          "callee": "pytest.skip",
+          "lineNumber": 369
+        },
+        {
+          "caller": "fu",
+          "callee": "res.get",
+          "lineNumber": 370
+        },
+        {
+          "caller": "test_stub_m1_unedited_resend_uses_regenerate_and_keeps_one_user_bubble",
+          "callee": "sorted",
+          "lineNumber": 385
+        },
+        {
+          "caller": "test_stub_m1_unedited_resend_uses_regenerate_and_keeps_one_user_bubble",
+          "callee": "sorted",
+          "lineNumber": 385
+        },
+        {
+          "caller": "test_stub_m1_unedited_resend_uses_regenerate_and_keeps_one_user_bubble",
+          "callee": "ok[\"userText\"].strip().startswith",
+          "lineNumber": 390
+        },
+        {
+          "caller": "test_stub_m1_unedited_resend_uses_regenerate_and_keeps_one_user_bubble",
+          "callee": "ok[\"userText\"].strip",
+          "lineNumber": 390
+        },
+        {
+          "caller": "test_stub_n1_four_enters_mid_stream_give_one_toast_and_no_extra_requests",
+          "callee": "len",
+          "lineNumber": 435
+        },
+        {
+          "caller": "test_stub_n2_stop_before_first_token_restores_draft_and_leaves_no_empty_bubble",
+          "callee": "any",
+          "lineNumber": 444
+        },
+        {
+          "caller": "test_stub_n3_error_is_announced_once_by_the_alert_box_only",
+          "callee": "cd[\"calls\"].count",
+          "lineNumber": 464
+        },
+        {
+          "caller": "test_stub_zero_event_close_is_not_persisted_and_unedited_send_is_a_normal_send",
+          "callee": "sorted",
+          "lineNumber": 479
+        },
+        {
+          "caller": "test_stub_zero_event_close_is_not_persisted_and_unedited_send_is_a_normal_send",
+          "callee": "sorted",
+          "lineNumber": 479
+        },
+        {
+          "caller": "test_stub_stop_before_any_event_restores_draft_drops_bubbles_and_resends_normally",
+          "callee": "any",
+          "lineNumber": 497
+        },
+        {
+          "caller": "test_stub_persisted_error_keeps_user_bubble_and_resend_regenerates_with_empty_message",
+          "callee": "sorted",
+          "lineNumber": 506
+        },
+        {
+          "caller": "test_stub_persisted_error_keeps_user_bubble_and_resend_regenerates_with_empty_message",
+          "callee": "sorted",
+          "lineNumber": 506
+        },
+        {
+          "caller": "test_stub_regenerate_stopped_before_first_token_restores_old_answer_in_place",
+          "callee": "any",
+          "lineNumber": 520
+        },
+        {
+          "caller": "test_stub_nothing_was_ever_sent_to_a_real_server",
+          "callee": "all",
+          "lineNumber": 547
+        },
+        {
+          "caller": "test_stub_nothing_was_ever_sent_to_a_real_server",
+          "callee": "b.startswith",
+          "lineNumber": 547
+        },
+        {
+          "caller": "test_stub_nothing_was_ever_sent_to_a_real_server",
+          "callee": "b.split()[1].endswith",
+          "lineNumber": 547
+        },
+        {
+          "caller": "test_stub_nothing_was_ever_sent_to_a_real_server",
+          "callee": "b.split",
+          "lineNumber": 547
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 33,
+        "functionCount": 33,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "tests/test_frontend_guards.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 837,
+      "nonEmptyLines": 689,
+      "functions": [
+        {
+          "name": "_read",
+          "startLine": 19,
+          "endLine": 20,
+          "params": [
+            "rel"
+          ]
+        },
+        {
+          "name": "test_entrypoints_exist",
+          "startLine": 23,
+          "endLine": 26,
+          "params": []
+        },
+        {
+          "name": "test_view_files_do_not_call_backend",
+          "startLine": 29,
+          "endLine": 33,
+          "params": []
+        },
+        {
+          "name": "test_no_inline_handlers_or_styles_in_markup",
+          "startLine": 36,
+          "endLine": 39,
+          "params": []
+        },
+        {
+          "name": "test_no_new_external_origins",
+          "startLine": 42,
+          "endLine": 47,
+          "params": []
+        },
+        {
+          "name": "test_app_js_ids_exist_in_index",
+          "startLine": 50,
+          "endLine": 53,
+          "params": []
+        },
+        {
+          "name": "test_sprite_references_resolve",
+          "startLine": 56,
+          "endLine": 62,
+          "params": []
+        },
+        {
+          "name": "test_no_hex_colors_outside_token_files",
+          "startLine": 65,
+          "endLine": 67,
+          "params": []
+        },
+        {
+          "name": "test_reduced_motion_rule_present",
+          "startLine": 70,
+          "endLine": 71,
+          "params": []
+        },
+        {
+          "name": "test_no_right_sidebar_region",
+          "startLine": 74,
+          "endLine": 75,
+          "params": []
+        },
+        {
+          "name": "test_buttons_have_accessible_name",
+          "startLine": 78,
+          "endLine": 101,
+          "params": []
+        },
+        {
+          "name": "test_index_ids_are_unique",
+          "startLine": 106,
+          "endLine": 109,
+          "params": []
+        },
+        {
+          "name": "test_ui_ids_exist_in_index_or_are_created_dynamically",
+          "startLine": 112,
+          "endLine": 118,
+          "params": []
+        },
+        {
+          "name": "test_model_select_never_uses_html_injection",
+          "startLine": 121,
+          "endLine": 123,
+          "params": []
+        },
+        {
+          "name": "test_session_list_interpolations_are_escaped",
+          "startLine": 126,
+          "endLine": 140,
+          "params": []
+        },
+        {
+          "name": "test_file_accept_matches_controller_allow_list",
+          "startLine": 143,
+          "endLine": 146,
+          "params": []
+        },
+        {
+          "name": "test_welcome_cards_and_mode_dropdown_are_consistent",
+          "startLine": 149,
+          "endLine": 169,
+          "params": []
+        },
+        {
+          "name": "test_no_unverifiable_marketing_claims",
+          "startLine": 172,
+          "endLine": 175,
+          "params": []
+        },
+        {
+          "name": "test_shell_breakpoints_match_between_head_snippet_and_ui",
+          "startLine": 178,
+          "endLine": 181,
+          "params": []
+        },
+        {
+          "name": "test_sidebar_toggle_controls_existing_region",
+          "startLine": 184,
+          "endLine": 187,
+          "params": []
+        },
+        {
+          "name": "test_sidebar_is_hidden_from_tab_order_when_closed_drawer",
+          "startLine": 190,
+          "endLine": 193,
+          "params": []
+        },
+        {
+          "name": "test_coarse_pointer_targets_are_44px",
+          "startLine": 196,
+          "endLine": 199,
+          "params": []
+        },
+        {
+          "name": "test_model_select_keeps_native_select_as_source_of_truth",
+          "startLine": 202,
+          "endLine": 210,
+          "params": []
+        },
+        {
+          "name": "_css_rules",
+          "startLine": 213,
+          "endLine": 218,
+          "params": [
+            "css",
+            "selector_re"
+          ]
+        },
+        {
+          "name": "test_feature_card_try_line_is_never_hidden",
+          "startLine": 221,
+          "endLine": 228,
+          "params": []
+        },
+        {
+          "name": "test_feature_card_border_uses_control_token",
+          "startLine": 231,
+          "endLine": 238,
+          "params": []
+        },
+        {
+          "name": "_fn_body",
+          "startLine": 243,
+          "endLine": 247,
+          "params": [
+            "src",
+            "name"
+          ]
+        },
+        {
+          "name": "test_sources_block_never_uses_html_injection",
+          "startLine": 250,
+          "endLine": 254,
+          "params": []
+        },
+        {
+          "name": "test_every_blank_target_has_noopener_noreferrer",
+          "startLine": 257,
+          "endLine": 263,
+          "params": []
+        },
+        {
+          "name": "test_chat_innerhtml_templates_interpolate_only_safe_values",
+          "startLine": 266,
+          "endLine": 276,
+          "params": []
+        },
+        {
+          "name": "test_renderer_and_chat_api_used_by_app_js_still_exists",
+          "startLine": 279,
+          "endLine": 287,
+          "params": []
+        },
+        {
+          "name": "test_ai_viz_is_css_only_and_decorative",
+          "startLine": 290,
+          "endLine": 296,
+          "params": []
+        },
+        {
+          "name": "test_ai_viz_reduced_motion_and_hidden_tab_rules",
+          "startLine": 299,
+          "endLine": 305,
+          "params": []
+        },
+        {
+          "name": "test_no_interval_timers_or_raf_loops_in_frontend",
+          "startLine": 308,
+          "endLine": 313,
+          "params": []
+        },
+        {
+          "name": "test_streaming_does_not_announce_per_token",
+          "startLine": 316,
+          "endLine": 320,
+          "params": []
+        },
+        {
+          "name": "test_stage3_ids_exist",
+          "startLine": 323,
+          "endLine": 328,
+          "params": []
+        },
+        {
+          "name": "test_sanitizer_policy_forbids_class_role_download_ping_in_utils",
+          "startLine": 331,
+          "endLine": 333,
+          "params": []
+        },
+        {
+          "name": "_fn_body",
+          "startLine": 339,
+          "endLine": 342,
+          "params": [
+            "src",
+            "name"
+          ]
+        },
+        {
+          "name": "test_citation_label_falls_back_to_source_n_and_is_used_everywhere",
+          "startLine": 345,
+          "endLine": 352,
+          "params": []
+        },
+        {
+          "name": "test_citation_ids_resolved_once_for_stream_and_history_paths",
+          "startLine": 355,
+          "endLine": 360,
+          "params": []
+        },
+        {
+          "name": "test_coarse_pointer_citation_hit_area_rule_present_and_scoped",
+          "startLine": 363,
+          "endLine": 370,
+          "params": []
+        },
+        {
+          "name": "cite_result",
+          "startLine": 424,
+          "endLine": 450,
+          "params": [
+            "tmp_path_factory"
+          ]
+        },
+        {
+          "name": "_id_list",
+          "startLine": 453,
+          "endLine": 454,
+          "params": [
+            "r",
+            "k"
+          ]
+        },
+        {
+          "name": "test_browser_citation_ids_consistent_unique_and_input_not_mutated",
+          "startLine": 457,
+          "endLine": 469,
+          "params": [
+            "cite_result"
+          ]
+        },
+        {
+          "name": "test_browser_blank_citations_get_accessible_source_n_names",
+          "startLine": 472,
+          "endLine": 480,
+          "params": [
+            "cite_result"
+          ]
+        },
+        {
+          "name": "test_browser_isolated_badge_reaches_44px_on_coarse_pointers",
+          "startLine": 483,
+          "endLine": 486,
+          "params": [
+            "cite_result"
+          ]
+        },
+        {
+          "name": "test_browser_multi_citation_sentence_badges_reach_44px_wide",
+          "startLine": 489,
+          "endLine": 491,
+          "params": [
+            "cite_result"
+          ]
+        },
+        {
+          "name": "_code",
+          "startLine": 502,
+          "endLine": 505,
+          "params": [
+            "src"
+          ]
+        },
+        {
+          "name": "_app_fn",
+          "startLine": 508,
+          "endLine": 513,
+          "params": [
+            "name"
+          ]
+        },
+        {
+          "name": "test_app_js_has_no_native_confirm_inline_color_interval_or_emoji",
+          "startLine": 516,
+          "endLine": 522,
+          "params": []
+        },
+        {
+          "name": "test_welcome_card_handler_never_sends",
+          "startLine": 525,
+          "endLine": 540,
+          "params": []
+        },
+        {
+          "name": "test_allowed_extensions_include_rst_and_match_accept_and_backend",
+          "startLine": 543,
+          "endLine": 549,
+          "params": []
+        },
+        {
+          "name": "test_request_payload_shapes_match_the_backend_contract",
+          "startLine": 552,
+          "endLine": 570,
+          "params": []
+        },
+        {
+          "name": "test_regenerate_and_retry_send_the_head_shape",
+          "startLine": 573,
+          "endLine": 579,
+          "params": []
+        },
+        {
+          "name": "test_composer_is_cleared_only_after_the_server_accepted",
+          "startLine": 582,
+          "endLine": 587,
+          "params": []
+        },
+        {
+          "name": "test_no_new_timer_or_listener_patterns_in_controller",
+          "startLine": 590,
+          "endLine": 594,
+          "params": []
+        },
+        {
+          "name": "stub_run",
+          "startLine": 724,
+          "endLine": 787,
+          "params": [
+            "tmp_path_factory"
+          ]
+        },
+        {
+          "name": "test_stub_nothing_reached_a_server",
+          "startLine": 790,
+          "endLine": 792,
+          "params": [
+            "stub_run"
+          ]
+        },
+        {
+          "name": "test_stub_welcome_cards_never_submit_and_fill_the_composer",
+          "startLine": 795,
+          "endLine": 800,
+          "params": [
+            "stub_run"
+          ]
+        },
+        {
+          "name": "test_stub_failures_before_accept_keep_the_draft_and_add_no_bubble",
+          "startLine": 803,
+          "endLine": 812,
+          "params": [
+            "stub_run"
+          ]
+        },
+        {
+          "name": "test_stub_stream_error_restores_draft_and_never_duplicates_the_user_bubble",
+          "startLine": 815,
+          "endLine": 825,
+          "params": [
+            "stub_run"
+          ]
+        },
+        {
+          "name": "test_stub_failed_regenerate_keeps_the_previous_answer",
+          "startLine": 828,
+          "endLine": 831,
+          "params": [
+            "stub_run"
+          ]
+        },
+        {
+          "name": "test_stub_upload_failure_retry_resends_the_same_file",
+          "startLine": 834,
+          "endLine": 837,
+          "params": [
+            "stub_run"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "_read",
+          "line": 19,
+          "isDefault": false
+        },
+        {
+          "name": "test_entrypoints_exist",
+          "line": 23,
+          "isDefault": false
+        },
+        {
+          "name": "test_view_files_do_not_call_backend",
+          "line": 29,
+          "isDefault": false
+        },
+        {
+          "name": "test_no_inline_handlers_or_styles_in_markup",
+          "line": 36,
+          "isDefault": false
+        },
+        {
+          "name": "test_no_new_external_origins",
+          "line": 42,
+          "isDefault": false
+        },
+        {
+          "name": "test_app_js_ids_exist_in_index",
+          "line": 50,
+          "isDefault": false
+        },
+        {
+          "name": "test_sprite_references_resolve",
+          "line": 56,
+          "isDefault": false
+        },
+        {
+          "name": "test_no_hex_colors_outside_token_files",
+          "line": 65,
+          "isDefault": false
+        },
+        {
+          "name": "test_reduced_motion_rule_present",
+          "line": 70,
+          "isDefault": false
+        },
+        {
+          "name": "test_no_right_sidebar_region",
+          "line": 74,
+          "isDefault": false
+        },
+        {
+          "name": "test_buttons_have_accessible_name",
+          "line": 78,
+          "isDefault": false
+        },
+        {
+          "name": "test_index_ids_are_unique",
+          "line": 106,
+          "isDefault": false
+        },
+        {
+          "name": "test_ui_ids_exist_in_index_or_are_created_dynamically",
+          "line": 112,
+          "isDefault": false
+        },
+        {
+          "name": "test_model_select_never_uses_html_injection",
+          "line": 121,
+          "isDefault": false
+        },
+        {
+          "name": "test_session_list_interpolations_are_escaped",
+          "line": 126,
+          "isDefault": false
+        },
+        {
+          "name": "test_file_accept_matches_controller_allow_list",
+          "line": 143,
+          "isDefault": false
+        },
+        {
+          "name": "test_welcome_cards_and_mode_dropdown_are_consistent",
+          "line": 149,
+          "isDefault": false
+        },
+        {
+          "name": "test_no_unverifiable_marketing_claims",
+          "line": 172,
+          "isDefault": false
+        },
+        {
+          "name": "test_shell_breakpoints_match_between_head_snippet_and_ui",
+          "line": 178,
+          "isDefault": false
+        },
+        {
+          "name": "test_sidebar_toggle_controls_existing_region",
+          "line": 184,
+          "isDefault": false
+        },
+        {
+          "name": "test_sidebar_is_hidden_from_tab_order_when_closed_drawer",
+          "line": 190,
+          "isDefault": false
+        },
+        {
+          "name": "test_coarse_pointer_targets_are_44px",
+          "line": 196,
+          "isDefault": false
+        },
+        {
+          "name": "test_model_select_keeps_native_select_as_source_of_truth",
+          "line": 202,
+          "isDefault": false
+        },
+        {
+          "name": "_css_rules",
+          "line": 213,
+          "isDefault": false
+        },
+        {
+          "name": "test_feature_card_try_line_is_never_hidden",
+          "line": 221,
+          "isDefault": false
+        },
+        {
+          "name": "test_feature_card_border_uses_control_token",
+          "line": 231,
+          "isDefault": false
+        },
+        {
+          "name": "_fn_body",
+          "line": 243,
+          "isDefault": false
+        },
+        {
+          "name": "test_sources_block_never_uses_html_injection",
+          "line": 250,
+          "isDefault": false
+        },
+        {
+          "name": "test_every_blank_target_has_noopener_noreferrer",
+          "line": 257,
+          "isDefault": false
+        },
+        {
+          "name": "test_chat_innerhtml_templates_interpolate_only_safe_values",
+          "line": 266,
+          "isDefault": false
+        },
+        {
+          "name": "test_renderer_and_chat_api_used_by_app_js_still_exists",
+          "line": 279,
+          "isDefault": false
+        },
+        {
+          "name": "test_ai_viz_is_css_only_and_decorative",
+          "line": 290,
+          "isDefault": false
+        },
+        {
+          "name": "test_ai_viz_reduced_motion_and_hidden_tab_rules",
+          "line": 299,
+          "isDefault": false
+        },
+        {
+          "name": "test_no_interval_timers_or_raf_loops_in_frontend",
+          "line": 308,
+          "isDefault": false
+        },
+        {
+          "name": "test_streaming_does_not_announce_per_token",
+          "line": 316,
+          "isDefault": false
+        },
+        {
+          "name": "test_stage3_ids_exist",
+          "line": 323,
+          "isDefault": false
+        },
+        {
+          "name": "test_sanitizer_policy_forbids_class_role_download_ping_in_utils",
+          "line": 331,
+          "isDefault": false
+        },
+        {
+          "name": "_fn_body",
+          "line": 339,
+          "isDefault": false
+        },
+        {
+          "name": "test_citation_label_falls_back_to_source_n_and_is_used_everywhere",
+          "line": 345,
+          "isDefault": false
+        },
+        {
+          "name": "test_citation_ids_resolved_once_for_stream_and_history_paths",
+          "line": 355,
+          "isDefault": false
+        },
+        {
+          "name": "test_coarse_pointer_citation_hit_area_rule_present_and_scoped",
+          "line": 363,
+          "isDefault": false
+        },
+        {
+          "name": "cite_result",
+          "line": 423,
+          "isDefault": false
+        },
+        {
+          "name": "_id_list",
+          "line": 453,
+          "isDefault": false
+        },
+        {
+          "name": "test_browser_citation_ids_consistent_unique_and_input_not_mutated",
+          "line": 457,
+          "isDefault": false
+        },
+        {
+          "name": "test_browser_blank_citations_get_accessible_source_n_names",
+          "line": 472,
+          "isDefault": false
+        },
+        {
+          "name": "test_browser_isolated_badge_reaches_44px_on_coarse_pointers",
+          "line": 483,
+          "isDefault": false
+        },
+        {
+          "name": "test_browser_multi_citation_sentence_badges_reach_44px_wide",
+          "line": 489,
+          "isDefault": false
+        },
+        {
+          "name": "_code",
+          "line": 502,
+          "isDefault": false
+        },
+        {
+          "name": "_app_fn",
+          "line": 508,
+          "isDefault": false
+        },
+        {
+          "name": "test_app_js_has_no_native_confirm_inline_color_interval_or_emoji",
+          "line": 516,
+          "isDefault": false
+        },
+        {
+          "name": "test_welcome_card_handler_never_sends",
+          "line": 525,
+          "isDefault": false
+        },
+        {
+          "name": "test_allowed_extensions_include_rst_and_match_accept_and_backend",
+          "line": 543,
+          "isDefault": false
+        },
+        {
+          "name": "test_request_payload_shapes_match_the_backend_contract",
+          "line": 552,
+          "isDefault": false
+        },
+        {
+          "name": "test_regenerate_and_retry_send_the_head_shape",
+          "line": 573,
+          "isDefault": false
+        },
+        {
+          "name": "test_composer_is_cleared_only_after_the_server_accepted",
+          "line": 582,
+          "isDefault": false
+        },
+        {
+          "name": "test_no_new_timer_or_listener_patterns_in_controller",
+          "line": 590,
+          "isDefault": false
+        },
+        {
+          "name": "stub_run",
+          "line": 723,
+          "isDefault": false
+        },
+        {
+          "name": "test_stub_nothing_reached_a_server",
+          "line": 790,
+          "isDefault": false
+        },
+        {
+          "name": "test_stub_welcome_cards_never_submit_and_fill_the_composer",
+          "line": 795,
+          "isDefault": false
+        },
+        {
+          "name": "test_stub_failures_before_accept_keep_the_draft_and_add_no_bubble",
+          "line": 803,
+          "isDefault": false
+        },
+        {
+          "name": "test_stub_stream_error_restores_draft_and_never_duplicates_the_user_bubble",
+          "line": 815,
+          "isDefault": false
+        },
+        {
+          "name": "test_stub_failed_regenerate_keeps_the_previous_answer",
+          "line": 828,
+          "isDefault": false
+        },
+        {
+          "name": "test_stub_upload_failure_retry_resends_the_same_file",
+          "line": 834,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "_read",
+          "callee": "(FE / rel).read_text",
+          "lineNumber": 20
+        },
+        {
+          "caller": "test_entrypoints_exist",
+          "callee": "(FE / \"js/app.js\").is_file",
+          "lineNumber": 24
+        },
+        {
+          "caller": "test_entrypoints_exist",
+          "callee": "(FE / \"css/main.css\").is_file",
+          "lineNumber": 25
+        },
+        {
+          "caller": "test_entrypoints_exist",
+          "callee": "(FE / \"assets/LICENSE-lucide.txt\").is_file",
+          "lineNumber": 26
+        },
+        {
+          "caller": "test_view_files_do_not_call_backend",
+          "callee": "_read",
+          "lineNumber": 31
+        },
+        {
+          "caller": "test_view_files_do_not_call_backend",
+          "callee": "re.search",
+          "lineNumber": 32
+        },
+        {
+          "caller": "test_view_files_do_not_call_backend",
+          "callee": "re.search",
+          "lineNumber": 33
+        },
+        {
+          "caller": "test_no_inline_handlers_or_styles_in_markup",
+          "callee": "re.search",
+          "lineNumber": 37
+        },
+        {
+          "caller": "test_no_inline_handlers_or_styles_in_markup",
+          "callee": "re.findall",
+          "lineNumber": 38
+        },
+        {
+          "caller": "test_no_new_external_origins",
+          "callee": "\"\".join",
+          "lineNumber": 44
+        },
+        {
+          "caller": "test_no_new_external_origins",
+          "callee": "p.read_text",
+          "lineNumber": 44
+        },
+        {
+          "caller": "test_no_new_external_origins",
+          "callee": "list",
+          "lineNumber": 44
+        },
+        {
+          "caller": "test_no_new_external_origins",
+          "callee": "(FE / \"css\").glob",
+          "lineNumber": 44
+        },
+        {
+          "caller": "test_no_new_external_origins",
+          "callee": "list",
+          "lineNumber": 44
+        },
+        {
+          "caller": "test_no_new_external_origins",
+          "callee": "(FE / \"js\").rglob",
+          "lineNumber": 44
+        },
+        {
+          "caller": "test_no_new_external_origins",
+          "callee": "set",
+          "lineNumber": 46
+        },
+        {
+          "caller": "test_no_new_external_origins",
+          "callee": "re.findall",
+          "lineNumber": 46
+        },
+        {
+          "caller": "test_app_js_ids_exist_in_index",
+          "callee": "set",
+          "lineNumber": 51
+        },
+        {
+          "caller": "test_app_js_ids_exist_in_index",
+          "callee": "re.findall",
+          "lineNumber": 51
+        },
+        {
+          "caller": "test_app_js_ids_exist_in_index",
+          "callee": "set",
+          "lineNumber": 52
+        },
+        {
+          "caller": "test_app_js_ids_exist_in_index",
+          "callee": "re.findall",
+          "lineNumber": 52
+        },
+        {
+          "caller": "test_app_js_ids_exist_in_index",
+          "callee": "_read",
+          "lineNumber": 52
+        },
+        {
+          "caller": "test_app_js_ids_exist_in_index",
+          "callee": "set",
+          "lineNumber": 53
+        },
+        {
+          "caller": "test_sprite_references_resolve",
+          "callee": "set",
+          "lineNumber": 57
+        },
+        {
+          "caller": "test_sprite_references_resolve",
+          "callee": "re.findall",
+          "lineNumber": 57
+        },
+        {
+          "caller": "test_sprite_references_resolve",
+          "callee": "set",
+          "lineNumber": 58
+        },
+        {
+          "caller": "test_sprite_references_resolve",
+          "callee": "re.findall",
+          "lineNumber": 58
+        },
+        {
+          "caller": "test_sprite_references_resolve",
+          "callee": "re.findall",
+          "lineNumber": 61
+        },
+        {
+          "caller": "test_sprite_references_resolve",
+          "callee": "_read",
+          "lineNumber": 61
+        },
+        {
+          "caller": "test_no_hex_colors_outside_token_files",
+          "callee": "re.search",
+          "lineNumber": 67
+        },
+        {
+          "caller": "test_no_hex_colors_outside_token_files",
+          "callee": "_read",
+          "lineNumber": 67
+        },
+        {
+          "caller": "test_reduced_motion_rule_present",
+          "callee": "_read",
+          "lineNumber": 71
+        },
+        {
+          "caller": "test_no_right_sidebar_region",
+          "callee": "re.search",
+          "lineNumber": 75
+        },
+        {
+          "caller": "__init__",
+          "callee": "super().__init__",
+          "lineNumber": 81
+        },
+        {
+          "caller": "__init__",
+          "callee": "super",
+          "lineNumber": 81
+        },
+        {
+          "caller": "handle_starttag",
+          "callee": "dict",
+          "lineNumber": 85
+        },
+        {
+          "caller": "handle_starttag",
+          "callee": "self.stack.append",
+          "lineNumber": 87
+        },
+        {
+          "caller": "handle_data",
+          "callee": "data.strip",
+          "lineNumber": 91
+        },
+        {
+          "caller": "handle_endtag",
+          "callee": "self.stack.pop",
+          "lineNumber": 95
+        },
+        {
+          "caller": "handle_endtag",
+          "callee": "a.get",
+          "lineNumber": 96
+        },
+        {
+          "caller": "handle_endtag",
+          "callee": "a.get",
+          "lineNumber": 96
+        },
+        {
+          "caller": "handle_endtag",
+          "callee": "a.get",
+          "lineNumber": 96
+        },
+        {
+          "caller": "handle_endtag",
+          "callee": "self.bad.append",
+          "lineNumber": 97
+        },
+        {
+          "caller": "handle_endtag",
+          "callee": "a.get",
+          "lineNumber": 97
+        },
+        {
+          "caller": "handle_endtag",
+          "callee": "a.get",
+          "lineNumber": 97
+        },
+        {
+          "caller": "test_buttons_have_accessible_name",
+          "callee": "P",
+          "lineNumber": 99
+        },
+        {
+          "caller": "test_buttons_have_accessible_name",
+          "callee": "p.feed",
+          "lineNumber": 100
+        },
+        {
+          "caller": "test_index_ids_are_unique",
+          "callee": "re.findall",
+          "lineNumber": 107
+        },
+        {
+          "caller": "test_index_ids_are_unique",
+          "callee": "ids.count",
+          "lineNumber": 108
+        },
+        {
+          "caller": "test_index_ids_are_unique",
+          "callee": "set",
+          "lineNumber": 109
+        },
+        {
+          "caller": "test_ui_ids_exist_in_index_or_are_created_dynamically",
+          "callee": "set",
+          "lineNumber": 113
+        },
+        {
+          "caller": "test_ui_ids_exist_in_index_or_are_created_dynamically",
+          "callee": "re.findall",
+          "lineNumber": 113
+        },
+        {
+          "caller": "test_ui_ids_exist_in_index_or_are_created_dynamically",
+          "callee": "set",
+          "lineNumber": 116
+        },
+        {
+          "caller": "test_ui_ids_exist_in_index_or_are_created_dynamically",
+          "callee": "re.findall",
+          "lineNumber": 116
+        },
+        {
+          "caller": "test_ui_ids_exist_in_index_or_are_created_dynamically",
+          "callee": "_read",
+          "lineNumber": 116
+        },
+        {
+          "caller": "test_ui_ids_exist_in_index_or_are_created_dynamically",
+          "callee": "set",
+          "lineNumber": 117
+        },
+        {
+          "caller": "test_ui_ids_exist_in_index_or_are_created_dynamically",
+          "callee": "_read",
+          "lineNumber": 118
+        },
+        {
+          "caller": "test_model_select_never_uses_html_injection",
+          "callee": "_read",
+          "lineNumber": 122
+        },
+        {
+          "caller": "test_model_select_never_uses_html_injection",
+          "callee": "re.search",
+          "lineNumber": 123
+        },
+        {
+          "caller": "test_session_list_interpolations_are_escaped",
+          "callee": "_read",
+          "lineNumber": 127
+        },
+        {
+          "caller": "test_session_list_interpolations_are_escaped",
+          "callee": "src.index",
+          "lineNumber": 128
+        },
+        {
+          "caller": "test_session_list_interpolations_are_escaped",
+          "callee": "src.index",
+          "lineNumber": 129
+        },
+        {
+          "caller": "test_session_list_interpolations_are_escaped",
+          "callee": "\"\\n\".join",
+          "lineNumber": 131
+        },
+        {
+          "caller": "test_session_list_interpolations_are_escaped",
+          "callee": "body[body.index(\"let html\"):].splitlines",
+          "lineNumber": 131
+        },
+        {
+          "caller": "test_session_list_interpolations_are_escaped",
+          "callee": "body.index",
+          "lineNumber": 131
+        },
+        {
+          "caller": "test_session_list_interpolations_are_escaped",
+          "callee": "l.strip().startswith",
+          "lineNumber": 131
+        },
+        {
+          "caller": "test_session_list_interpolations_are_escaped",
+          "callee": "l.strip",
+          "lineNumber": 131
+        },
+        {
+          "caller": "test_session_list_interpolations_are_escaped",
+          "callee": "set",
+          "lineNumber": 132
+        },
+        {
+          "caller": "test_session_list_interpolations_are_escaped",
+          "callee": "re.findall",
+          "lineNumber": 132
+        },
+        {
+          "caller": "test_session_list_interpolations_are_escaped",
+          "callee": "e.strip",
+          "lineNumber": 135
+        },
+        {
+          "caller": "test_session_list_interpolations_are_escaped",
+          "callee": "e.startswith",
+          "lineNumber": 136
+        },
+        {
+          "caller": "test_session_list_interpolations_are_escaped",
+          "callee": "e.startswith",
+          "lineNumber": 136
+        },
+        {
+          "caller": "test_session_list_interpolations_are_escaped",
+          "callee": "e.startswith",
+          "lineNumber": 137
+        },
+        {
+          "caller": "test_session_list_interpolations_are_escaped",
+          "callee": "e.startswith",
+          "lineNumber": 137
+        },
+        {
+          "caller": "test_file_accept_matches_controller_allow_list",
+          "callee": "re.search(r'id=\"fileInput\"[^>]*accept=\"([^\"]+)\"', INDEX).group",
+          "lineNumber": 144
+        },
+        {
+          "caller": "test_file_accept_matches_controller_allow_list",
+          "callee": "re.search",
+          "lineNumber": 144
+        },
+        {
+          "caller": "test_file_accept_matches_controller_allow_list",
+          "callee": "re.search(r\"const ALLOWED = \\[([^\\]]+)\\]\", _read(\"js/app.js\")).group",
+          "lineNumber": 145
+        },
+        {
+          "caller": "test_file_accept_matches_controller_allow_list",
+          "callee": "re.search",
+          "lineNumber": 145
+        },
+        {
+          "caller": "test_file_accept_matches_controller_allow_list",
+          "callee": "_read",
+          "lineNumber": 145
+        },
+        {
+          "caller": "test_file_accept_matches_controller_allow_list",
+          "callee": "a.strip().lstrip",
+          "lineNumber": 146
+        },
+        {
+          "caller": "test_file_accept_matches_controller_allow_list",
+          "callee": "a.strip",
+          "lineNumber": 146
+        },
+        {
+          "caller": "test_file_accept_matches_controller_allow_list",
+          "callee": "accept.split",
+          "lineNumber": 146
+        },
+        {
+          "caller": "test_file_accept_matches_controller_allow_list",
+          "callee": "set",
+          "lineNumber": 146
+        },
+        {
+          "caller": "test_file_accept_matches_controller_allow_list",
+          "callee": "re.findall",
+          "lineNumber": 146
+        },
+        {
+          "caller": "test_welcome_cards_and_mode_dropdown_are_consistent",
+          "callee": "_read",
+          "lineNumber": 150
+        },
+        {
+          "caller": "test_welcome_cards_and_mode_dropdown_are_consistent",
+          "callee": "re.findall",
+          "lineNumber": 152
+        },
+        {
+          "caller": "test_welcome_cards_and_mode_dropdown_are_consistent",
+          "callee": "sorted",
+          "lineNumber": 154
+        },
+        {
+          "caller": "test_welcome_cards_and_mode_dropdown_are_consistent",
+          "callee": "re.findall",
+          "lineNumber": 155
+        },
+        {
+          "caller": "test_welcome_cards_and_mode_dropdown_are_consistent",
+          "callee": "sorted",
+          "lineNumber": 156
+        },
+        {
+          "caller": "test_welcome_cards_and_mode_dropdown_are_consistent",
+          "callee": "sorted",
+          "lineNumber": 156
+        },
+        {
+          "caller": "test_welcome_cards_and_mode_dropdown_are_consistent",
+          "callee": "all",
+          "lineNumber": 157
+        },
+        {
+          "caller": "test_welcome_cards_and_mode_dropdown_are_consistent",
+          "callee": "p.strip",
+          "lineNumber": 157
+        },
+        {
+          "caller": "test_welcome_cards_and_mode_dropdown_are_consistent",
+          "callee": "dict",
+          "lineNumber": 158
+        },
+        {
+          "caller": "test_welcome_cards_and_mode_dropdown_are_consistent",
+          "callee": "re.search",
+          "lineNumber": 163
+        },
+        {
+          "caller": "test_welcome_cards_and_mode_dropdown_are_consistent",
+          "callee": "re.escape",
+          "lineNumber": 163
+        },
+        {
+          "caller": "test_welcome_cards_and_mode_dropdown_are_consistent",
+          "callee": "card.group",
+          "lineNumber": 164
+        },
+        {
+          "caller": "test_welcome_cards_and_mode_dropdown_are_consistent",
+          "callee": "card.group",
+          "lineNumber": 164
+        },
+        {
+          "caller": "test_welcome_cards_and_mode_dropdown_are_consistent",
+          "callee": "re.search(r'<span class=\"feature-card__title\">([^<]+)</span>', inner).group",
+          "lineNumber": 165
+        },
+        {
+          "caller": "test_welcome_cards_and_mode_dropdown_are_consistent",
+          "callee": "re.search",
+          "lineNumber": 165
+        },
+        {
+          "caller": "test_welcome_cards_and_mode_dropdown_are_consistent",
+          "callee": "_read(\"js/components/workspaces.js\").lower",
+          "lineNumber": 169
+        },
+        {
+          "caller": "test_welcome_cards_and_mode_dropdown_are_consistent",
+          "callee": "_read",
+          "lineNumber": 169
+        },
+        {
+          "caller": "test_no_unverifiable_marketing_claims",
+          "callee": "(INDEX + _read(\"js/ui.js\")).lower",
+          "lineNumber": 173
+        },
+        {
+          "caller": "test_no_unverifiable_marketing_claims",
+          "callee": "_read",
+          "lineNumber": 173
+        },
+        {
+          "caller": "test_shell_breakpoints_match_between_head_snippet_and_ui",
+          "callee": "_read",
+          "lineNumber": 180
+        },
+        {
+          "caller": "test_sidebar_toggle_controls_existing_region",
+          "callee": "re.search",
+          "lineNumber": 185
+        },
+        {
+          "caller": "test_sidebar_toggle_controls_existing_region",
+          "callee": "m.group",
+          "lineNumber": 186
+        },
+        {
+          "caller": "test_sidebar_toggle_controls_existing_region",
+          "callee": "re.search",
+          "lineNumber": 187
+        },
+        {
+          "caller": "test_sidebar_is_hidden_from_tab_order_when_closed_drawer",
+          "callee": "_read",
+          "lineNumber": 191
+        },
+        {
+          "caller": "test_sidebar_is_hidden_from_tab_order_when_closed_drawer",
+          "callee": "_read",
+          "lineNumber": 191
+        },
+        {
+          "caller": "test_sidebar_is_hidden_from_tab_order_when_closed_drawer",
+          "callee": "re.search",
+          "lineNumber": 192
+        },
+        {
+          "caller": "test_sidebar_is_hidden_from_tab_order_when_closed_drawer",
+          "callee": "_read",
+          "lineNumber": 193
+        },
+        {
+          "caller": "test_coarse_pointer_targets_are_44px",
+          "callee": "_read",
+          "lineNumber": 197
+        },
+        {
+          "caller": "test_coarse_pointer_targets_are_44px",
+          "callee": "_read",
+          "lineNumber": 197
+        },
+        {
+          "caller": "test_coarse_pointer_targets_are_44px",
+          "callee": "re.search",
+          "lineNumber": 198
+        },
+        {
+          "caller": "test_model_select_keeps_native_select_as_source_of_truth",
+          "callee": "_read",
+          "lineNumber": 203
+        },
+        {
+          "caller": "_css_rules",
+          "callee": "re.finditer",
+          "lineNumber": 215
+        },
+        {
+          "caller": "_css_rules",
+          "callee": "m.group(1).strip",
+          "lineNumber": 216
+        },
+        {
+          "caller": "_css_rules",
+          "callee": "m.group",
+          "lineNumber": 216
+        },
+        {
+          "caller": "_css_rules",
+          "callee": "re.search",
+          "lineNumber": 217
+        },
+        {
+          "caller": "_css_rules",
+          "callee": "m.group",
+          "lineNumber": 218
+        },
+        {
+          "caller": "test_feature_card_try_line_is_never_hidden",
+          "callee": "_read",
+          "lineNumber": 222
+        },
+        {
+          "caller": "test_feature_card_try_line_is_never_hidden",
+          "callee": "list",
+          "lineNumber": 223
+        },
+        {
+          "caller": "test_feature_card_try_line_is_never_hidden",
+          "callee": "_css_rules",
+          "lineNumber": 223
+        },
+        {
+          "caller": "test_feature_card_try_line_is_never_hidden",
+          "callee": "re.search",
+          "lineNumber": 226
+        },
+        {
+          "caller": "test_feature_card_try_line_is_never_hidden",
+          "callee": "re.search",
+          "lineNumber": 227
+        },
+        {
+          "caller": "test_feature_card_try_line_is_never_hidden",
+          "callee": "re.search",
+          "lineNumber": 228
+        },
+        {
+          "caller": "test_feature_card_border_uses_control_token",
+          "callee": "_read",
+          "lineNumber": 232
+        },
+        {
+          "caller": "test_feature_card_border_uses_control_token",
+          "callee": "_css_rules",
+          "lineNumber": 233
+        },
+        {
+          "caller": "test_feature_card_border_uses_control_token",
+          "callee": "re.search",
+          "lineNumber": 235
+        },
+        {
+          "caller": "test_feature_card_border_uses_control_token",
+          "callee": "m.group",
+          "lineNumber": 236
+        },
+        {
+          "caller": "test_feature_card_border_uses_control_token",
+          "callee": "all",
+          "lineNumber": 237
+        },
+        {
+          "caller": "test_feature_card_border_uses_control_token",
+          "callee": "any",
+          "lineNumber": 238
+        },
+        {
+          "caller": "_fn_body",
+          "callee": "src.index",
+          "lineNumber": 245
+        },
+        {
+          "caller": "_fn_body",
+          "callee": "re.search",
+          "lineNumber": 246
+        },
+        {
+          "caller": "_fn_body",
+          "callee": "m.start",
+          "lineNumber": 247
+        },
+        {
+          "caller": "test_sources_block_never_uses_html_injection",
+          "callee": "_fn_body",
+          "lineNumber": 251
+        },
+        {
+          "caller": "test_sources_block_never_uses_html_injection",
+          "callee": "_read",
+          "lineNumber": 251
+        },
+        {
+          "caller": "test_sources_block_never_uses_html_injection",
+          "callee": "re.search",
+          "lineNumber": 252
+        },
+        {
+          "caller": "test_every_blank_target_has_noopener_noreferrer",
+          "callee": "_read",
+          "lineNumber": 259
+        },
+        {
+          "caller": "test_every_blank_target_has_noopener_noreferrer",
+          "callee": "len",
+          "lineNumber": 260
+        },
+        {
+          "caller": "test_every_blank_target_has_noopener_noreferrer",
+          "callee": "re.findall",
+          "lineNumber": 260
+        },
+        {
+          "caller": "test_every_blank_target_has_noopener_noreferrer",
+          "callee": "len",
+          "lineNumber": 261
+        },
+        {
+          "caller": "test_every_blank_target_has_noopener_noreferrer",
+          "callee": "re.findall",
+          "lineNumber": 261
+        },
+        {
+          "caller": "test_chat_innerhtml_templates_interpolate_only_safe_values",
+          "callee": "_read",
+          "lineNumber": 267
+        },
+        {
+          "caller": "test_chat_innerhtml_templates_interpolate_only_safe_values",
+          "callee": "re.compile",
+          "lineNumber": 268
+        },
+        {
+          "caller": "test_chat_innerhtml_templates_interpolate_only_safe_values",
+          "callee": "re.findall",
+          "lineNumber": 269
+        },
+        {
+          "caller": "test_chat_innerhtml_templates_interpolate_only_safe_values",
+          "callee": "len",
+          "lineNumber": 270
+        },
+        {
+          "caller": "test_chat_innerhtml_templates_interpolate_only_safe_values",
+          "callee": "re.findall",
+          "lineNumber": 272
+        },
+        {
+          "caller": "test_chat_innerhtml_templates_interpolate_only_safe_values",
+          "callee": "safe.match",
+          "lineNumber": 273
+        },
+        {
+          "caller": "test_chat_innerhtml_templates_interpolate_only_safe_values",
+          "callee": "expr.strip",
+          "lineNumber": 273
+        },
+        {
+          "caller": "test_chat_innerhtml_templates_interpolate_only_safe_values",
+          "callee": "_fn_body",
+          "lineNumber": 275
+        },
+        {
+          "caller": "test_renderer_and_chat_api_used_by_app_js_still_exists",
+          "callee": "_read",
+          "lineNumber": 280
+        },
+        {
+          "caller": "test_renderer_and_chat_api_used_by_app_js_still_exists",
+          "callee": "_read",
+          "lineNumber": 280
+        },
+        {
+          "caller": "test_renderer_and_chat_api_used_by_app_js_still_exists",
+          "callee": "set",
+          "lineNumber": 281
+        },
+        {
+          "caller": "test_renderer_and_chat_api_used_by_app_js_still_exists",
+          "callee": "re.findall",
+          "lineNumber": 281
+        },
+        {
+          "caller": "test_renderer_and_chat_api_used_by_app_js_still_exists",
+          "callee": "re.search",
+          "lineNumber": 282
+        },
+        {
+          "caller": "test_renderer_and_chat_api_used_by_app_js_still_exists",
+          "callee": "set",
+          "lineNumber": 283
+        },
+        {
+          "caller": "test_renderer_and_chat_api_used_by_app_js_still_exists",
+          "callee": "re.findall",
+          "lineNumber": 283
+        },
+        {
+          "caller": "test_renderer_and_chat_api_used_by_app_js_still_exists",
+          "callee": "re.search",
+          "lineNumber": 284
+        },
+        {
+          "caller": "test_renderer_and_chat_api_used_by_app_js_still_exists",
+          "callee": "chat.rindex",
+          "lineNumber": 284
+        },
+        {
+          "caller": "test_ai_viz_is_css_only_and_decorative",
+          "callee": "_read",
+          "lineNumber": 291
+        },
+        {
+          "caller": "test_ai_viz_is_css_only_and_decorative",
+          "callee": "_read",
+          "lineNumber": 291
+        },
+        {
+          "caller": "test_ai_viz_is_css_only_and_decorative",
+          "callee": "re.sub",
+          "lineNumber": 292
+        },
+        {
+          "caller": "test_ai_viz_is_css_only_and_decorative",
+          "callee": "re.search",
+          "lineNumber": 293
+        },
+        {
+          "caller": "test_ai_viz_is_css_only_and_decorative",
+          "callee": "re.search",
+          "lineNumber": 295
+        },
+        {
+          "caller": "test_ai_viz_is_css_only_and_decorative",
+          "callee": "re.search",
+          "lineNumber": 296
+        },
+        {
+          "caller": "test_ai_viz_reduced_motion_and_hidden_tab_rules",
+          "callee": "_read",
+          "lineNumber": 300
+        },
+        {
+          "caller": "test_ai_viz_reduced_motion_and_hidden_tab_rules",
+          "callee": "re.search",
+          "lineNumber": 301
+        },
+        {
+          "caller": "test_ai_viz_reduced_motion_and_hidden_tab_rules",
+          "callee": "m.group",
+          "lineNumber": 302
+        },
+        {
+          "caller": "test_ai_viz_reduced_motion_and_hidden_tab_rules",
+          "callee": "m.group",
+          "lineNumber": 302
+        },
+        {
+          "caller": "test_ai_viz_reduced_motion_and_hidden_tab_rules",
+          "callee": "re.findall",
+          "lineNumber": 304
+        },
+        {
+          "caller": "test_ai_viz_reduced_motion_and_hidden_tab_rules",
+          "callee": "set",
+          "lineNumber": 305
+        },
+        {
+          "caller": "test_ai_viz_reduced_motion_and_hidden_tab_rules",
+          "callee": "re.findall",
+          "lineNumber": 305
+        },
+        {
+          "caller": "test_no_interval_timers_or_raf_loops_in_frontend",
+          "callee": "(FE / \"js\").rglob",
+          "lineNumber": 309
+        },
+        {
+          "caller": "test_no_interval_timers_or_raf_loops_in_frontend",
+          "callee": "p.read_text",
+          "lineNumber": 310
+        },
+        {
+          "caller": "test_no_interval_timers_or_raf_loops_in_frontend",
+          "callee": "_read",
+          "lineNumber": 312
+        },
+        {
+          "caller": "test_no_interval_timers_or_raf_loops_in_frontend",
+          "callee": "len",
+          "lineNumber": 313
+        },
+        {
+          "caller": "test_no_interval_timers_or_raf_loops_in_frontend",
+          "callee": "re.findall",
+          "lineNumber": 313
+        },
+        {
+          "caller": "test_streaming_does_not_announce_per_token",
+          "callee": "_read",
+          "lineNumber": 317
+        },
+        {
+          "caller": "test_streaming_does_not_announce_per_token",
+          "callee": "chat.index",
+          "lineNumber": 318
+        },
+        {
+          "caller": "test_streaming_does_not_announce_per_token",
+          "callee": "chat.index",
+          "lineNumber": 318
+        },
+        {
+          "caller": "test_stage3_ids_exist",
+          "callee": "set",
+          "lineNumber": 324
+        },
+        {
+          "caller": "test_stage3_ids_exist",
+          "callee": "re.findall",
+          "lineNumber": 324
+        },
+        {
+          "caller": "test_stage3_ids_exist",
+          "callee": "re.findall",
+          "lineNumber": 326
+        },
+        {
+          "caller": "test_stage3_ids_exist",
+          "callee": "_read",
+          "lineNumber": 326
+        },
+        {
+          "caller": "test_sanitizer_policy_forbids_class_role_download_ping_in_utils",
+          "callee": "re.search",
+          "lineNumber": 332
+        },
+        {
+          "caller": "test_sanitizer_policy_forbids_class_role_download_ping_in_utils",
+          "callee": "_read",
+          "lineNumber": 332
+        },
+        {
+          "caller": "test_sanitizer_policy_forbids_class_role_download_ping_in_utils",
+          "callee": "set",
+          "lineNumber": 333
+        },
+        {
+          "caller": "test_sanitizer_policy_forbids_class_role_download_ping_in_utils",
+          "callee": "re.findall",
+          "lineNumber": 333
+        },
+        {
+          "caller": "test_sanitizer_policy_forbids_class_role_download_ping_in_utils",
+          "callee": "m.group",
+          "lineNumber": 333
+        },
+        {
+          "caller": "_fn_body",
+          "callee": "re.search",
+          "lineNumber": 340
+        },
+        {
+          "caller": "_fn_body",
+          "callee": "m.group",
+          "lineNumber": 342
+        },
+        {
+          "caller": "test_citation_label_falls_back_to_source_n_and_is_used_everywhere",
+          "callee": "_read",
+          "lineNumber": 346
+        },
+        {
+          "caller": "test_citation_label_falls_back_to_source_n_and_is_used_everywhere",
+          "callee": "_fn_body",
+          "lineNumber": 347
+        },
+        {
+          "caller": "test_citation_label_falls_back_to_source_n_and_is_used_everywhere",
+          "callee": "chat.count",
+          "lineNumber": 351
+        },
+        {
+          "caller": "test_citation_ids_resolved_once_for_stream_and_history_paths",
+          "callee": "_read",
+          "lineNumber": 356
+        },
+        {
+          "caller": "test_citation_ids_resolved_once_for_stream_and_history_paths",
+          "callee": "_fn_body",
+          "lineNumber": 359
+        },
+        {
+          "caller": "test_citation_ids_resolved_once_for_stream_and_history_paths",
+          "callee": "_fn_body",
+          "lineNumber": 360
+        },
+        {
+          "caller": "test_coarse_pointer_citation_hit_area_rule_present_and_scoped",
+          "callee": "_read",
+          "lineNumber": 364
+        },
+        {
+          "caller": "test_coarse_pointer_citation_hit_area_rule_present_and_scoped",
+          "callee": "re.search",
+          "lineNumber": 365
+        },
+        {
+          "caller": "test_coarse_pointer_citation_hit_area_rule_present_and_scoped",
+          "callee": "re.search",
+          "lineNumber": 367
+        },
+        {
+          "caller": "test_coarse_pointer_citation_hit_area_rule_present_and_scoped",
+          "callee": "m.group",
+          "lineNumber": 367
+        },
+        {
+          "caller": "test_coarse_pointer_citation_hit_area_rule_present_and_scoped",
+          "callee": "rule.group",
+          "lineNumber": 369
+        },
+        {
+          "caller": "test_coarse_pointer_citation_hit_area_rule_present_and_scoped",
+          "callee": "rule.group",
+          "lineNumber": 369
+        },
+        {
+          "caller": "test_coarse_pointer_citation_hit_area_rule_present_and_scoped",
+          "callee": "re.search",
+          "lineNumber": 370
+        },
+        {
+          "caller": "cite_result",
+          "callee": "next",
+          "lineNumber": 429
+        },
+        {
+          "caller": "cite_result",
+          "callee": "map",
+          "lineNumber": 429
+        },
+        {
+          "caller": "cite_result",
+          "callee": "pytest.skip",
+          "lineNumber": 431
+        },
+        {
+          "caller": "cite_result",
+          "callee": "_read",
+          "lineNumber": 432
+        },
+        {
+          "caller": "cite_result",
+          "callee": "_read(\"css/components.css\").replace",
+          "lineNumber": 432
+        },
+        {
+          "caller": "cite_result",
+          "callee": "_read",
+          "lineNumber": 432
+        },
+        {
+          "caller": "cite_result",
+          "callee": "tmp_path_factory.mktemp",
+          "lineNumber": 433
+        },
+        {
+          "caller": "cite_result",
+          "callee": "s.replace",
+          "lineNumber": 435
+        },
+        {
+          "caller": "cite_result",
+          "callee": "page.write_text",
+          "lineNumber": 436
+        },
+        {
+          "caller": "cite_result",
+          "callee": "esc",
+          "lineNumber": 436
+        },
+        {
+          "caller": "cite_result",
+          "callee": "_read",
+          "lineNumber": 436
+        },
+        {
+          "caller": "cite_result",
+          "callee": "esc",
+          "lineNumber": 436
+        },
+        {
+          "caller": "cite_result",
+          "callee": "_read",
+          "lineNumber": 436
+        },
+        {
+          "caller": "cite_result",
+          "callee": "esc",
+          "lineNumber": 437
+        },
+        {
+          "caller": "cite_result",
+          "callee": "_read",
+          "lineNumber": 437
+        },
+        {
+          "caller": "cite_result",
+          "callee": "_sp.run",
+          "lineNumber": 439
+        },
+        {
+          "caller": "cite_result",
+          "callee": "page.as_uri",
+          "lineNumber": 440
+        },
+        {
+          "caller": "cite_result",
+          "callee": "pytest.skip",
+          "lineNumber": 443
+        },
+        {
+          "caller": "cite_result",
+          "callee": "re.search",
+          "lineNumber": 444
+        },
+        {
+          "caller": "cite_result",
+          "callee": "m.group(1).strip",
+          "lineNumber": 445
+        },
+        {
+          "caller": "cite_result",
+          "callee": "m.group",
+          "lineNumber": 445
+        },
+        {
+          "caller": "cite_result",
+          "callee": "pytest.skip",
+          "lineNumber": 446
+        },
+        {
+          "caller": "cite_result",
+          "callee": "_json.loads",
+          "lineNumber": 447
+        },
+        {
+          "caller": "cite_result",
+          "callee": "_html.unescape",
+          "lineNumber": 447
+        },
+        {
+          "caller": "cite_result",
+          "callee": "m.group",
+          "lineNumber": 447
+        },
+        {
+          "caller": "cite_result",
+          "callee": "pytest.skip",
+          "lineNumber": 449
+        },
+        {
+          "caller": "test_browser_citation_ids_consistent_unique_and_input_not_mutated",
+          "callee": "_id_list",
+          "lineNumber": 460
+        },
+        {
+          "caller": "test_browser_citation_ids_consistent_unique_and_input_not_mutated",
+          "callee": "_id_list",
+          "lineNumber": 461
+        },
+        {
+          "caller": "test_browser_citation_ids_consistent_unique_and_input_not_mutated",
+          "callee": "_id_list",
+          "lineNumber": 462
+        },
+        {
+          "caller": "test_browser_citation_ids_consistent_unique_and_input_not_mutated",
+          "callee": "_id_list",
+          "lineNumber": 463
+        },
+        {
+          "caller": "test_browser_citation_ids_consistent_unique_and_input_not_mutated",
+          "callee": "_id_list",
+          "lineNumber": 464
+        },
+        {
+          "caller": "test_browser_citation_ids_consistent_unique_and_input_not_mutated",
+          "callee": "_id_list",
+          "lineNumber": 465
+        },
+        {
+          "caller": "test_browser_citation_ids_consistent_unique_and_input_not_mutated",
+          "callee": "_id_list",
+          "lineNumber": 466
+        },
+        {
+          "caller": "test_browser_citation_ids_consistent_unique_and_input_not_mutated",
+          "callee": "str",
+          "lineNumber": 466
+        },
+        {
+          "caller": "test_browser_citation_ids_consistent_unique_and_input_not_mutated",
+          "callee": "range",
+          "lineNumber": 466
+        },
+        {
+          "caller": "test_browser_citation_ids_consistent_unique_and_input_not_mutated",
+          "callee": "r[\"ids\"].items",
+          "lineNumber": 467
+        },
+        {
+          "caller": "test_browser_citation_ids_consistent_unique_and_input_not_mutated",
+          "callee": "len",
+          "lineNumber": 469
+        },
+        {
+          "caller": "test_browser_citation_ids_consistent_unique_and_input_not_mutated",
+          "callee": "len",
+          "lineNumber": 469
+        },
+        {
+          "caller": "test_browser_citation_ids_consistent_unique_and_input_not_mutated",
+          "callee": "set",
+          "lineNumber": 469
+        },
+        {
+          "caller": "test_browser_blank_citations_get_accessible_source_n_names",
+          "callee": "all",
+          "lineNumber": 477
+        },
+        {
+          "caller": "test_browser_blank_citations_get_accessible_source_n_names",
+          "callee": "r[\"ids\"].values",
+          "lineNumber": 477
+        },
+        {
+          "caller": "_code",
+          "callee": "re.sub",
+          "lineNumber": 504
+        },
+        {
+          "caller": "_code",
+          "callee": "re.sub",
+          "lineNumber": 505
+        },
+        {
+          "caller": "_app_fn",
+          "callee": "re.search",
+          "lineNumber": 509
+        },
+        {
+          "caller": "_app_fn",
+          "callee": "m.end",
+          "lineNumber": 511
+        },
+        {
+          "caller": "_app_fn",
+          "callee": "re.search",
+          "lineNumber": 512
+        },
+        {
+          "caller": "_app_fn",
+          "callee": "nxt.start",
+          "lineNumber": 513
+        },
+        {
+          "caller": "test_app_js_has_no_native_confirm_inline_color_interval_or_emoji",
+          "callee": "_code",
+          "lineNumber": 517
+        },
+        {
+          "caller": "test_app_js_has_no_native_confirm_inline_color_interval_or_emoji",
+          "callee": "re.search",
+          "lineNumber": 518
+        },
+        {
+          "caller": "test_app_js_has_no_native_confirm_inline_color_interval_or_emoji",
+          "callee": "re.search",
+          "lineNumber": 519
+        },
+        {
+          "caller": "test_app_js_has_no_native_confirm_inline_color_interval_or_emoji",
+          "callee": "_EMOJI.search",
+          "lineNumber": 521
+        },
+        {
+          "caller": "test_app_js_has_no_native_confirm_inline_color_interval_or_emoji",
+          "callee": "code.count",
+          "lineNumber": 522
+        },
+        {
+          "caller": "test_welcome_card_handler_never_sends",
+          "callee": "re.search",
+          "lineNumber": 526
+        },
+        {
+          "caller": "test_welcome_card_handler_never_sends",
+          "callee": "_code",
+          "lineNumber": 528
+        },
+        {
+          "caller": "test_welcome_card_handler_never_sends",
+          "callee": "m.group",
+          "lineNumber": 528
+        },
+        {
+          "caller": "test_welcome_card_handler_never_sends",
+          "callee": "_code",
+          "lineNumber": 532
+        },
+        {
+          "caller": "test_welcome_card_handler_never_sends",
+          "callee": "_app_fn",
+          "lineNumber": 532
+        },
+        {
+          "caller": "test_welcome_card_handler_never_sends",
+          "callee": "_code",
+          "lineNumber": 536
+        },
+        {
+          "caller": "test_welcome_card_handler_never_sends",
+          "callee": "_app_fn",
+          "lineNumber": 536
+        },
+        {
+          "caller": "test_welcome_card_handler_never_sends",
+          "callee": "re.search",
+          "lineNumber": 537
+        },
+        {
+          "caller": "test_welcome_card_handler_never_sends",
+          "callee": "_code",
+          "lineNumber": 539
+        },
+        {
+          "caller": "test_welcome_card_handler_never_sends",
+          "callee": "_read",
+          "lineNumber": 539
+        },
+        {
+          "caller": "test_allowed_extensions_include_rst_and_match_accept_and_backend",
+          "callee": "set",
+          "lineNumber": 544
+        },
+        {
+          "caller": "test_allowed_extensions_include_rst_and_match_accept_and_backend",
+          "callee": "re.findall",
+          "lineNumber": 544
+        },
+        {
+          "caller": "test_allowed_extensions_include_rst_and_match_accept_and_backend",
+          "callee": "re.search(r\"const ALLOWED = \\[([^\\]]+)\\]\", APP).group",
+          "lineNumber": 544
+        },
+        {
+          "caller": "test_allowed_extensions_include_rst_and_match_accept_and_backend",
+          "callee": "re.search",
+          "lineNumber": 544
+        },
+        {
+          "caller": "test_allowed_extensions_include_rst_and_match_accept_and_backend",
+          "callee": "re.search(r'id=\"fileInput\"[^>]*accept=\"([^\"]+)\"', INDEX).group",
+          "lineNumber": 546
+        },
+        {
+          "caller": "test_allowed_extensions_include_rst_and_match_accept_and_backend",
+          "callee": "re.search",
+          "lineNumber": 546
+        },
+        {
+          "caller": "test_allowed_extensions_include_rst_and_match_accept_and_backend",
+          "callee": "a.lstrip",
+          "lineNumber": 547
+        },
+        {
+          "caller": "test_allowed_extensions_include_rst_and_match_accept_and_backend",
+          "callee": "accept.split",
+          "lineNumber": 547
+        },
+        {
+          "caller": "test_allowed_extensions_include_rst_and_match_accept_and_backend",
+          "callee": "set",
+          "lineNumber": 549
+        },
+        {
+          "caller": "test_allowed_extensions_include_rst_and_match_accept_and_backend",
+          "callee": "set",
+          "lineNumber": 549
+        },
+        {
+          "caller": "test_request_payload_shapes_match_the_backend_contract",
+          "callee": "set",
+          "lineNumber": 554
+        },
+        {
+          "caller": "test_request_payload_shapes_match_the_backend_contract",
+          "callee": "re.findall",
+          "lineNumber": 554
+        },
+        {
+          "caller": "test_request_payload_shapes_match_the_backend_contract",
+          "callee": "re.search(r\"API\\.chatStream\\(\\s*\\{(.*?)\\n        \\},\", APP, re.S).group",
+          "lineNumber": 554
+        },
+        {
+          "caller": "test_request_payload_shapes_match_the_backend_contract",
+          "callee": "re.search",
+          "lineNumber": 554
+        },
+        {
+          "caller": "test_request_payload_shapes_match_the_backend_contract",
+          "callee": "re.search(r\"API\\.createSession\\(\\{(.*?)\\}(?:, signal)?\\)\", APP, re.S).group",
+          "lineNumber": 557
+        },
+        {
+          "caller": "test_request_payload_shapes_match_the_backend_contract",
+          "callee": "re.search",
+          "lineNumber": 557
+        },
+        {
+          "caller": "test_request_payload_shapes_match_the_backend_contract",
+          "callee": "set",
+          "lineNumber": 558
+        },
+        {
+          "caller": "test_request_payload_shapes_match_the_backend_contract",
+          "callee": "re.findall",
+          "lineNumber": 558
+        },
+        {
+          "caller": "test_request_payload_shapes_match_the_backend_contract",
+          "callee": "len",
+          "lineNumber": 559
+        },
+        {
+          "caller": "test_request_payload_shapes_match_the_backend_contract",
+          "callee": "re.findall",
+          "lineNumber": 559
+        },
+        {
+          "caller": "test_request_payload_shapes_match_the_backend_contract",
+          "callee": "(FE.parent / \"backend/models/api.py\").read_text",
+          "lineNumber": 568
+        },
+        {
+          "caller": "test_request_payload_shapes_match_the_backend_contract",
+          "callee": "re.search(r\"class ChatRequest\\(BaseModel\\):(.*?)\\n\\n\\n\", backend, re.S).group",
+          "lineNumber": 569
+        },
+        {
+          "caller": "test_request_payload_shapes_match_the_backend_contract",
+          "callee": "re.search",
+          "lineNumber": 569
+        },
+        {
+          "caller": "test_request_payload_shapes_match_the_backend_contract",
+          "callee": "set",
+          "lineNumber": 570
+        },
+        {
+          "caller": "test_request_payload_shapes_match_the_backend_contract",
+          "callee": "re.findall",
+          "lineNumber": 570
+        },
+        {
+          "caller": "test_regenerate_and_retry_send_the_head_shape",
+          "callee": "_app_fn",
+          "lineNumber": 575
+        },
+        {
+          "caller": "test_regenerate_and_retry_send_the_head_shape",
+          "callee": "_app_fn",
+          "lineNumber": 578
+        },
+        {
+          "caller": "test_composer_is_cleared_only_after_the_server_accepted",
+          "callee": "_app_fn",
+          "lineNumber": 583
+        },
+        {
+          "caller": "test_composer_is_cleared_only_after_the_server_accepted",
+          "callee": "body.index",
+          "lineNumber": 584
+        },
+        {
+          "caller": "test_composer_is_cleared_only_after_the_server_accepted",
+          "callee": "body.index",
+          "lineNumber": 585
+        },
+        {
+          "caller": "test_composer_is_cleared_only_after_the_server_accepted",
+          "callee": "body.index",
+          "lineNumber": 585
+        },
+        {
+          "caller": "test_composer_is_cleared_only_after_the_server_accepted",
+          "callee": "API_JS.index",
+          "lineNumber": 587
+        },
+        {
+          "caller": "test_composer_is_cleared_only_after_the_server_accepted",
+          "callee": "API_JS.index",
+          "lineNumber": 587
+        },
+        {
+          "caller": "test_no_new_timer_or_listener_patterns_in_controller",
+          "callee": "_code",
+          "lineNumber": 591
+        },
+        {
+          "caller": "test_no_new_timer_or_listener_patterns_in_controller",
+          "callee": "len",
+          "lineNumber": 592
+        },
+        {
+          "caller": "test_no_new_timer_or_listener_patterns_in_controller",
+          "callee": "re.findall",
+          "lineNumber": 592
+        },
+        {
+          "caller": "stub_run",
+          "callee": "next",
+          "lineNumber": 732
+        },
+        {
+          "caller": "stub_run",
+          "callee": "map",
+          "lineNumber": 732
+        },
+        {
+          "caller": "stub_run",
+          "callee": "pytest.skip",
+          "lineNumber": 734
+        },
+        {
+          "caller": "stub_run",
+          "callee": "_STUB.replace",
+          "lineNumber": 735
+        },
+        {
+          "caller": "stub_run",
+          "callee": "_SCENARIO.replace",
+          "lineNumber": 736
+        },
+        {
+          "caller": "do_GET",
+          "callee": "self.path.split",
+          "lineNumber": 744
+        },
+        {
+          "caller": "do_GET",
+          "callee": "(FE / path.lstrip(\"/\")).resolve",
+          "lineNumber": 746
+        },
+        {
+          "caller": "do_GET",
+          "callee": "path.lstrip",
+          "lineNumber": 746
+        },
+        {
+          "caller": "do_GET",
+          "callee": "FE.resolve",
+          "lineNumber": 747
+        },
+        {
+          "caller": "do_GET",
+          "callee": "f.is_file",
+          "lineNumber": 747
+        },
+        {
+          "caller": "do_GET",
+          "callee": "blocked.append",
+          "lineNumber": 748
+        },
+        {
+          "caller": "do_GET",
+          "callee": "self.send_response",
+          "lineNumber": 749
+        },
+        {
+          "caller": "do_GET",
+          "callee": "self.end_headers",
+          "lineNumber": 750
+        },
+        {
+          "caller": "do_GET",
+          "callee": "f.read_bytes",
+          "lineNumber": 752
+        },
+        {
+          "caller": "do_GET",
+          "callee": "data.decode(\"utf-8\").replace(\"<head>\", injected, 1).replace(\"</body>\", tail, 1).encode",
+          "lineNumber": 754
+        },
+        {
+          "caller": "do_GET",
+          "callee": "data.decode(\"utf-8\").replace(\"<head>\", injected, 1).replace",
+          "lineNumber": 754
+        },
+        {
+          "caller": "do_GET",
+          "callee": "data.decode(\"utf-8\").replace",
+          "lineNumber": 754
+        },
+        {
+          "caller": "do_GET",
+          "callee": "data.decode",
+          "lineNumber": 754
+        },
+        {
+          "caller": "do_GET",
+          "callee": "self.send_response",
+          "lineNumber": 755
+        },
+        {
+          "caller": "do_GET",
+          "callee": "{\".html\": \"text/html\", \".js\": \"text/javascript\", \".css\": \"text/css\", \".svg\": \"image/svg+xml\"}.get",
+          "lineNumber": 756
+        },
+        {
+          "caller": "do_GET",
+          "callee": "self.send_header",
+          "lineNumber": 757
+        },
+        {
+          "caller": "do_GET",
+          "callee": "self.end_headers",
+          "lineNumber": 758
+        },
+        {
+          "caller": "do_GET",
+          "callee": "self.wfile.write",
+          "lineNumber": 759
+        },
+        {
+          "caller": "_refuse",
+          "callee": "blocked.append",
+          "lineNumber": 762
+        },
+        {
+          "caller": "_refuse",
+          "callee": "self.send_response",
+          "lineNumber": 763
+        },
+        {
+          "caller": "_refuse",
+          "callee": "self.end_headers",
+          "lineNumber": 764
+        },
+        {
+          "caller": "stub_run",
+          "callee": "_hs.ThreadingHTTPServer",
+          "lineNumber": 768
+        },
+        {
+          "caller": "stub_run",
+          "callee": "_th.Thread(target=srv.serve_forever, daemon=True).start",
+          "lineNumber": 769
+        },
+        {
+          "caller": "stub_run",
+          "callee": "_th.Thread",
+          "lineNumber": 769
+        },
+        {
+          "caller": "stub_run",
+          "callee": "tmp_path_factory.mktemp",
+          "lineNumber": 770
+        },
+        {
+          "caller": "stub_run",
+          "callee": "_sp.run",
+          "lineNumber": 772
+        },
+        {
+          "caller": "stub_run",
+          "callee": "pytest.skip",
+          "lineNumber": 776
+        },
+        {
+          "caller": "stub_run",
+          "callee": "srv.shutdown",
+          "lineNumber": 778
+        },
+        {
+          "caller": "stub_run",
+          "callee": "re.search",
+          "lineNumber": 779
+        },
+        {
+          "caller": "stub_run",
+          "callee": "pytest.skip",
+          "lineNumber": 781
+        },
+        {
+          "caller": "stub_run",
+          "callee": "_json.loads",
+          "lineNumber": 782
+        },
+        {
+          "caller": "stub_run",
+          "callee": "_html.unescape",
+          "lineNumber": 782
+        },
+        {
+          "caller": "stub_run",
+          "callee": "m.group",
+          "lineNumber": 782
+        },
+        {
+          "caller": "stub_run",
+          "callee": "res.get",
+          "lineNumber": 783
+        },
+        {
+          "caller": "stub_run",
+          "callee": "pytest.skip",
+          "lineNumber": 784
+        },
+        {
+          "caller": "stub_run",
+          "callee": "res.get",
+          "lineNumber": 785
+        },
+        {
+          "caller": "test_stub_welcome_cards_never_submit_and_fill_the_composer",
+          "callee": "len",
+          "lineNumber": 796
+        },
+        {
+          "caller": "test_stub_welcome_cards_never_submit_and_fill_the_composer",
+          "callee": "x.startswith",
+          "lineNumber": 799
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 63,
+        "functionCount": 63,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "tests/test_frontend_motion.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 222,
+      "nonEmptyLines": 181,
+      "functions": [
+        {
+          "name": "_code",
+          "startLine": 23,
+          "endLine": 24,
+          "params": [
+            "rel"
+          ]
+        },
+        {
+          "name": "test_vendored_gsap_is_pinned_and_documented",
+          "startLine": 29,
+          "endLine": 35,
+          "params": []
+        },
+        {
+          "name": "test_gsap_has_no_network_or_dynamic_code_surface",
+          "startLine": 38,
+          "endLine": 41,
+          "params": []
+        },
+        {
+          "name": "test_gsap_is_loaded_lazily_from_the_same_origin_only",
+          "startLine": 44,
+          "endLine": 49,
+          "params": []
+        },
+        {
+          "name": "test_motion_is_view_only_and_animates_only_transform_and_opacity",
+          "startLine": 52,
+          "endLine": 59,
+          "params": []
+        },
+        {
+          "name": "test_motion_honours_reduced_motion_and_cleans_up",
+          "startLine": 62,
+          "endLine": 70,
+          "params": []
+        },
+        {
+          "name": "test_first_paint_guard_has_a_hard_failsafe_and_skips_reduced_motion",
+          "startLine": 73,
+          "endLine": 79,
+          "params": []
+        },
+        {
+          "name": "test_css_entrance_keyframes_that_motion_replaces_are_gone",
+          "startLine": 82,
+          "endLine": 87,
+          "params": []
+        },
+        {
+          "name": "test_vendor_code_is_exempt_from_the_first_party_origin_guard_only_by_directory",
+          "startLine": 90,
+          "endLine": 92,
+          "params": []
+        },
+        {
+          "name": "_run_browser",
+          "startLine": 133,
+          "endLine": 189,
+          "params": [
+            "tmp_path_factory",
+            "extra_flags"
+          ]
+        },
+        {
+          "name": "reduced",
+          "startLine": 193,
+          "endLine": 194,
+          "params": [
+            "tmp_path_factory"
+          ]
+        },
+        {
+          "name": "normal",
+          "startLine": 198,
+          "endLine": 199,
+          "params": [
+            "tmp_path_factory"
+          ]
+        },
+        {
+          "name": "test_browser_reduced_motion_never_loads_the_library_and_shows_everything",
+          "startLine": 202,
+          "endLine": 208,
+          "params": [
+            "reduced"
+          ]
+        },
+        {
+          "name": "test_browser_normal_motion_ends_with_clean_visible_content_and_stays_interactive",
+          "startLine": 211,
+          "endLine": 222,
+          "params": [
+            "normal"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "_code",
+          "line": 23,
+          "isDefault": false
+        },
+        {
+          "name": "test_vendored_gsap_is_pinned_and_documented",
+          "line": 29,
+          "isDefault": false
+        },
+        {
+          "name": "test_gsap_has_no_network_or_dynamic_code_surface",
+          "line": 38,
+          "isDefault": false
+        },
+        {
+          "name": "test_gsap_is_loaded_lazily_from_the_same_origin_only",
+          "line": 44,
+          "isDefault": false
+        },
+        {
+          "name": "test_motion_is_view_only_and_animates_only_transform_and_opacity",
+          "line": 52,
+          "isDefault": false
+        },
+        {
+          "name": "test_motion_honours_reduced_motion_and_cleans_up",
+          "line": 62,
+          "isDefault": false
+        },
+        {
+          "name": "test_first_paint_guard_has_a_hard_failsafe_and_skips_reduced_motion",
+          "line": 73,
+          "isDefault": false
+        },
+        {
+          "name": "test_css_entrance_keyframes_that_motion_replaces_are_gone",
+          "line": 82,
+          "isDefault": false
+        },
+        {
+          "name": "test_vendor_code_is_exempt_from_the_first_party_origin_guard_only_by_directory",
+          "line": 90,
+          "isDefault": false
+        },
+        {
+          "name": "_run_browser",
+          "line": 133,
+          "isDefault": false
+        },
+        {
+          "name": "reduced",
+          "line": 192,
+          "isDefault": false
+        },
+        {
+          "name": "normal",
+          "line": 197,
+          "isDefault": false
+        },
+        {
+          "name": "test_browser_reduced_motion_never_loads_the_library_and_shows_everything",
+          "line": 202,
+          "isDefault": false
+        },
+        {
+          "name": "test_browser_normal_motion_ends_with_clean_visible_content_and_stays_interactive",
+          "line": 211,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "_code",
+          "callee": "re.sub",
+          "lineNumber": 24
+        },
+        {
+          "caller": "_code",
+          "callee": "_read",
+          "lineNumber": 24
+        },
+        {
+          "caller": "test_vendored_gsap_is_pinned_and_documented",
+          "callee": "sorted",
+          "lineNumber": 30
+        },
+        {
+          "caller": "test_vendored_gsap_is_pinned_and_documented",
+          "callee": "(FE / \"js\" / \"vendor\").iterdir",
+          "lineNumber": 30
+        },
+        {
+          "caller": "test_vendored_gsap_is_pinned_and_documented",
+          "callee": "hashlib.sha256(GSAP.read_bytes()).hexdigest",
+          "lineNumber": 31
+        },
+        {
+          "caller": "test_vendored_gsap_is_pinned_and_documented",
+          "callee": "hashlib.sha256",
+          "lineNumber": 31
+        },
+        {
+          "caller": "test_vendored_gsap_is_pinned_and_documented",
+          "callee": "GSAP.read_bytes",
+          "lineNumber": 31
+        },
+        {
+          "caller": "test_vendored_gsap_is_pinned_and_documented",
+          "callee": "_read",
+          "lineNumber": 33
+        },
+        {
+          "caller": "test_gsap_has_no_network_or_dynamic_code_surface",
+          "callee": "GSAP.read_text",
+          "lineNumber": 39
+        },
+        {
+          "caller": "test_gsap_is_loaded_lazily_from_the_same_origin_only",
+          "callee": "INDEX.lower().replace",
+          "lineNumber": 45
+        },
+        {
+          "caller": "test_gsap_is_loaded_lazily_from_the_same_origin_only",
+          "callee": "INDEX.lower",
+          "lineNumber": 45
+        },
+        {
+          "caller": "test_gsap_is_loaded_lazily_from_the_same_origin_only",
+          "callee": "_code",
+          "lineNumber": 46
+        },
+        {
+          "caller": "test_gsap_is_loaded_lazily_from_the_same_origin_only",
+          "callee": "re.search",
+          "lineNumber": 48
+        },
+        {
+          "caller": "test_gsap_is_loaded_lazily_from_the_same_origin_only",
+          "callee": "INDEX.index",
+          "lineNumber": 49
+        },
+        {
+          "caller": "test_gsap_is_loaded_lazily_from_the_same_origin_only",
+          "callee": "INDEX.index",
+          "lineNumber": 49
+        },
+        {
+          "caller": "test_motion_is_view_only_and_animates_only_transform_and_opacity",
+          "callee": "_code",
+          "lineNumber": 53
+        },
+        {
+          "caller": "test_motion_is_view_only_and_animates_only_transform_and_opacity",
+          "callee": "re.search",
+          "lineNumber": 54
+        },
+        {
+          "caller": "test_motion_is_view_only_and_animates_only_transform_and_opacity",
+          "callee": "re.findall",
+          "lineNumber": 55
+        },
+        {
+          "caller": "test_motion_is_view_only_and_animates_only_transform_and_opacity",
+          "callee": "re.search",
+          "lineNumber": 58
+        },
+        {
+          "caller": "test_motion_honours_reduced_motion_and_cleans_up",
+          "callee": "_code",
+          "lineNumber": 63
+        },
+        {
+          "caller": "test_motion_honours_reduced_motion_and_cleans_up",
+          "callee": "motion.count",
+          "lineNumber": 65
+        },
+        {
+          "caller": "test_motion_honours_reduced_motion_and_cleans_up",
+          "callee": "motion.index",
+          "lineNumber": 69
+        },
+        {
+          "caller": "test_motion_honours_reduced_motion_and_cleans_up",
+          "callee": "motion.index",
+          "lineNumber": 69
+        },
+        {
+          "caller": "test_motion_honours_reduced_motion_and_cleans_up",
+          "callee": "enter.index",
+          "lineNumber": 70
+        },
+        {
+          "caller": "test_motion_honours_reduced_motion_and_cleans_up",
+          "callee": "enter.index",
+          "lineNumber": 70
+        },
+        {
+          "caller": "test_first_paint_guard_has_a_hard_failsafe_and_skips_reduced_motion",
+          "callee": "INDEX.index",
+          "lineNumber": 74
+        },
+        {
+          "caller": "test_first_paint_guard_has_a_hard_failsafe_and_skips_reduced_motion",
+          "callee": "re.search",
+          "lineNumber": 76
+        },
+        {
+          "caller": "test_first_paint_guard_has_a_hard_failsafe_and_skips_reduced_motion",
+          "callee": "_read",
+          "lineNumber": 78
+        },
+        {
+          "caller": "test_first_paint_guard_has_a_hard_failsafe_and_skips_reduced_motion",
+          "callee": "re.search",
+          "lineNumber": 79
+        },
+        {
+          "caller": "test_css_entrance_keyframes_that_motion_replaces_are_gone",
+          "callee": "_read",
+          "lineNumber": 83
+        },
+        {
+          "caller": "test_css_entrance_keyframes_that_motion_replaces_are_gone",
+          "callee": "re.sub",
+          "lineNumber": 86
+        },
+        {
+          "caller": "test_css_entrance_keyframes_that_motion_replaces_are_gone",
+          "callee": "_read",
+          "lineNumber": 86
+        },
+        {
+          "caller": "test_css_entrance_keyframes_that_motion_replaces_are_gone",
+          "callee": "re.search",
+          "lineNumber": 87
+        },
+        {
+          "caller": "test_vendor_code_is_exempt_from_the_first_party_origin_guard_only_by_directory",
+          "callee": "_read",
+          "lineNumber": 91
+        },
+        {
+          "caller": "test_vendor_code_is_exempt_from_the_first_party_origin_guard_only_by_directory",
+          "callee": "(FE.parent / \"tests\" / \"test_frontend_guards.py\").read_text",
+          "lineNumber": 91
+        },
+        {
+          "caller": "test_vendor_code_is_exempt_from_the_first_party_origin_guard_only_by_directory",
+          "callee": "guards.split(\"def test_no_new_external_origins\")[1].split",
+          "lineNumber": 92
+        },
+        {
+          "caller": "test_vendor_code_is_exempt_from_the_first_party_origin_guard_only_by_directory",
+          "callee": "guards.split",
+          "lineNumber": 92
+        },
+        {
+          "caller": "_run_browser",
+          "callee": "next",
+          "lineNumber": 134
+        },
+        {
+          "caller": "_run_browser",
+          "callee": "map",
+          "lineNumber": 134
+        },
+        {
+          "caller": "_run_browser",
+          "callee": "pytest.skip",
+          "lineNumber": 136
+        },
+        {
+          "caller": "_run_browser",
+          "callee": "_STUB.replace",
+          "lineNumber": 137
+        },
+        {
+          "caller": "_run_browser",
+          "callee": "_SCENARIO.replace",
+          "lineNumber": 138
+        },
+        {
+          "caller": "do_GET",
+          "callee": "self.path.split",
+          "lineNumber": 146
+        },
+        {
+          "caller": "do_GET",
+          "callee": "(FE / path.lstrip(\"/\")).resolve",
+          "lineNumber": 148
+        },
+        {
+          "caller": "do_GET",
+          "callee": "path.lstrip",
+          "lineNumber": 148
+        },
+        {
+          "caller": "do_GET",
+          "callee": "FE.resolve",
+          "lineNumber": 149
+        },
+        {
+          "caller": "do_GET",
+          "callee": "f.is_file",
+          "lineNumber": 149
+        },
+        {
+          "caller": "do_GET",
+          "callee": "blocked.append",
+          "lineNumber": 150
+        },
+        {
+          "caller": "do_GET",
+          "callee": "self.send_response",
+          "lineNumber": 151
+        },
+        {
+          "caller": "do_GET",
+          "callee": "self.end_headers",
+          "lineNumber": 152
+        },
+        {
+          "caller": "do_GET",
+          "callee": "f.read_bytes",
+          "lineNumber": 154
+        },
+        {
+          "caller": "do_GET",
+          "callee": "data.decode(\"utf-8\").replace(\"<head>\", injected, 1).replace(\"</body>\", tail, 1).encode",
+          "lineNumber": 156
+        },
+        {
+          "caller": "do_GET",
+          "callee": "data.decode(\"utf-8\").replace(\"<head>\", injected, 1).replace",
+          "lineNumber": 156
+        },
+        {
+          "caller": "do_GET",
+          "callee": "data.decode(\"utf-8\").replace",
+          "lineNumber": 156
+        },
+        {
+          "caller": "do_GET",
+          "callee": "data.decode",
+          "lineNumber": 156
+        },
+        {
+          "caller": "do_GET",
+          "callee": "self.send_response",
+          "lineNumber": 157
+        },
+        {
+          "caller": "do_GET",
+          "callee": "{\".html\": \"text/html\", \".js\": \"text/javascript\", \".css\": \"text/css\", \".svg\": \"image/svg+xml\"}.get",
+          "lineNumber": 158
+        },
+        {
+          "caller": "do_GET",
+          "callee": "self.send_header",
+          "lineNumber": 159
+        },
+        {
+          "caller": "do_GET",
+          "callee": "self.end_headers",
+          "lineNumber": 160
+        },
+        {
+          "caller": "do_GET",
+          "callee": "self.wfile.write",
+          "lineNumber": 161
+        },
+        {
+          "caller": "_refuse",
+          "callee": "blocked.append",
+          "lineNumber": 164
+        },
+        {
+          "caller": "_refuse",
+          "callee": "self.send_response",
+          "lineNumber": 165
+        },
+        {
+          "caller": "_refuse",
+          "callee": "self.end_headers",
+          "lineNumber": 166
+        },
+        {
+          "caller": "_run_browser",
+          "callee": "_hs.ThreadingHTTPServer",
+          "lineNumber": 170
+        },
+        {
+          "caller": "_run_browser",
+          "callee": "_th.Thread(target=srv.serve_forever, daemon=True).start",
+          "lineNumber": 171
+        },
+        {
+          "caller": "_run_browser",
+          "callee": "_th.Thread",
+          "lineNumber": 171
+        },
+        {
+          "caller": "_run_browser",
+          "callee": "tmp_path_factory.mktemp",
+          "lineNumber": 172
+        },
+        {
+          "caller": "_run_browser",
+          "callee": "_sp.run",
+          "lineNumber": 174
+        },
+        {
+          "caller": "_run_browser",
+          "callee": "pytest.skip",
+          "lineNumber": 178
+        },
+        {
+          "caller": "_run_browser",
+          "callee": "srv.shutdown",
+          "lineNumber": 180
+        },
+        {
+          "caller": "_run_browser",
+          "callee": "re.search",
+          "lineNumber": 181
+        },
+        {
+          "caller": "_run_browser",
+          "callee": "pytest.skip",
+          "lineNumber": 183
+        },
+        {
+          "caller": "_run_browser",
+          "callee": "_json.loads",
+          "lineNumber": 184
+        },
+        {
+          "caller": "_run_browser",
+          "callee": "_html.unescape",
+          "lineNumber": 184
+        },
+        {
+          "caller": "_run_browser",
+          "callee": "m.group",
+          "lineNumber": 184
+        },
+        {
+          "caller": "_run_browser",
+          "callee": "res.get",
+          "lineNumber": 185
+        },
+        {
+          "caller": "_run_browser",
+          "callee": "pytest.skip",
+          "lineNumber": 186
+        },
+        {
+          "caller": "_run_browser",
+          "callee": "res.get",
+          "lineNumber": 187
+        },
+        {
+          "caller": "reduced",
+          "callee": "_run_browser",
+          "lineNumber": 194
+        },
+        {
+          "caller": "normal",
+          "callee": "_run_browser",
+          "lineNumber": 199
+        },
+        {
+          "caller": "test_browser_normal_motion_ends_with_clean_visible_content_and_stays_interactive",
+          "callee": "all",
+          "lineNumber": 221
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 14,
+        "functionCount": 14,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "tests/test_frontend_startup.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 72,
+      "nonEmptyLines": 54,
+      "functions": [
+        {
+          "name": "_fn",
+          "startLine": 17,
+          "endLine": 19,
+          "params": [
+            "name"
+          ]
+        },
+        {
+          "name": "test_data_loading_starts_before_event_handlers_are_bound",
+          "startLine": 22,
+          "endLine": 27,
+          "params": []
+        },
+        {
+          "name": "test_startup_errors_are_reported_with_the_fix_not_swallowed",
+          "startLine": 30,
+          "endLine": 33,
+          "params": []
+        },
+        {
+          "name": "stale",
+          "startLine": 57,
+          "endLine": 58,
+          "params": [
+            "tmp_path_factory"
+          ]
+        },
+        {
+          "name": "test_stub_models_still_load_when_a_handler_fails_to_bind",
+          "startLine": 61,
+          "endLine": 66,
+          "params": [
+            "stale"
+          ]
+        },
+        {
+          "name": "test_stub_the_user_is_told_what_happened_and_how_to_fix_it",
+          "startLine": 69,
+          "endLine": 72,
+          "params": [
+            "stale"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "_fn",
+          "line": 17,
+          "isDefault": false
+        },
+        {
+          "name": "test_data_loading_starts_before_event_handlers_are_bound",
+          "line": 22,
+          "isDefault": false
+        },
+        {
+          "name": "test_startup_errors_are_reported_with_the_fix_not_swallowed",
+          "line": 30,
+          "isDefault": false
+        },
+        {
+          "name": "stale",
+          "line": 56,
+          "isDefault": false
+        },
+        {
+          "name": "test_stub_models_still_load_when_a_handler_fails_to_bind",
+          "line": 61,
+          "isDefault": false
+        },
+        {
+          "name": "test_stub_the_user_is_told_what_happened_and_how_to_fix_it",
+          "line": 69,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "_fn",
+          "callee": "APP.index",
+          "lineNumber": 18
+        },
+        {
+          "caller": "_fn",
+          "callee": "APP.index",
+          "lineNumber": 18
+        },
+        {
+          "caller": "test_data_loading_starts_before_event_handlers_are_bound",
+          "callee": "_fn",
+          "lineNumber": 23
+        },
+        {
+          "caller": "test_data_loading_starts_before_event_handlers_are_bound",
+          "callee": "init.index",
+          "lineNumber": 24
+        },
+        {
+          "caller": "test_data_loading_starts_before_event_handlers_are_bound",
+          "callee": "init.index",
+          "lineNumber": 24
+        },
+        {
+          "caller": "test_data_loading_starts_before_event_handlers_are_bound",
+          "callee": "init.index",
+          "lineNumber": 25
+        },
+        {
+          "caller": "test_data_loading_starts_before_event_handlers_are_bound",
+          "callee": "init.index",
+          "lineNumber": 25
+        },
+        {
+          "caller": "test_startup_errors_are_reported_with_the_fix_not_swallowed",
+          "callee": "_fn",
+          "lineNumber": 32
+        },
+        {
+          "caller": "stale",
+          "callee": "run_scenario",
+          "lineNumber": 58
+        },
+        {
+          "caller": "test_stub_the_user_is_told_what_happened_and_how_to_fix_it",
+          "callee": "\" \".join",
+          "lineNumber": 70
+        },
+        {
+          "caller": "test_stub_the_user_is_told_what_happened_and_how_to_fix_it",
+          "callee": "re.search",
+          "lineNumber": 72
+        },
+        {
+          "caller": "test_stub_the_user_is_told_what_happened_and_how_to_fix_it",
+          "callee": "\" \".join",
+          "lineNumber": 72
+        }
+      ],
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 6,
+        "functionCount": 6,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "tests/test_frontend_workspaces.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 405,
+      "nonEmptyLines": 336,
+      "functions": [
+        {
+          "name": "_strip_comments",
+          "startLine": 23,
+          "endLine": 24,
+          "params": [
+            "src"
+          ]
+        },
+        {
+          "name": "test_three_workspace_panels_exist_and_each_has_a_labelled_heading",
+          "startLine": 29,
+          "endLine": 34,
+          "params": []
+        },
+        {
+          "name": "test_panel_controls_are_buttons_that_only_fill_the_composer",
+          "startLine": 37,
+          "endLine": 45,
+          "params": []
+        },
+        {
+          "name": "test_document_actions_are_explained_not_hidden_when_unavailable",
+          "startLine": 48,
+          "endLine": 52,
+          "params": []
+        },
+        {
+          "name": "test_research_locks_the_web_switch_because_the_server_always_searches",
+          "startLine": 55,
+          "endLine": 60,
+          "params": []
+        },
+        {
+          "name": "test_settings_tabs_and_panes_are_wired_with_aria",
+          "startLine": 63,
+          "endLine": 70,
+          "params": []
+        },
+        {
+          "name": "test_settings_only_offers_controls_with_a_real_effect",
+          "startLine": 73,
+          "endLine": 84,
+          "params": []
+        },
+        {
+          "name": "test_privacy_and_help_copy_makes_only_verifiable_statements",
+          "startLine": 87,
+          "endLine": 92,
+          "params": []
+        },
+        {
+          "name": "test_new_components_are_view_only_and_never_inject_html",
+          "startLine": 96,
+          "endLine": 104,
+          "params": [
+            "rel"
+          ]
+        },
+        {
+          "name": "test_new_components_are_loaded_before_ui_js_in_dependency_order",
+          "startLine": 107,
+          "endLine": 111,
+          "params": []
+        },
+        {
+          "name": "test_workspace_css_obeys_the_project_css_rules",
+          "startLine": 114,
+          "endLine": 121,
+          "params": []
+        },
+        {
+          "name": "test_text_is_rem_based_so_the_text_size_setting_scales_everything",
+          "startLine": 124,
+          "endLine": 131,
+          "params": []
+        },
+        {
+          "name": "test_code_workspace_is_language_agnostic_and_has_debug_logs",
+          "startLine": 134,
+          "endLine": 138,
+          "params": []
+        },
+        {
+          "name": "test_composer_github_item_and_resizable_preview_exist",
+          "startLine": 141,
+          "endLine": 151,
+          "params": []
+        },
+        {
+          "name": "test_preference_markup_matches_the_allowed_values",
+          "startLine": 154,
+          "endLine": 164,
+          "params": []
+        },
+        {
+          "name": "test_uploads_validate_on_the_client_and_guard_duplicates_without_trusting_it",
+          "startLine": 167,
+          "endLine": 175,
+          "params": []
+        },
+        {
+          "name": "test_config_is_a_read_only_get_and_its_failure_is_tolerated",
+          "startLine": 178,
+          "endLine": 183,
+          "params": []
+        },
+        {
+          "name": "test_history_and_documents_have_loading_and_error_states",
+          "startLine": 186,
+          "endLine": 191,
+          "params": []
+        },
+        {
+          "name": "ws",
+          "startLine": 285,
+          "endLine": 341,
+          "params": [
+            "tmp_path_factory"
+          ]
+        },
+        {
+          "name": "test_stub_run_reached_no_server_and_threw_nothing",
+          "startLine": 344,
+          "endLine": 345,
+          "params": [
+            "ws"
+          ]
+        },
+        {
+          "name": "test_stub_dropdown_is_the_only_mode_control_and_is_keyboard_operable",
+          "startLine": 348,
+          "endLine": 353,
+          "params": [
+            "ws"
+          ]
+        },
+        {
+          "name": "test_stub_each_mode_shows_only_its_own_panel",
+          "startLine": 356,
+          "endLine": 364,
+          "params": [
+            "ws"
+          ]
+        },
+        {
+          "name": "test_stub_panel_actions_only_fill_the_composer",
+          "startLine": 367,
+          "endLine": 373,
+          "params": [
+            "ws"
+          ]
+        },
+        {
+          "name": "test_stub_research_locks_the_web_switch_and_other_modes_unlock_it",
+          "startLine": 376,
+          "endLine": 378,
+          "params": [
+            "ws"
+          ]
+        },
+        {
+          "name": "test_stub_my_documents_panel_refreshes_and_returns_focus",
+          "startLine": 381,
+          "endLine": 384,
+          "params": [
+            "ws"
+          ]
+        },
+        {
+          "name": "test_stub_settings_controls_take_effect_and_reset",
+          "startLine": 387,
+          "endLine": 392,
+          "params": [
+            "ws"
+          ]
+        },
+        {
+          "name": "test_stub_uploads_validate_guard_duplicates_and_queue",
+          "startLine": 395,
+          "endLine": 401,
+          "params": [
+            "ws"
+          ]
+        },
+        {
+          "name": "test_stub_history_arrow_keys_move_between_chats",
+          "startLine": 404,
+          "endLine": 405,
+          "params": [
+            "ws"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "_strip_comments",
+          "line": 23,
+          "isDefault": false
+        },
+        {
+          "name": "test_three_workspace_panels_exist_and_each_has_a_labelled_heading",
+          "line": 29,
+          "isDefault": false
+        },
+        {
+          "name": "test_panel_controls_are_buttons_that_only_fill_the_composer",
+          "line": 37,
+          "isDefault": false
+        },
+        {
+          "name": "test_document_actions_are_explained_not_hidden_when_unavailable",
+          "line": 48,
+          "isDefault": false
+        },
+        {
+          "name": "test_research_locks_the_web_switch_because_the_server_always_searches",
+          "line": 55,
+          "isDefault": false
+        },
+        {
+          "name": "test_settings_tabs_and_panes_are_wired_with_aria",
+          "line": 63,
+          "isDefault": false
+        },
+        {
+          "name": "test_settings_only_offers_controls_with_a_real_effect",
+          "line": 73,
+          "isDefault": false
+        },
+        {
+          "name": "test_privacy_and_help_copy_makes_only_verifiable_statements",
+          "line": 87,
+          "isDefault": false
+        },
+        {
+          "name": "test_new_components_are_view_only_and_never_inject_html",
+          "line": 95,
+          "isDefault": false
+        },
+        {
+          "name": "test_new_components_are_loaded_before_ui_js_in_dependency_order",
+          "line": 107,
+          "isDefault": false
+        },
+        {
+          "name": "test_workspace_css_obeys_the_project_css_rules",
+          "line": 114,
+          "isDefault": false
+        },
+        {
+          "name": "test_text_is_rem_based_so_the_text_size_setting_scales_everything",
+          "line": 124,
+          "isDefault": false
+        },
+        {
+          "name": "test_code_workspace_is_language_agnostic_and_has_debug_logs",
+          "line": 134,
+          "isDefault": false
+        },
+        {
+          "name": "test_composer_github_item_and_resizable_preview_exist",
+          "line": 141,
+          "isDefault": false
+        },
+        {
+          "name": "test_preference_markup_matches_the_allowed_values",
+          "line": 154,
+          "isDefault": false
+        },
+        {
+          "name": "test_uploads_validate_on_the_client_and_guard_duplicates_without_trusting_it",
+          "line": 167,
+          "isDefault": false
+        },
+        {
+          "name": "test_config_is_a_read_only_get_and_its_failure_is_tolerated",
+          "line": 178,
+          "isDefault": false
+        },
+        {
+          "name": "test_history_and_documents_have_loading_and_error_states",
+          "line": 186,
+          "isDefault": false
+        },
+        {
+          "name": "ws",
+          "line": 284,
+          "isDefault": false
+        },
+        {
+          "name": "test_stub_run_reached_no_server_and_threw_nothing",
+          "line": 344,
+          "isDefault": false
+        },
+        {
+          "name": "test_stub_dropdown_is_the_only_mode_control_and_is_keyboard_operable",
+          "line": 348,
+          "isDefault": false
+        },
+        {
+          "name": "test_stub_each_mode_shows_only_its_own_panel",
+          "line": 356,
+          "isDefault": false
+        },
+        {
+          "name": "test_stub_panel_actions_only_fill_the_composer",
+          "line": 367,
+          "isDefault": false
+        },
+        {
+          "name": "test_stub_research_locks_the_web_switch_and_other_modes_unlock_it",
+          "line": 376,
+          "isDefault": false
+        },
+        {
+          "name": "test_stub_my_documents_panel_refreshes_and_returns_focus",
+          "line": 381,
+          "isDefault": false
+        },
+        {
+          "name": "test_stub_settings_controls_take_effect_and_reset",
+          "line": 387,
+          "isDefault": false
+        },
+        {
+          "name": "test_stub_uploads_validate_guard_duplicates_and_queue",
+          "line": 395,
+          "isDefault": false
+        },
+        {
+          "name": "test_stub_history_arrow_keys_move_between_chats",
+          "line": 404,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "_strip_comments",
+          "callee": "re.sub",
+          "lineNumber": 24
+        },
+        {
+          "caller": "test_three_workspace_panels_exist_and_each_has_a_labelled_heading",
+          "callee": "re.search",
+          "lineNumber": 31
+        },
+        {
+          "caller": "test_three_workspace_panels_exist_and_each_has_a_labelled_heading",
+          "callee": "m.group",
+          "lineNumber": 33
+        },
+        {
+          "caller": "test_panel_controls_are_buttons_that_only_fill_the_composer",
+          "callee": "INDEX.index",
+          "lineNumber": 38
+        },
+        {
+          "caller": "test_panel_controls_are_buttons_that_only_fill_the_composer",
+          "callee": "INDEX.index",
+          "lineNumber": 38
+        },
+        {
+          "caller": "test_panel_controls_are_buttons_that_only_fill_the_composer",
+          "callee": "re.findall",
+          "lineNumber": 39
+        },
+        {
+          "caller": "test_panel_controls_are_buttons_that_only_fill_the_composer",
+          "callee": "len",
+          "lineNumber": 40
+        },
+        {
+          "caller": "test_panel_controls_are_buttons_that_only_fill_the_composer",
+          "callee": "len",
+          "lineNumber": 40
+        },
+        {
+          "caller": "test_panel_controls_are_buttons_that_only_fill_the_composer",
+          "callee": "_strip_comments",
+          "lineNumber": 43
+        },
+        {
+          "caller": "test_panel_controls_are_buttons_that_only_fill_the_composer",
+          "callee": "_read",
+          "lineNumber": 43
+        },
+        {
+          "caller": "test_panel_controls_are_buttons_that_only_fill_the_composer",
+          "callee": "re.search",
+          "lineNumber": 44
+        },
+        {
+          "caller": "test_panel_controls_are_buttons_that_only_fill_the_composer",
+          "callee": "_read(\"js/components/workspaces.js\").lower",
+          "lineNumber": 45
+        },
+        {
+          "caller": "test_panel_controls_are_buttons_that_only_fill_the_composer",
+          "callee": "_read",
+          "lineNumber": 45
+        },
+        {
+          "caller": "test_document_actions_are_explained_not_hidden_when_unavailable",
+          "callee": "INDEX.count",
+          "lineNumber": 49
+        },
+        {
+          "caller": "test_document_actions_are_explained_not_hidden_when_unavailable",
+          "callee": "_read",
+          "lineNumber": 50
+        },
+        {
+          "caller": "test_research_locks_the_web_switch_because_the_server_always_searches",
+          "callee": "_read",
+          "lineNumber": 56
+        },
+        {
+          "caller": "test_research_locks_the_web_switch_because_the_server_always_searches",
+          "callee": "_read",
+          "lineNumber": 58
+        },
+        {
+          "caller": "test_research_locks_the_web_switch_because_the_server_always_searches",
+          "callee": "(FE.parent / \"README.md\").read_text",
+          "lineNumber": 60
+        },
+        {
+          "caller": "test_settings_tabs_and_panes_are_wired_with_aria",
+          "callee": "re.findall",
+          "lineNumber": 64
+        },
+        {
+          "caller": "test_settings_tabs_and_panes_are_wired_with_aria",
+          "callee": "re.search",
+          "lineNumber": 68
+        },
+        {
+          "caller": "test_settings_tabs_and_panes_are_wired_with_aria",
+          "callee": "len",
+          "lineNumber": 70
+        },
+        {
+          "caller": "test_settings_tabs_and_panes_are_wired_with_aria",
+          "callee": "re.findall",
+          "lineNumber": 70
+        },
+        {
+          "caller": "test_settings_tabs_and_panes_are_wired_with_aria",
+          "callee": "INDEX.split('id=\"settingsDialog\"')[1].split",
+          "lineNumber": 70
+        },
+        {
+          "caller": "test_settings_tabs_and_panes_are_wired_with_aria",
+          "callee": "INDEX.split",
+          "lineNumber": 70
+        },
+        {
+          "caller": "test_settings_only_offers_controls_with_a_real_effect",
+          "callee": "_read",
+          "lineNumber": 74
+        },
+        {
+          "caller": "test_settings_only_offers_controls_with_a_real_effect",
+          "callee": "_read",
+          "lineNumber": 75
+        },
+        {
+          "caller": "test_settings_only_offers_controls_with_a_real_effect",
+          "callee": "INDEX.split('id=\"settingsDialog\"')[1].split",
+          "lineNumber": 82
+        },
+        {
+          "caller": "test_settings_only_offers_controls_with_a_real_effect",
+          "callee": "INDEX.split",
+          "lineNumber": 82
+        },
+        {
+          "caller": "test_settings_only_offers_controls_with_a_real_effect",
+          "callee": "settings_html.replace",
+          "lineNumber": 83
+        },
+        {
+          "caller": "test_settings_only_offers_controls_with_a_real_effect",
+          "callee": "settings_html.lower",
+          "lineNumber": 84
+        },
+        {
+          "caller": "test_privacy_and_help_copy_makes_only_verifiable_statements",
+          "callee": "INDEX.split('id=\"settingsDialog\"')[1].split(\"</dialog>\")[0].lower",
+          "lineNumber": 88
+        },
+        {
+          "caller": "test_privacy_and_help_copy_makes_only_verifiable_statements",
+          "callee": "INDEX.split('id=\"settingsDialog\"')[1].split",
+          "lineNumber": 88
+        },
+        {
+          "caller": "test_privacy_and_help_copy_makes_only_verifiable_statements",
+          "callee": "INDEX.split",
+          "lineNumber": 88
+        },
+        {
+          "caller": "test_new_components_are_view_only_and_never_inject_html",
+          "callee": "_strip_comments",
+          "lineNumber": 97
+        },
+        {
+          "caller": "test_new_components_are_view_only_and_never_inject_html",
+          "callee": "_read",
+          "lineNumber": 97
+        },
+        {
+          "caller": "test_new_components_are_view_only_and_never_inject_html",
+          "callee": "re.search",
+          "lineNumber": 98
+        },
+        {
+          "caller": "test_new_components_are_view_only_and_never_inject_html",
+          "callee": "re.search",
+          "lineNumber": 99
+        },
+        {
+          "caller": "test_new_components_are_view_only_and_never_inject_html",
+          "callee": "rel.endswith",
+          "lineNumber": 100
+        },
+        {
+          "caller": "test_new_components_are_view_only_and_never_inject_html",
+          "callee": "re.search",
+          "lineNumber": 102
+        },
+        {
+          "caller": "test_new_components_are_loaded_before_ui_js_in_dependency_order",
+          "callee": "INDEX.index",
+          "lineNumber": 108
+        },
+        {
+          "caller": "test_new_components_are_loaded_before_ui_js_in_dependency_order",
+          "callee": "sorted",
+          "lineNumber": 111
+        },
+        {
+          "caller": "test_workspace_css_obeys_the_project_css_rules",
+          "callee": "re.sub",
+          "lineNumber": 115
+        },
+        {
+          "caller": "test_workspace_css_obeys_the_project_css_rules",
+          "callee": "_read",
+          "lineNumber": 115
+        },
+        {
+          "caller": "test_workspace_css_obeys_the_project_css_rules",
+          "callee": "INDEX.index",
+          "lineNumber": 116
+        },
+        {
+          "caller": "test_workspace_css_obeys_the_project_css_rules",
+          "callee": "INDEX.index",
+          "lineNumber": 116
+        },
+        {
+          "caller": "test_workspace_css_obeys_the_project_css_rules",
+          "callee": "re.search",
+          "lineNumber": 117
+        },
+        {
+          "caller": "test_workspace_css_obeys_the_project_css_rules",
+          "callee": "re.findall",
+          "lineNumber": 119
+        },
+        {
+          "caller": "test_workspace_css_obeys_the_project_css_rules",
+          "callee": "set",
+          "lineNumber": 120
+        },
+        {
+          "caller": "test_workspace_css_obeys_the_project_css_rules",
+          "callee": "re.findall",
+          "lineNumber": 120
+        },
+        {
+          "caller": "test_text_is_rem_based_so_the_text_size_setting_scales_everything",
+          "callee": "enumerate",
+          "lineNumber": 126
+        },
+        {
+          "caller": "test_text_is_rem_based_so_the_text_size_setting_scales_everything",
+          "callee": "_read(f\"css/{f}\").splitlines",
+          "lineNumber": 126
+        },
+        {
+          "caller": "test_text_is_rem_based_so_the_text_size_setting_scales_everything",
+          "callee": "_read",
+          "lineNumber": 126
+        },
+        {
+          "caller": "test_text_is_rem_based_so_the_text_size_setting_scales_everything",
+          "callee": "re.search",
+          "lineNumber": 127
+        },
+        {
+          "caller": "test_text_is_rem_based_so_the_text_size_setting_scales_everything",
+          "callee": "line.strip",
+          "lineNumber": 129
+        },
+        {
+          "caller": "test_text_is_rem_based_so_the_text_size_setting_scales_everything",
+          "callee": "line.lstrip().startswith",
+          "lineNumber": 129
+        },
+        {
+          "caller": "test_text_is_rem_based_so_the_text_size_setting_scales_everything",
+          "callee": "line.lstrip",
+          "lineNumber": 129
+        },
+        {
+          "caller": "test_text_is_rem_based_so_the_text_size_setting_scales_everything",
+          "callee": "line.strip",
+          "lineNumber": 130
+        },
+        {
+          "caller": "test_text_is_rem_based_so_the_text_size_setting_scales_everything",
+          "callee": "_read",
+          "lineNumber": 131
+        },
+        {
+          "caller": "test_code_workspace_is_language_agnostic_and_has_debug_logs",
+          "callee": "_read",
+          "lineNumber": 137
+        },
+        {
+          "caller": "test_code_workspace_is_language_agnostic_and_has_debug_logs",
+          "callee": "_read",
+          "lineNumber": 138
+        },
+        {
+          "caller": "test_composer_github_item_and_resizable_preview_exist",
+          "callee": "_read",
+          "lineNumber": 142
+        },
+        {
+          "caller": "test_composer_github_item_and_resizable_preview_exist",
+          "callee": "_read",
+          "lineNumber": 145
+        },
+        {
+          "caller": "test_composer_github_item_and_resizable_preview_exist",
+          "callee": "_read",
+          "lineNumber": 150
+        },
+        {
+          "caller": "test_preference_markup_matches_the_allowed_values",
+          "callee": "_read",
+          "lineNumber": 155
+        },
+        {
+          "caller": "test_preference_markup_matches_the_allowed_values",
+          "callee": "re.findall",
+          "lineNumber": 156
+        },
+        {
+          "caller": "test_preference_markup_matches_the_allowed_values",
+          "callee": "re.findall",
+          "lineNumber": 157
+        },
+        {
+          "caller": "test_preference_markup_matches_the_allowed_values",
+          "callee": "groups.items",
+          "lineNumber": 159
+        },
+        {
+          "caller": "test_preference_markup_matches_the_allowed_values",
+          "callee": "INDEX.split(f'id=\"{gid}\"')[1].split",
+          "lineNumber": 160
+        },
+        {
+          "caller": "test_preference_markup_matches_the_allowed_values",
+          "callee": "INDEX.split",
+          "lineNumber": 160
+        },
+        {
+          "caller": "test_preference_markup_matches_the_allowed_values",
+          "callee": "re.findall",
+          "lineNumber": 161
+        },
+        {
+          "caller": "test_uploads_validate_on_the_client_and_guard_duplicates_without_trusting_it",
+          "callee": "_read",
+          "lineNumber": 168
+        },
+        {
+          "caller": "test_uploads_validate_on_the_client_and_guard_duplicates_without_trusting_it",
+          "callee": "app.index",
+          "lineNumber": 169
+        },
+        {
+          "caller": "test_uploads_validate_on_the_client_and_guard_duplicates_without_trusting_it",
+          "callee": "app.index",
+          "lineNumber": 169
+        },
+        {
+          "caller": "test_uploads_validate_on_the_client_and_guard_duplicates_without_trusting_it",
+          "callee": "app.lower",
+          "lineNumber": 173
+        },
+        {
+          "caller": "test_uploads_validate_on_the_client_and_guard_duplicates_without_trusting_it",
+          "callee": "app.index",
+          "lineNumber": 174
+        },
+        {
+          "caller": "test_uploads_validate_on_the_client_and_guard_duplicates_without_trusting_it",
+          "callee": "app.index",
+          "lineNumber": 174
+        },
+        {
+          "caller": "test_config_is_a_read_only_get_and_its_failure_is_tolerated",
+          "callee": "_read",
+          "lineNumber": 179
+        },
+        {
+          "caller": "test_config_is_a_read_only_get_and_its_failure_is_tolerated",
+          "callee": "_read",
+          "lineNumber": 181
+        },
+        {
+          "caller": "test_config_is_a_read_only_get_and_its_failure_is_tolerated",
+          "callee": "app.index",
+          "lineNumber": 182
+        },
+        {
+          "caller": "test_config_is_a_read_only_get_and_its_failure_is_tolerated",
+          "callee": "app.index",
+          "lineNumber": 182
+        },
+        {
+          "caller": "test_history_and_documents_have_loading_and_error_states",
+          "callee": "_read",
+          "lineNumber": 187
+        },
+        {
+          "caller": "test_history_and_documents_have_loading_and_error_states",
+          "callee": "_read",
+          "lineNumber": 187
+        },
+        {
+          "caller": "test_history_and_documents_have_loading_and_error_states",
+          "callee": "ui.index",
+          "lineNumber": 191
+        },
+        {
+          "caller": "test_history_and_documents_have_loading_and_error_states",
+          "callee": "ui.index",
+          "lineNumber": 191
+        },
+        {
+          "caller": "ws",
+          "callee": "next",
+          "lineNumber": 286
+        },
+        {
+          "caller": "ws",
+          "callee": "map",
+          "lineNumber": 286
+        },
+        {
+          "caller": "ws",
+          "callee": "pytest.skip",
+          "lineNumber": 288
+        },
+        {
+          "caller": "ws",
+          "callee": "_STUB.replace",
+          "lineNumber": 289
+        },
+        {
+          "caller": "ws",
+          "callee": "_SCENARIO.replace",
+          "lineNumber": 290
+        },
+        {
+          "caller": "do_GET",
+          "callee": "self.path.split",
+          "lineNumber": 298
+        },
+        {
+          "caller": "do_GET",
+          "callee": "(FE / path.lstrip(\"/\")).resolve",
+          "lineNumber": 300
+        },
+        {
+          "caller": "do_GET",
+          "callee": "path.lstrip",
+          "lineNumber": 300
+        },
+        {
+          "caller": "do_GET",
+          "callee": "FE.resolve",
+          "lineNumber": 301
+        },
+        {
+          "caller": "do_GET",
+          "callee": "f.is_file",
+          "lineNumber": 301
+        },
+        {
+          "caller": "do_GET",
+          "callee": "blocked.append",
+          "lineNumber": 302
+        },
+        {
+          "caller": "do_GET",
+          "callee": "self.send_response",
+          "lineNumber": 303
+        },
+        {
+          "caller": "do_GET",
+          "callee": "self.end_headers",
+          "lineNumber": 304
+        },
+        {
+          "caller": "do_GET",
+          "callee": "f.read_bytes",
+          "lineNumber": 306
+        },
+        {
+          "caller": "do_GET",
+          "callee": "data.decode(\"utf-8\").replace(\"<head>\", injected, 1).replace(\"</body>\", tail, 1).encode",
+          "lineNumber": 308
+        },
+        {
+          "caller": "do_GET",
+          "callee": "data.decode(\"utf-8\").replace(\"<head>\", injected, 1).replace",
+          "lineNumber": 308
+        },
+        {
+          "caller": "do_GET",
+          "callee": "data.decode(\"utf-8\").replace",
+          "lineNumber": 308
+        },
+        {
+          "caller": "do_GET",
+          "callee": "data.decode",
+          "lineNumber": 308
+        },
+        {
+          "caller": "do_GET",
+          "callee": "self.send_response",
+          "lineNumber": 309
+        },
+        {
+          "caller": "do_GET",
+          "callee": "{\".html\": \"text/html\", \".js\": \"text/javascript\", \".css\": \"text/css\", \".svg\": \"image/svg+xml\"}.get",
+          "lineNumber": 310
+        },
+        {
+          "caller": "do_GET",
+          "callee": "self.send_header",
+          "lineNumber": 311
+        },
+        {
+          "caller": "do_GET",
+          "callee": "self.end_headers",
+          "lineNumber": 312
+        },
+        {
+          "caller": "do_GET",
+          "callee": "self.wfile.write",
+          "lineNumber": 313
+        },
+        {
+          "caller": "_refuse",
+          "callee": "blocked.append",
+          "lineNumber": 316
+        },
+        {
+          "caller": "_refuse",
+          "callee": "self.send_response",
+          "lineNumber": 317
+        },
+        {
+          "caller": "_refuse",
+          "callee": "self.end_headers",
+          "lineNumber": 318
+        },
+        {
+          "caller": "ws",
+          "callee": "_hs.ThreadingHTTPServer",
+          "lineNumber": 322
+        },
+        {
+          "caller": "ws",
+          "callee": "_th.Thread(target=srv.serve_forever, daemon=True).start",
+          "lineNumber": 323
+        },
+        {
+          "caller": "ws",
+          "callee": "_th.Thread",
+          "lineNumber": 323
+        },
+        {
+          "caller": "ws",
+          "callee": "tmp_path_factory.mktemp",
+          "lineNumber": 324
+        },
+        {
+          "caller": "ws",
+          "callee": "_sp.run",
+          "lineNumber": 326
+        },
+        {
+          "caller": "ws",
+          "callee": "pytest.skip",
+          "lineNumber": 330
+        },
+        {
+          "caller": "ws",
+          "callee": "srv.shutdown",
+          "lineNumber": 332
+        },
+        {
+          "caller": "ws",
+          "callee": "re.search",
+          "lineNumber": 333
+        },
+        {
+          "caller": "ws",
+          "callee": "pytest.skip",
+          "lineNumber": 335
+        },
+        {
+          "caller": "ws",
+          "callee": "_json.loads",
+          "lineNumber": 336
+        },
+        {
+          "caller": "ws",
+          "callee": "_html.unescape",
+          "lineNumber": 336
+        },
+        {
+          "caller": "ws",
+          "callee": "m.group",
+          "lineNumber": 336
+        },
+        {
+          "caller": "ws",
+          "callee": "res.get",
+          "lineNumber": 337
+        },
+        {
+          "caller": "ws",
+          "callee": "pytest.skip",
+          "lineNumber": 338
+        },
+        {
+          "caller": "ws",
+          "callee": "res.get",
+          "lineNumber": 339
+        },
+        {
+          "caller": "test_stub_each_mode_shows_only_its_own_panel",
+          "callee": "expect.items",
+          "lineNumber": 360
+        },
+        {
+          "caller": "test_stub_history_arrow_keys_move_between_chats",
+          "callee": "ws[\"history\"].get",
+          "lineNumber": 405
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 28,
+        "functionCount": 28,
+        "classCount": 0
+      }
+    }
+  ]
+}

@@ -1,0 +1,1623 @@
+{
+  "nodes": [
+    {
+      "id": "file:frontend/js/components/dialog.js",
+      "type": "file",
+      "name": "dialog.js",
+      "filePath": "frontend/js/components/dialog.js",
+      "summary": "Native dialog helpers (window.Dialog) for modal open and close with focus return, plus an accessible confirm() that replaces window.confirm.",
+      "tags": [
+        "component",
+        "dialog",
+        "accessibility",
+        "focus"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:frontend/js/components/documents.js",
+      "type": "file",
+      "name": "documents.js",
+      "filePath": "frontend/js/components/documents.js",
+      "summary": "Document list view (window.DocsView) for the Documents workspace and the My Documents dialog. It renders rows the controller supplies and reports delete clicks; it does not fetch.",
+      "tags": [
+        "component",
+        "documents",
+        "view",
+        "list"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:frontend/js/components/menu.js",
+      "type": "file",
+      "name": "menu.js",
+      "filePath": "frontend/js/components/menu.js",
+      "summary": "Anchored popover menu (window.Menu) with roving focus, menuitem and menuitemradio rows, and separators. Labels are set with textContent.",
+      "tags": [
+        "component",
+        "menu",
+        "accessibility",
+        "popover"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:frontend/js/components/model-select.js",
+      "type": "file",
+      "name": "model-select.js",
+      "filePath": "frontend/js/components/model-select.js",
+      "summary": "Listbox popover (window.ModelSelect) over the native model select, which stays the source of truth. Choices dispatch a real change event that app.js already listens for.",
+      "tags": [
+        "component",
+        "model-select",
+        "listbox",
+        "accessibility"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:frontend/js/components/motion.js",
+      "type": "file",
+      "name": "motion.js",
+      "filePath": "frontend/js/components/motion.js",
+      "summary": "The only GSAP user (window.Motion). It plays the welcome, workspace, and intro entrances, skips animation when reduced motion is requested, and never fetches application data.",
+      "tags": [
+        "component",
+        "animation",
+        "gsap",
+        "view"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:frontend/js/components/notifications.js",
+      "type": "file",
+      "name": "notifications.js",
+      "filePath": "frontend/js/components/notifications.js",
+      "summary": "In-memory notification popover (window.Notifications) for toasts and upload errors from this page session, with an unread dot on the bell. It does not persist or fetch.",
+      "tags": [
+        "component",
+        "notifications",
+        "popover",
+        "view"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:frontend/js/components/prefs.js",
+      "type": "file",
+      "name": "prefs.js",
+      "filePath": "frontend/js/components/prefs.js",
+      "summary": "Browser-local view preferences (window.Prefs) for text size, chat density, and which toasts appear. Values are stored under pref.* keys and mirrored onto the html element; nothing is sent to the server.",
+      "tags": [
+        "component",
+        "preferences",
+        "local-storage",
+        "view"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:frontend/js/components/dialog.js:_wire",
+      "type": "function",
+      "name": "_wire",
+      "filePath": "frontend/js/components/dialog.js",
+      "lineRange": [
+        17,
+        41
+      ],
+      "summary": "Attaches backdrop-click filtering and focus return on a dialog element, once per element.",
+      "tags": [
+        "dialog",
+        "focus",
+        "event-handler"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:frontend/js/components/dialog.js:open",
+      "type": "function",
+      "name": "open",
+      "filePath": "frontend/js/components/dialog.js",
+      "lineRange": [
+        43,
+        58
+      ],
+      "summary": "Shows a dialog modally, remembers the invoker, and moves focus to the requested element.",
+      "tags": [
+        "dialog",
+        "focus",
+        "modal"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/components/dialog.js:close",
+      "type": "function",
+      "name": "close",
+      "filePath": "frontend/js/components/dialog.js",
+      "lineRange": [
+        60,
+        68
+      ],
+      "summary": "Closes a dialog with the native close() or by removing the open attribute.",
+      "tags": [
+        "dialog",
+        "modal",
+        "focus"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/components/dialog.js:confirm",
+      "type": "function",
+      "name": "confirm",
+      "filePath": "frontend/js/components/dialog.js",
+      "lineRange": [
+        71,
+        152
+      ],
+      "summary": "Shows one confirm dialog and resolves true only when the confirm button is used. Cancel, Escape, and backdrop resolve false.",
+      "tags": [
+        "dialog",
+        "confirm",
+        "accessibility"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:frontend/js/components/documents.js:_metaText",
+      "type": "function",
+      "name": "_metaText",
+      "filePath": "frontend/js/components/documents.js",
+      "lineRange": [
+        39,
+        50
+      ],
+      "summary": "Builds the secondary line for a document row from its type, size, and status fields.",
+      "tags": [
+        "documents",
+        "formatting",
+        "list"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/components/documents.js:_updateBulkBar",
+      "type": "function",
+      "name": "_updateBulkBar",
+      "filePath": "frontend/js/components/documents.js",
+      "lineRange": [
+        53,
+        67
+      ],
+      "summary": "Shows or hides the bulk-delete bar from the current selection size.",
+      "tags": [
+        "documents",
+        "selection",
+        "dom"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/components/documents.js:_row",
+      "type": "function",
+      "name": "_row",
+      "filePath": "frontend/js/components/documents.js",
+      "lineRange": [
+        69,
+        112
+      ],
+      "summary": "Builds one document row with its type icon, label, selection checkbox, and delete control.",
+      "tags": [
+        "documents",
+        "dom",
+        "list"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:frontend/js/components/documents.js:_state",
+      "type": "function",
+      "name": "_state",
+      "filePath": "frontend/js/components/documents.js",
+      "lineRange": [
+        114,
+        127
+      ],
+      "summary": "Builds an empty, error, or other status block for the document list.",
+      "tags": [
+        "documents",
+        "empty-state",
+        "dom"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/components/documents.js:_skeleton",
+      "type": "function",
+      "name": "_skeleton",
+      "filePath": "frontend/js/components/documents.js",
+      "lineRange": [
+        129,
+        141
+      ],
+      "summary": "Builds the loading skeleton shown before the first document list arrives.",
+      "tags": [
+        "documents",
+        "loading",
+        "dom"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/components/documents.js:_fill",
+      "type": "function",
+      "name": "_fill",
+      "filePath": "frontend/js/components/documents.js",
+      "lineRange": [
+        143,
+        165
+      ],
+      "summary": "Fills a document container from the current rows, filter, and selection.",
+      "tags": [
+        "documents",
+        "list",
+        "render"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:frontend/js/components/documents.js:_counts",
+      "type": "function",
+      "name": "_counts",
+      "filePath": "frontend/js/components/documents.js",
+      "lineRange": [
+        171,
+        181
+      ],
+      "summary": "Updates the document count labels from the rows currently held by the view.",
+      "tags": [
+        "documents",
+        "list",
+        "dom"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/components/documents.js:render",
+      "type": "function",
+      "name": "render",
+      "filePath": "frontend/js/components/documents.js",
+      "lineRange": [
+        188,
+        199
+      ],
+      "summary": "Replaces the view's document rows and delete callbacks, then redraws the list. The controller passes server rows.",
+      "tags": [
+        "documents",
+        "render",
+        "view"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/components/documents.js:clearSelection",
+      "type": "function",
+      "name": "clearSelection",
+      "filePath": "frontend/js/components/documents.js",
+      "lineRange": [
+        202,
+        206
+      ],
+      "summary": "Clears the multi-select set and redraws the list and bulk bar.",
+      "tags": [
+        "documents",
+        "selection",
+        "view"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/components/documents.js:setStatus",
+      "type": "function",
+      "name": "setStatus",
+      "filePath": "frontend/js/components/documents.js",
+      "lineRange": [
+        208,
+        212
+      ],
+      "summary": "Sets the list to loading, error, or ready and redraws, including an optional retry action.",
+      "tags": [
+        "documents",
+        "status",
+        "view"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/components/documents.js:open",
+      "type": "function",
+      "name": "open",
+      "filePath": "frontend/js/components/documents.js",
+      "lineRange": [
+        214,
+        220
+      ],
+      "summary": "Opens the My Documents dialog through Dialog.open, resetting the search when it was closed.",
+      "tags": [
+        "documents",
+        "dialog",
+        "view"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/components/documents.js:init",
+      "type": "function",
+      "name": "init",
+      "filePath": "frontend/js/components/documents.js",
+      "lineRange": [
+        224,
+        266
+      ],
+      "summary": "Binds search, close, upload, URL, select-all, and bulk-delete controls on the documents dialog.",
+      "tags": [
+        "documents",
+        "event-handler",
+        "wiring"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:frontend/js/components/menu.js:isOpen",
+      "type": "function",
+      "name": "isOpen",
+      "filePath": "frontend/js/components/menu.js",
+      "lineRange": [
+        17,
+        19
+      ],
+      "summary": "Reports whether the popover is open, optionally only for a given anchor.",
+      "tags": [
+        "menu",
+        "popover",
+        "state"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/components/menu.js:close",
+      "type": "function",
+      "name": "close",
+      "filePath": "frontend/js/components/menu.js",
+      "lineRange": [
+        21,
+        31
+      ],
+      "summary": "Removes the open menu, marks the anchor collapsed, and can return focus to it.",
+      "tags": [
+        "menu",
+        "popover",
+        "focus"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/components/menu.js:_position",
+      "type": "function",
+      "name": "_position",
+      "filePath": "frontend/js/components/menu.js",
+      "lineRange": [
+        33,
+        50
+      ],
+      "summary": "Places the menu next to its anchor, flipping alignment so it stays in the viewport.",
+      "tags": [
+        "menu",
+        "positioning",
+        "popover"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/components/menu.js:open",
+      "type": "function",
+      "name": "open",
+      "filePath": "frontend/js/components/menu.js",
+      "lineRange": [
+        52,
+        152
+      ],
+      "summary": "Opens an anchored menu from the item list, handles pointer and keyboard dismissal, and returns a close handle.",
+      "tags": [
+        "menu",
+        "popover",
+        "keyboard",
+        "accessibility"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:frontend/js/components/model-select.js:_item",
+      "type": "function",
+      "name": "_item",
+      "filePath": "frontend/js/components/model-select.js",
+      "lineRange": [
+        47,
+        57
+      ],
+      "summary": "Reads one option into the listbox item shape: value, label, description, reason, disabled, and group.",
+      "tags": [
+        "model-select",
+        "parsing",
+        "listbox"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/components/model-select.js:_read",
+      "type": "function",
+      "name": "_read",
+      "filePath": "frontend/js/components/model-select.js",
+      "lineRange": [
+        59,
+        73
+      ],
+      "summary": "Reads the native select's options and optgroups into the items the popover displays.",
+      "tags": [
+        "model-select",
+        "parsing",
+        "select"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/components/model-select.js:_syncChips",
+      "type": "function",
+      "name": "_syncChips",
+      "filePath": "frontend/js/components/model-select.js",
+      "lineRange": [
+        94,
+        105
+      ],
+      "summary": "Mirrors the current model label and logo onto the composer chips.",
+      "tags": [
+        "model-select",
+        "dom",
+        "chips"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/components/model-select.js:_syncTrigger",
+      "type": "function",
+      "name": "_syncTrigger",
+      "filePath": "frontend/js/components/model-select.js",
+      "lineRange": [
+        107,
+        147
+      ],
+      "summary": "Copies the selected option's label, logo, and disabled state onto the custom trigger.",
+      "tags": [
+        "model-select",
+        "dom",
+        "select"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:frontend/js/components/model-select.js:_position",
+      "type": "function",
+      "name": "_position",
+      "filePath": "frontend/js/components/model-select.js",
+      "lineRange": [
+        161,
+        173
+      ],
+      "summary": "Positions the listbox popover under the trigger or the chip that opened it.",
+      "tags": [
+        "model-select",
+        "positioning",
+        "popover"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/components/model-select.js:_setActive",
+      "type": "function",
+      "name": "_setActive",
+      "filePath": "frontend/js/components/model-select.js",
+      "lineRange": [
+        175,
+        186
+      ],
+      "summary": "Moves the roving active option in the open listbox and scrolls it into view.",
+      "tags": [
+        "model-select",
+        "keyboard",
+        "listbox"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/components/model-select.js:_typeahead",
+      "type": "function",
+      "name": "_typeahead",
+      "filePath": "frontend/js/components/model-select.js",
+      "lineRange": [
+        198,
+        211
+      ],
+      "summary": "Jumps the active option to the next label that starts with the typed character.",
+      "tags": [
+        "model-select",
+        "keyboard",
+        "typeahead"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/components/model-select.js:open",
+      "type": "function",
+      "name": "open",
+      "filePath": "frontend/js/components/model-select.js",
+      "lineRange": [
+        225,
+        307
+      ],
+      "summary": "Opens the model listbox, builds option and group rows from the native select, and handles typeahead and keys.",
+      "tags": [
+        "model-select",
+        "listbox",
+        "popover",
+        "accessibility"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:frontend/js/components/model-select.js:close",
+      "type": "function",
+      "name": "close",
+      "filePath": "frontend/js/components/model-select.js",
+      "lineRange": [
+        309,
+        321
+      ],
+      "summary": "Closes the model listbox and can return focus to the trigger or chip.",
+      "tags": [
+        "model-select",
+        "popover",
+        "focus"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/components/model-select.js:_onListKey",
+      "type": "function",
+      "name": "_onListKey",
+      "filePath": "frontend/js/components/model-select.js",
+      "lineRange": [
+        323,
+        343
+      ],
+      "summary": "Handles arrow, Home, End, Enter, and typeahead keys while the listbox is open.",
+      "tags": [
+        "model-select",
+        "keyboard",
+        "listbox"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:frontend/js/components/model-select.js:init",
+      "type": "function",
+      "name": "init",
+      "filePath": "frontend/js/components/model-select.js",
+      "lineRange": [
+        357,
+        398
+      ],
+      "summary": "Enhances one native select: wraps value writes, observes option changes, and keeps the custom trigger in sync.",
+      "tags": [
+        "model-select",
+        "init",
+        "select"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:frontend/js/components/model-select.js:bindChip",
+      "type": "function",
+      "name": "bindChip",
+      "filePath": "frontend/js/components/model-select.js",
+      "lineRange": [
+        404,
+        414
+      ],
+      "summary": "Connects a composer model chip so it shows the selection and opens the same listbox.",
+      "tags": [
+        "model-select",
+        "chips",
+        "event-handler"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/components/model-select.js:setError",
+      "type": "function",
+      "name": "setError",
+      "filePath": "frontend/js/components/model-select.js",
+      "lineRange": [
+        420,
+        426
+      ],
+      "summary": "Shows a short failure reason and an optional Retry button when the model list could not load.",
+      "tags": [
+        "model-select",
+        "error-handling",
+        "ui-state"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/components/model-select.js:clearError",
+      "type": "function",
+      "name": "clearError",
+      "filePath": "frontend/js/components/model-select.js",
+      "lineRange": [
+        428,
+        433
+      ],
+      "summary": "Clears the model-list failure state and refreshes the trigger.",
+      "tags": [
+        "model-select",
+        "error-handling",
+        "ui-state"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/components/model-select.js:_ensureRetry",
+      "type": "function",
+      "name": "_ensureRetry",
+      "filePath": "frontend/js/components/model-select.js",
+      "lineRange": [
+        435,
+        446
+      ],
+      "summary": "Creates the Retry button used by the model-list failure state, once.",
+      "tags": [
+        "model-select",
+        "dom",
+        "retry"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/components/motion.js:_load",
+      "type": "function",
+      "name": "_load",
+      "filePath": "frontend/js/components/motion.js",
+      "lineRange": [
+        30,
+        44
+      ],
+      "summary": "Resolves window.gsap if it is already present, otherwise injects /js/vendor/gsap.min.js and waits for it.",
+      "tags": [
+        "animation",
+        "gsap",
+        "loader"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/components/motion.js:_groups",
+      "type": "function",
+      "name": "_groups",
+      "filePath": "frontend/js/components/motion.js",
+      "lineRange": [
+        49,
+        61
+      ],
+      "summary": "Collects the welcome elements that the entrance timeline animates.",
+      "tags": [
+        "animation",
+        "welcome",
+        "dom"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/components/motion.js:_play",
+      "type": "function",
+      "name": "_play",
+      "filePath": "frontend/js/components/motion.js",
+      "lineRange": [
+        90,
+        120
+      ],
+      "summary": "Runs the welcome entrance timeline and then the idle float, reverting any previous timeline first.",
+      "tags": [
+        "animation",
+        "gsap",
+        "welcome"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:frontend/js/components/motion.js:enter",
+      "type": "function",
+      "name": "enter",
+      "filePath": "frontend/js/components/motion.js",
+      "lineRange": [
+        123,
+        129
+      ],
+      "summary": "Plays the first welcome entrance, or releases the pending class immediately when reduced motion is on.",
+      "tags": [
+        "animation",
+        "welcome",
+        "gsap"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/components/motion.js:welcome",
+      "type": "function",
+      "name": "welcome",
+      "filePath": "frontend/js/components/motion.js",
+      "lineRange": [
+        132,
+        136
+      ],
+      "summary": "Replays the welcome entrance when a fresh welcome screen is shown again.",
+      "tags": [
+        "animation",
+        "welcome",
+        "gsap"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/components/motion.js:workspaceChanged",
+      "type": "function",
+      "name": "workspaceChanged",
+      "filePath": "frontend/js/components/motion.js",
+      "lineRange": [
+        139,
+        144
+      ],
+      "summary": "Reverts the previous timeline and plays the entrance for the workspace panel that just became visible.",
+      "tags": [
+        "animation",
+        "workspace",
+        "gsap"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/components/motion.js:_playIntro",
+      "type": "function",
+      "name": "_playIntro",
+      "filePath": "frontend/js/components/motion.js",
+      "lineRange": [
+        154,
+        183
+      ],
+      "summary": "Runs the introduction-page entrance timeline on the intro hero and its sections.",
+      "tags": [
+        "animation",
+        "intro",
+        "gsap"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:frontend/js/components/motion.js:intro",
+      "type": "function",
+      "name": "intro",
+      "filePath": "frontend/js/components/motion.js",
+      "lineRange": [
+        185,
+        188
+      ],
+      "summary": "Plays the introduction entrance once, and does nothing when reduced motion is requested.",
+      "tags": [
+        "animation",
+        "intro",
+        "gsap"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/components/notifications.js:_render",
+      "type": "function",
+      "name": "_render",
+      "filePath": "frontend/js/components/notifications.js",
+      "lineRange": [
+        43,
+        64
+      ],
+      "summary": "Redraws the panel body: an empty state, or the in-memory notices newest first.",
+      "tags": [
+        "notifications",
+        "render",
+        "dom"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:frontend/js/components/notifications.js:record",
+      "type": "function",
+      "name": "record",
+      "filePath": "frontend/js/components/notifications.js",
+      "lineRange": [
+        76,
+        83
+      ],
+      "summary": "Stores one notice from a toast or upload error, caps the list at 20, and updates the unread dot.",
+      "tags": [
+        "notifications",
+        "state",
+        "toast"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/components/notifications.js:clear",
+      "type": "function",
+      "name": "clear",
+      "filePath": "frontend/js/components/notifications.js",
+      "lineRange": [
+        85,
+        90
+      ],
+      "summary": "Drops every stored notice and redraws the empty panel.",
+      "tags": [
+        "notifications",
+        "state",
+        "dom"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/components/notifications.js:_position",
+      "type": "function",
+      "name": "_position",
+      "filePath": "frontend/js/components/notifications.js",
+      "lineRange": [
+        95,
+        105
+      ],
+      "summary": "Places the notification panel next to the bell so it stays inside the viewport.",
+      "tags": [
+        "notifications",
+        "positioning",
+        "popover"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/components/notifications.js:close",
+      "type": "function",
+      "name": "close",
+      "filePath": "frontend/js/components/notifications.js",
+      "lineRange": [
+        107,
+        117
+      ],
+      "summary": "Removes the notification panel and can return focus to the bell.",
+      "tags": [
+        "notifications",
+        "popover",
+        "focus"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/components/notifications.js:open",
+      "type": "function",
+      "name": "open",
+      "filePath": "frontend/js/components/notifications.js",
+      "lineRange": [
+        119,
+        167
+      ],
+      "summary": "Opens the bell panel, closing any Menu popover first, and marks the current notices read.",
+      "tags": [
+        "notifications",
+        "popover",
+        "menu"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:frontend/js/components/prefs.js:get",
+      "type": "function",
+      "name": "get",
+      "filePath": "frontend/js/components/prefs.js",
+      "lineRange": [
+        25,
+        30
+      ],
+      "summary": "Returns the stored preference if it is one of the allowed values, otherwise the default. Unknown names return null.",
+      "tags": [
+        "preferences",
+        "local-storage",
+        "validation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/components/prefs.js:apply",
+      "type": "function",
+      "name": "apply",
+      "filePath": "frontend/js/components/prefs.js",
+      "lineRange": [
+        33,
+        39
+      ],
+      "summary": "Mirrors font size and density onto the html element, removing the attribute when the value is the default.",
+      "tags": [
+        "preferences",
+        "dom",
+        "theme"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/components/prefs.js:set",
+      "type": "function",
+      "name": "set",
+      "filePath": "frontend/js/components/prefs.js",
+      "lineRange": [
+        41,
+        48
+      ],
+      "summary": "Stores an allowed preference, applies it to the document, and notifies subscribers. Rejects unknown names and values.",
+      "tags": [
+        "preferences",
+        "local-storage",
+        "validation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/components/prefs.js:onChange",
+      "type": "function",
+      "name": "onChange",
+      "filePath": "frontend/js/components/prefs.js",
+      "lineRange": [
+        51,
+        57
+      ],
+      "summary": "Subscribes to preference changes and returns an unsubscribe function.",
+      "tags": [
+        "preferences",
+        "events",
+        "subscription"
+      ],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:frontend/js/components/dialog.js",
+      "target": "function:frontend/js/components/dialog.js:_wire",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/components/dialog.js",
+      "target": "function:frontend/js/components/dialog.js:open",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/components/dialog.js",
+      "target": "function:frontend/js/components/dialog.js:open",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/components/dialog.js",
+      "target": "function:frontend/js/components/dialog.js:close",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/components/dialog.js",
+      "target": "function:frontend/js/components/dialog.js:close",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/components/dialog.js",
+      "target": "function:frontend/js/components/dialog.js:confirm",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/components/dialog.js",
+      "target": "function:frontend/js/components/dialog.js:confirm",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/components/documents.js",
+      "target": "function:frontend/js/components/documents.js:_metaText",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/components/documents.js",
+      "target": "function:frontend/js/components/documents.js:_updateBulkBar",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/components/documents.js",
+      "target": "function:frontend/js/components/documents.js:_row",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/components/documents.js",
+      "target": "function:frontend/js/components/documents.js:_state",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/components/documents.js",
+      "target": "function:frontend/js/components/documents.js:_skeleton",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/components/documents.js",
+      "target": "function:frontend/js/components/documents.js:_fill",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/components/documents.js",
+      "target": "function:frontend/js/components/documents.js:_counts",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/components/documents.js",
+      "target": "function:frontend/js/components/documents.js:render",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/components/documents.js",
+      "target": "function:frontend/js/components/documents.js:render",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/components/documents.js",
+      "target": "function:frontend/js/components/documents.js:clearSelection",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/components/documents.js",
+      "target": "function:frontend/js/components/documents.js:clearSelection",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/components/documents.js",
+      "target": "function:frontend/js/components/documents.js:setStatus",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/components/documents.js",
+      "target": "function:frontend/js/components/documents.js:setStatus",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/components/documents.js",
+      "target": "function:frontend/js/components/documents.js:open",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/components/documents.js",
+      "target": "function:frontend/js/components/documents.js:open",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/components/documents.js",
+      "target": "function:frontend/js/components/documents.js:init",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/components/documents.js",
+      "target": "function:frontend/js/components/documents.js:init",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/components/menu.js",
+      "target": "function:frontend/js/components/menu.js:isOpen",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/components/menu.js",
+      "target": "function:frontend/js/components/menu.js:isOpen",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/components/menu.js",
+      "target": "function:frontend/js/components/menu.js:close",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/components/menu.js",
+      "target": "function:frontend/js/components/menu.js:close",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/components/menu.js",
+      "target": "function:frontend/js/components/menu.js:_position",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/components/menu.js",
+      "target": "function:frontend/js/components/menu.js:open",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/components/menu.js",
+      "target": "function:frontend/js/components/menu.js:open",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/components/model-select.js",
+      "target": "function:frontend/js/components/model-select.js:_item",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/components/model-select.js",
+      "target": "function:frontend/js/components/model-select.js:_read",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/components/model-select.js",
+      "target": "function:frontend/js/components/model-select.js:_syncChips",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/components/model-select.js",
+      "target": "function:frontend/js/components/model-select.js:_syncTrigger",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/components/model-select.js",
+      "target": "function:frontend/js/components/model-select.js:_position",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/components/model-select.js",
+      "target": "function:frontend/js/components/model-select.js:_setActive",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/components/model-select.js",
+      "target": "function:frontend/js/components/model-select.js:_typeahead",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/components/model-select.js",
+      "target": "function:frontend/js/components/model-select.js:open",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/components/model-select.js",
+      "target": "function:frontend/js/components/model-select.js:open",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/components/model-select.js",
+      "target": "function:frontend/js/components/model-select.js:close",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/components/model-select.js",
+      "target": "function:frontend/js/components/model-select.js:close",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/components/model-select.js",
+      "target": "function:frontend/js/components/model-select.js:_onListKey",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/components/model-select.js",
+      "target": "function:frontend/js/components/model-select.js:init",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/components/model-select.js",
+      "target": "function:frontend/js/components/model-select.js:init",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/components/model-select.js",
+      "target": "function:frontend/js/components/model-select.js:bindChip",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/components/model-select.js",
+      "target": "function:frontend/js/components/model-select.js:bindChip",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/components/model-select.js",
+      "target": "function:frontend/js/components/model-select.js:setError",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/components/model-select.js",
+      "target": "function:frontend/js/components/model-select.js:setError",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/components/model-select.js",
+      "target": "function:frontend/js/components/model-select.js:clearError",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/components/model-select.js",
+      "target": "function:frontend/js/components/model-select.js:clearError",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/components/model-select.js",
+      "target": "function:frontend/js/components/model-select.js:_ensureRetry",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/components/motion.js",
+      "target": "function:frontend/js/components/motion.js:_load",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/components/motion.js",
+      "target": "function:frontend/js/components/motion.js:_groups",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/components/motion.js",
+      "target": "function:frontend/js/components/motion.js:_play",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/components/motion.js",
+      "target": "function:frontend/js/components/motion.js:enter",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/components/motion.js",
+      "target": "function:frontend/js/components/motion.js:enter",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/components/motion.js",
+      "target": "function:frontend/js/components/motion.js:welcome",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/components/motion.js",
+      "target": "function:frontend/js/components/motion.js:welcome",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/components/motion.js",
+      "target": "function:frontend/js/components/motion.js:workspaceChanged",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/components/motion.js",
+      "target": "function:frontend/js/components/motion.js:workspaceChanged",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/components/motion.js",
+      "target": "function:frontend/js/components/motion.js:_playIntro",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/components/motion.js",
+      "target": "function:frontend/js/components/motion.js:intro",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/components/motion.js",
+      "target": "function:frontend/js/components/motion.js:intro",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/components/notifications.js",
+      "target": "function:frontend/js/components/notifications.js:_render",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/components/notifications.js",
+      "target": "function:frontend/js/components/notifications.js:record",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/components/notifications.js",
+      "target": "function:frontend/js/components/notifications.js:record",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/components/notifications.js",
+      "target": "function:frontend/js/components/notifications.js:clear",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/components/notifications.js",
+      "target": "function:frontend/js/components/notifications.js:clear",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/components/notifications.js",
+      "target": "function:frontend/js/components/notifications.js:_position",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/components/notifications.js",
+      "target": "function:frontend/js/components/notifications.js:close",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/components/notifications.js",
+      "target": "function:frontend/js/components/notifications.js:close",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/components/notifications.js",
+      "target": "function:frontend/js/components/notifications.js:open",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/components/notifications.js",
+      "target": "function:frontend/js/components/notifications.js:open",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/components/prefs.js",
+      "target": "function:frontend/js/components/prefs.js:get",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/components/prefs.js",
+      "target": "function:frontend/js/components/prefs.js:get",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/components/prefs.js",
+      "target": "function:frontend/js/components/prefs.js:apply",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/components/prefs.js",
+      "target": "function:frontend/js/components/prefs.js:apply",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/components/prefs.js",
+      "target": "function:frontend/js/components/prefs.js:set",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/components/prefs.js",
+      "target": "function:frontend/js/components/prefs.js:set",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/components/prefs.js",
+      "target": "function:frontend/js/components/prefs.js:onChange",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/components/prefs.js",
+      "target": "function:frontend/js/components/prefs.js:onChange",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/components/documents.js",
+      "target": "file:frontend/js/components/dialog.js",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:frontend/js/components/notifications.js",
+      "target": "file:frontend/js/components/menu.js",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:frontend/js/components/motion.js",
+      "target": "file:frontend/js/vendor/gsap.min.js",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "function:frontend/js/components/documents.js:open",
+      "target": "function:frontend/js/components/dialog.js:open",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:frontend/js/components/notifications.js:open",
+      "target": "function:frontend/js/components/menu.js:isOpen",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:frontend/js/components/notifications.js:open",
+      "target": "function:frontend/js/components/menu.js:close",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    }
+  ]
+}

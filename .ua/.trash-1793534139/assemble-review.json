@@ -1,0 +1,14 @@
+{
+  "fixedSectionOk": true,
+  "nodesRecovered": 0,
+  "edgesRestored": 0,
+  "crossBatchEdgesAdded": 0,
+  "typesRemapped": 0,
+  "complexityRemapped": 0,
+  "notes": [
+    "The merge report has no Fixed or Could not fix section. Input and output counts match (155 nodes, 347 edges), so no ID, type, or complexity corrections were required.",
+    "All 18 non-empty import-map relationships already have forward imports edges at weight 0.7. Recovering 0 edges from 38 scanned entries is consistent with that coverage.",
+    "No dangling edges, missing node IDs, unknown node types, or non-canonical complexity values. Node types in use (file, class, function, endpoint, config, service, document) are all canonical.",
+    "Six import-map paths are non-file nodes (config:.env.example, config:.devcontainer/devcontainer.json, config:.ua/config.json, service:Procfile, document:README.md, document:requirements.txt) and have empty import lists, so no imports edges were required."
+  ]
+}

@@ -1,0 +1,2735 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 7,
+  "filesSkipped": [],
+  "filesUnreadable": [],
+  "analysisOutcomes": {
+    "structure": {
+      "succeeded": 7,
+      "failed": 0
+    },
+    "callGraph": {
+      "succeeded": 7,
+      "failed": 0,
+      "skipped": 0
+    }
+  },
+  "results": [
+    {
+      "path": "backend/core/database.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 91,
+      "nonEmptyLines": 75,
+      "classes": [
+        {
+          "name": "Base",
+          "startLine": 21,
+          "endLine": 22,
+          "methods": [],
+          "properties": []
+        },
+        {
+          "name": "Database",
+          "startLine": 25,
+          "endLine": 91,
+          "methods": [
+            "__init__",
+            "_sqlite_pragmas",
+            "session",
+            "init",
+            "_ensure_columns",
+            "ping",
+            "dispose"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "Base",
+          "line": 21,
+          "isDefault": false
+        },
+        {
+          "name": "Database",
+          "line": 25,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "__init__",
+          "callee": "url.startswith",
+          "lineNumber": 28
+        },
+        {
+          "caller": "__init__",
+          "callee": "create_engine",
+          "lineNumber": 29
+        },
+        {
+          "caller": "__init__",
+          "callee": "event.listen",
+          "lineNumber": 36
+        },
+        {
+          "caller": "__init__",
+          "callee": "sessionmaker",
+          "lineNumber": 38
+        },
+        {
+          "caller": "_sqlite_pragmas",
+          "callee": "dbapi_conn.cursor",
+          "lineNumber": 44
+        },
+        {
+          "caller": "_sqlite_pragmas",
+          "callee": "cur.execute",
+          "lineNumber": 45
+        },
+        {
+          "caller": "_sqlite_pragmas",
+          "callee": "cur.execute",
+          "lineNumber": 46
+        },
+        {
+          "caller": "_sqlite_pragmas",
+          "callee": "cur.execute",
+          "lineNumber": 47
+        },
+        {
+          "caller": "_sqlite_pragmas",
+          "callee": "cur.execute",
+          "lineNumber": 48
+        },
+        {
+          "caller": "_sqlite_pragmas",
+          "callee": "cur.close",
+          "lineNumber": 49
+        },
+        {
+          "caller": "session",
+          "callee": "self._factory",
+          "lineNumber": 54
+        },
+        {
+          "caller": "session",
+          "callee": "db.commit",
+          "lineNumber": 57
+        },
+        {
+          "caller": "session",
+          "callee": "db.rollback",
+          "lineNumber": 59
+        },
+        {
+          "caller": "session",
+          "callee": "db.close",
+          "lineNumber": 62
+        },
+        {
+          "caller": "init",
+          "callee": "Base.metadata.create_all",
+          "lineNumber": 68
+        },
+        {
+          "caller": "init",
+          "callee": "self._ensure_columns",
+          "lineNumber": 69
+        },
+        {
+          "caller": "_ensure_columns",
+          "callee": "inspect",
+          "lineNumber": 73
+        },
+        {
+          "caller": "_ensure_columns",
+          "callee": "self.engine.begin",
+          "lineNumber": 74
+        },
+        {
+          "caller": "_ensure_columns",
+          "callee": "insp.has_table",
+          "lineNumber": 76
+        },
+        {
+          "caller": "_ensure_columns",
+          "callee": "insp.get_columns",
+          "lineNumber": 78
+        },
+        {
+          "caller": "_ensure_columns",
+          "callee": "col.type.compile",
+          "lineNumber": 82
+        },
+        {
+          "caller": "_ensure_columns",
+          "callee": "conn.execute",
+          "lineNumber": 83
+        },
+        {
+          "caller": "_ensure_columns",
+          "callee": "text",
+          "lineNumber": 83
+        },
+        {
+          "caller": "_ensure_columns",
+          "callee": "logger.info",
+          "lineNumber": 84
+        },
+        {
+          "caller": "ping",
+          "callee": "self.engine.connect",
+          "lineNumber": 87
+        },
+        {
+          "caller": "ping",
+          "callee": "conn.execute",
+          "lineNumber": 88
+        },
+        {
+          "caller": "ping",
+          "callee": "text",
+          "lineNumber": 88
+        },
+        {
+          "caller": "dispose",
+          "callee": "self.engine.dispose",
+          "lineNumber": 91
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 2,
+        "functionCount": 0,
+        "classCount": 2
+      }
+    },
+    {
+      "path": "backend/models/db.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 83,
+      "nonEmptyLines": 61,
+      "functions": [
+        {
+          "name": "_uuid",
+          "startLine": 16,
+          "endLine": 17,
+          "params": []
+        }
+      ],
+      "classes": [
+        {
+          "name": "ChatSession",
+          "startLine": 20,
+          "endLine": 35,
+          "methods": [],
+          "properties": []
+        },
+        {
+          "name": "Message",
+          "startLine": 38,
+          "endLine": 50,
+          "methods": [],
+          "properties": []
+        },
+        {
+          "name": "Document",
+          "startLine": 53,
+          "endLine": 61,
+          "methods": [],
+          "properties": []
+        },
+        {
+          "name": "GithubCredential",
+          "startLine": 64,
+          "endLine": 70,
+          "methods": [],
+          "properties": []
+        },
+        {
+          "name": "RepoContext",
+          "startLine": 73,
+          "endLine": 83,
+          "methods": [],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "_uuid",
+          "line": 16,
+          "isDefault": false
+        },
+        {
+          "name": "ChatSession",
+          "line": 20,
+          "isDefault": false
+        },
+        {
+          "name": "Message",
+          "line": 38,
+          "isDefault": false
+        },
+        {
+          "name": "Document",
+          "line": 53,
+          "isDefault": false
+        },
+        {
+          "name": "GithubCredential",
+          "line": 64,
+          "isDefault": false
+        },
+        {
+          "name": "RepoContext",
+          "line": 73,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "_uuid",
+          "callee": "str",
+          "lineNumber": 17
+        },
+        {
+          "caller": "_uuid",
+          "callee": "uuid.uuid4",
+          "lineNumber": 17
+        }
+      ],
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 6,
+        "functionCount": 1,
+        "classCount": 5
+      }
+    },
+    {
+      "path": "backend/services/document_service.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 247,
+      "nonEmptyLines": 215,
+      "classes": [
+        {
+          "name": "IngestResult",
+          "startLine": 35,
+          "endLine": 40,
+          "methods": [],
+          "properties": [
+            "document_id",
+            "filename",
+            "file_type",
+            "chunk_count",
+            "indexing"
+          ]
+        },
+        {
+          "name": "DocumentService",
+          "startLine": 43,
+          "endLine": 247,
+          "methods": [
+            "__init__",
+            "ingest_file",
+            "ingest_url",
+            "ingest_text",
+            "_chunk",
+            "_index_pages",
+            "_embed",
+            "_record_document",
+            "list_documents",
+            "delete_document",
+            "_ensure_index_current",
+            "reindex",
+            "reindex_if_needed"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "IngestResult",
+          "line": 34,
+          "isDefault": false
+        },
+        {
+          "name": "DocumentService",
+          "line": 43,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "__init__",
+          "callee": "RecursiveCharacterTextSplitter",
+          "lineNumber": 51
+        },
+        {
+          "caller": "ingest_file",
+          "callee": "IngestError",
+          "lineNumber": 61
+        },
+        {
+          "caller": "ingest_file",
+          "callee": "len",
+          "lineNumber": 62
+        },
+        {
+          "caller": "ingest_file",
+          "callee": "IngestError",
+          "lineNumber": 63
+        },
+        {
+          "caller": "ingest_file",
+          "callee": "Path",
+          "lineNumber": 64
+        },
+        {
+          "caller": "ingest_file",
+          "callee": "Path(safe_name).suffix.lower().lstrip",
+          "lineNumber": 65
+        },
+        {
+          "caller": "ingest_file",
+          "callee": "Path(safe_name).suffix.lower",
+          "lineNumber": 65
+        },
+        {
+          "caller": "ingest_file",
+          "callee": "Path",
+          "lineNumber": 65
+        },
+        {
+          "caller": "_parse",
+          "callee": "tempfile.mkstemp",
+          "lineNumber": 68
+        },
+        {
+          "caller": "_parse",
+          "callee": "os.fdopen",
+          "lineNumber": 70
+        },
+        {
+          "caller": "_parse",
+          "callee": "fh.write",
+          "lineNumber": 71
+        },
+        {
+          "caller": "_parse",
+          "callee": "self._parser.parse_file",
+          "lineNumber": 72
+        },
+        {
+          "caller": "_parse",
+          "callee": "os.remove",
+          "lineNumber": 75
+        },
+        {
+          "caller": "ingest_file",
+          "callee": "time.perf_counter",
+          "lineNumber": 79
+        },
+        {
+          "caller": "ingest_file",
+          "callee": "asyncio.to_thread",
+          "lineNumber": 81
+        },
+        {
+          "caller": "ingest_file",
+          "callee": "IngestError",
+          "lineNumber": 83
+        },
+        {
+          "caller": "ingest_file",
+          "callee": "str",
+          "lineNumber": 83
+        },
+        {
+          "caller": "ingest_file",
+          "callee": "str",
+          "lineNumber": 83
+        },
+        {
+          "caller": "ingest_file",
+          "callee": "self._index_pages",
+          "lineNumber": 84
+        },
+        {
+          "caller": "ingest_file",
+          "callee": "time.perf_counter",
+          "lineNumber": 85
+        },
+        {
+          "caller": "ingest_url",
+          "callee": "asyncio.to_thread",
+          "lineNumber": 89
+        },
+        {
+          "caller": "ingest_url",
+          "callee": "IngestError",
+          "lineNumber": 91
+        },
+        {
+          "caller": "ingest_url",
+          "callee": "str",
+          "lineNumber": 91
+        },
+        {
+          "caller": "ingest_url",
+          "callee": "self._index_pages",
+          "lineNumber": 92
+        },
+        {
+          "caller": "ingest_text",
+          "callee": "self._index_pages",
+          "lineNumber": 98
+        },
+        {
+          "caller": "_chunk",
+          "callee": "(page.get(\"text\") or \"\").strip",
+          "lineNumber": 103
+        },
+        {
+          "caller": "_chunk",
+          "callee": "page.get",
+          "lineNumber": 103
+        },
+        {
+          "caller": "_chunk",
+          "callee": "page.get",
+          "lineNumber": 106
+        },
+        {
+          "caller": "_chunk",
+          "callee": "self._splitter.split_text",
+          "lineNumber": 107
+        },
+        {
+          "caller": "_chunk",
+          "callee": "piece.strip",
+          "lineNumber": 108
+        },
+        {
+          "caller": "_chunk",
+          "callee": "len",
+          "lineNumber": 109
+        },
+        {
+          "caller": "_chunk",
+          "callee": "chunks.append",
+          "lineNumber": 111
+        },
+        {
+          "caller": "_chunk",
+          "callee": "ChunkIn",
+          "lineNumber": 111
+        },
+        {
+          "caller": "_chunk",
+          "callee": "page.get",
+          "lineNumber": 111
+        },
+        {
+          "caller": "_chunk",
+          "callee": "len",
+          "lineNumber": 112
+        },
+        {
+          "caller": "_index_pages",
+          "callee": "time.perf_counter",
+          "lineNumber": 119
+        },
+        {
+          "caller": "_index_pages",
+          "callee": "asyncio.to_thread",
+          "lineNumber": 121
+        },
+        {
+          "caller": "_index_pages",
+          "callee": "time.perf_counter",
+          "lineNumber": 122
+        },
+        {
+          "caller": "_index_pages",
+          "callee": "time.perf_counter",
+          "lineNumber": 122
+        },
+        {
+          "caller": "_index_pages",
+          "callee": "IngestError",
+          "lineNumber": 124
+        },
+        {
+          "caller": "_index_pages",
+          "callee": "len",
+          "lineNumber": 125
+        },
+        {
+          "caller": "_index_pages",
+          "callee": "IngestError",
+          "lineNumber": 126
+        },
+        {
+          "caller": "_index_pages",
+          "callee": "len",
+          "lineNumber": 127
+        },
+        {
+          "caller": "_index_pages",
+          "callee": "str",
+          "lineNumber": 129
+        },
+        {
+          "caller": "_index_pages",
+          "callee": "uuid.uuid4",
+          "lineNumber": 129
+        },
+        {
+          "caller": "_index_pages",
+          "callee": "self._embed",
+          "lineNumber": 130
+        },
+        {
+          "caller": "_index_pages",
+          "callee": "time.perf_counter",
+          "lineNumber": 131
+        },
+        {
+          "caller": "_index_pages",
+          "callee": "time.perf_counter",
+          "lineNumber": 131
+        },
+        {
+          "caller": "_index_pages",
+          "callee": "asyncio.to_thread",
+          "lineNumber": 134
+        },
+        {
+          "caller": "_index_pages",
+          "callee": "logger.exception",
+          "lineNumber": 138
+        },
+        {
+          "caller": "_index_pages",
+          "callee": "IngestError",
+          "lineNumber": 139
+        },
+        {
+          "caller": "_index_pages",
+          "callee": "time.perf_counter",
+          "lineNumber": 140
+        },
+        {
+          "caller": "_index_pages",
+          "callee": "time.perf_counter",
+          "lineNumber": 140
+        },
+        {
+          "caller": "_index_pages",
+          "callee": "asyncio.to_thread",
+          "lineNumber": 143
+        },
+        {
+          "caller": "_index_pages",
+          "callee": "len",
+          "lineNumber": 144
+        },
+        {
+          "caller": "_index_pages",
+          "callee": "asyncio.to_thread",
+          "lineNumber": 146
+        },
+        {
+          "caller": "_index_pages",
+          "callee": "logger.exception",
+          "lineNumber": 147
+        },
+        {
+          "caller": "_index_pages",
+          "callee": "IngestError",
+          "lineNumber": 148
+        },
+        {
+          "caller": "_index_pages",
+          "callee": "asyncio.to_thread",
+          "lineNumber": 151
+        },
+        {
+          "caller": "_index_pages",
+          "callee": "time.perf_counter",
+          "lineNumber": 152
+        },
+        {
+          "caller": "_index_pages",
+          "callee": "sum",
+          "lineNumber": 153
+        },
+        {
+          "caller": "_index_pages",
+          "callee": "timings.values",
+          "lineNumber": 153
+        },
+        {
+          "caller": "_index_pages",
+          "callee": "logger.info",
+          "lineNumber": 154
+        },
+        {
+          "caller": "_index_pages",
+          "callee": "len",
+          "lineNumber": 154
+        },
+        {
+          "caller": "_index_pages",
+          "callee": "len",
+          "lineNumber": 155
+        },
+        {
+          "caller": "_index_pages",
+          "callee": "\" \".join",
+          "lineNumber": 155
+        },
+        {
+          "caller": "_index_pages",
+          "callee": "timings.items",
+          "lineNumber": 155
+        },
+        {
+          "caller": "_index_pages",
+          "callee": "IngestResult",
+          "lineNumber": 156
+        },
+        {
+          "caller": "_index_pages",
+          "callee": "len",
+          "lineNumber": 156
+        },
+        {
+          "caller": "_embed",
+          "callee": "self._embedder.warmup",
+          "lineNumber": 160
+        },
+        {
+          "caller": "_embed",
+          "callee": "asyncio.to_thread",
+          "lineNumber": 163
+        },
+        {
+          "caller": "_embed",
+          "callee": "self._embedder.aembed_documents",
+          "lineNumber": 164
+        },
+        {
+          "caller": "_embed",
+          "callee": "logger.warning",
+          "lineNumber": 167
+        },
+        {
+          "caller": "_record_document",
+          "callee": "self._db.session",
+          "lineNumber": 173
+        },
+        {
+          "caller": "_record_document",
+          "callee": "s.query(DBDocument)\r\n                   .filter(DBDocument.user_id == user_id, DBDocument.filename == filename).all",
+          "lineNumber": 174
+        },
+        {
+          "caller": "_record_document",
+          "callee": "s.query(DBDocument)\r\n                   .filter",
+          "lineNumber": 174
+        },
+        {
+          "caller": "_record_document",
+          "callee": "s.query",
+          "lineNumber": 174
+        },
+        {
+          "caller": "_record_document",
+          "callee": "s.delete",
+          "lineNumber": 178
+        },
+        {
+          "caller": "_record_document",
+          "callee": "s.add",
+          "lineNumber": 179
+        },
+        {
+          "caller": "_record_document",
+          "callee": "DBDocument",
+          "lineNumber": 179
+        },
+        {
+          "caller": "list_documents",
+          "callee": "self._db.session",
+          "lineNumber": 186
+        },
+        {
+          "caller": "list_documents",
+          "callee": "s.query(DBDocument).filter(DBDocument.user_id == user_id)\r\n                    .order_by(DBDocument.indexed_at.desc()).all",
+          "lineNumber": 187
+        },
+        {
+          "caller": "list_documents",
+          "callee": "s.query(DBDocument).filter(DBDocument.user_id == user_id)\r\n                    .order_by",
+          "lineNumber": 187
+        },
+        {
+          "caller": "list_documents",
+          "callee": "s.query(DBDocument).filter",
+          "lineNumber": 187
+        },
+        {
+          "caller": "list_documents",
+          "callee": "s.query",
+          "lineNumber": 187
+        },
+        {
+          "caller": "list_documents",
+          "callee": "DBDocument.indexed_at.desc",
+          "lineNumber": 188
+        },
+        {
+          "caller": "_delete_row",
+          "callee": "self._db.session",
+          "lineNumber": 192
+        },
+        {
+          "caller": "_delete_row",
+          "callee": "s.query(DBDocument)\r\n                       .filter(DBDocument.id == doc_id, DBDocument.user_id == user_id).first",
+          "lineNumber": 193
+        },
+        {
+          "caller": "_delete_row",
+          "callee": "s.query(DBDocument)\r\n                       .filter",
+          "lineNumber": 193
+        },
+        {
+          "caller": "_delete_row",
+          "callee": "s.query",
+          "lineNumber": 193
+        },
+        {
+          "caller": "_delete_row",
+          "callee": "s.delete",
+          "lineNumber": 197
+        },
+        {
+          "caller": "delete_document",
+          "callee": "asyncio.to_thread",
+          "lineNumber": 200
+        },
+        {
+          "caller": "delete_document",
+          "callee": "asyncio.to_thread",
+          "lineNumber": 202
+        },
+        {
+          "caller": "_ensure_index_current",
+          "callee": "self._store.embed_model",
+          "lineNumber": 208
+        },
+        {
+          "caller": "_ensure_index_current",
+          "callee": "logger.info",
+          "lineNumber": 210
+        },
+        {
+          "caller": "_ensure_index_current",
+          "callee": "self.reindex",
+          "lineNumber": 211
+        },
+        {
+          "caller": "reindex",
+          "callee": "self._embedder.embed_query",
+          "lineNumber": 216
+        },
+        {
+          "caller": "reindex",
+          "callee": "self._store.embed_model",
+          "lineNumber": 218
+        },
+        {
+          "caller": "reindex",
+          "callee": "self._store.users",
+          "lineNumber": 221
+        },
+        {
+          "caller": "reindex",
+          "callee": "self._store.mark_all_unembedded",
+          "lineNumber": 223
+        },
+        {
+          "caller": "reindex",
+          "callee": "self._store.chunk_texts",
+          "lineNumber": 224
+        },
+        {
+          "caller": "reindex",
+          "callee": "self._embedder.embed_documents",
+          "lineNumber": 228
+        },
+        {
+          "caller": "reindex",
+          "callee": "self._store.set_vectors",
+          "lineNumber": 229
+        },
+        {
+          "caller": "reindex",
+          "callee": "len",
+          "lineNumber": 230
+        },
+        {
+          "caller": "reindex",
+          "callee": "logger.info",
+          "lineNumber": 232
+        },
+        {
+          "caller": "reindex_if_needed",
+          "callee": "self._store.embed_model",
+          "lineNumber": 237
+        },
+        {
+          "caller": "reindex_if_needed",
+          "callee": "self._store.unembedded_count",
+          "lineNumber": 239
+        },
+        {
+          "caller": "reindex_if_needed",
+          "callee": "self._embedder.warmup",
+          "lineNumber": 241
+        },
+        {
+          "caller": "reindex_if_needed",
+          "callee": "asyncio.to_thread",
+          "lineNumber": 244
+        },
+        {
+          "caller": "reindex_if_needed",
+          "callee": "logger.warning",
+          "lineNumber": 246
+        }
+      ],
+      "metrics": {
+        "importCount": 7,
+        "exportCount": 2,
+        "functionCount": 0,
+        "classCount": 2
+      }
+    },
+    {
+      "path": "backend/services/github_service.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 322,
+      "nonEmptyLines": 293,
+      "functions": [
+        {
+          "name": "parse_repo_url",
+          "startLine": 296,
+          "endLine": 302,
+          "params": [
+            "url"
+          ]
+        },
+        {
+          "name": "_select_paths",
+          "startLine": 305,
+          "endLine": 322,
+          "params": [
+            "tree"
+          ]
+        }
+      ],
+      "classes": [
+        {
+          "name": "GitHubError",
+          "startLine": 55,
+          "endLine": 56,
+          "methods": [],
+          "properties": []
+        },
+        {
+          "name": "GitHubService",
+          "startLine": 59,
+          "endLine": 293,
+          "methods": [
+            "__init__",
+            "oauth_configured",
+            "combined_brief",
+            "list_repos",
+            "delete_repo",
+            "connect",
+            "start_device_flow",
+            "poll_device_flow",
+            "_brief",
+            "_file_text",
+            "_get",
+            "_load_token",
+            "_store_token",
+            "_upsert_context"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "GitHubError",
+          "line": 55,
+          "isDefault": false
+        },
+        {
+          "name": "GitHubService",
+          "line": 59,
+          "isDefault": false
+        },
+        {
+          "name": "parse_repo_url",
+          "line": 296,
+          "isDefault": false
+        },
+        {
+          "name": "_select_paths",
+          "line": 305,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "oauth_configured",
+          "callee": "bool",
+          "lineNumber": 70
+        },
+        {
+          "caller": "combined_brief",
+          "callee": "self._db.session",
+          "lineNumber": 73
+        },
+        {
+          "caller": "combined_brief",
+          "callee": "session.query(RepoContext)\r\n                    .filter(RepoContext.user_id == user_id)\r\n                    .order_by(RepoContext.connected_at.desc())\r\n                    .all",
+          "lineNumber": 74
+        },
+        {
+          "caller": "combined_brief",
+          "callee": "session.query(RepoContext)\r\n                    .filter(RepoContext.user_id == user_id)\r\n                    .order_by",
+          "lineNumber": 74
+        },
+        {
+          "caller": "combined_brief",
+          "callee": "session.query(RepoContext)\r\n                    .filter",
+          "lineNumber": 74
+        },
+        {
+          "caller": "combined_brief",
+          "callee": "session.query",
+          "lineNumber": 74
+        },
+        {
+          "caller": "combined_brief",
+          "callee": "RepoContext.connected_at.desc",
+          "lineNumber": 76
+        },
+        {
+          "caller": "combined_brief",
+          "callee": "\"\\n\\n\".join",
+          "lineNumber": 79
+        },
+        {
+          "caller": "list_repos",
+          "callee": "self._db.session",
+          "lineNumber": 82
+        },
+        {
+          "caller": "list_repos",
+          "callee": "session.query(RepoContext)\r\n                    .filter(RepoContext.user_id == user_id)\r\n                    .order_by(RepoContext.connected_at.desc())\r\n                    .all",
+          "lineNumber": 83
+        },
+        {
+          "caller": "list_repos",
+          "callee": "session.query(RepoContext)\r\n                    .filter(RepoContext.user_id == user_id)\r\n                    .order_by",
+          "lineNumber": 83
+        },
+        {
+          "caller": "list_repos",
+          "callee": "session.query(RepoContext)\r\n                    .filter",
+          "lineNumber": 83
+        },
+        {
+          "caller": "list_repos",
+          "callee": "session.query",
+          "lineNumber": 83
+        },
+        {
+          "caller": "list_repos",
+          "callee": "RepoContext.connected_at.desc",
+          "lineNumber": 85
+        },
+        {
+          "caller": "list_repos",
+          "callee": "session.expunge",
+          "lineNumber": 88
+        },
+        {
+          "caller": "_drop",
+          "callee": "self._db.session",
+          "lineNumber": 93
+        },
+        {
+          "caller": "_drop",
+          "callee": "session.query(RepoContext)\r\n                       .filter(RepoContext.id == repo_id, RepoContext.user_id == user_id)\r\n                       .first",
+          "lineNumber": 94
+        },
+        {
+          "caller": "_drop",
+          "callee": "session.query(RepoContext)\r\n                       .filter",
+          "lineNumber": 94
+        },
+        {
+          "caller": "_drop",
+          "callee": "session.query",
+          "lineNumber": 94
+        },
+        {
+          "caller": "_drop",
+          "callee": "session.delete",
+          "lineNumber": 100
+        },
+        {
+          "caller": "delete_repo",
+          "callee": "asyncio.to_thread",
+          "lineNumber": 103
+        },
+        {
+          "caller": "delete_repo",
+          "callee": "asyncio.to_thread",
+          "lineNumber": 107
+        },
+        {
+          "caller": "delete_repo",
+          "callee": "doc.filename.startswith",
+          "lineNumber": 109
+        },
+        {
+          "caller": "delete_repo",
+          "callee": "self._documents.delete_document",
+          "lineNumber": 110
+        },
+        {
+          "caller": "connect",
+          "callee": "parse_repo_url",
+          "lineNumber": 114
+        },
+        {
+          "caller": "connect",
+          "callee": "(token or \"\").strip",
+          "lineNumber": 115
+        },
+        {
+          "caller": "connect",
+          "callee": "self._load_token",
+          "lineNumber": 115
+        },
+        {
+          "caller": "connect",
+          "callee": "token.strip",
+          "lineNumber": 116
+        },
+        {
+          "caller": "connect",
+          "callee": "asyncio.to_thread",
+          "lineNumber": 117
+        },
+        {
+          "caller": "connect",
+          "callee": "token.strip",
+          "lineNumber": 117
+        },
+        {
+          "caller": "connect",
+          "callee": "self._get",
+          "lineNumber": 118
+        },
+        {
+          "caller": "connect",
+          "callee": "str",
+          "lineNumber": 119
+        },
+        {
+          "caller": "connect",
+          "callee": "info.get",
+          "lineNumber": 119
+        },
+        {
+          "caller": "connect",
+          "callee": "self._get",
+          "lineNumber": 120
+        },
+        {
+          "caller": "connect",
+          "callee": "_select_paths",
+          "lineNumber": 121
+        },
+        {
+          "caller": "connect",
+          "callee": "tree.get",
+          "lineNumber": 121
+        },
+        {
+          "caller": "connect",
+          "callee": "self._file_text",
+          "lineNumber": 126
+        },
+        {
+          "caller": "connect",
+          "callee": "body.strip",
+          "lineNumber": 129
+        },
+        {
+          "caller": "connect",
+          "callee": "self._documents.ingest_text",
+          "lineNumber": 133
+        },
+        {
+          "caller": "connect",
+          "callee": "len",
+          "lineNumber": 138
+        },
+        {
+          "caller": "connect",
+          "callee": "samples.append",
+          "lineNumber": 139
+        },
+        {
+          "caller": "connect",
+          "callee": "GitHubError",
+          "lineNumber": 141
+        },
+        {
+          "caller": "connect",
+          "callee": "self._brief",
+          "lineNumber": 142
+        },
+        {
+          "caller": "connect",
+          "callee": "asyncio.to_thread",
+          "lineNumber": 143
+        },
+        {
+          "caller": "start_device_flow",
+          "callee": "GitHubError",
+          "lineNumber": 148
+        },
+        {
+          "caller": "start_device_flow",
+          "callee": "self._http.post",
+          "lineNumber": 149
+        },
+        {
+          "caller": "start_device_flow",
+          "callee": "GitHubError",
+          "lineNumber": 156
+        },
+        {
+          "caller": "start_device_flow",
+          "callee": "resp.json",
+          "lineNumber": 157
+        },
+        {
+          "caller": "start_device_flow",
+          "callee": "data.get",
+          "lineNumber": 158
+        },
+        {
+          "caller": "start_device_flow",
+          "callee": "data.get",
+          "lineNumber": 158
+        },
+        {
+          "caller": "start_device_flow",
+          "callee": "GitHubError",
+          "lineNumber": 159
+        },
+        {
+          "caller": "start_device_flow",
+          "callee": "data.get",
+          "lineNumber": 162
+        },
+        {
+          "caller": "start_device_flow",
+          "callee": "int",
+          "lineNumber": 163
+        },
+        {
+          "caller": "start_device_flow",
+          "callee": "data.get",
+          "lineNumber": 163
+        },
+        {
+          "caller": "start_device_flow",
+          "callee": "int",
+          "lineNumber": 164
+        },
+        {
+          "caller": "start_device_flow",
+          "callee": "data.get",
+          "lineNumber": 164
+        },
+        {
+          "caller": "poll_device_flow",
+          "callee": "GitHubError",
+          "lineNumber": 170
+        },
+        {
+          "caller": "poll_device_flow",
+          "callee": "self._http.post",
+          "lineNumber": 178
+        },
+        {
+          "caller": "poll_device_flow",
+          "callee": "resp.json",
+          "lineNumber": 183
+        },
+        {
+          "caller": "poll_device_flow",
+          "callee": "data.get",
+          "lineNumber": 186
+        },
+        {
+          "caller": "poll_device_flow",
+          "callee": "GitHubError",
+          "lineNumber": 192
+        },
+        {
+          "caller": "poll_device_flow",
+          "callee": "data.get",
+          "lineNumber": 193
+        },
+        {
+          "caller": "poll_device_flow",
+          "callee": "GitHubError",
+          "lineNumber": 194
+        },
+        {
+          "caller": "poll_device_flow",
+          "callee": "str",
+          "lineNumber": 195
+        },
+        {
+          "caller": "poll_device_flow",
+          "callee": "asyncio.to_thread",
+          "lineNumber": 196
+        },
+        {
+          "caller": "_brief",
+          "callee": "\"\\n\".join",
+          "lineNumber": 201
+        },
+        {
+          "caller": "_brief",
+          "callee": "\"\\n\\n\".join",
+          "lineNumber": 202
+        },
+        {
+          "caller": "_brief",
+          "callee": "len",
+          "lineNumber": 204
+        },
+        {
+          "caller": "_brief",
+          "callee": "asyncio.wait_for",
+          "lineNumber": 218
+        },
+        {
+          "caller": "_brief",
+          "callee": "self._llm.complete",
+          "lineNumber": 219
+        },
+        {
+          "caller": "_brief",
+          "callee": "(result.text or \"\").strip",
+          "lineNumber": 220
+        },
+        {
+          "caller": "_brief",
+          "callee": "logger.info",
+          "lineNumber": 223
+        },
+        {
+          "caller": "_file_text",
+          "callee": "self._get",
+          "lineNumber": 227
+        },
+        {
+          "caller": "_file_text",
+          "callee": "quote",
+          "lineNumber": 227
+        },
+        {
+          "caller": "_file_text",
+          "callee": "isinstance",
+          "lineNumber": 228
+        },
+        {
+          "caller": "_file_text",
+          "callee": "data.get",
+          "lineNumber": 230
+        },
+        {
+          "caller": "_file_text",
+          "callee": "data.get",
+          "lineNumber": 231
+        },
+        {
+          "caller": "_file_text",
+          "callee": "base64.b64decode(raw).decode",
+          "lineNumber": 233
+        },
+        {
+          "caller": "_file_text",
+          "callee": "base64.b64decode",
+          "lineNumber": 233
+        },
+        {
+          "caller": "_file_text",
+          "callee": "GitHubError",
+          "lineNumber": 235
+        },
+        {
+          "caller": "_file_text",
+          "callee": "str",
+          "lineNumber": 236
+        },
+        {
+          "caller": "_get",
+          "callee": "self._http.get",
+          "lineNumber": 246
+        },
+        {
+          "caller": "_get",
+          "callee": "GitHubError",
+          "lineNumber": 248
+        },
+        {
+          "caller": "_get",
+          "callee": "GitHubError",
+          "lineNumber": 250
+        },
+        {
+          "caller": "_get",
+          "callee": "GitHubError",
+          "lineNumber": 252
+        },
+        {
+          "caller": "_get",
+          "callee": "GitHubError",
+          "lineNumber": 254
+        },
+        {
+          "caller": "_get",
+          "callee": "GitHubError",
+          "lineNumber": 256
+        },
+        {
+          "caller": "_get",
+          "callee": "resp.json",
+          "lineNumber": 257
+        },
+        {
+          "caller": "_load_token",
+          "callee": "self._db.session",
+          "lineNumber": 260
+        },
+        {
+          "caller": "_load_token",
+          "callee": "session.get",
+          "lineNumber": 261
+        },
+        {
+          "caller": "_store_token",
+          "callee": "self._db.session",
+          "lineNumber": 265
+        },
+        {
+          "caller": "_store_token",
+          "callee": "session.get",
+          "lineNumber": 266
+        },
+        {
+          "caller": "_store_token",
+          "callee": "session.add",
+          "lineNumber": 268
+        },
+        {
+          "caller": "_store_token",
+          "callee": "GithubCredential",
+          "lineNumber": 268
+        },
+        {
+          "caller": "_store_token",
+          "callee": "utcnow",
+          "lineNumber": 272
+        },
+        {
+          "caller": "_upsert_context",
+          "callee": "self._db.session",
+          "lineNumber": 276
+        },
+        {
+          "caller": "_upsert_context",
+          "callee": "session.query(RepoContext)\r\n                   .filter(RepoContext.user_id == user_id,\r\n                           RepoContext.owner == owner, RepoContext.repo == repo)\r\n                   .first",
+          "lineNumber": 277
+        },
+        {
+          "caller": "_upsert_context",
+          "callee": "session.query(RepoContext)\r\n                   .filter",
+          "lineNumber": 277
+        },
+        {
+          "caller": "_upsert_context",
+          "callee": "session.query",
+          "lineNumber": 277
+        },
+        {
+          "caller": "_upsert_context",
+          "callee": "RepoContext",
+          "lineNumber": 282
+        },
+        {
+          "caller": "_upsert_context",
+          "callee": "session.add",
+          "lineNumber": 284
+        },
+        {
+          "caller": "_upsert_context",
+          "callee": "utcnow",
+          "lineNumber": 289
+        },
+        {
+          "caller": "_upsert_context",
+          "callee": "session.flush",
+          "lineNumber": 290
+        },
+        {
+          "caller": "_upsert_context",
+          "callee": "session.refresh",
+          "lineNumber": 291
+        },
+        {
+          "caller": "_upsert_context",
+          "callee": "session.expunge",
+          "lineNumber": 292
+        },
+        {
+          "caller": "parse_repo_url",
+          "callee": "(url or \"\").strip",
+          "lineNumber": 297
+        },
+        {
+          "caller": "parse_repo_url",
+          "callee": "_REPO_URL.search",
+          "lineNumber": 298
+        },
+        {
+          "caller": "parse_repo_url",
+          "callee": "GitHubError",
+          "lineNumber": 300
+        },
+        {
+          "caller": "parse_repo_url",
+          "callee": "match.group(\"repo\").removesuffix",
+          "lineNumber": 301
+        },
+        {
+          "caller": "parse_repo_url",
+          "callee": "match.group",
+          "lineNumber": 301
+        },
+        {
+          "caller": "parse_repo_url",
+          "callee": "match.group",
+          "lineNumber": 302
+        },
+        {
+          "caller": "_select_paths",
+          "callee": "node.get",
+          "lineNumber": 309
+        },
+        {
+          "caller": "_select_paths",
+          "callee": "str",
+          "lineNumber": 311
+        },
+        {
+          "caller": "_select_paths",
+          "callee": "node.get",
+          "lineNumber": 311
+        },
+        {
+          "caller": "_select_paths",
+          "callee": "any",
+          "lineNumber": 312
+        },
+        {
+          "caller": "_select_paths",
+          "callee": "path.split",
+          "lineNumber": 312
+        },
+        {
+          "caller": "_select_paths",
+          "callee": "int",
+          "lineNumber": 314
+        },
+        {
+          "caller": "_select_paths",
+          "callee": "node.get",
+          "lineNumber": 314
+        },
+        {
+          "caller": "_select_paths",
+          "callee": "path.rsplit(\"/\", 1)[-1].lower",
+          "lineNumber": 317
+        },
+        {
+          "caller": "_select_paths",
+          "callee": "path.rsplit",
+          "lineNumber": 317
+        },
+        {
+          "caller": "_select_paths",
+          "callee": "name.rsplit",
+          "lineNumber": 318
+        },
+        {
+          "caller": "_select_paths",
+          "callee": "(priority if name in PRIORITY_NAMES else rest).append",
+          "lineNumber": 321
+        }
+      ],
+      "metrics": {
+        "importCount": 7,
+        "exportCount": 4,
+        "functionCount": 2,
+        "classCount": 2
+      }
+    },
+    {
+      "path": "backend/services/session_service.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 156,
+      "nonEmptyLines": 135,
+      "classes": [
+        {
+          "name": "SessionService",
+          "startLine": 31,
+          "endLine": 156,
+          "methods": [
+            "__init__",
+            "list_sessions",
+            "create_session",
+            "get_session",
+            "session_meta",
+            "update_session",
+            "delete_session",
+            "add_message",
+            "history",
+            "pop_last_exchange",
+            "get_owned_message",
+            "set_feedback"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "SessionService",
+          "line": 31,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "list_sessions",
+          "callee": "self._db.session",
+          "lineNumber": 39
+        },
+        {
+          "caller": "list_sessions",
+          "callee": "s.query(ChatSession).filter(ChatSession.user_id == user_id)\r\n                    .order_by(ChatSession.updated_at.desc()).all",
+          "lineNumber": 40
+        },
+        {
+          "caller": "list_sessions",
+          "callee": "s.query(ChatSession).filter(ChatSession.user_id == user_id)\r\n                    .order_by",
+          "lineNumber": 40
+        },
+        {
+          "caller": "list_sessions",
+          "callee": "s.query(ChatSession).filter",
+          "lineNumber": 40
+        },
+        {
+          "caller": "list_sessions",
+          "callee": "s.query",
+          "lineNumber": 40
+        },
+        {
+          "caller": "list_sessions",
+          "callee": "ChatSession.updated_at.desc",
+          "lineNumber": 41
+        },
+        {
+          "caller": "list_sessions",
+          "callee": "SessionSummary.model_validate",
+          "lineNumber": 42
+        },
+        {
+          "caller": "create_session",
+          "callee": "self._db.session",
+          "lineNumber": 46
+        },
+        {
+          "caller": "create_session",
+          "callee": "ChatSession",
+          "lineNumber": 47
+        },
+        {
+          "caller": "create_session",
+          "callee": "s.add",
+          "lineNumber": 49
+        },
+        {
+          "caller": "create_session",
+          "callee": "s.flush",
+          "lineNumber": 50
+        },
+        {
+          "caller": "create_session",
+          "callee": "s.refresh",
+          "lineNumber": 51
+        },
+        {
+          "caller": "create_session",
+          "callee": "SessionSchema.model_validate",
+          "lineNumber": 52
+        },
+        {
+          "caller": "get_session",
+          "callee": "self._db.session",
+          "lineNumber": 55
+        },
+        {
+          "caller": "get_session",
+          "callee": "s.query(ChatSession).options(joinedload(ChatSession.messages))\r\n                   .filter(ChatSession.id == session_id).first",
+          "lineNumber": 56
+        },
+        {
+          "caller": "get_session",
+          "callee": "s.query(ChatSession).options(joinedload(ChatSession.messages))\r\n                   .filter",
+          "lineNumber": 56
+        },
+        {
+          "caller": "get_session",
+          "callee": "s.query(ChatSession).options",
+          "lineNumber": 56
+        },
+        {
+          "caller": "get_session",
+          "callee": "s.query",
+          "lineNumber": 56
+        },
+        {
+          "caller": "get_session",
+          "callee": "joinedload",
+          "lineNumber": 56
+        },
+        {
+          "caller": "get_session",
+          "callee": "SessionNotFound",
+          "lineNumber": 59
+        },
+        {
+          "caller": "get_session",
+          "callee": "SessionSchema.model_validate",
+          "lineNumber": 60
+        },
+        {
+          "caller": "session_meta",
+          "callee": "self._db.session",
+          "lineNumber": 63
+        },
+        {
+          "caller": "session_meta",
+          "callee": "s.query(ChatSession).filter(ChatSession.id == session_id).first",
+          "lineNumber": 64
+        },
+        {
+          "caller": "session_meta",
+          "callee": "s.query(ChatSession).filter",
+          "lineNumber": 64
+        },
+        {
+          "caller": "session_meta",
+          "callee": "s.query",
+          "lineNumber": 64
+        },
+        {
+          "caller": "update_session",
+          "callee": "self._db.session",
+          "lineNumber": 70
+        },
+        {
+          "caller": "update_session",
+          "callee": "s.query(ChatSession).filter(ChatSession.id == session_id).first",
+          "lineNumber": 71
+        },
+        {
+          "caller": "update_session",
+          "callee": "s.query(ChatSession).filter",
+          "lineNumber": 71
+        },
+        {
+          "caller": "update_session",
+          "callee": "s.query",
+          "lineNumber": 71
+        },
+        {
+          "caller": "update_session",
+          "callee": "SessionNotFound",
+          "lineNumber": 73
+        },
+        {
+          "caller": "update_session",
+          "callee": "s.flush",
+          "lineNumber": 80
+        },
+        {
+          "caller": "update_session",
+          "callee": "self.get_session",
+          "lineNumber": 81
+        },
+        {
+          "caller": "delete_session",
+          "callee": "self._db.session",
+          "lineNumber": 84
+        },
+        {
+          "caller": "delete_session",
+          "callee": "s.query(ChatSession).filter(ChatSession.id == session_id).first",
+          "lineNumber": 85
+        },
+        {
+          "caller": "delete_session",
+          "callee": "s.query(ChatSession).filter",
+          "lineNumber": 85
+        },
+        {
+          "caller": "delete_session",
+          "callee": "s.query",
+          "lineNumber": 85
+        },
+        {
+          "caller": "delete_session",
+          "callee": "SessionNotFound",
+          "lineNumber": 87
+        },
+        {
+          "caller": "delete_session",
+          "callee": "s.delete",
+          "lineNumber": 88
+        },
+        {
+          "caller": "add_message",
+          "callee": "c.model_dump",
+          "lineNumber": 97
+        },
+        {
+          "caller": "add_message",
+          "callee": "isinstance",
+          "lineNumber": 97
+        },
+        {
+          "caller": "add_message",
+          "callee": "dict",
+          "lineNumber": 97
+        },
+        {
+          "caller": "add_message",
+          "callee": "self._db.session",
+          "lineNumber": 98
+        },
+        {
+          "caller": "add_message",
+          "callee": "s.query(ChatSession).filter(ChatSession.id == session_id).first",
+          "lineNumber": 99
+        },
+        {
+          "caller": "add_message",
+          "callee": "s.query(ChatSession).filter",
+          "lineNumber": 99
+        },
+        {
+          "caller": "add_message",
+          "callee": "s.query",
+          "lineNumber": 99
+        },
+        {
+          "caller": "add_message",
+          "callee": "SessionNotFound",
+          "lineNumber": 101
+        },
+        {
+          "caller": "add_message",
+          "callee": "Message",
+          "lineNumber": 102
+        },
+        {
+          "caller": "add_message",
+          "callee": "s.add",
+          "lineNumber": 104
+        },
+        {
+          "caller": "add_message",
+          "callee": "utcnow",
+          "lineNumber": 105
+        },
+        {
+          "caller": "add_message",
+          "callee": "content.strip().split",
+          "lineNumber": 107
+        },
+        {
+          "caller": "add_message",
+          "callee": "content.strip",
+          "lineNumber": 107
+        },
+        {
+          "caller": "add_message",
+          "callee": "\" \".join",
+          "lineNumber": 108
+        },
+        {
+          "caller": "add_message",
+          "callee": "len",
+          "lineNumber": 108
+        },
+        {
+          "caller": "add_message",
+          "callee": "s.flush",
+          "lineNumber": 109
+        },
+        {
+          "caller": "add_message",
+          "callee": "s.refresh",
+          "lineNumber": 110
+        },
+        {
+          "caller": "add_message",
+          "callee": "MessageSchema.model_validate",
+          "lineNumber": 111
+        },
+        {
+          "caller": "history",
+          "callee": "self._db.session",
+          "lineNumber": 115
+        },
+        {
+          "caller": "history",
+          "callee": "s.query(Message)\r\n                    .filter(Message.session_id == session_id, Message.role.in_((\"user\", \"assistant\")))\r\n                    .order_by(Message.created_at.desc(), Message.id.desc())\r\n                    .limit(limit + (1 if exclude_last_user else 0)).all",
+          "lineNumber": 116
+        },
+        {
+          "caller": "history",
+          "callee": "s.query(Message)\r\n                    .filter(Message.session_id == session_id, Message.role.in_((\"user\", \"assistant\")))\r\n                    .order_by(Message.created_at.desc(), Message.id.desc())\r\n                    .limit",
+          "lineNumber": 116
+        },
+        {
+          "caller": "history",
+          "callee": "s.query(Message)\r\n                    .filter(Message.session_id == session_id, Message.role.in_((\"user\", \"assistant\")))\r\n                    .order_by",
+          "lineNumber": 116
+        },
+        {
+          "caller": "history",
+          "callee": "s.query(Message)\r\n                    .filter",
+          "lineNumber": 116
+        },
+        {
+          "caller": "history",
+          "callee": "s.query",
+          "lineNumber": 116
+        },
+        {
+          "caller": "history",
+          "callee": "Message.role.in_",
+          "lineNumber": 117
+        },
+        {
+          "caller": "history",
+          "callee": "Message.created_at.desc",
+          "lineNumber": 118
+        },
+        {
+          "caller": "history",
+          "callee": "Message.id.desc",
+          "lineNumber": 118
+        },
+        {
+          "caller": "history",
+          "callee": "rows.reverse",
+          "lineNumber": 120
+        },
+        {
+          "caller": "pop_last_exchange",
+          "callee": "self._db.session",
+          "lineNumber": 127
+        },
+        {
+          "caller": "pop_last_exchange",
+          "callee": "s.query(Message).filter(Message.session_id == session_id)\r\n                    .order_by(Message.created_at.desc(), Message.id.desc()).limit(2).all",
+          "lineNumber": 128
+        },
+        {
+          "caller": "pop_last_exchange",
+          "callee": "s.query(Message).filter(Message.session_id == session_id)\r\n                    .order_by(Message.created_at.desc(), Message.id.desc()).limit",
+          "lineNumber": 128
+        },
+        {
+          "caller": "pop_last_exchange",
+          "callee": "s.query(Message).filter(Message.session_id == session_id)\r\n                    .order_by",
+          "lineNumber": 128
+        },
+        {
+          "caller": "pop_last_exchange",
+          "callee": "s.query(Message).filter",
+          "lineNumber": 128
+        },
+        {
+          "caller": "pop_last_exchange",
+          "callee": "s.query",
+          "lineNumber": 128
+        },
+        {
+          "caller": "pop_last_exchange",
+          "callee": "Message.created_at.desc",
+          "lineNumber": 129
+        },
+        {
+          "caller": "pop_last_exchange",
+          "callee": "Message.id.desc",
+          "lineNumber": 129
+        },
+        {
+          "caller": "pop_last_exchange",
+          "callee": "s.delete",
+          "lineNumber": 131
+        },
+        {
+          "caller": "get_owned_message",
+          "callee": "self._db.session",
+          "lineNumber": 139
+        },
+        {
+          "caller": "get_owned_message",
+          "callee": "s.query(Message)\r\n                   .join(ChatSession, ChatSession.id == Message.session_id)\r\n                   .filter(Message.id == message_id, ChatSession.user_id == user_id)\r\n                   .first",
+          "lineNumber": 140
+        },
+        {
+          "caller": "get_owned_message",
+          "callee": "s.query(Message)\r\n                   .join(ChatSession, ChatSession.id == Message.session_id)\r\n                   .filter",
+          "lineNumber": 140
+        },
+        {
+          "caller": "get_owned_message",
+          "callee": "s.query(Message)\r\n                   .join",
+          "lineNumber": 140
+        },
+        {
+          "caller": "get_owned_message",
+          "callee": "s.query",
+          "lineNumber": 140
+        },
+        {
+          "caller": "get_owned_message",
+          "callee": "MessageSchema.model_validate",
+          "lineNumber": 146
+        },
+        {
+          "caller": "set_feedback",
+          "callee": "self._db.session",
+          "lineNumber": 149
+        },
+        {
+          "caller": "set_feedback",
+          "callee": "s.query(Message).filter(Message.id == message_id).first",
+          "lineNumber": 150
+        },
+        {
+          "caller": "set_feedback",
+          "callee": "s.query(Message).filter",
+          "lineNumber": 150
+        },
+        {
+          "caller": "set_feedback",
+          "callee": "s.query",
+          "lineNumber": 150
+        },
+        {
+          "caller": "set_feedback",
+          "callee": "SessionNotFound",
+          "lineNumber": 152
+        },
+        {
+          "caller": "set_feedback",
+          "callee": "s.flush",
+          "lineNumber": 154
+        },
+        {
+          "caller": "set_feedback",
+          "callee": "s.refresh",
+          "lineNumber": 155
+        },
+        {
+          "caller": "set_feedback",
+          "callee": "MessageSchema.model_validate",
+          "lineNumber": 156
+        }
+      ],
+      "metrics": {
+        "importCount": 6,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "backend/utils/timeutil.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 33,
+      "nonEmptyLines": 26,
+      "functions": [
+        {
+          "name": "utcnow",
+          "startLine": 13,
+          "endLine": 15,
+          "params": []
+        },
+        {
+          "name": "parse_duration",
+          "startLine": 18,
+          "endLine": 33,
+          "params": [
+            "value"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "utcnow",
+          "line": 13,
+          "isDefault": false
+        },
+        {
+          "name": "parse_duration",
+          "line": 18,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "utcnow",
+          "callee": "datetime.now(timezone.utc).replace",
+          "lineNumber": 15
+        },
+        {
+          "caller": "utcnow",
+          "callee": "datetime.now",
+          "lineNumber": 15
+        },
+        {
+          "caller": "parse_duration",
+          "callee": "str(value).strip().lower",
+          "lineNumber": 22
+        },
+        {
+          "caller": "parse_duration",
+          "callee": "str(value).strip",
+          "lineNumber": 22
+        },
+        {
+          "caller": "parse_duration",
+          "callee": "str",
+          "lineNumber": 22
+        },
+        {
+          "caller": "parse_duration",
+          "callee": "float",
+          "lineNumber": 26
+        },
+        {
+          "caller": "parse_duration",
+          "callee": "_DURATION.fullmatch",
+          "lineNumber": 29
+        },
+        {
+          "caller": "parse_duration",
+          "callee": "any",
+          "lineNumber": 30
+        },
+        {
+          "caller": "parse_duration",
+          "callee": "m.groups",
+          "lineNumber": 30
+        },
+        {
+          "caller": "parse_duration",
+          "callee": "float",
+          "lineNumber": 32
+        },
+        {
+          "caller": "parse_duration",
+          "callee": "m.groups",
+          "lineNumber": 32
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 2,
+        "functionCount": 2,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "tests/test_github.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 153,
+      "nonEmptyLines": 131,
+      "functions": [
+        {
+          "name": "github_transport",
+          "startLine": 18,
+          "endLine": 56,
+          "params": [
+            "token_error"
+          ]
+        },
+        {
+          "name": "test_parse_repo_url_and_path_selection",
+          "startLine": 59,
+          "endLine": 74,
+          "params": []
+        },
+        {
+          "name": "test_connect_indexes_repo_and_hides_the_token",
+          "startLine": 77,
+          "endLine": 98,
+          "params": [
+            "client_factory"
+          ]
+        },
+        {
+          "name": "test_connect_rejects_unknown_and_non_github_urls",
+          "startLine": 101,
+          "endLine": 105,
+          "params": [
+            "client_factory"
+          ]
+        },
+        {
+          "name": "test_oauth_device_flow",
+          "startLine": 108,
+          "endLine": 117,
+          "params": [
+            "client_factory",
+            "settings",
+            "build_container"
+          ]
+        },
+        {
+          "name": "test_oauth_pending_and_unconfigured",
+          "startLine": 120,
+          "endLine": 127,
+          "params": [
+            "client_factory",
+            "settings"
+          ]
+        },
+        {
+          "name": "test_code_chat_gets_the_repo_brief",
+          "startLine": 130,
+          "endLine": 145,
+          "params": [
+            "client_factory"
+          ]
+        },
+        {
+          "name": "test_mcp_exposes_github_tools",
+          "startLine": 148,
+          "endLine": 153,
+          "params": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "github_transport",
+          "line": 18,
+          "isDefault": false
+        },
+        {
+          "name": "test_parse_repo_url_and_path_selection",
+          "line": 59,
+          "isDefault": false
+        },
+        {
+          "name": "test_connect_indexes_repo_and_hides_the_token",
+          "line": 77,
+          "isDefault": false
+        },
+        {
+          "name": "test_connect_rejects_unknown_and_non_github_urls",
+          "line": 101,
+          "isDefault": false
+        },
+        {
+          "name": "test_oauth_device_flow",
+          "line": 108,
+          "isDefault": false
+        },
+        {
+          "name": "test_oauth_pending_and_unconfigured",
+          "line": 120,
+          "isDefault": false
+        },
+        {
+          "name": "test_code_chat_gets_the_repo_brief",
+          "line": 130,
+          "isDefault": false
+        },
+        {
+          "name": "test_mcp_exposes_github_tools",
+          "line": 148,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "handler",
+          "callee": "str",
+          "lineNumber": 20
+        },
+        {
+          "caller": "handler",
+          "callee": "httpx.Response",
+          "lineNumber": 22
+        },
+        {
+          "caller": "handler",
+          "callee": "url.rstrip(\"/\").endswith",
+          "lineNumber": 23
+        },
+        {
+          "caller": "handler",
+          "callee": "url.rstrip",
+          "lineNumber": 23
+        },
+        {
+          "caller": "handler",
+          "callee": "httpx.Response",
+          "lineNumber": 24
+        },
+        {
+          "caller": "handler",
+          "callee": "httpx.Response",
+          "lineNumber": 31
+        },
+        {
+          "caller": "handler",
+          "callee": "httpx.Response",
+          "lineNumber": 32
+        },
+        {
+          "caller": "handler",
+          "callee": "httpx.Response",
+          "lineNumber": 34
+        },
+        {
+          "caller": "handler",
+          "callee": "httpx.Response",
+          "lineNumber": 36
+        },
+        {
+          "caller": "handler",
+          "callee": "len",
+          "lineNumber": 37
+        },
+        {
+          "caller": "handler",
+          "callee": "len",
+          "lineNumber": 38
+        },
+        {
+          "caller": "handler",
+          "callee": "httpx.Response",
+          "lineNumber": 43
+        },
+        {
+          "caller": "handler",
+          "callee": "base64.b64encode(README.encode()).decode",
+          "lineNumber": 45
+        },
+        {
+          "caller": "handler",
+          "callee": "base64.b64encode",
+          "lineNumber": 45
+        },
+        {
+          "caller": "handler",
+          "callee": "README.encode",
+          "lineNumber": 45
+        },
+        {
+          "caller": "handler",
+          "callee": "httpx.Response",
+          "lineNumber": 48
+        },
+        {
+          "caller": "handler",
+          "callee": "base64.b64encode(PY.encode()).decode",
+          "lineNumber": 50
+        },
+        {
+          "caller": "handler",
+          "callee": "base64.b64encode",
+          "lineNumber": 50
+        },
+        {
+          "caller": "handler",
+          "callee": "PY.encode",
+          "lineNumber": 50
+        },
+        {
+          "caller": "handler",
+          "callee": "url.rstrip(\"/\").endswith",
+          "lineNumber": 52
+        },
+        {
+          "caller": "handler",
+          "callee": "url.rstrip",
+          "lineNumber": 52
+        },
+        {
+          "caller": "handler",
+          "callee": "httpx.Response",
+          "lineNumber": 53
+        },
+        {
+          "caller": "handler",
+          "callee": "httpx.Response",
+          "lineNumber": 54
+        },
+        {
+          "caller": "github_transport",
+          "callee": "httpx.MockTransport",
+          "lineNumber": 56
+        },
+        {
+          "caller": "test_parse_repo_url_and_path_selection",
+          "callee": "parse_repo_url",
+          "lineNumber": 60
+        },
+        {
+          "caller": "test_parse_repo_url_and_path_selection",
+          "callee": "parse_repo_url",
+          "lineNumber": 61
+        },
+        {
+          "caller": "test_parse_repo_url_and_path_selection",
+          "callee": "pytest.raises",
+          "lineNumber": 62
+        },
+        {
+          "caller": "test_parse_repo_url_and_path_selection",
+          "callee": "parse_repo_url",
+          "lineNumber": 63
+        },
+        {
+          "caller": "test_parse_repo_url_and_path_selection",
+          "callee": "_select_paths",
+          "lineNumber": 64
+        },
+        {
+          "caller": "test_parse_repo_url_and_path_selection",
+          "callee": "all",
+          "lineNumber": 73
+        },
+        {
+          "caller": "test_connect_indexes_repo_and_hides_the_token",
+          "callee": "FakeProviderClient",
+          "lineNumber": 78
+        },
+        {
+          "caller": "test_connect_indexes_repo_and_hides_the_token",
+          "callee": "client_factory",
+          "lineNumber": 79
+        },
+        {
+          "caller": "test_connect_indexes_repo_and_hides_the_token",
+          "callee": "github_transport",
+          "lineNumber": 79
+        },
+        {
+          "caller": "test_connect_indexes_repo_and_hides_the_token",
+          "callee": "tc.post",
+          "lineNumber": 80
+        },
+        {
+          "caller": "test_connect_indexes_repo_and_hides_the_token",
+          "callee": "r.json",
+          "lineNumber": 84
+        },
+        {
+          "caller": "test_connect_indexes_repo_and_hides_the_token",
+          "callee": "str(body).lower",
+          "lineNumber": 86
+        },
+        {
+          "caller": "test_connect_indexes_repo_and_hides_the_token",
+          "callee": "str",
+          "lineNumber": 86
+        },
+        {
+          "caller": "test_connect_indexes_repo_and_hides_the_token",
+          "callee": "tc.get(\"/github/repos\", params={\"user_id\": \"u1\"}).json",
+          "lineNumber": 89
+        },
+        {
+          "caller": "test_connect_indexes_repo_and_hides_the_token",
+          "callee": "tc.get",
+          "lineNumber": 89
+        },
+        {
+          "caller": "test_connect_indexes_repo_and_hides_the_token",
+          "callee": "len",
+          "lineNumber": 90
+        },
+        {
+          "caller": "test_connect_indexes_repo_and_hides_the_token",
+          "callee": "tc.get(\"/documents\", params={\"user_id\": \"u1\"}).json",
+          "lineNumber": 91
+        },
+        {
+          "caller": "test_connect_indexes_repo_and_hides_the_token",
+          "callee": "tc.get",
+          "lineNumber": 91
+        },
+        {
+          "caller": "test_connect_indexes_repo_and_hides_the_token",
+          "callee": "all",
+          "lineNumber": 94
+        },
+        {
+          "caller": "test_connect_indexes_repo_and_hides_the_token",
+          "callee": "tc.delete",
+          "lineNumber": 95
+        },
+        {
+          "caller": "test_connect_indexes_repo_and_hides_the_token",
+          "callee": "tc.get(\"/github/repos\", params={\"user_id\": \"u1\"}).json",
+          "lineNumber": 96
+        },
+        {
+          "caller": "test_connect_indexes_repo_and_hides_the_token",
+          "callee": "tc.get",
+          "lineNumber": 96
+        },
+        {
+          "caller": "test_connect_indexes_repo_and_hides_the_token",
+          "callee": "tc.get(\"/documents\", params={\"user_id\": \"u1\"}).json",
+          "lineNumber": 97
+        },
+        {
+          "caller": "test_connect_indexes_repo_and_hides_the_token",
+          "callee": "tc.get",
+          "lineNumber": 97
+        },
+        {
+          "caller": "test_connect_rejects_unknown_and_non_github_urls",
+          "callee": "client_factory",
+          "lineNumber": 102
+        },
+        {
+          "caller": "test_connect_rejects_unknown_and_non_github_urls",
+          "callee": "github_transport",
+          "lineNumber": 102
+        },
+        {
+          "caller": "test_connect_rejects_unknown_and_non_github_urls",
+          "callee": "tc.post",
+          "lineNumber": 103
+        },
+        {
+          "caller": "test_connect_rejects_unknown_and_non_github_urls",
+          "callee": "tc.post",
+          "lineNumber": 104
+        },
+        {
+          "caller": "test_oauth_device_flow",
+          "callee": "settings.model_copy",
+          "lineNumber": 109
+        },
+        {
+          "caller": "test_oauth_device_flow",
+          "callee": "client_factory",
+          "lineNumber": 110
+        },
+        {
+          "caller": "test_oauth_device_flow",
+          "callee": "github_transport",
+          "lineNumber": 110
+        },
+        {
+          "caller": "test_oauth_device_flow",
+          "callee": "tc.post",
+          "lineNumber": 111
+        },
+        {
+          "caller": "test_oauth_device_flow",
+          "callee": "start.json",
+          "lineNumber": 113
+        },
+        {
+          "caller": "test_oauth_device_flow",
+          "callee": "tc.post",
+          "lineNumber": 115
+        },
+        {
+          "caller": "test_oauth_device_flow",
+          "callee": "poll.json",
+          "lineNumber": 116
+        },
+        {
+          "caller": "test_oauth_device_flow",
+          "callee": "poll.json",
+          "lineNumber": 117
+        },
+        {
+          "caller": "test_oauth_pending_and_unconfigured",
+          "callee": "client_factory",
+          "lineNumber": 121
+        },
+        {
+          "caller": "test_oauth_pending_and_unconfigured",
+          "callee": "tc.post",
+          "lineNumber": 122
+        },
+        {
+          "caller": "test_oauth_pending_and_unconfigured",
+          "callee": "settings.model_copy",
+          "lineNumber": 123
+        },
+        {
+          "caller": "test_oauth_pending_and_unconfigured",
+          "callee": "client_factory",
+          "lineNumber": 124
+        },
+        {
+          "caller": "test_oauth_pending_and_unconfigured",
+          "callee": "github_transport",
+          "lineNumber": 124
+        },
+        {
+          "caller": "test_oauth_pending_and_unconfigured",
+          "callee": "pending.post(\"/github/oauth/device\").json",
+          "lineNumber": 125
+        },
+        {
+          "caller": "test_oauth_pending_and_unconfigured",
+          "callee": "pending.post",
+          "lineNumber": 125
+        },
+        {
+          "caller": "test_oauth_pending_and_unconfigured",
+          "callee": "pending.post",
+          "lineNumber": 126
+        },
+        {
+          "caller": "test_oauth_pending_and_unconfigured",
+          "callee": "poll.json",
+          "lineNumber": 127
+        },
+        {
+          "caller": "test_code_chat_gets_the_repo_brief",
+          "callee": "FakeProviderClient",
+          "lineNumber": 131
+        },
+        {
+          "caller": "test_code_chat_gets_the_repo_brief",
+          "callee": "client_factory",
+          "lineNumber": 135
+        },
+        {
+          "caller": "test_code_chat_gets_the_repo_brief",
+          "callee": "github_transport",
+          "lineNumber": 135
+        },
+        {
+          "caller": "test_code_chat_gets_the_repo_brief",
+          "callee": "tc.post",
+          "lineNumber": 136
+        },
+        {
+          "caller": "test_code_chat_gets_the_repo_brief",
+          "callee": "tc.post(\"/sessions\", json={\"user_id\": \"u1\", \"title\": \"Code\", \"mode\": \"code\"}).json",
+          "lineNumber": 137
+        },
+        {
+          "caller": "test_code_chat_gets_the_repo_brief",
+          "callee": "tc.post",
+          "lineNumber": 137
+        },
+        {
+          "caller": "test_code_chat_gets_the_repo_brief",
+          "callee": "tc.post",
+          "lineNumber": 138
+        },
+        {
+          "caller": "test_code_chat_gets_the_repo_brief",
+          "callee": "parse_sse",
+          "lineNumber": 142
+        },
+        {
+          "caller": "test_mcp_exposes_github_tools",
+          "callee": "callable",
+          "lineNumber": 150
+        },
+        {
+          "caller": "test_mcp_exposes_github_tools",
+          "callee": "callable",
+          "lineNumber": 151
+        },
+        {
+          "caller": "test_mcp_exposes_github_tools",
+          "callee": "callable",
+          "lineNumber": 152
+        },
+        {
+          "caller": "test_mcp_exposes_github_tools",
+          "callee": "callable",
+          "lineNumber": 153
+        }
+      ],
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 8,
+        "functionCount": 8,
+        "classCount": 0
+      }
+    }
+  ]
+}

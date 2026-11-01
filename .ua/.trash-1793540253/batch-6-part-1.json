@@ -1,0 +1,1176 @@
+{
+  "nodes": [
+    {
+      "id": "file:tests/browser_harness.py",
+      "type": "file",
+      "name": "browser_harness.py",
+      "filePath": "tests/browser_harness.py",
+      "summary": "Shared headless-Chrome runner for frontend scenario tests. It serves frontend/ with GET only, injects the fetch stub from the guard suite, and returns the JSON a scenario writes into the page.",
+      "tags": [
+        "test",
+        "browser-harness",
+        "headless-chrome",
+        "stub"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Any verb other than GET is answered with 405 and recorded, so a scenario cannot silently reach a real backend."
+    },
+    {
+      "id": "function:tests/browser_harness.py:run_scenario",
+      "type": "function",
+      "name": "run_scenario",
+      "filePath": "tests/browser_harness.py",
+      "lineRange": [
+        20,
+        76
+      ],
+      "summary": "Serves the frontend over a GET-only local server, injects the fetch stub and a scenario, and returns the JSON the page writes into #qa-out. Skips when headless Chrome is unavailable.",
+      "tags": [
+        "test",
+        "browser-harness",
+        "headless-chrome",
+        "stub"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:tests/test_frontend_followup.py",
+      "type": "file",
+      "name": "test_frontend_followup.py",
+      "filePath": "tests/test_frontend_followup.py",
+      "summary": "Stage-4 follow-up tests for resend, abort, busy notices, and SSE error handling. Static checks read the controller and chat renderer; browser checks run against a fetch stub and never start the backend.",
+      "tags": [
+        "test",
+        "frontend",
+        "regression",
+        "streaming"
+      ],
+      "complexity": "complex",
+      "languageNotes": "Browser cases skip when headless Chrome or the marked and DOMPurify CDN scripts are unavailable."
+    },
+    {
+      "id": "function:tests/test_frontend_followup.py:test_m3_card_aria_label_starts_with_the_visible_title",
+      "type": "function",
+      "name": "test_m3_card_aria_label_starts_with_the_visible_title",
+      "filePath": "tests/test_frontend_followup.py",
+      "lineRange": [
+        22,
+        28
+      ],
+      "summary": "Checks that each welcome-card accessible name starts with the visible title and then describes the workspace switch, matching WCAG 2.5.3 Label in Name.",
+      "tags": [
+        "test",
+        "accessibility",
+        "welcome-cards"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_followup.py:test_n3_show_error_does_not_announce_and_retry_is_announced_once",
+      "type": "function",
+      "name": "test_n3_show_error_does_not_announce_and_retry_is_announced_once",
+      "filePath": "tests/test_frontend_followup.py",
+      "lineRange": [
+        31,
+        38
+      ],
+      "summary": "Checks that chat.js showError relies on the alert box for the error and calls _announce only once, with the text \"Retry is available.\"",
+      "tags": [
+        "test",
+        "accessibility",
+        "error-handling"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_followup.py:test_n4_sse_dispatch_only_calls_own_function_handlers",
+      "type": "function",
+      "name": "test_n4_sse_dispatch_only_calls_own_function_handlers",
+      "filePath": "tests/test_frontend_followup.py",
+      "lineRange": [
+        41,
+        45
+      ],
+      "summary": "Checks that api.js dispatches SSE events only through hasOwnProperty and keeps LF-only framing, so inherited names are not treated as handlers.",
+      "tags": [
+        "test",
+        "sse",
+        "api-client"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_followup.py:test_m1_resend_is_decided_in_the_controller_and_only_after_accept_sets_failed",
+      "type": "function",
+      "name": "test_m1_resend_is_decided_in_the_controller_and_only_after_accept_sets_failed",
+      "filePath": "tests/test_frontend_followup.py",
+      "lineRange": [
+        48,
+        58
+      ],
+      "summary": "Checks that _onSend chooses regenerate only for an unedited same-session draft and assigns State.failed only after the server has accepted the stream.",
+      "tags": [
+        "test",
+        "resend",
+        "controller"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_followup.py:test_m2_create_session_receives_the_abort_signal",
+      "type": "function",
+      "name": "test_m2_create_session_receives_the_abort_signal",
+      "filePath": "tests/test_frontend_followup.py",
+      "lineRange": [
+        61,
+        64
+      ],
+      "summary": "Checks that _onSend passes the abort signal into _ensureSession and throws if that signal is already aborted.",
+      "tags": [
+        "test",
+        "abort",
+        "sessions"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_followup.py:test_n1_busy_notice_is_throttled_and_used_by_send_and_session_select",
+      "type": "function",
+      "name": "test_n1_busy_notice_is_throttled_and_used_by_send_and_session_select",
+      "filePath": "tests/test_frontend_followup.py",
+      "lineRange": [
+        67,
+        71
+      ],
+      "summary": "Checks that send and session select both bail through a 4-second _notifyBusy notice while a response is already in progress.",
+      "tags": [
+        "test",
+        "streaming",
+        "throttle"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_followup.py:fu",
+      "type": "function",
+      "name": "fu",
+      "filePath": "tests/test_frontend_followup.py",
+      "lineRange": [
+        316,
+        372
+      ],
+      "summary": "Module fixture that serves the frontend on a GET-only port, replaces fetch with the shared stub, and runs the follow-up scenario in headless Chrome.",
+      "tags": [
+        "test",
+        "fixture",
+        "headless-chrome",
+        "stub"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:tests/test_frontend_followup.py:test_stub_followup_nothing_reached_a_server",
+      "type": "function",
+      "name": "test_stub_followup_nothing_reached_a_server",
+      "filePath": "tests/test_frontend_followup.py",
+      "lineRange": [
+        375,
+        376
+      ],
+      "summary": "Asserts the follow-up browser run recorded no blocked non-GET requests and no page errors.",
+      "tags": [
+        "test",
+        "stub",
+        "isolation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_followup.py:test_stub_m1_unedited_resend_uses_regenerate_and_keeps_one_user_bubble",
+      "type": "function",
+      "name": "test_stub_m1_unedited_resend_uses_regenerate_and_keeps_one_user_bubble",
+      "filePath": "tests/test_frontend_followup.py",
+      "lineRange": [
+        382,
+        390
+      ],
+      "summary": "Asserts an unedited resend after a failed accepted stream sends regenerate with an empty message and still shows one user bubble.",
+      "tags": [
+        "test",
+        "resend",
+        "stub"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_followup.py:test_stub_m1_failed_state_is_cleared_after_success_new_chat_session_switch_and_edit",
+      "type": "function",
+      "name": "test_stub_m1_failed_state_is_cleared_after_success_new_chat_session_switch_and_edit",
+      "filePath": "tests/test_frontend_followup.py",
+      "lineRange": [
+        393,
+        398
+      ],
+      "summary": "Asserts a later send is a normal message after success, after an edited draft, after switching to another session, and after New chat.",
+      "tags": [
+        "test",
+        "resend",
+        "stub"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_followup.py:test_stub_m1_http_level_failure_never_uses_regenerate",
+      "type": "function",
+      "name": "test_stub_m1_http_level_failure_never_uses_regenerate",
+      "filePath": "tests/test_frontend_followup.py",
+      "lineRange": [
+        401,
+        402
+      ],
+      "summary": "Asserts a 503 before the turn is stored resends the original text with regenerate false.",
+      "tags": [
+        "test",
+        "resend",
+        "error-handling"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_followup.py:test_stub_m1_cooldown_blocks_early_resend_then_regenerates",
+      "type": "function",
+      "name": "test_stub_m1_cooldown_blocks_early_resend_then_regenerates",
+      "filePath": "tests/test_frontend_followup.py",
+      "lineRange": [
+        405,
+        408
+      ],
+      "summary": "Asserts a resend during the cooldown is blocked with a toast, then regenerates with an empty message once the cooldown ends.",
+      "tags": [
+        "test",
+        "cooldown",
+        "resend"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_followup.py:test_stub_m1_retry_button_regenerates_and_no_duplicate_bubble",
+      "type": "function",
+      "name": "test_stub_m1_retry_button_regenerates_and_no_duplicate_bubble",
+      "filePath": "tests/test_frontend_followup.py",
+      "lineRange": [
+        411,
+        412
+      ],
+      "summary": "Asserts the inline Retry control regenerates with an empty message, clears the composer, and keeps a single user bubble.",
+      "tags": [
+        "test",
+        "retry",
+        "resend"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_followup.py:test_stub_m2_stop_while_session_creation_is_pending_keeps_the_draft",
+      "type": "function",
+      "name": "test_stub_m2_stop_while_session_creation_is_pending_keeps_the_draft",
+      "filePath": "tests/test_frontend_followup.py",
+      "lineRange": [
+        415,
+        419
+      ],
+      "summary": "Asserts Stop during a pending session create restores the draft, shows the send button, and does not add a chat bubble.",
+      "tags": [
+        "test",
+        "abort",
+        "sessions"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_followup.py:test_stub_m2_creation_finishing_after_stop_keeps_the_session_and_sends_nothing",
+      "type": "function",
+      "name": "test_stub_m2_creation_finishing_after_stop_keeps_the_session_and_sends_nothing",
+      "filePath": "tests/test_frontend_followup.py",
+      "lineRange": [
+        422,
+        425
+      ],
+      "summary": "Asserts a session that finishes creating after Stop is reused by the next send and that the stopped draft itself was not posted.",
+      "tags": [
+        "test",
+        "abort",
+        "sessions"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_followup.py:test_stub_new_chat_while_session_creation_is_pending_sends_nothing",
+      "type": "function",
+      "name": "test_stub_new_chat_while_session_creation_is_pending_sends_nothing",
+      "filePath": "tests/test_frontend_followup.py",
+      "lineRange": [
+        428,
+        430
+      ],
+      "summary": "Asserts New chat during a pending session create sends nothing and restores the send button without page errors.",
+      "tags": [
+        "test",
+        "abort",
+        "sessions"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_followup.py:test_stub_n1_four_enters_mid_stream_give_one_toast_and_no_extra_requests",
+      "type": "function",
+      "name": "test_stub_n1_four_enters_mid_stream_give_one_toast_and_no_extra_requests",
+      "filePath": "tests/test_frontend_followup.py",
+      "lineRange": [
+        433,
+        438
+      ],
+      "summary": "Asserts four Enter presses during a stream produce one busy toast, no extra requests, and a second notice only after the four-second window.",
+      "tags": [
+        "test",
+        "throttle",
+        "streaming"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_followup.py:test_stub_n2_stop_before_first_token_restores_draft_and_leaves_no_empty_bubble",
+      "type": "function",
+      "name": "test_stub_n2_stop_before_first_token_restores_draft_and_leaves_no_empty_bubble",
+      "filePath": "tests/test_frontend_followup.py",
+      "lineRange": [
+        441,
+        447
+      ],
+      "summary": "Asserts Stop before the first token restores the draft, merges text typed meanwhile, and the following resend uses regenerate.",
+      "tags": [
+        "test",
+        "stop",
+        "streaming"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_followup.py:test_stub_n2_stop_after_first_token_keeps_partial_and_state_is_not_failed",
+      "type": "function",
+      "name": "test_stub_n2_stop_after_first_token_keeps_partial_and_state_is_not_failed",
+      "filePath": "tests/test_frontend_followup.py",
+      "lineRange": [
+        450,
+        455
+      ],
+      "summary": "Asserts Stop after the first token keeps the partial answer and the next send is a normal message rather than a failed regenerate.",
+      "tags": [
+        "test",
+        "stop",
+        "streaming"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_followup.py:test_stub_n3_error_is_announced_once_by_the_alert_box_only",
+      "type": "function",
+      "name": "test_stub_n3_error_is_announced_once_by_the_alert_box_only",
+      "filePath": "tests/test_frontend_followup.py",
+      "lineRange": [
+        458,
+        464
+      ],
+      "summary": "Asserts a stream error is announced once by the alert box, leaves the live region unchanged, and announces \"Retry is available.\" a single time.",
+      "tags": [
+        "test",
+        "accessibility",
+        "error-handling"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_followup.py:test_stub_n4_sse_dispatch_ignores_inherited_and_special_event_names",
+      "type": "function",
+      "name": "test_stub_n4_sse_dispatch_ignores_inherited_and_special_event_names",
+      "filePath": "tests/test_frontend_followup.py",
+      "lineRange": [
+        467,
+        470
+      ],
+      "summary": "Asserts prototype, constructor, and inherited SSE event names do not run handlers and only an own-property handler fires.",
+      "tags": [
+        "test",
+        "sse",
+        "stub"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_followup.py:test_stub_zero_event_close_is_not_persisted_and_unedited_send_is_a_normal_send",
+      "type": "function",
+      "name": "test_stub_zero_event_close_is_not_persisted_and_unedited_send_is_a_normal_send",
+      "filePath": "tests/test_frontend_followup.py",
+      "lineRange": [
+        475,
+        481
+      ],
+      "summary": "Asserts a stream that closes with no events restores the draft without bubbles and the next unedited send is a normal message.",
+      "tags": [
+        "test",
+        "streaming",
+        "persistence"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_followup.py:test_stub_error_without_meta_is_not_persisted_and_unedited_send_is_a_normal_send",
+      "type": "function",
+      "name": "test_stub_error_without_meta_is_not_persisted_and_unedited_send_is_a_normal_send",
+      "filePath": "tests/test_frontend_followup.py",
+      "lineRange": [
+        484,
+        491
+      ],
+      "summary": "Asserts an error that arrives before meta is not persisted, and a resend during the following cooldown stays a normal send.",
+      "tags": [
+        "test",
+        "error-handling",
+        "persistence"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_followup.py:test_stub_stop_before_any_event_restores_draft_drops_bubbles_and_resends_normally",
+      "type": "function",
+      "name": "test_stub_stop_before_any_event_restores_draft_drops_bubbles_and_resends_normally",
+      "filePath": "tests/test_frontend_followup.py",
+      "lineRange": [
+        494,
+        500
+      ],
+      "summary": "Asserts Stop before any SSE event drops both bubbles, merges text typed in the meantime, and resends as a normal message.",
+      "tags": [
+        "test",
+        "stop",
+        "streaming"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_followup.py:test_stub_persisted_error_keeps_user_bubble_and_resend_regenerates_with_empty_message",
+      "type": "function",
+      "name": "test_stub_persisted_error_keeps_user_bubble_and_resend_regenerates_with_empty_message",
+      "filePath": "tests/test_frontend_followup.py",
+      "lineRange": [
+        503,
+        512
+      ],
+      "summary": "Asserts an error after meta keeps the user bubble and both resend and stop-then-resend use regenerate with an empty message.",
+      "tags": [
+        "test",
+        "resend",
+        "error-handling"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_followup.py:test_stub_regenerate_stopped_before_first_token_restores_old_answer_in_place",
+      "type": "function",
+      "name": "test_stub_regenerate_stopped_before_first_token_restores_old_answer_in_place",
+      "filePath": "tests/test_frontend_followup.py",
+      "lineRange": [
+        515,
+        525
+      ],
+      "summary": "Asserts stopping a regenerate before the first token restores the previous answer in place, while a partial after the first token is kept.",
+      "tags": [
+        "test",
+        "regenerate",
+        "stop"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_followup.py:test_stub_regenerate_restore_must_not_leak_into_a_different_chat",
+      "type": "function",
+      "name": "test_stub_regenerate_restore_must_not_leak_into_a_different_chat",
+      "filePath": "tests/test_frontend_followup.py",
+      "lineRange": [
+        528,
+        530
+      ],
+      "summary": "Asserts the restored previous answer does not appear after switching to a new chat during regenerate.",
+      "tags": [
+        "test",
+        "regenerate",
+        "sessions"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_followup.py:test_stub_regenerate_then_delete_current_session_leaves_an_empty_chat_and_only_a_stubbed_delete",
+      "type": "function",
+      "name": "test_stub_regenerate_then_delete_current_session_leaves_an_empty_chat_and_only_a_stubbed_delete",
+      "filePath": "tests/test_frontend_followup.py",
+      "lineRange": [
+        533,
+        537
+      ],
+      "summary": "Asserts deleting the current session during regenerate leaves an empty chat and the stub records only DELETE /sessions/sH.",
+      "tags": [
+        "test",
+        "regenerate",
+        "sessions"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_followup.py:test_stub_regenerate_then_new_chat_then_stop_after_tokens_leaks_nothing",
+      "type": "function",
+      "name": "test_stub_regenerate_then_new_chat_then_stop_after_tokens_leaks_nothing",
+      "filePath": "tests/test_frontend_followup.py",
+      "lineRange": [
+        540,
+        543
+      ],
+      "summary": "Asserts New chat during regenerate, then Stop after tokens, leaves the new chat empty and does not show the old answer.",
+      "tags": [
+        "test",
+        "regenerate",
+        "stop"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_followup.py:test_stub_nothing_was_ever_sent_to_a_real_server",
+      "type": "function",
+      "name": "test_stub_nothing_was_ever_sent_to_a_real_server",
+      "filePath": "tests/test_frontend_followup.py",
+      "lineRange": [
+        546,
+        547
+      ],
+      "summary": "Asserts the static server saw no non-GET traffic other than an optional favicon request.",
+      "tags": [
+        "test",
+        "stub",
+        "isolation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_followup.py:test_stub_retry_countdown_announces_itself_once_and_no_double_announcement",
+      "type": "function",
+      "name": "test_stub_retry_countdown_announces_itself_once_and_no_double_announcement",
+      "filePath": "tests/test_frontend_followup.py",
+      "lineRange": [
+        550,
+        552
+      ],
+      "summary": "Asserts the retry countdown announces \"Retry is available.\" once, and a cooldown with no retry button announces \"You can send again.\" once.",
+      "tags": [
+        "test",
+        "accessibility",
+        "cooldown"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_followup.py:test_stub_double_send_double_stop_and_stop_done_race_are_clean",
+      "type": "function",
+      "name": "test_stub_double_send_double_stop_and_stop_done_race_are_clean",
+      "filePath": "tests/test_frontend_followup.py",
+      "lineRange": [
+        555,
+        559
+      ],
+      "summary": "Asserts a double send opens one stream, and double-stop plus a stop-after-done race restore the send button without page errors.",
+      "tags": [
+        "test",
+        "streaming",
+        "race"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_followup.py:test_stub_sessions_post_payload_keeps_its_four_keys",
+      "type": "function",
+      "name": "test_stub_sessions_post_payload_keeps_its_four_keys",
+      "filePath": "tests/test_frontend_followup.py",
+      "lineRange": [
+        562,
+        563
+      ],
+      "summary": "Asserts the New chat POST /sessions body contains exactly mode, model, title, and user_id.",
+      "tags": [
+        "test",
+        "sessions",
+        "api-contract"
+      ],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:tests/browser_harness.py",
+      "target": "function:tests/browser_harness.py:run_scenario",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/browser_harness.py",
+      "target": "function:tests/browser_harness.py:run_scenario",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/browser_harness.py",
+      "target": "file:tests/test_frontend_guards.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:frontend/index.html",
+      "target": "file:tests/browser_harness.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:tests/test_frontend_followup.py",
+      "target": "function:tests/test_frontend_followup.py:test_m3_card_aria_label_starts_with_the_visible_title",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_followup.py",
+      "target": "function:tests/test_frontend_followup.py:test_m3_card_aria_label_starts_with_the_visible_title",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_followup.py",
+      "target": "function:tests/test_frontend_followup.py:test_n3_show_error_does_not_announce_and_retry_is_announced_once",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_followup.py",
+      "target": "function:tests/test_frontend_followup.py:test_n3_show_error_does_not_announce_and_retry_is_announced_once",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_followup.py",
+      "target": "function:tests/test_frontend_followup.py:test_n4_sse_dispatch_only_calls_own_function_handlers",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_followup.py",
+      "target": "function:tests/test_frontend_followup.py:test_n4_sse_dispatch_only_calls_own_function_handlers",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_followup.py",
+      "target": "function:tests/test_frontend_followup.py:test_m1_resend_is_decided_in_the_controller_and_only_after_accept_sets_failed",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_followup.py",
+      "target": "function:tests/test_frontend_followup.py:test_m1_resend_is_decided_in_the_controller_and_only_after_accept_sets_failed",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_followup.py",
+      "target": "function:tests/test_frontend_followup.py:test_m2_create_session_receives_the_abort_signal",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_followup.py",
+      "target": "function:tests/test_frontend_followup.py:test_m2_create_session_receives_the_abort_signal",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_followup.py",
+      "target": "function:tests/test_frontend_followup.py:test_n1_busy_notice_is_throttled_and_used_by_send_and_session_select",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_followup.py",
+      "target": "function:tests/test_frontend_followup.py:test_n1_busy_notice_is_throttled_and_used_by_send_and_session_select",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_followup.py",
+      "target": "function:tests/test_frontend_followup.py:fu",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_followup.py",
+      "target": "function:tests/test_frontend_followup.py:fu",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_followup.py",
+      "target": "function:tests/test_frontend_followup.py:test_stub_followup_nothing_reached_a_server",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_followup.py",
+      "target": "function:tests/test_frontend_followup.py:test_stub_followup_nothing_reached_a_server",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_followup.py",
+      "target": "function:tests/test_frontend_followup.py:test_stub_m1_unedited_resend_uses_regenerate_and_keeps_one_user_bubble",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_followup.py",
+      "target": "function:tests/test_frontend_followup.py:test_stub_m1_unedited_resend_uses_regenerate_and_keeps_one_user_bubble",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_followup.py",
+      "target": "function:tests/test_frontend_followup.py:test_stub_m1_failed_state_is_cleared_after_success_new_chat_session_switch_and_edit",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_followup.py",
+      "target": "function:tests/test_frontend_followup.py:test_stub_m1_failed_state_is_cleared_after_success_new_chat_session_switch_and_edit",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_followup.py",
+      "target": "function:tests/test_frontend_followup.py:test_stub_m1_http_level_failure_never_uses_regenerate",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_followup.py",
+      "target": "function:tests/test_frontend_followup.py:test_stub_m1_http_level_failure_never_uses_regenerate",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_followup.py",
+      "target": "function:tests/test_frontend_followup.py:test_stub_m1_cooldown_blocks_early_resend_then_regenerates",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_followup.py",
+      "target": "function:tests/test_frontend_followup.py:test_stub_m1_cooldown_blocks_early_resend_then_regenerates",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_followup.py",
+      "target": "function:tests/test_frontend_followup.py:test_stub_m1_retry_button_regenerates_and_no_duplicate_bubble",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_followup.py",
+      "target": "function:tests/test_frontend_followup.py:test_stub_m1_retry_button_regenerates_and_no_duplicate_bubble",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_followup.py",
+      "target": "function:tests/test_frontend_followup.py:test_stub_m2_stop_while_session_creation_is_pending_keeps_the_draft",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_followup.py",
+      "target": "function:tests/test_frontend_followup.py:test_stub_m2_stop_while_session_creation_is_pending_keeps_the_draft",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_followup.py",
+      "target": "function:tests/test_frontend_followup.py:test_stub_m2_creation_finishing_after_stop_keeps_the_session_and_sends_nothing",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_followup.py",
+      "target": "function:tests/test_frontend_followup.py:test_stub_m2_creation_finishing_after_stop_keeps_the_session_and_sends_nothing",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_followup.py",
+      "target": "function:tests/test_frontend_followup.py:test_stub_new_chat_while_session_creation_is_pending_sends_nothing",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_followup.py",
+      "target": "function:tests/test_frontend_followup.py:test_stub_new_chat_while_session_creation_is_pending_sends_nothing",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_followup.py",
+      "target": "function:tests/test_frontend_followup.py:test_stub_n1_four_enters_mid_stream_give_one_toast_and_no_extra_requests",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_followup.py",
+      "target": "function:tests/test_frontend_followup.py:test_stub_n1_four_enters_mid_stream_give_one_toast_and_no_extra_requests",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_followup.py",
+      "target": "function:tests/test_frontend_followup.py:test_stub_n2_stop_before_first_token_restores_draft_and_leaves_no_empty_bubble",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_followup.py",
+      "target": "function:tests/test_frontend_followup.py:test_stub_n2_stop_before_first_token_restores_draft_and_leaves_no_empty_bubble",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_followup.py",
+      "target": "function:tests/test_frontend_followup.py:test_stub_n2_stop_after_first_token_keeps_partial_and_state_is_not_failed",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_followup.py",
+      "target": "function:tests/test_frontend_followup.py:test_stub_n2_stop_after_first_token_keeps_partial_and_state_is_not_failed",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_followup.py",
+      "target": "function:tests/test_frontend_followup.py:test_stub_n3_error_is_announced_once_by_the_alert_box_only",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_followup.py",
+      "target": "function:tests/test_frontend_followup.py:test_stub_n3_error_is_announced_once_by_the_alert_box_only",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_followup.py",
+      "target": "function:tests/test_frontend_followup.py:test_stub_n4_sse_dispatch_ignores_inherited_and_special_event_names",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_followup.py",
+      "target": "function:tests/test_frontend_followup.py:test_stub_n4_sse_dispatch_ignores_inherited_and_special_event_names",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_followup.py",
+      "target": "function:tests/test_frontend_followup.py:test_stub_zero_event_close_is_not_persisted_and_unedited_send_is_a_normal_send",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_followup.py",
+      "target": "function:tests/test_frontend_followup.py:test_stub_zero_event_close_is_not_persisted_and_unedited_send_is_a_normal_send",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_followup.py",
+      "target": "function:tests/test_frontend_followup.py:test_stub_error_without_meta_is_not_persisted_and_unedited_send_is_a_normal_send",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_followup.py",
+      "target": "function:tests/test_frontend_followup.py:test_stub_error_without_meta_is_not_persisted_and_unedited_send_is_a_normal_send",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_followup.py",
+      "target": "function:tests/test_frontend_followup.py:test_stub_stop_before_any_event_restores_draft_drops_bubbles_and_resends_normally",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_followup.py",
+      "target": "function:tests/test_frontend_followup.py:test_stub_stop_before_any_event_restores_draft_drops_bubbles_and_resends_normally",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_followup.py",
+      "target": "function:tests/test_frontend_followup.py:test_stub_persisted_error_keeps_user_bubble_and_resend_regenerates_with_empty_message",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_followup.py",
+      "target": "function:tests/test_frontend_followup.py:test_stub_persisted_error_keeps_user_bubble_and_resend_regenerates_with_empty_message",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_followup.py",
+      "target": "function:tests/test_frontend_followup.py:test_stub_regenerate_stopped_before_first_token_restores_old_answer_in_place",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_followup.py",
+      "target": "function:tests/test_frontend_followup.py:test_stub_regenerate_stopped_before_first_token_restores_old_answer_in_place",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_followup.py",
+      "target": "function:tests/test_frontend_followup.py:test_stub_regenerate_restore_must_not_leak_into_a_different_chat",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_followup.py",
+      "target": "function:tests/test_frontend_followup.py:test_stub_regenerate_restore_must_not_leak_into_a_different_chat",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_followup.py",
+      "target": "function:tests/test_frontend_followup.py:test_stub_regenerate_then_delete_current_session_leaves_an_empty_chat_and_only_a_stubbed_delete",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_followup.py",
+      "target": "function:tests/test_frontend_followup.py:test_stub_regenerate_then_delete_current_session_leaves_an_empty_chat_and_only_a_stubbed_delete",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_followup.py",
+      "target": "function:tests/test_frontend_followup.py:test_stub_regenerate_then_new_chat_then_stop_after_tokens_leaks_nothing",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_followup.py",
+      "target": "function:tests/test_frontend_followup.py:test_stub_regenerate_then_new_chat_then_stop_after_tokens_leaks_nothing",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_followup.py",
+      "target": "function:tests/test_frontend_followup.py:test_stub_nothing_was_ever_sent_to_a_real_server",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_followup.py",
+      "target": "function:tests/test_frontend_followup.py:test_stub_nothing_was_ever_sent_to_a_real_server",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_followup.py",
+      "target": "function:tests/test_frontend_followup.py:test_stub_retry_countdown_announces_itself_once_and_no_double_announcement",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_followup.py",
+      "target": "function:tests/test_frontend_followup.py:test_stub_retry_countdown_announces_itself_once_and_no_double_announcement",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_followup.py",
+      "target": "function:tests/test_frontend_followup.py:test_stub_double_send_double_stop_and_stop_done_race_are_clean",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_followup.py",
+      "target": "function:tests/test_frontend_followup.py:test_stub_double_send_double_stop_and_stop_done_race_are_clean",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_followup.py",
+      "target": "function:tests/test_frontend_followup.py:test_stub_sessions_post_payload_keeps_its_four_keys",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_followup.py",
+      "target": "function:tests/test_frontend_followup.py:test_stub_sessions_post_payload_keeps_its_four_keys",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_followup.py",
+      "target": "file:tests/test_frontend_guards.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:frontend/index.html",
+      "target": "file:tests/test_frontend_followup.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:frontend/js/app.js",
+      "target": "file:tests/test_frontend_followup.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:frontend/js/api.js",
+      "target": "file:tests/test_frontend_followup.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:frontend/js/chat.js",
+      "target": "file:tests/test_frontend_followup.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "function:tests/test_frontend_followup.py:test_n3_show_error_does_not_announce_and_retry_is_announced_once",
+      "target": "function:tests/test_frontend_guards.py:_code",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:tests/test_frontend_followup.py:test_n4_sse_dispatch_only_calls_own_function_handlers",
+      "target": "function:tests/test_frontend_guards.py:_code",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:tests/test_frontend_followup.py:test_m1_resend_is_decided_in_the_controller_and_only_after_accept_sets_failed",
+      "target": "function:tests/test_frontend_guards.py:_app_fn",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:tests/test_frontend_followup.py:test_m2_create_session_receives_the_abort_signal",
+      "target": "function:tests/test_frontend_guards.py:_app_fn",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:tests/test_frontend_followup.py:test_n1_busy_notice_is_throttled_and_used_by_send_and_session_select",
+      "target": "function:tests/test_frontend_guards.py:_app_fn",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    }
+  ]
+}

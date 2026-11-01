@@ -1,0 +1,27 @@
+{
+  "projectRoot": "F:\\Personal Projects\\AgenticAI_Chatbot_Using_RAG",
+  "batchFiles": [
+    {"path": "backend/client/embedding_client.py", "language": "python", "sizeLines": 122, "fileCategory": "code"},
+    {"path": "backend/client/http.py", "language": "python", "sizeLines": 15, "fileCategory": "code"},
+    {"path": "backend/client/rerank_client.py", "language": "python", "sizeLines": 61, "fileCategory": "code"},
+    {"path": "backend/core/config.py", "language": "python", "sizeLines": 307, "fileCategory": "code"},
+    {"path": "backend/services/__init__.py", "language": "python", "sizeLines": 0, "fileCategory": "code"},
+    {"path": "backend/services/embedding_service.py", "language": "python", "sizeLines": 111, "fileCategory": "code"},
+    {"path": "backend/services/rerank_service.py", "language": "python", "sizeLines": 95, "fileCategory": "code"},
+    {"path": "backend/utils/numeric.py", "language": "python", "sizeLines": 25, "fileCategory": "code"},
+    {"path": "tests/test_frontend_shell.py", "language": "python", "sizeLines": 109, "fileCategory": "code"},
+    {"path": "tests/test_parser_formats.py", "language": "python", "sizeLines": 298, "fileCategory": "code"}
+  ],
+  "batchImportData": {
+    "backend/client/embedding_client.py": ["backend/core/config.py", "backend/core/exceptions.py", "backend/utils/numeric.py"],
+    "backend/client/http.py": ["backend/core/config.py"],
+    "backend/client/rerank_client.py": ["backend/core/config.py", "backend/utils/numeric.py"],
+    "backend/core/config.py": [],
+    "backend/services/__init__.py": [],
+    "backend/services/embedding_service.py": ["backend/client/embedding_client.py", "backend/core/config.py", "backend/core/exceptions.py"],
+    "backend/services/rerank_service.py": ["backend/client/rerank_client.py", "backend/core/config.py"],
+    "backend/utils/numeric.py": [],
+    "tests/test_frontend_shell.py": ["backend/core/config.py"],
+    "tests/test_parser_formats.py": ["backend/core/exceptions.py", "backend/services/__init__.py", "backend/services/embedding_service.py", "backend/services/parser.py"]
+  }
+}

@@ -1,0 +1,1830 @@
+{
+  "nodes": [
+    {
+      "id": "file:frontend/js/ui.js",
+      "type": "file",
+      "name": "ui.js",
+      "filePath": "frontend/js/ui.js",
+      "summary": "Shell renderer for the sidebar, session list, composer menus, upload toasts, citation and URL dialogs, and settings hand-off. It paints DOM only and reaches sibling views through window globals.",
+      "tags": [
+        "entry-point",
+        "component",
+        "view",
+        "shell"
+      ],
+      "complexity": "complex",
+      "languageNotes": "Assigned to window.UI from an IIFE. Sibling modules are globals rather than ES imports, so the shell can call Theme, Utils, Workspaces, and SettingsView without a module graph."
+    },
+    {
+      "id": "function:frontend/js/ui.js:_syncThemeButton",
+      "type": "function",
+      "name": "_syncThemeButton",
+      "filePath": "frontend/js/ui.js",
+      "lineRange": [
+        18,
+        27
+      ],
+      "summary": "Mirrors the resolved theme onto the sidebar light, dark, and quick-toggle buttons.",
+      "tags": [
+        "theme",
+        "view",
+        "accessibility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/ui.js:initTheme",
+      "type": "function",
+      "name": "initTheme",
+      "filePath": "frontend/js/ui.js",
+      "lineRange": [
+        30,
+        33
+      ],
+      "summary": "Initializes the Theme store and paints the sidebar theme buttons from the saved preference.",
+      "tags": [
+        "theme",
+        "initialization",
+        "view"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/ui.js:setTheme",
+      "type": "function",
+      "name": "setTheme",
+      "filePath": "frontend/js/ui.js",
+      "lineRange": [
+        36,
+        38
+      ],
+      "summary": "Persists a light, dark, or system preference by delegating to Theme.set.",
+      "tags": [
+        "theme",
+        "view",
+        "utility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/ui.js:isSidebarOpen",
+      "type": "function",
+      "name": "isSidebarOpen",
+      "filePath": "frontend/js/ui.js",
+      "lineRange": [
+        67,
+        70
+      ],
+      "summary": "Reports whether the narrow-screen sidebar drawer is open.",
+      "tags": [
+        "sidebar",
+        "view",
+        "shell"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/ui.js:_syncSidebarChrome",
+      "type": "function",
+      "name": "_syncSidebarChrome",
+      "filePath": "frontend/js/ui.js",
+      "lineRange": [
+        87,
+        102
+      ],
+      "summary": "Updates sidebar toggle labels, icons, and expanded state for the drawer and rail shells.",
+      "tags": [
+        "sidebar",
+        "view",
+        "accessibility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/ui.js:openSidebar",
+      "type": "function",
+      "name": "openSidebar",
+      "filePath": "frontend/js/ui.js",
+      "lineRange": [
+        104,
+        118
+      ],
+      "summary": "Opens the sidebar drawer, shows the backdrop, and moves focus into the sidebar.",
+      "tags": [
+        "sidebar",
+        "view",
+        "accessibility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/ui.js:closeSidebar",
+      "type": "function",
+      "name": "closeSidebar",
+      "filePath": "frontend/js/ui.js",
+      "lineRange": [
+        121,
+        136
+      ],
+      "summary": "Closes the sidebar drawer, clears inert on the main region, and can restore focus to the toggle.",
+      "tags": [
+        "sidebar",
+        "view",
+        "accessibility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/ui.js:setSidebarCollapsed",
+      "type": "function",
+      "name": "setSidebarCollapsed",
+      "filePath": "frontend/js/ui.js",
+      "lineRange": [
+        142,
+        148
+      ],
+      "summary": "Switches the wide layout between the icon rail and the expanded sidebar.",
+      "tags": [
+        "sidebar",
+        "view",
+        "shell"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/ui.js:isSidebarCollapsed",
+      "type": "function",
+      "name": "isSidebarCollapsed",
+      "filePath": "frontend/js/ui.js",
+      "lineRange": [
+        150,
+        150
+      ],
+      "summary": "Reports whether the shell is currently the collapsed icon rail.",
+      "tags": [
+        "sidebar",
+        "view",
+        "shell"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/ui.js:toggleSidebar",
+      "type": "function",
+      "name": "toggleSidebar",
+      "filePath": "frontend/js/ui.js",
+      "lineRange": [
+        152,
+        155
+      ],
+      "summary": "Opens or closes the drawer on a narrow viewport, and otherwise toggles the rail.",
+      "tags": [
+        "sidebar",
+        "event-handler",
+        "view"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/ui.js:_trapSidebarTab",
+      "type": "function",
+      "name": "_trapSidebarTab",
+      "filePath": "frontend/js/ui.js",
+      "lineRange": [
+        164,
+        176
+      ],
+      "summary": "Keeps Tab focus inside the open sidebar drawer.",
+      "tags": [
+        "sidebar",
+        "accessibility",
+        "keyboard"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/ui.js:renderSessionList",
+      "type": "function",
+      "name": "renderSessionList",
+      "filePath": "frontend/js/ui.js",
+      "lineRange": [
+        206,
+        301
+      ],
+      "summary": "Groups chat sessions by date, paints rows with rename and delete actions, and restores focus after a re-render.",
+      "tags": [
+        "sessions",
+        "view",
+        "sidebar"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:frontend/js/ui.js:setSessionsStatus",
+      "type": "function",
+      "name": "setSessionsStatus",
+      "filePath": "frontend/js/ui.js",
+      "lineRange": [
+        307,
+        349
+      ],
+      "summary": "Replaces the session list with a loading skeleton or an error panel that can offer retry.",
+      "tags": [
+        "sessions",
+        "view",
+        "status"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:frontend/js/ui.js:_beginRename",
+      "type": "function",
+      "name": "_beginRename",
+      "filePath": "frontend/js/ui.js",
+      "lineRange": [
+        352,
+        399
+      ],
+      "summary": "Turns a session row into an inline rename field and commits or reverts the title.",
+      "tags": [
+        "sessions",
+        "event-handler",
+        "view"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:frontend/js/ui.js:renderDocList",
+      "type": "function",
+      "name": "renderDocList",
+      "filePath": "frontend/js/ui.js",
+      "lineRange": [
+        404,
+        406
+      ],
+      "summary": "Forwards the document list to DocsView.render.",
+      "tags": [
+        "documents",
+        "view",
+        "delegation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/ui.js:setDocsStatus",
+      "type": "function",
+      "name": "setDocsStatus",
+      "filePath": "frontend/js/ui.js",
+      "lineRange": [
+        409,
+        411
+      ],
+      "summary": "Forwards document-list loading and error state to DocsView.",
+      "tags": [
+        "documents",
+        "view",
+        "status"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/ui.js:renderModelSelect",
+      "type": "function",
+      "name": "renderModelSelect",
+      "filePath": "frontend/js/ui.js",
+      "lineRange": [
+        415,
+        448
+      ],
+      "summary": "Fills the composer model select, surfaces an error or retry, and asks Settings to mirror the same options.",
+      "tags": [
+        "models",
+        "view",
+        "settings"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:frontend/js/ui.js:_clearUploadError",
+      "type": "function",
+      "name": "_clearUploadError",
+      "filePath": "frontend/js/ui.js",
+      "lineRange": [
+        454,
+        471
+      ],
+      "summary": "Resets the upload toast back to its idle progress chrome.",
+      "tags": [
+        "upload",
+        "view",
+        "toast"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/ui.js:showUploadToast",
+      "type": "function",
+      "name": "showUploadToast",
+      "filePath": "frontend/js/ui.js",
+      "lineRange": [
+        473,
+        481
+      ],
+      "summary": "Shows the in-progress upload toast and marks the workspace drop zone busy.",
+      "tags": [
+        "upload",
+        "toast",
+        "view"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/ui.js:hideUploadToast",
+      "type": "function",
+      "name": "hideUploadToast",
+      "filePath": "frontend/js/ui.js",
+      "lineRange": [
+        483,
+        495
+      ],
+      "summary": "Hides the upload toast, clears a busy drop zone, and restores focus.",
+      "tags": [
+        "upload",
+        "toast",
+        "view"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/ui.js:showUploadError",
+      "type": "function",
+      "name": "showUploadError",
+      "filePath": "frontend/js/ui.js",
+      "lineRange": [
+        503,
+        556
+      ],
+      "summary": "Shows a failed upload in the toast, announces it, and records an error notification.",
+      "tags": [
+        "upload",
+        "toast",
+        "error-handling"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:frontend/js/ui.js:_toastRegion",
+      "type": "function",
+      "name": "_toastRegion",
+      "filePath": "frontend/js/ui.js",
+      "lineRange": [
+        564,
+        574
+      ],
+      "summary": "Ensures the live toast stack exists in the document.",
+      "tags": [
+        "toast",
+        "view",
+        "dom"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/ui.js:showToast",
+      "type": "function",
+      "name": "showToast",
+      "filePath": "frontend/js/ui.js",
+      "lineRange": [
+        583,
+        634
+      ],
+      "summary": "Pushes a typed toast, honors the errors-only preference, and records it in the notification history.",
+      "tags": [
+        "toast",
+        "view",
+        "notifications"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:frontend/js/ui.js:setLiveStatus",
+      "type": "function",
+      "name": "setLiveStatus",
+      "filePath": "frontend/js/ui.js",
+      "lineRange": [
+        641,
+        647
+      ],
+      "summary": "Writes a polite live-region message for screen readers.",
+      "tags": [
+        "accessibility",
+        "view",
+        "status"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/ui.js:showCitationModal",
+      "type": "function",
+      "name": "showCitationModal",
+      "filePath": "frontend/js/ui.js",
+      "lineRange": [
+        651,
+        678
+      ],
+      "summary": "Opens the citation dialog with a safe link and the source snippet.",
+      "tags": [
+        "citations",
+        "dialog",
+        "view"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:frontend/js/ui.js:hideCitationModal",
+      "type": "function",
+      "name": "hideCitationModal",
+      "filePath": "frontend/js/ui.js",
+      "lineRange": [
+        680,
+        682
+      ],
+      "summary": "Closes the citation dialog.",
+      "tags": [
+        "citations",
+        "dialog",
+        "view"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/ui.js:showUrlModal",
+      "type": "function",
+      "name": "showUrlModal",
+      "filePath": "frontend/js/ui.js",
+      "lineRange": [
+        686,
+        692
+      ],
+      "summary": "Opens the add-URL dialog and clears its fields when it was closed.",
+      "tags": [
+        "dialog",
+        "documents",
+        "view"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/ui.js:hideUrlModal",
+      "type": "function",
+      "name": "hideUrlModal",
+      "filePath": "frontend/js/ui.js",
+      "lineRange": [
+        694,
+        696
+      ],
+      "summary": "Closes the add-URL dialog.",
+      "tags": [
+        "dialog",
+        "documents",
+        "view"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/ui.js:showGithubModal",
+      "type": "function",
+      "name": "showGithubModal",
+      "filePath": "frontend/js/ui.js",
+      "lineRange": [
+        698,
+        710
+      ],
+      "summary": "Opens the GitHub connect dialog and clears URL and token fields when it was closed.",
+      "tags": [
+        "dialog",
+        "github",
+        "view"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/ui.js:hideGithubModal",
+      "type": "function",
+      "name": "hideGithubModal",
+      "filePath": "frontend/js/ui.js",
+      "lineRange": [
+        712,
+        714
+      ],
+      "summary": "Closes the GitHub connect dialog.",
+      "tags": [
+        "dialog",
+        "github",
+        "view"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/ui.js:setGithubOauth",
+      "type": "function",
+      "name": "setGithubOauth",
+      "filePath": "frontend/js/ui.js",
+      "lineRange": [
+        716,
+        719
+      ],
+      "summary": "Shows or hides the GitHub OAuth button based on server readiness.",
+      "tags": [
+        "github",
+        "view",
+        "settings"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/ui.js:confirmDialog",
+      "type": "function",
+      "name": "confirmDialog",
+      "filePath": "frontend/js/ui.js",
+      "lineRange": [
+        727,
+        729
+      ],
+      "summary": "Asks for confirmation through the shared dialog and resolves true only when the user confirms.",
+      "tags": [
+        "dialog",
+        "view",
+        "accessibility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/ui.js:initDropzone",
+      "type": "function",
+      "name": "initDropzone",
+      "filePath": "frontend/js/ui.js",
+      "lineRange": [
+        733,
+        761
+      ],
+      "summary": "Tracks page-level file drags and delivers dropped files to the upload handler.",
+      "tags": [
+        "upload",
+        "event-handler",
+        "view"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:frontend/js/ui.js:onModeChange",
+      "type": "function",
+      "name": "onModeChange",
+      "filePath": "frontend/js/ui.js",
+      "lineRange": [
+        781,
+        783
+      ],
+      "summary": "Registers the handler invoked when the user picks a workspace mode.",
+      "tags": [
+        "composer",
+        "event-handler",
+        "workspaces"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/ui.js:toggleModeMenu",
+      "type": "function",
+      "name": "toggleModeMenu",
+      "filePath": "frontend/js/ui.js",
+      "lineRange": [
+        785,
+        801
+      ],
+      "summary": "Opens or closes the workspace mode menu anchored to the composer.",
+      "tags": [
+        "composer",
+        "menu",
+        "workspaces"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/ui.js:toggleComposerMenu",
+      "type": "function",
+      "name": "toggleComposerMenu",
+      "filePath": "frontend/js/ui.js",
+      "lineRange": [
+        811,
+        837
+      ],
+      "summary": "Opens or closes the composer plus menu for upload, URL, and documents.",
+      "tags": [
+        "composer",
+        "menu",
+        "documents"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:frontend/js/ui.js:_wireComposerMenu",
+      "type": "function",
+      "name": "_wireComposerMenu",
+      "filePath": "frontend/js/ui.js",
+      "lineRange": [
+        839,
+        849
+      ],
+      "summary": "Opens the composer plus menu from the keyboard when it is closed.",
+      "tags": [
+        "composer",
+        "keyboard",
+        "menu"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/ui.js:_wireModeSelect",
+      "type": "function",
+      "name": "_wireModeSelect",
+      "filePath": "frontend/js/ui.js",
+      "lineRange": [
+        852,
+        862
+      ],
+      "summary": "Opens the mode menu from the keyboard when it is closed.",
+      "tags": [
+        "composer",
+        "keyboard",
+        "menu"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/ui.js:setActiveMode",
+      "type": "function",
+      "name": "setActiveMode",
+      "filePath": "frontend/js/ui.js",
+      "lineRange": [
+        874,
+        905
+      ],
+      "summary": "Paints the active workspace in the composer and welcome header and notifies Workspaces and code preview.",
+      "tags": [
+        "workspaces",
+        "composer",
+        "view"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:frontend/js/ui.js:setUserIdDisplay",
+      "type": "function",
+      "name": "setUserIdDisplay",
+      "filePath": "frontend/js/ui.js",
+      "lineRange": [
+        910,
+        919
+      ],
+      "summary": "Shows the user id in the top bar and forwards it to the settings profile pane.",
+      "tags": [
+        "profile",
+        "view",
+        "settings"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/ui.js:setVizState",
+      "type": "function",
+      "name": "setVizState",
+      "filePath": "frontend/js/ui.js",
+      "lineRange": [
+        928,
+        930
+      ],
+      "summary": "Sets the welcome illustration state through AIViz.",
+      "tags": [
+        "view",
+        "animation",
+        "welcome"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/ui.js:_initViewWiring",
+      "type": "function",
+      "name": "_initViewWiring",
+      "filePath": "frontend/js/ui.js",
+      "lineRange": [
+        934,
+        1024
+      ],
+      "summary": "Binds sidebar, welcome cards, Escape, and the first-run wiring for documents, workspaces, and settings.",
+      "tags": [
+        "initialization",
+        "event-handler",
+        "shell"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:frontend/js/ui.js:onMyDocuments",
+      "type": "function",
+      "name": "onMyDocuments",
+      "filePath": "frontend/js/ui.js",
+      "lineRange": [
+        1031,
+        1033
+      ],
+      "summary": "Registers the handler for the My Documents composer action.",
+      "tags": [
+        "documents",
+        "event-handler",
+        "composer"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/ui.js:focusSessionSearch",
+      "type": "function",
+      "name": "focusSessionSearch",
+      "filePath": "frontend/js/ui.js",
+      "lineRange": [
+        1036,
+        1044
+      ],
+      "summary": "Opens the sidebar on a narrow screen and focuses the session search field.",
+      "tags": [
+        "sessions",
+        "accessibility",
+        "sidebar"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/ui.js:_wireReferenceShell",
+      "type": "function",
+      "name": "_wireReferenceShell",
+      "filePath": "frontend/js/ui.js",
+      "lineRange": [
+        1053,
+        1091
+      ],
+      "summary": "Binds recents, the session date filter, theme switches, and search for the reference shell.",
+      "tags": [
+        "shell",
+        "event-handler",
+        "theme"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:frontend/js/ui.js:_wireHeroLook",
+      "type": "function",
+      "name": "_wireHeroLook",
+      "filePath": "frontend/js/ui.js",
+      "lineRange": [
+        1098,
+        1122
+      ],
+      "summary": "Tilts the welcome illustration toward the pointer when reduced motion is off.",
+      "tags": [
+        "animation",
+        "welcome",
+        "view"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:frontend/js/ui.js:setUploadLimits",
+      "type": "function",
+      "name": "setUploadLimits",
+      "filePath": "frontend/js/ui.js",
+      "lineRange": [
+        1125,
+        1127
+      ],
+      "summary": "Forwards the maximum upload size to the workspace drop zone.",
+      "tags": [
+        "upload",
+        "workspaces",
+        "view"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/ui.js:openSettings",
+      "type": "function",
+      "name": "openSettings",
+      "filePath": "frontend/js/ui.js",
+      "lineRange": [
+        1130,
+        1132
+      ],
+      "summary": "Opens the settings dialog on an optional pane.",
+      "tags": [
+        "settings",
+        "dialog",
+        "view"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/ui.js:onSettingsPane",
+      "type": "function",
+      "name": "onSettingsPane",
+      "filePath": "frontend/js/ui.js",
+      "lineRange": [
+        1135,
+        1137
+      ],
+      "summary": "Forwards the settings pane callback to SettingsView.",
+      "tags": [
+        "settings",
+        "event-handler",
+        "view"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/ui.js:renderIntegrations",
+      "type": "function",
+      "name": "renderIntegrations",
+      "filePath": "frontend/js/ui.js",
+      "lineRange": [
+        1140,
+        1142
+      ],
+      "summary": "Forwards health-service status to the settings integrations pane.",
+      "tags": [
+        "settings",
+        "integrations",
+        "view"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/ui.js:renderGithubRepos",
+      "type": "function",
+      "name": "renderGithubRepos",
+      "filePath": "frontend/js/ui.js",
+      "lineRange": [
+        1144,
+        1148
+      ],
+      "summary": "Forwards connected repositories to the settings GitHub list.",
+      "tags": [
+        "settings",
+        "github",
+        "view"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/ui.js:openDocuments",
+      "type": "function",
+      "name": "openDocuments",
+      "filePath": "frontend/js/ui.js",
+      "lineRange": [
+        1150,
+        1152
+      ],
+      "summary": "Opens the documents dialog.",
+      "tags": [
+        "documents",
+        "dialog",
+        "view"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/ui.js:notify",
+      "type": "function",
+      "name": "notify",
+      "filePath": "frontend/js/ui.js",
+      "lineRange": [
+        1155,
+        1157
+      ],
+      "summary": "Records a message in the notification history.",
+      "tags": [
+        "notifications",
+        "view",
+        "utility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/ui.js:clearNotifications",
+      "type": "function",
+      "name": "clearNotifications",
+      "filePath": "frontend/js/ui.js",
+      "lineRange": [
+        1159,
+        1161
+      ],
+      "summary": "Clears the notification history.",
+      "tags": [
+        "notifications",
+        "view",
+        "utility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/ui.js:onWelcomeCard",
+      "type": "function",
+      "name": "onWelcomeCard",
+      "filePath": "frontend/js/ui.js",
+      "lineRange": [
+        1167,
+        1169
+      ],
+      "summary": "Registers the handler for welcome-card mode and prompt actions.",
+      "tags": [
+        "welcome",
+        "event-handler",
+        "composer"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/ui.js:focusComposer",
+      "type": "function",
+      "name": "focusComposer",
+      "filePath": "frontend/js/ui.js",
+      "lineRange": [
+        1172,
+        1179
+      ],
+      "summary": "Focuses the chat input when it is visible and enabled.",
+      "tags": [
+        "composer",
+        "accessibility",
+        "view"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/ui.js:setComposerBusy",
+      "type": "function",
+      "name": "setComposerBusy",
+      "filePath": "frontend/js/ui.js",
+      "lineRange": [
+        1187,
+        1197
+      ],
+      "summary": "Swaps Send and Stop while a request runs and keeps the chat input enabled.",
+      "tags": [
+        "composer",
+        "view",
+        "accessibility"
+      ],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "function:frontend/js/ui.js:_syncThemeButton",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "function:frontend/js/ui.js:initTheme",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "function:frontend/js/ui.js:initTheme",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "function:frontend/js/ui.js:setTheme",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "function:frontend/js/ui.js:setTheme",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "function:frontend/js/ui.js:isSidebarOpen",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "function:frontend/js/ui.js:isSidebarOpen",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "function:frontend/js/ui.js:_syncSidebarChrome",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "function:frontend/js/ui.js:openSidebar",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "function:frontend/js/ui.js:openSidebar",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "function:frontend/js/ui.js:closeSidebar",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "function:frontend/js/ui.js:closeSidebar",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "function:frontend/js/ui.js:setSidebarCollapsed",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "function:frontend/js/ui.js:setSidebarCollapsed",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "function:frontend/js/ui.js:isSidebarCollapsed",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "function:frontend/js/ui.js:isSidebarCollapsed",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "function:frontend/js/ui.js:toggleSidebar",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "function:frontend/js/ui.js:toggleSidebar",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "function:frontend/js/ui.js:_trapSidebarTab",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "function:frontend/js/ui.js:renderSessionList",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "function:frontend/js/ui.js:renderSessionList",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "function:frontend/js/ui.js:setSessionsStatus",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "function:frontend/js/ui.js:setSessionsStatus",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "function:frontend/js/ui.js:_beginRename",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "function:frontend/js/ui.js:renderDocList",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "function:frontend/js/ui.js:renderDocList",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "function:frontend/js/ui.js:setDocsStatus",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "function:frontend/js/ui.js:setDocsStatus",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "function:frontend/js/ui.js:renderModelSelect",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "function:frontend/js/ui.js:renderModelSelect",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "function:frontend/js/ui.js:_clearUploadError",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "function:frontend/js/ui.js:showUploadToast",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "function:frontend/js/ui.js:showUploadToast",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "function:frontend/js/ui.js:hideUploadToast",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "function:frontend/js/ui.js:hideUploadToast",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "function:frontend/js/ui.js:showUploadError",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "function:frontend/js/ui.js:showUploadError",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "function:frontend/js/ui.js:_toastRegion",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "function:frontend/js/ui.js:showToast",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "function:frontend/js/ui.js:showToast",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "function:frontend/js/ui.js:setLiveStatus",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "function:frontend/js/ui.js:setLiveStatus",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "function:frontend/js/ui.js:showCitationModal",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "function:frontend/js/ui.js:showCitationModal",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "function:frontend/js/ui.js:hideCitationModal",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "function:frontend/js/ui.js:hideCitationModal",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "function:frontend/js/ui.js:showUrlModal",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "function:frontend/js/ui.js:showUrlModal",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "function:frontend/js/ui.js:hideUrlModal",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "function:frontend/js/ui.js:hideUrlModal",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "function:frontend/js/ui.js:showGithubModal",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "function:frontend/js/ui.js:showGithubModal",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "function:frontend/js/ui.js:hideGithubModal",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "function:frontend/js/ui.js:hideGithubModal",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "function:frontend/js/ui.js:setGithubOauth",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "function:frontend/js/ui.js:setGithubOauth",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "function:frontend/js/ui.js:confirmDialog",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "function:frontend/js/ui.js:confirmDialog",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "function:frontend/js/ui.js:initDropzone",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "function:frontend/js/ui.js:initDropzone",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "function:frontend/js/ui.js:onModeChange",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "function:frontend/js/ui.js:onModeChange",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "function:frontend/js/ui.js:toggleModeMenu",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "function:frontend/js/ui.js:toggleComposerMenu",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "function:frontend/js/ui.js:_wireComposerMenu",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "function:frontend/js/ui.js:_wireModeSelect",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "function:frontend/js/ui.js:setActiveMode",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "function:frontend/js/ui.js:setActiveMode",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "function:frontend/js/ui.js:setUserIdDisplay",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "function:frontend/js/ui.js:setUserIdDisplay",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "function:frontend/js/ui.js:setVizState",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "function:frontend/js/ui.js:setVizState",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "function:frontend/js/ui.js:_initViewWiring",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "function:frontend/js/ui.js:onMyDocuments",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "function:frontend/js/ui.js:onMyDocuments",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "function:frontend/js/ui.js:focusSessionSearch",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "function:frontend/js/ui.js:focusSessionSearch",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "function:frontend/js/ui.js:_wireReferenceShell",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "function:frontend/js/ui.js:_wireHeroLook",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "function:frontend/js/ui.js:setUploadLimits",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "function:frontend/js/ui.js:setUploadLimits",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "function:frontend/js/ui.js:openSettings",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "function:frontend/js/ui.js:openSettings",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "function:frontend/js/ui.js:onSettingsPane",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "function:frontend/js/ui.js:onSettingsPane",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "function:frontend/js/ui.js:renderIntegrations",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "function:frontend/js/ui.js:renderIntegrations",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "function:frontend/js/ui.js:renderGithubRepos",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "function:frontend/js/ui.js:renderGithubRepos",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "function:frontend/js/ui.js:openDocuments",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "function:frontend/js/ui.js:openDocuments",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "function:frontend/js/ui.js:notify",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "function:frontend/js/ui.js:notify",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "function:frontend/js/ui.js:clearNotifications",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "function:frontend/js/ui.js:clearNotifications",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "function:frontend/js/ui.js:onWelcomeCard",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "function:frontend/js/ui.js:onWelcomeCard",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "function:frontend/js/ui.js:focusComposer",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "function:frontend/js/ui.js:focusComposer",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "function:frontend/js/ui.js:setComposerBusy",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "function:frontend/js/ui.js:setComposerBusy",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "file:frontend/js/theme.js",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "file:frontend/js/icons.js",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "file:frontend/js/utils.js",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "file:frontend/js/components/workspaces.js",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "file:frontend/js/components/settings.js",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "file:tests/test_frontend_reference.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "function:frontend/js/ui.js:initTheme",
+      "target": "function:frontend/js/theme.js:init",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:frontend/js/ui.js:setTheme",
+      "target": "function:frontend/js/theme.js:set",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:frontend/js/ui.js:_wireReferenceShell",
+      "target": "function:frontend/js/theme.js:set",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:frontend/js/ui.js:renderSessionList",
+      "target": "function:frontend/js/utils.js:escapeHtml",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:frontend/js/ui.js:showCitationModal",
+      "target": "function:frontend/js/utils.js:safeUrl",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:frontend/js/ui.js:renderModelSelect",
+      "target": "function:frontend/js/components/settings.js:syncModels",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:frontend/js/ui.js:_initViewWiring",
+      "target": "function:frontend/js/components/settings.js:init",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:frontend/js/ui.js:_initViewWiring",
+      "target": "function:frontend/js/components/workspaces.js:init",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:frontend/js/ui.js:setActiveMode",
+      "target": "function:frontend/js/components/workspaces.js:setActive",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:frontend/js/ui.js:showUploadToast",
+      "target": "function:frontend/js/components/workspaces.js:setUploadBusy",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:frontend/js/ui.js:openSettings",
+      "target": "function:frontend/js/components/settings.js:open",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:frontend/js/ui.js:setUserIdDisplay",
+      "target": "function:frontend/js/components/settings.js:setUserId",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:frontend/js/ui.js:renderIntegrations",
+      "target": "function:frontend/js/components/settings.js:renderIntegrations",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    }
+  ]
+}

@@ -1,0 +1,1243 @@
+{
+  "nodes": [
+    {
+      "id": "file:backend/client/embedding_client.py",
+      "type": "file",
+      "name": "embedding_client.py",
+      "filePath": "backend/client/embedding_client.py",
+      "summary": "Synchronous embedding backends for local fastembed ONNX, Google Gemini, and Cohere. Each client returns L2-normalised float32 vectors so inner product equals cosine.",
+      "tags": ["embedding", "client", "rag", "protocol"],
+      "complexity": "moderate",
+      "languageNotes": "Clients implement a typing.Protocol and stay synchronous; EmbeddingService runs them on worker threads."
+    },
+    {
+      "id": "class:backend/client/embedding_client.py:EmbeddingClient",
+      "type": "class",
+      "name": "EmbeddingClient",
+      "filePath": "backend/client/embedding_client.py",
+      "lineRange": [20, 22],
+      "summary": "Protocol requiring embed_documents and embed_query so local and HTTP backends share one contract.",
+      "tags": ["protocol", "embedding", "interface"],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/client/embedding_client.py:LocalEmbeddingClient",
+      "type": "class",
+      "name": "LocalEmbeddingClient",
+      "filePath": "backend/client/embedding_client.py",
+      "lineRange": [25, 45],
+      "summary": "Offline fastembed ONNX embedder that batches similar-length texts and restores input order before L2 normalisation.",
+      "tags": ["embedding", "onnx", "local"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:backend/client/embedding_client.py:_HttpEmbeddingClient",
+      "type": "class",
+      "name": "_HttpEmbeddingClient",
+      "filePath": "backend/client/embedding_client.py",
+      "lineRange": [48, 53],
+      "summary": "Shared httpx client holder and close hook used by the Google and Cohere embedding backends.",
+      "tags": ["http-client", "embedding", "base-class"],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/client/embedding_client.py:GoogleEmbeddingClient",
+      "type": "class",
+      "name": "GoogleEmbeddingClient",
+      "filePath": "backend/client/embedding_client.py",
+      "lineRange": [56, 82],
+      "summary": "Gemini batchEmbedContents client that sends documents and queries with distinct task types in batches of 100.",
+      "tags": ["embedding", "google", "http-client"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:backend/client/embedding_client.py:GoogleEmbeddingClient._embed",
+      "type": "function",
+      "name": "GoogleEmbeddingClient._embed",
+      "filePath": "backend/client/embedding_client.py",
+      "lineRange": [64, 76],
+      "summary": "Posts Gemini batch embed requests in chunks of 100 and returns an L2-normalised float matrix.",
+      "tags": ["embedding", "google", "batching"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:backend/client/embedding_client.py:CohereEmbeddingClient",
+      "type": "class",
+      "name": "CohereEmbeddingClient",
+      "filePath": "backend/client/embedding_client.py",
+      "lineRange": [85, 108],
+      "summary": "Cohere v2 embed client that chunks texts at the 96-item request cap and uses search_document versus search_query input types.",
+      "tags": ["embedding", "cohere", "http-client"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:backend/client/embedding_client.py:CohereEmbeddingClient._embed",
+      "type": "function",
+      "name": "CohereEmbeddingClient._embed",
+      "filePath": "backend/client/embedding_client.py",
+      "lineRange": [93, 102],
+      "summary": "Posts Cohere embed requests in batches of 96 and L2-normalises the returned float vectors.",
+      "tags": ["embedding", "cohere", "batching"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/client/embedding_client.py:build_embedding_client",
+      "type": "function",
+      "name": "build_embedding_client",
+      "filePath": "backend/client/embedding_client.py",
+      "lineRange": [111, 122],
+      "summary": "Builds the Settings-selected embedding backend and raises EmbeddingUnavailable when the required API key is missing.",
+      "tags": ["factory", "embedding", "configuration"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/client/http.py",
+      "type": "file",
+      "name": "http.py",
+      "filePath": "backend/client/http.py",
+      "summary": "Factory for one shared httpx AsyncClient with a connect timeout from Settings and a keep-alive pool for outbound LLM and search calls.",
+      "tags": ["http-client", "factory", "connection-pool"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/client/http.py:build_http_client",
+      "type": "function",
+      "name": "build_http_client",
+      "filePath": "backend/client/http.py",
+      "lineRange": [10, 15],
+      "summary": "Creates a pooled async HTTP client using the configured LLM connect timeout and fixed connection limits.",
+      "tags": ["factory", "http-client", "async"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/client/rerank_client.py",
+      "type": "file",
+      "name": "rerank_client.py",
+      "filePath": "backend/client/rerank_client.py",
+      "summary": "Cross-encoder rerank backends for local fastembed ONNX and Cohere. rerank returns one score in [0, 1] per document, aligned with input order.",
+      "tags": ["rerank", "client", "cross-encoder"],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/client/rerank_client.py:RerankClient",
+      "type": "class",
+      "name": "RerankClient",
+      "filePath": "backend/client/rerank_client.py",
+      "lineRange": [16, 17],
+      "summary": "Protocol for rerank(query, docs) so local and Cohere backends return aligned relevance scores.",
+      "tags": ["protocol", "rerank", "interface"],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/client/rerank_client.py:LocalRerankClient",
+      "type": "class",
+      "name": "LocalRerankClient",
+      "filePath": "backend/client/rerank_client.py",
+      "lineRange": [20, 27],
+      "summary": "Local fastembed TextCrossEncoder that maps raw logits through a stable sigmoid into [0, 1] scores.",
+      "tags": ["rerank", "onnx", "local"],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/client/rerank_client.py:CohereRerankClient",
+      "type": "class",
+      "name": "CohereRerankClient",
+      "filePath": "backend/client/rerank_client.py",
+      "lineRange": [30, 49],
+      "summary": "Cohere v2 rerank client that writes relevance_score values back into input order and closes its httpx client.",
+      "tags": ["rerank", "cohere", "http-client"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:backend/client/rerank_client.py:build_rerank_client",
+      "type": "function",
+      "name": "build_rerank_client",
+      "filePath": "backend/client/rerank_client.py",
+      "lineRange": [52, 61],
+      "summary": "Builds the configured local or Cohere reranker and raises RuntimeError when the provider is disabled or the Cohere key is missing.",
+      "tags": ["factory", "rerank", "configuration"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/core/config.py",
+      "type": "file",
+      "name": "config.py",
+      "filePath": "backend/core/config.py",
+      "summary": "Sole environment reader for the app. Pydantic settings hold API keys, the free-tier model registry, RAG and rerank thresholds, and derived data paths.",
+      "tags": ["configuration", "settings", "environment", "pydantic"],
+      "complexity": "complex",
+      "languageNotes": "BaseSettings loads .env once; get_settings caches a single Settings instance with lru_cache."
+    },
+    {
+      "id": "class:backend/core/config.py:ModelSpec",
+      "type": "class",
+      "name": "ModelSpec",
+      "filePath": "backend/core/config.py",
+      "lineRange": [29, 40],
+      "summary": "Selectable chat model record with provider, system-prompt support, extra request params, and optional rpm/tpm quotas.",
+      "tags": ["data-model", "llm", "configuration"],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/core/config.py:ProviderConfig",
+      "type": "class",
+      "name": "ProviderConfig",
+      "filePath": "backend/core/config.py",
+      "lineRange": [93, 100],
+      "summary": "Named LLM provider endpoint plus API key, with a configured flag that is true only when a key is present.",
+      "tags": ["data-model", "llm", "configuration"],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/core/config.py:Settings",
+      "type": "class",
+      "name": "Settings",
+      "filePath": "backend/core/config.py",
+      "lineRange": [105, 295],
+      "summary": "Environment-backed settings for providers, retrieval, rerank, search, caching, upload limits, and server paths, plus runtime validation and a masked log snapshot.",
+      "tags": ["configuration", "settings", "validation"],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:backend/core/config.py:Settings.model_specs",
+      "type": "function",
+      "name": "Settings.model_specs",
+      "filePath": "backend/core/config.py",
+      "lineRange": [259, 269],
+      "summary": "Builds the chat model registry from LLM_MODELS JSON or the built-in free-tier defaults, rejecting invalid JSON and non-list payloads.",
+      "tags": ["configuration", "llm", "validation"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:backend/core/config.py:Settings.validate_runtime",
+      "type": "function",
+      "name": "Settings.validate_runtime",
+      "filePath": "backend/core/config.py",
+      "lineRange": [271, 286],
+      "summary": "Fails fast on impossible chunk overlap or an unknown default model, and returns warnings for missing provider or search keys.",
+      "tags": ["validation", "configuration", "fail-fast"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:backend/core/config.py:get_settings",
+      "type": "function",
+      "name": "get_settings",
+      "filePath": "backend/core/config.py",
+      "lineRange": [299, 300],
+      "summary": "Returns the process-wide Settings instance, cached so environment is parsed only once.",
+      "tags": ["factory", "singleton", "configuration"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/core/config.py:configure_logging",
+      "type": "function",
+      "name": "configure_logging",
+      "filePath": "backend/core/config.py",
+      "lineRange": [303, 307],
+      "summary": "Installs a basic logging format and maps a level name to the logging module, defaulting to INFO.",
+      "tags": ["logging", "configuration", "bootstrap"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/services/__init__.py",
+      "type": "file",
+      "name": "__init__.py",
+      "filePath": "backend/services/__init__.py",
+      "summary": "Empty package marker that lets backend.services modules be imported as a package.",
+      "tags": ["package", "services", "marker"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/services/embedding_service.py",
+      "type": "file",
+      "name": "embedding_service.py",
+      "filePath": "backend/services/embedding_service.py",
+      "summary": "Lazy embedding lifecycle with a 60-second failure cooldown, thread-safe load, and async wrappers around the synchronous clients.",
+      "tags": ["service", "embedding", "lifecycle", "async"],
+      "complexity": "moderate",
+      "languageNotes": "Blocking embed calls are offloaded with asyncio.to_thread; a failed load is remembered until RETRY_AFTER_S elapses."
+    },
+    {
+      "id": "class:backend/services/embedding_service.py:EmbeddingService",
+      "type": "class",
+      "name": "EmbeddingService",
+      "filePath": "backend/services/embedding_service.py",
+      "lineRange": [28, 111],
+      "summary": "Owns the embedding backend: double-checked loading, dimension warmup, document and query embed, and a status snapshot for health reporting.",
+      "tags": ["service", "embedding", "lifecycle"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:backend/services/embedding_service.py:EmbeddingService._load",
+      "type": "function",
+      "name": "EmbeddingService._load",
+      "filePath": "backend/services/embedding_service.py",
+      "lineRange": [60, 77],
+      "summary": "Instantiates the embedding backend under a lock, records vector dimension from a warmup query, and memos failures for 60 seconds without raising.",
+      "tags": ["lifecycle", "embedding", "error-handling"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:backend/services/rerank_service.py",
+      "type": "file",
+      "name": "rerank_service.py",
+      "filePath": "backend/services/rerank_service.py",
+      "summary": "Lazy reranker lifecycle with cooldown, a timeout-bounded async rerank, and status so retrieval can fall back to fused order when the model is down.",
+      "tags": ["service", "rerank", "lifecycle", "async"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:backend/services/rerank_service.py:RerankService",
+      "type": "class",
+      "name": "RerankService",
+      "filePath": "backend/services/rerank_service.py",
+      "lineRange": [24, 95],
+      "summary": "Loads the configured rerank backend on demand, exposes blocking and timed async rerank, and reports enabled, ready, and error state.",
+      "tags": ["service", "rerank", "lifecycle"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:backend/services/rerank_service.py:RerankService._load",
+      "type": "function",
+      "name": "RerankService._load",
+      "filePath": "backend/services/rerank_service.py",
+      "lineRange": [51, 66],
+      "summary": "Constructs the rerank backend once under a lock and records failures for 60 seconds so retrieval keeps the fused ranking.",
+      "tags": ["lifecycle", "rerank", "error-handling"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:backend/utils/numeric.py",
+      "type": "file",
+      "name": "numeric.py",
+      "filePath": "backend/utils/numeric.py",
+      "summary": "Shared numeric helpers: row-wise L2 normalisation for embedding matrices and a numerically stable sigmoid for rerank logits.",
+      "tags": ["utility", "numeric", "normalization"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/utils/numeric.py:l2_normalize",
+      "type": "function",
+      "name": "l2_normalize",
+      "filePath": "backend/utils/numeric.py",
+      "lineRange": [10, 17],
+      "summary": "L2-normalises each row of a float32 matrix, treating a 1-D vector as a single row and leaving zero rows unchanged.",
+      "tags": ["utility", "numeric", "embedding"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/utils/numeric.py:sigmoid",
+      "type": "function",
+      "name": "sigmoid",
+      "filePath": "backend/utils/numeric.py",
+      "lineRange": [20, 25],
+      "summary": "Computes a numerically stable logistic function, branching on the sign of the input to avoid overflow.",
+      "tags": ["utility", "numeric", "rerank"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:tests/test_frontend_shell.py",
+      "type": "file",
+      "name": "test_frontend_shell.py",
+      "filePath": "tests/test_frontend_shell.py",
+      "summary": "Static checks that the four workspace modes live in one composer dropdown matching backend MODES, and that the sidebar, header, and rail tooltips stay accessible.",
+      "tags": ["test", "frontend", "accessibility"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:tests/test_frontend_shell.py:test_modes_are_not_rendered_as_permanent_rows_or_header_tabs",
+      "type": "function",
+      "name": "test_modes_are_not_rendered_as_permanent_rows_or_header_tabs",
+      "filePath": "tests/test_frontend_shell.py",
+      "lineRange": [60, 69],
+      "summary": "Asserts retired mode-tab markup is absent from HTML, CSS, and JS, and that the header has no tablist or pressed mode toggles.",
+      "tags": ["test", "frontend", "regression"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:tests/test_frontend_shell.py:test_rail_tooltip_for_new_chat_lives_on_the_wrapper_not_the_clipping_button",
+      "type": "function",
+      "name": "test_rail_tooltip_for_new_chat_lives_on_the_wrapper_not_the_clipping_button",
+      "filePath": "tests/test_frontend_shell.py",
+      "lineRange": [91, 103],
+      "summary": "Guards the collapsed-rail New Chat tooltip so it sits on the wrapper, not the overflow-hidden button, and appears on keyboard focus.",
+      "tags": ["test", "accessibility", "frontend"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:tests/test_parser_formats.py",
+      "type": "file",
+      "name": "test_parser_formats.py",
+      "filePath": "tests/test_parser_formats.py",
+      "summary": "Covers document parsing for office, web, legacy, and image/OCR formats, PDF pdfium versus pdfplumber fallbacks, and embedding load cooldown plus vector order.",
+      "tags": ["test", "parser", "ocr", "document-ingestion"],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:tests/test_parser_formats.py:_image",
+      "type": "function",
+      "name": "_image",
+      "filePath": "tests/test_parser_formats.py",
+      "lineRange": [27, 38],
+      "summary": "Draws the shared refund-policy phrase onto a white image and saves it in the requested format for OCR tests.",
+      "tags": ["test", "fixture", "ocr"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_parser_formats.py:test_pptx_slides_notes_and_tables",
+      "type": "function",
+      "name": "test_pptx_slides_notes_and_tables",
+      "filePath": "tests/test_parser_formats.py",
+      "lineRange": [59, 74],
+      "summary": "Builds a PowerPoint slide with a table and checks the parser extracts both the cell text and the slide content.",
+      "tags": ["test", "parser", "pptx"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:tests/test_parser_formats.py:test_odt",
+      "type": "function",
+      "name": "test_odt",
+      "filePath": "tests/test_parser_formats.py",
+      "lineRange": [105, 114],
+      "summary": "Writes a minimal ODT zip and asserts the parser recovers the document text.",
+      "tags": ["test", "parser", "odt"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_parser_formats.py:test_embedding_load_failure_is_retried_after_cooldown",
+      "type": "function",
+      "name": "test_embedding_load_failure_is_retried_after_cooldown",
+      "filePath": "tests/test_parser_formats.py",
+      "lineRange": [183, 198],
+      "summary": "Checks EmbeddingService memos a failed factory call during cooldown and retries successfully after the failure timestamp ages out.",
+      "tags": ["test", "embedding", "lifecycle"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:tests/test_parser_formats.py:_text_pdf",
+      "type": "function",
+      "name": "_text_pdf",
+      "filePath": "tests/test_parser_formats.py",
+      "lineRange": [210, 230],
+      "summary": "Hand-builds a small text PDF with one content stream per page so parser tests can distinguish pdfium from pdfplumber.",
+      "tags": ["test", "fixture", "pdf"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:tests/test_parser_formats.py:test_pdf_falls_back_to_pdfplumber_when_pdfium_fails",
+      "type": "function",
+      "name": "test_pdf_falls_back_to_pdfplumber_when_pdfium_fails",
+      "filePath": "tests/test_parser_formats.py",
+      "lineRange": [242, 251],
+      "summary": "Forces the pdfium parser to raise and asserts the document is still read via the pdfplumber path.",
+      "tags": ["test", "parser", "pdf"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_parser_formats.py:test_scanned_pdf_is_not_reparsed_by_other_text_parsers",
+      "type": "function",
+      "name": "test_scanned_pdf_is_not_reparsed_by_other_text_parsers",
+      "filePath": "tests/test_parser_formats.py",
+      "lineRange": [254, 263],
+      "summary": "Ensures an image-only PDF with OCR disabled returns no pages and does not invoke pdfplumber or PyPDF2.",
+      "tags": ["test", "parser", "pdf"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_parser_formats.py:test_embeddings_keep_input_order_after_length_sorting",
+      "type": "function",
+      "name": "test_embeddings_keep_input_order_after_length_sorting",
+      "filePath": "tests/test_parser_formats.py",
+      "lineRange": [273, 288],
+      "summary": "Stubs the local embedder so vector magnitude encodes text length and asserts batch sorting is undone before the result is returned.",
+      "tags": ["test", "embedding", "ordering"],
+      "complexity": "moderate"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:backend/client/embedding_client.py",
+      "target": "file:backend/core/config.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:backend/client/embedding_client.py",
+      "target": "file:backend/core/exceptions.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:backend/client/embedding_client.py",
+      "target": "file:backend/utils/numeric.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:backend/client/http.py",
+      "target": "file:backend/core/config.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:backend/client/rerank_client.py",
+      "target": "file:backend/core/config.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:backend/client/rerank_client.py",
+      "target": "file:backend/utils/numeric.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:backend/services/embedding_service.py",
+      "target": "file:backend/client/embedding_client.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:backend/services/embedding_service.py",
+      "target": "file:backend/core/config.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:backend/services/embedding_service.py",
+      "target": "file:backend/core/exceptions.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:backend/services/rerank_service.py",
+      "target": "file:backend/client/rerank_client.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:backend/services/rerank_service.py",
+      "target": "file:backend/core/config.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/test_frontend_shell.py",
+      "target": "file:backend/core/config.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/test_parser_formats.py",
+      "target": "file:backend/core/exceptions.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/test_parser_formats.py",
+      "target": "file:backend/services/__init__.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/test_parser_formats.py",
+      "target": "file:backend/services/embedding_service.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/test_parser_formats.py",
+      "target": "file:backend/services/parser.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:backend/client/embedding_client.py",
+      "target": "class:backend/client/embedding_client.py:EmbeddingClient",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/client/embedding_client.py",
+      "target": "class:backend/client/embedding_client.py:LocalEmbeddingClient",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/client/embedding_client.py",
+      "target": "class:backend/client/embedding_client.py:_HttpEmbeddingClient",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/client/embedding_client.py",
+      "target": "class:backend/client/embedding_client.py:GoogleEmbeddingClient",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/client/embedding_client.py",
+      "target": "function:backend/client/embedding_client.py:GoogleEmbeddingClient._embed",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/client/embedding_client.py",
+      "target": "class:backend/client/embedding_client.py:CohereEmbeddingClient",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/client/embedding_client.py",
+      "target": "function:backend/client/embedding_client.py:CohereEmbeddingClient._embed",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/client/embedding_client.py",
+      "target": "function:backend/client/embedding_client.py:build_embedding_client",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/client/http.py",
+      "target": "function:backend/client/http.py:build_http_client",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/client/rerank_client.py",
+      "target": "class:backend/client/rerank_client.py:RerankClient",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/client/rerank_client.py",
+      "target": "class:backend/client/rerank_client.py:LocalRerankClient",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/client/rerank_client.py",
+      "target": "class:backend/client/rerank_client.py:CohereRerankClient",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/client/rerank_client.py",
+      "target": "function:backend/client/rerank_client.py:build_rerank_client",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/core/config.py",
+      "target": "class:backend/core/config.py:ModelSpec",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/core/config.py",
+      "target": "class:backend/core/config.py:ProviderConfig",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/core/config.py",
+      "target": "class:backend/core/config.py:Settings",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/core/config.py",
+      "target": "function:backend/core/config.py:Settings.model_specs",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/core/config.py",
+      "target": "function:backend/core/config.py:Settings.validate_runtime",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/core/config.py",
+      "target": "function:backend/core/config.py:get_settings",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/core/config.py",
+      "target": "function:backend/core/config.py:configure_logging",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/services/embedding_service.py",
+      "target": "class:backend/services/embedding_service.py:EmbeddingService",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/services/embedding_service.py",
+      "target": "function:backend/services/embedding_service.py:EmbeddingService._load",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/services/rerank_service.py",
+      "target": "class:backend/services/rerank_service.py:RerankService",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/services/rerank_service.py",
+      "target": "function:backend/services/rerank_service.py:RerankService._load",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/utils/numeric.py",
+      "target": "function:backend/utils/numeric.py:l2_normalize",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/utils/numeric.py",
+      "target": "function:backend/utils/numeric.py:sigmoid",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_shell.py",
+      "target": "function:tests/test_frontend_shell.py:test_modes_are_not_rendered_as_permanent_rows_or_header_tabs",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_shell.py",
+      "target": "function:tests/test_frontend_shell.py:test_rail_tooltip_for_new_chat_lives_on_the_wrapper_not_the_clipping_button",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_parser_formats.py",
+      "target": "function:tests/test_parser_formats.py:_image",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_parser_formats.py",
+      "target": "function:tests/test_parser_formats.py:test_pptx_slides_notes_and_tables",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_parser_formats.py",
+      "target": "function:tests/test_parser_formats.py:test_odt",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_parser_formats.py",
+      "target": "function:tests/test_parser_formats.py:test_embedding_load_failure_is_retried_after_cooldown",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_parser_formats.py",
+      "target": "function:tests/test_parser_formats.py:_text_pdf",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_parser_formats.py",
+      "target": "function:tests/test_parser_formats.py:test_pdf_falls_back_to_pdfplumber_when_pdfium_fails",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_parser_formats.py",
+      "target": "function:tests/test_parser_formats.py:test_scanned_pdf_is_not_reparsed_by_other_text_parsers",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_parser_formats.py",
+      "target": "function:tests/test_parser_formats.py:test_embeddings_keep_input_order_after_length_sorting",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/client/embedding_client.py",
+      "target": "class:backend/client/embedding_client.py:EmbeddingClient",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/client/embedding_client.py",
+      "target": "class:backend/client/embedding_client.py:LocalEmbeddingClient",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/client/embedding_client.py",
+      "target": "class:backend/client/embedding_client.py:_HttpEmbeddingClient",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/client/embedding_client.py",
+      "target": "class:backend/client/embedding_client.py:GoogleEmbeddingClient",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/client/embedding_client.py",
+      "target": "class:backend/client/embedding_client.py:CohereEmbeddingClient",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/client/embedding_client.py",
+      "target": "function:backend/client/embedding_client.py:build_embedding_client",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/client/http.py",
+      "target": "function:backend/client/http.py:build_http_client",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/client/rerank_client.py",
+      "target": "class:backend/client/rerank_client.py:RerankClient",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/client/rerank_client.py",
+      "target": "class:backend/client/rerank_client.py:LocalRerankClient",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/client/rerank_client.py",
+      "target": "class:backend/client/rerank_client.py:CohereRerankClient",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/client/rerank_client.py",
+      "target": "function:backend/client/rerank_client.py:build_rerank_client",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/core/config.py",
+      "target": "class:backend/core/config.py:ModelSpec",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/core/config.py",
+      "target": "class:backend/core/config.py:ProviderConfig",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/core/config.py",
+      "target": "class:backend/core/config.py:Settings",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/core/config.py",
+      "target": "function:backend/core/config.py:get_settings",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/core/config.py",
+      "target": "function:backend/core/config.py:configure_logging",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/services/embedding_service.py",
+      "target": "class:backend/services/embedding_service.py:EmbeddingService",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/services/rerank_service.py",
+      "target": "class:backend/services/rerank_service.py:RerankService",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/utils/numeric.py",
+      "target": "function:backend/utils/numeric.py:l2_normalize",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/utils/numeric.py",
+      "target": "function:backend/utils/numeric.py:sigmoid",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_shell.py",
+      "target": "function:tests/test_frontend_shell.py:test_modes_are_not_rendered_as_permanent_rows_or_header_tabs",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_shell.py",
+      "target": "function:tests/test_frontend_shell.py:test_rail_tooltip_for_new_chat_lives_on_the_wrapper_not_the_clipping_button",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_parser_formats.py",
+      "target": "function:tests/test_parser_formats.py:_image",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_parser_formats.py",
+      "target": "function:tests/test_parser_formats.py:test_pptx_slides_notes_and_tables",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_parser_formats.py",
+      "target": "function:tests/test_parser_formats.py:test_odt",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_parser_formats.py",
+      "target": "function:tests/test_parser_formats.py:test_embedding_load_failure_is_retried_after_cooldown",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_parser_formats.py",
+      "target": "function:tests/test_parser_formats.py:_text_pdf",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_parser_formats.py",
+      "target": "function:tests/test_parser_formats.py:test_pdf_falls_back_to_pdfplumber_when_pdfium_fails",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_parser_formats.py",
+      "target": "function:tests/test_parser_formats.py:test_scanned_pdf_is_not_reparsed_by_other_text_parsers",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_parser_formats.py",
+      "target": "function:tests/test_parser_formats.py:test_embeddings_keep_input_order_after_length_sorting",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:backend/client/embedding_client.py:GoogleEmbeddingClient",
+      "target": "class:backend/client/embedding_client.py:_HttpEmbeddingClient",
+      "type": "inherits",
+      "direction": "forward",
+      "weight": 0.9
+    },
+    {
+      "source": "class:backend/client/embedding_client.py:CohereEmbeddingClient",
+      "target": "class:backend/client/embedding_client.py:_HttpEmbeddingClient",
+      "type": "inherits",
+      "direction": "forward",
+      "weight": 0.9
+    },
+    {
+      "source": "class:backend/client/embedding_client.py:LocalEmbeddingClient",
+      "target": "class:backend/client/embedding_client.py:EmbeddingClient",
+      "type": "implements",
+      "direction": "forward",
+      "weight": 0.9
+    },
+    {
+      "source": "class:backend/client/embedding_client.py:GoogleEmbeddingClient",
+      "target": "class:backend/client/embedding_client.py:EmbeddingClient",
+      "type": "implements",
+      "direction": "forward",
+      "weight": 0.9
+    },
+    {
+      "source": "class:backend/client/embedding_client.py:CohereEmbeddingClient",
+      "target": "class:backend/client/embedding_client.py:EmbeddingClient",
+      "type": "implements",
+      "direction": "forward",
+      "weight": 0.9
+    },
+    {
+      "source": "class:backend/client/rerank_client.py:LocalRerankClient",
+      "target": "class:backend/client/rerank_client.py:RerankClient",
+      "type": "implements",
+      "direction": "forward",
+      "weight": 0.9
+    },
+    {
+      "source": "class:backend/client/rerank_client.py:CohereRerankClient",
+      "target": "class:backend/client/rerank_client.py:RerankClient",
+      "type": "implements",
+      "direction": "forward",
+      "weight": 0.9
+    },
+    {
+      "source": "class:backend/client/embedding_client.py:LocalEmbeddingClient",
+      "target": "function:backend/utils/numeric.py:l2_normalize",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:backend/client/embedding_client.py:GoogleEmbeddingClient._embed",
+      "target": "function:backend/utils/numeric.py:l2_normalize",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:backend/client/embedding_client.py:CohereEmbeddingClient._embed",
+      "target": "function:backend/utils/numeric.py:l2_normalize",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:backend/client/embedding_client.py:build_embedding_client",
+      "target": "class:backend/core/exceptions.py:EmbeddingUnavailable",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:backend/client/rerank_client.py:LocalRerankClient",
+      "target": "function:backend/utils/numeric.py:sigmoid",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:backend/services/embedding_service.py:EmbeddingService._load",
+      "target": "function:backend/client/embedding_client.py:build_embedding_client",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:backend/services/embedding_service.py:EmbeddingService",
+      "target": "class:backend/client/embedding_client.py:EmbeddingClient",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:backend/services/embedding_service.py:EmbeddingService",
+      "target": "class:backend/core/exceptions.py:EmbeddingUnavailable",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:backend/services/rerank_service.py:RerankService._load",
+      "target": "function:backend/client/rerank_client.py:build_rerank_client",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:backend/services/rerank_service.py:RerankService",
+      "target": "class:backend/client/rerank_client.py:RerankClient",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:tests/test_parser_formats.py:test_pptx_slides_notes_and_tables",
+      "target": "class:backend/services/parser.py:DocumentParser",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:tests/test_parser_formats.py:test_odt",
+      "target": "class:backend/services/parser.py:DocumentParser",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:tests/test_parser_formats.py:test_pdf_falls_back_to_pdfplumber_when_pdfium_fails",
+      "target": "class:backend/services/parser.py:DocumentParser",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:tests/test_parser_formats.py:test_scanned_pdf_is_not_reparsed_by_other_text_parsers",
+      "target": "class:backend/services/parser.py:DocumentParser",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:tests/test_parser_formats.py:test_embedding_load_failure_is_retried_after_cooldown",
+      "target": "class:backend/services/embedding_service.py:EmbeddingService",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:tests/test_parser_formats.py:test_embedding_load_failure_is_retried_after_cooldown",
+      "target": "function:backend/services/embedding_service.py:EmbeddingService._load",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:tests/test_parser_formats.py:test_embedding_load_failure_is_retried_after_cooldown",
+      "target": "class:tests/conftest.py:FakeEmbedder",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:tests/test_parser_formats.py:test_embeddings_keep_input_order_after_length_sorting",
+      "target": "class:backend/client/embedding_client.py:LocalEmbeddingClient",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/core/config.py",
+      "target": "file:tests/test_frontend_shell.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:backend/services/parser.py",
+      "target": "file:tests/test_parser_formats.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:backend/services/embedding_service.py",
+      "target": "file:tests/test_parser_formats.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:backend/core/exceptions.py",
+      "target": "file:tests/test_parser_formats.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:backend/client/embedding_client.py",
+      "target": "file:tests/test_parser_formats.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    }
+  ]
+}

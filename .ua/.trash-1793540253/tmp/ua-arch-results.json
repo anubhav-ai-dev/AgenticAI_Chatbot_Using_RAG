@@ -1,0 +1,1335 @@
+{
+  "scriptCompleted": true,
+  "commonPrefix": "",
+  "directoryGroups": {
+    "backend": [
+      "file:backend/api/mcp_server.py",
+      "file:backend/api/routes.py",
+      "file:backend/client/search_client.py",
+      "file:backend/core/container.py",
+      "file:backend/main.py",
+      "file:backend/models/api.py",
+      "file:backend/services/artifact.py",
+      "file:backend/services/chat_service.py",
+      "file:backend/services/search_service.py",
+      "file:backend/utils/cache.py",
+      "file:backend/utils/sse.py",
+      "endpoint:backend/api/routes.py:GET /ping",
+      "endpoint:backend/api/routes.py:GET /health",
+      "endpoint:backend/api/routes.py:GET /config",
+      "endpoint:backend/api/routes.py:GET /models",
+      "endpoint:backend/api/routes.py:POST /chat/stream",
+      "endpoint:backend/api/routes.py:POST /chat",
+      "endpoint:backend/api/routes.py:POST /generate",
+      "endpoint:backend/api/routes.py:GET /sessions",
+      "endpoint:backend/api/routes.py:POST /sessions",
+      "endpoint:backend/api/routes.py:GET /sessions/{session_id}",
+      "endpoint:backend/api/routes.py:PATCH /sessions/{session_id}",
+      "endpoint:backend/api/routes.py:DELETE /sessions/{session_id}",
+      "endpoint:backend/api/routes.py:POST /sessions/{session_id}/messages",
+      "endpoint:backend/api/routes.py:GET /messages/{message_id}/download",
+      "endpoint:backend/api/routes.py:POST /messages/{message_id}/feedback",
+      "endpoint:backend/api/routes.py:POST /upload",
+      "endpoint:backend/api/routes.py:GET /documents",
+      "endpoint:backend/api/routes.py:DELETE /documents/{doc_id}",
+      "endpoint:backend/api/routes.py:POST /github/connect",
+      "endpoint:backend/api/routes.py:GET /github/repos",
+      "endpoint:backend/api/routes.py:DELETE /github/repos/{repo_id}",
+      "endpoint:backend/api/routes.py:POST /github/oauth/device",
+      "endpoint:backend/api/routes.py:POST /github/oauth/poll",
+      "endpoint:backend/api/routes.py:POST /retrieve",
+      "endpoint:backend/api/routes.py:POST /search",
+      "file:backend/client/embedding_client.py",
+      "file:backend/client/http.py",
+      "file:backend/client/rerank_client.py",
+      "file:backend/core/config.py",
+      "file:backend/services/__init__.py",
+      "file:backend/services/embedding_service.py",
+      "file:backend/services/rerank_service.py",
+      "file:backend/utils/numeric.py",
+      "file:backend/client/llm_client.py",
+      "file:backend/core/exceptions.py",
+      "file:backend/services/llm_service.py",
+      "file:backend/utils/rate_limiter.py",
+      "file:backend/core/database.py",
+      "file:backend/models/db.py",
+      "file:backend/services/document_service.py",
+      "file:backend/services/github_service.py",
+      "file:backend/services/session_service.py",
+      "file:backend/utils/timeutil.py",
+      "table:backend/models/db.py:sessions",
+      "table:backend/models/db.py:messages",
+      "table:backend/models/db.py:documents",
+      "table:backend/models/db.py:github_credentials",
+      "table:backend/models/db.py:repo_contexts",
+      "file:backend/services/index_store.py",
+      "file:backend/services/prompt_builder.py",
+      "file:backend/services/retrieval_service.py",
+      "file:backend/utils/ranking.py",
+      "file:backend/utils/streaming.py",
+      "file:backend/utils/text.py",
+      "file:backend/client/web_client.py",
+      "file:backend/services/parser.py",
+      "file:backend/utils/net.py",
+      "file:backend/__init__.py",
+      "file:backend/api/__init__.py",
+      "file:backend/client/__init__.py",
+      "file:backend/config.py",
+      "file:backend/core/__init__.py",
+      "file:backend/models/__init__.py",
+      "file:backend/utils/__init__.py"
+    ],
+    "tests": [
+      "file:tests/test_api.py",
+      "file:tests/test_live.py",
+      "file:tests/test_frontend_shell.py",
+      "file:tests/test_parser_formats.py",
+      "file:tests/conftest.py",
+      "file:tests/test_artifacts.py",
+      "file:tests/test_llm.py",
+      "file:tests/test_retrieval.py",
+      "file:tests/test_github.py",
+      "file:tests/test_units.py",
+      "file:tests/browser_harness.py",
+      "file:tests/test_frontend_followup.py",
+      "file:tests/test_frontend_guards.py",
+      "file:tests/test_frontend_motion.py",
+      "file:tests/test_frontend_startup.py",
+      "file:tests/test_frontend_workspaces.py",
+      "file:tests/__init__.py",
+      "file:tests/test_architecture.py",
+      "file:tests/test_frontend_reference.py",
+      "file:tests/test_frontend_sanitizer.py"
+    ],
+    "root": [
+      "config:.env.example",
+      "service:Procfile",
+      "document:README.md",
+      "config:pytest.ini",
+      "document:requirements-dev.txt",
+      "document:requirements.txt",
+      "document:skills.md",
+      "file:Pipfile"
+    ],
+    "docs": [
+      "document:docs/redesign/PROJECT_BRIEF.md",
+      "document:docs/redesign/audit.md",
+      "document:docs/redesign/design-spec.md",
+      "document:docs/redesign/integration-notes.md",
+      "document:docs/redesign/integration-test-plan.md",
+      "document:docs/redesign/qa-report-04.md",
+      "document:docs/redesign/qa-report-05.md",
+      "document:docs/redesign/qa-report-06.md",
+      "document:docs/redesign/security-issue-authz.md",
+      "document:docs/redesign/stage4-backlog.md",
+      "document:docs/redesign/ui-ux-implementation-notes.md",
+      "document:docs/redesign/view-contract.md",
+      "document:docs/AI_ASSISTANT_PRO_MASTER_TASK.md"
+    ],
+    "frontend": [
+      "file:frontend/css/ai-viz.css",
+      "file:frontend/css/animations.css",
+      "file:frontend/css/components.css",
+      "file:frontend/css/intro.css",
+      "file:frontend/css/main.css",
+      "file:frontend/css/reference.css",
+      "file:frontend/css/syntax.css",
+      "file:frontend/css/workspace.css",
+      "file:frontend/__init__.py",
+      "document:frontend/assets/LICENSE-lucide.txt",
+      "file:frontend/index.html",
+      "file:frontend/js/api.js",
+      "file:frontend/js/app.js",
+      "file:frontend/js/chat.js",
+      "file:frontend/js/components/ai-viz.js",
+      "file:frontend/js/components/code-preview.js",
+      "file:frontend/js/components/dialog.js",
+      "file:frontend/js/components/documents.js",
+      "file:frontend/js/components/menu.js",
+      "file:frontend/js/components/model-select.js",
+      "file:frontend/js/components/motion.js",
+      "file:frontend/js/components/notifications.js",
+      "file:frontend/js/components/prefs.js",
+      "file:frontend/js/components/radiogroup.js",
+      "file:frontend/js/components/settings.js",
+      "file:frontend/js/components/workspaces.js",
+      "file:frontend/js/icons.js",
+      "file:frontend/js/intro.js",
+      "file:frontend/js/theme.js",
+      "file:frontend/js/ui.js",
+      "file:frontend/js/utils.js"
+    ],
+    "data": [
+      "file:data/.gitkeep"
+    ]
+  },
+  "packageGroups": {
+    "backend/api": [
+      "file:backend/api/mcp_server.py",
+      "file:backend/api/routes.py",
+      "endpoint:backend/api/routes.py:GET /ping",
+      "endpoint:backend/api/routes.py:GET /health",
+      "endpoint:backend/api/routes.py:GET /config",
+      "endpoint:backend/api/routes.py:GET /models",
+      "endpoint:backend/api/routes.py:POST /chat/stream",
+      "endpoint:backend/api/routes.py:POST /chat",
+      "endpoint:backend/api/routes.py:POST /generate",
+      "endpoint:backend/api/routes.py:GET /sessions",
+      "endpoint:backend/api/routes.py:POST /sessions",
+      "endpoint:backend/api/routes.py:GET /sessions/{session_id}",
+      "endpoint:backend/api/routes.py:PATCH /sessions/{session_id}",
+      "endpoint:backend/api/routes.py:DELETE /sessions/{session_id}",
+      "endpoint:backend/api/routes.py:POST /sessions/{session_id}/messages",
+      "endpoint:backend/api/routes.py:GET /messages/{message_id}/download",
+      "endpoint:backend/api/routes.py:POST /messages/{message_id}/feedback",
+      "endpoint:backend/api/routes.py:POST /upload",
+      "endpoint:backend/api/routes.py:GET /documents",
+      "endpoint:backend/api/routes.py:DELETE /documents/{doc_id}",
+      "endpoint:backend/api/routes.py:POST /github/connect",
+      "endpoint:backend/api/routes.py:GET /github/repos",
+      "endpoint:backend/api/routes.py:DELETE /github/repos/{repo_id}",
+      "endpoint:backend/api/routes.py:POST /github/oauth/device",
+      "endpoint:backend/api/routes.py:POST /github/oauth/poll",
+      "endpoint:backend/api/routes.py:POST /retrieve",
+      "endpoint:backend/api/routes.py:POST /search",
+      "file:backend/api/__init__.py"
+    ],
+    "backend/client": [
+      "file:backend/client/search_client.py",
+      "file:backend/client/embedding_client.py",
+      "file:backend/client/http.py",
+      "file:backend/client/rerank_client.py",
+      "file:backend/client/llm_client.py",
+      "file:backend/client/web_client.py",
+      "file:backend/client/__init__.py"
+    ],
+    "backend/core": [
+      "file:backend/core/container.py",
+      "file:backend/core/config.py",
+      "file:backend/core/exceptions.py",
+      "file:backend/core/database.py",
+      "file:backend/core/__init__.py"
+    ],
+    "backend": [
+      "file:backend/main.py",
+      "file:backend/__init__.py",
+      "file:backend/config.py"
+    ],
+    "backend/models": [
+      "file:backend/models/api.py",
+      "file:backend/models/db.py",
+      "table:backend/models/db.py:sessions",
+      "table:backend/models/db.py:messages",
+      "table:backend/models/db.py:documents",
+      "table:backend/models/db.py:github_credentials",
+      "table:backend/models/db.py:repo_contexts",
+      "file:backend/models/__init__.py"
+    ],
+    "backend/services": [
+      "file:backend/services/artifact.py",
+      "file:backend/services/chat_service.py",
+      "file:backend/services/search_service.py",
+      "file:backend/services/__init__.py",
+      "file:backend/services/embedding_service.py",
+      "file:backend/services/rerank_service.py",
+      "file:backend/services/llm_service.py",
+      "file:backend/services/document_service.py",
+      "file:backend/services/github_service.py",
+      "file:backend/services/session_service.py",
+      "file:backend/services/index_store.py",
+      "file:backend/services/prompt_builder.py",
+      "file:backend/services/retrieval_service.py",
+      "file:backend/services/parser.py"
+    ],
+    "backend/utils": [
+      "file:backend/utils/cache.py",
+      "file:backend/utils/sse.py",
+      "file:backend/utils/numeric.py",
+      "file:backend/utils/rate_limiter.py",
+      "file:backend/utils/timeutil.py",
+      "file:backend/utils/ranking.py",
+      "file:backend/utils/streaming.py",
+      "file:backend/utils/text.py",
+      "file:backend/utils/net.py",
+      "file:backend/utils/__init__.py"
+    ],
+    "tests": [
+      "file:tests/test_api.py",
+      "file:tests/test_live.py",
+      "file:tests/test_frontend_shell.py",
+      "file:tests/test_parser_formats.py",
+      "file:tests/conftest.py",
+      "file:tests/test_artifacts.py",
+      "file:tests/test_llm.py",
+      "file:tests/test_retrieval.py",
+      "file:tests/test_github.py",
+      "file:tests/test_units.py",
+      "file:tests/browser_harness.py",
+      "file:tests/test_frontend_followup.py",
+      "file:tests/test_frontend_guards.py",
+      "file:tests/test_frontend_motion.py",
+      "file:tests/test_frontend_startup.py",
+      "file:tests/test_frontend_workspaces.py",
+      "file:tests/__init__.py",
+      "file:tests/test_architecture.py",
+      "file:tests/test_frontend_reference.py",
+      "file:tests/test_frontend_sanitizer.py"
+    ],
+    "root": [
+      "config:.env.example",
+      "service:Procfile",
+      "document:README.md",
+      "config:pytest.ini",
+      "document:requirements-dev.txt",
+      "document:requirements.txt",
+      "document:skills.md",
+      "file:Pipfile"
+    ],
+    "docs/redesign": [
+      "document:docs/redesign/PROJECT_BRIEF.md",
+      "document:docs/redesign/audit.md",
+      "document:docs/redesign/design-spec.md",
+      "document:docs/redesign/integration-notes.md",
+      "document:docs/redesign/integration-test-plan.md",
+      "document:docs/redesign/qa-report-04.md",
+      "document:docs/redesign/qa-report-05.md",
+      "document:docs/redesign/qa-report-06.md",
+      "document:docs/redesign/security-issue-authz.md",
+      "document:docs/redesign/stage4-backlog.md",
+      "document:docs/redesign/ui-ux-implementation-notes.md",
+      "document:docs/redesign/view-contract.md"
+    ],
+    "frontend/css": [
+      "file:frontend/css/ai-viz.css",
+      "file:frontend/css/animations.css",
+      "file:frontend/css/components.css",
+      "file:frontend/css/intro.css",
+      "file:frontend/css/main.css",
+      "file:frontend/css/reference.css",
+      "file:frontend/css/syntax.css",
+      "file:frontend/css/workspace.css"
+    ],
+    "data": [
+      "file:data/.gitkeep"
+    ],
+    "docs": [
+      "document:docs/AI_ASSISTANT_PRO_MASTER_TASK.md"
+    ],
+    "frontend": [
+      "file:frontend/__init__.py",
+      "file:frontend/index.html"
+    ],
+    "frontend/assets": [
+      "document:frontend/assets/LICENSE-lucide.txt"
+    ],
+    "frontend/js": [
+      "file:frontend/js/api.js",
+      "file:frontend/js/app.js",
+      "file:frontend/js/chat.js",
+      "file:frontend/js/components/ai-viz.js",
+      "file:frontend/js/components/code-preview.js",
+      "file:frontend/js/components/dialog.js",
+      "file:frontend/js/components/documents.js",
+      "file:frontend/js/components/menu.js",
+      "file:frontend/js/components/model-select.js",
+      "file:frontend/js/components/motion.js",
+      "file:frontend/js/components/notifications.js",
+      "file:frontend/js/components/prefs.js",
+      "file:frontend/js/components/radiogroup.js",
+      "file:frontend/js/components/settings.js",
+      "file:frontend/js/components/workspaces.js",
+      "file:frontend/js/icons.js",
+      "file:frontend/js/intro.js",
+      "file:frontend/js/theme.js",
+      "file:frontend/js/ui.js",
+      "file:frontend/js/utils.js"
+    ]
+  },
+  "nodeTypeGroups": {
+    "file": [
+      "file:backend/api/mcp_server.py",
+      "file:backend/api/routes.py",
+      "file:backend/client/search_client.py",
+      "file:backend/core/container.py",
+      "file:backend/main.py",
+      "file:backend/models/api.py",
+      "file:backend/services/artifact.py",
+      "file:backend/services/chat_service.py",
+      "file:backend/services/search_service.py",
+      "file:backend/utils/cache.py",
+      "file:backend/utils/sse.py",
+      "file:tests/test_api.py",
+      "file:tests/test_live.py",
+      "file:backend/client/embedding_client.py",
+      "file:backend/client/http.py",
+      "file:backend/client/rerank_client.py",
+      "file:backend/core/config.py",
+      "file:backend/services/__init__.py",
+      "file:backend/services/embedding_service.py",
+      "file:backend/services/rerank_service.py",
+      "file:backend/utils/numeric.py",
+      "file:tests/test_frontend_shell.py",
+      "file:tests/test_parser_formats.py",
+      "file:backend/client/llm_client.py",
+      "file:backend/core/exceptions.py",
+      "file:backend/services/llm_service.py",
+      "file:backend/utils/rate_limiter.py",
+      "file:tests/conftest.py",
+      "file:tests/test_artifacts.py",
+      "file:tests/test_llm.py",
+      "file:tests/test_retrieval.py",
+      "file:backend/core/database.py",
+      "file:backend/models/db.py",
+      "file:backend/services/document_service.py",
+      "file:backend/services/github_service.py",
+      "file:backend/services/session_service.py",
+      "file:backend/utils/timeutil.py",
+      "file:tests/test_github.py",
+      "file:backend/services/index_store.py",
+      "file:backend/services/prompt_builder.py",
+      "file:backend/services/retrieval_service.py",
+      "file:backend/utils/ranking.py",
+      "file:backend/utils/streaming.py",
+      "file:backend/utils/text.py",
+      "file:tests/test_units.py",
+      "file:tests/browser_harness.py",
+      "file:tests/test_frontend_followup.py",
+      "file:tests/test_frontend_guards.py",
+      "file:tests/test_frontend_motion.py",
+      "file:tests/test_frontend_startup.py",
+      "file:tests/test_frontend_workspaces.py",
+      "file:backend/client/web_client.py",
+      "file:backend/services/parser.py",
+      "file:backend/utils/net.py",
+      "file:frontend/css/ai-viz.css",
+      "file:frontend/css/animations.css",
+      "file:frontend/css/components.css",
+      "file:frontend/css/intro.css",
+      "file:frontend/css/main.css",
+      "file:frontend/css/reference.css",
+      "file:frontend/css/syntax.css",
+      "file:frontend/css/workspace.css",
+      "file:Pipfile",
+      "file:backend/__init__.py",
+      "file:backend/api/__init__.py",
+      "file:backend/client/__init__.py",
+      "file:backend/config.py",
+      "file:backend/core/__init__.py",
+      "file:backend/models/__init__.py",
+      "file:backend/utils/__init__.py",
+      "file:data/.gitkeep",
+      "file:frontend/__init__.py",
+      "file:frontend/index.html",
+      "file:frontend/js/api.js",
+      "file:frontend/js/app.js",
+      "file:frontend/js/chat.js",
+      "file:frontend/js/components/ai-viz.js",
+      "file:frontend/js/components/code-preview.js",
+      "file:frontend/js/components/dialog.js",
+      "file:frontend/js/components/documents.js",
+      "file:frontend/js/components/menu.js",
+      "file:frontend/js/components/model-select.js",
+      "file:frontend/js/components/motion.js",
+      "file:frontend/js/components/notifications.js",
+      "file:frontend/js/components/prefs.js",
+      "file:frontend/js/components/radiogroup.js",
+      "file:frontend/js/components/settings.js",
+      "file:frontend/js/components/workspaces.js",
+      "file:frontend/js/icons.js",
+      "file:frontend/js/intro.js",
+      "file:frontend/js/theme.js",
+      "file:frontend/js/ui.js",
+      "file:frontend/js/utils.js",
+      "file:tests/__init__.py",
+      "file:tests/test_architecture.py",
+      "file:tests/test_frontend_reference.py",
+      "file:tests/test_frontend_sanitizer.py"
+    ],
+    "endpoint": [
+      "endpoint:backend/api/routes.py:GET /ping",
+      "endpoint:backend/api/routes.py:GET /health",
+      "endpoint:backend/api/routes.py:GET /config",
+      "endpoint:backend/api/routes.py:GET /models",
+      "endpoint:backend/api/routes.py:POST /chat/stream",
+      "endpoint:backend/api/routes.py:POST /chat",
+      "endpoint:backend/api/routes.py:POST /generate",
+      "endpoint:backend/api/routes.py:GET /sessions",
+      "endpoint:backend/api/routes.py:POST /sessions",
+      "endpoint:backend/api/routes.py:GET /sessions/{session_id}",
+      "endpoint:backend/api/routes.py:PATCH /sessions/{session_id}",
+      "endpoint:backend/api/routes.py:DELETE /sessions/{session_id}",
+      "endpoint:backend/api/routes.py:POST /sessions/{session_id}/messages",
+      "endpoint:backend/api/routes.py:GET /messages/{message_id}/download",
+      "endpoint:backend/api/routes.py:POST /messages/{message_id}/feedback",
+      "endpoint:backend/api/routes.py:POST /upload",
+      "endpoint:backend/api/routes.py:GET /documents",
+      "endpoint:backend/api/routes.py:DELETE /documents/{doc_id}",
+      "endpoint:backend/api/routes.py:POST /github/connect",
+      "endpoint:backend/api/routes.py:GET /github/repos",
+      "endpoint:backend/api/routes.py:DELETE /github/repos/{repo_id}",
+      "endpoint:backend/api/routes.py:POST /github/oauth/device",
+      "endpoint:backend/api/routes.py:POST /github/oauth/poll",
+      "endpoint:backend/api/routes.py:POST /retrieve",
+      "endpoint:backend/api/routes.py:POST /search"
+    ],
+    "table": [
+      "table:backend/models/db.py:sessions",
+      "table:backend/models/db.py:messages",
+      "table:backend/models/db.py:documents",
+      "table:backend/models/db.py:github_credentials",
+      "table:backend/models/db.py:repo_contexts"
+    ],
+    "config": [
+      "config:.env.example",
+      "config:pytest.ini"
+    ],
+    "service": [
+      "service:Procfile"
+    ],
+    "document": [
+      "document:README.md",
+      "document:requirements-dev.txt",
+      "document:requirements.txt",
+      "document:skills.md",
+      "document:docs/redesign/PROJECT_BRIEF.md",
+      "document:docs/redesign/audit.md",
+      "document:docs/redesign/design-spec.md",
+      "document:docs/redesign/integration-notes.md",
+      "document:docs/redesign/integration-test-plan.md",
+      "document:docs/redesign/qa-report-04.md",
+      "document:docs/redesign/qa-report-05.md",
+      "document:docs/redesign/qa-report-06.md",
+      "document:docs/redesign/security-issue-authz.md",
+      "document:docs/redesign/stage4-backlog.md",
+      "document:docs/redesign/ui-ux-implementation-notes.md",
+      "document:docs/redesign/view-contract.md",
+      "document:docs/AI_ASSISTANT_PRO_MASTER_TASK.md",
+      "document:frontend/assets/LICENSE-lucide.txt"
+    ]
+  },
+  "crossCategoryEdges": [
+    {
+      "fromType": "file",
+      "toType": "file",
+      "edgeType": "imports",
+      "count": 160
+    },
+    {
+      "fromType": "file",
+      "toType": "file",
+      "edgeType": "tested_by",
+      "count": 96
+    },
+    {
+      "fromType": "file",
+      "toType": "file",
+      "edgeType": "depends_on",
+      "count": 50
+    },
+    {
+      "fromType": "file",
+      "toType": "file",
+      "edgeType": "related",
+      "count": 28
+    },
+    {
+      "fromType": "file",
+      "toType": "endpoint",
+      "edgeType": "contains",
+      "count": 25
+    },
+    {
+      "fromType": "document",
+      "toType": "file",
+      "edgeType": "documents",
+      "count": 14
+    },
+    {
+      "fromType": "file",
+      "toType": "table",
+      "edgeType": "contains",
+      "count": 5
+    },
+    {
+      "fromType": "document",
+      "toType": "config",
+      "edgeType": "documents",
+      "count": 2
+    },
+    {
+      "fromType": "document",
+      "toType": "document",
+      "edgeType": "documents",
+      "count": 2
+    },
+    {
+      "fromType": "config",
+      "toType": "file",
+      "edgeType": "configures",
+      "count": 1
+    },
+    {
+      "fromType": "document",
+      "toType": "service",
+      "edgeType": "documents",
+      "count": 1
+    },
+    {
+      "fromType": "document",
+      "toType": "file",
+      "edgeType": "related",
+      "count": 1
+    },
+    {
+      "fromType": "document",
+      "toType": "document",
+      "edgeType": "depends_on",
+      "count": 1
+    },
+    {
+      "fromType": "service",
+      "toType": "file",
+      "edgeType": "deploys",
+      "count": 1
+    }
+  ],
+  "nonCodeLinkCount": 47,
+  "interGroupImports": [
+    {
+      "from": "tests",
+      "to": "backend",
+      "count": 37
+    }
+  ],
+  "interPackageImports": [
+    {
+      "from": "backend/services",
+      "to": "backend/core",
+      "count": 20
+    },
+    {
+      "from": "tests",
+      "to": "backend/services",
+      "count": 14
+    },
+    {
+      "from": "backend/services",
+      "to": "backend/utils",
+      "count": 13
+    },
+    {
+      "from": "backend/core",
+      "to": "backend/services",
+      "count": 12
+    },
+    {
+      "from": "backend/api",
+      "to": "backend/services",
+      "count": 10
+    },
+    {
+      "from": "tests",
+      "to": "backend/core",
+      "count": 10
+    },
+    {
+      "from": "tests",
+      "to": "backend/utils",
+      "count": 9
+    },
+    {
+      "from": "backend/client",
+      "to": "backend/core",
+      "count": 7
+    },
+    {
+      "from": "backend/services",
+      "to": "backend/models",
+      "count": 6
+    },
+    {
+      "from": "backend/services",
+      "to": "backend/client",
+      "count": 5
+    },
+    {
+      "from": "backend/api",
+      "to": "backend/core",
+      "count": 4
+    },
+    {
+      "from": "backend/client",
+      "to": "backend/utils",
+      "count": 4
+    },
+    {
+      "from": "backend/core",
+      "to": "backend/client",
+      "count": 3
+    },
+    {
+      "from": "backend",
+      "to": "backend/core",
+      "count": 2
+    },
+    {
+      "from": "backend/api",
+      "to": "backend/models",
+      "count": 2
+    },
+    {
+      "from": "backend/core",
+      "to": "backend/utils",
+      "count": 2
+    },
+    {
+      "from": "tests",
+      "to": "backend/models",
+      "count": 2
+    },
+    {
+      "from": "backend",
+      "to": "backend/api",
+      "count": 1
+    },
+    {
+      "from": "backend/api",
+      "to": "backend/utils",
+      "count": 1
+    },
+    {
+      "from": "backend/models",
+      "to": "backend/core",
+      "count": 1
+    },
+    {
+      "from": "backend/models",
+      "to": "backend/utils",
+      "count": 1
+    },
+    {
+      "from": "tests",
+      "to": "backend",
+      "count": 1
+    },
+    {
+      "from": "tests",
+      "to": "backend/client",
+      "count": 1
+    }
+  ],
+  "intraGroupDensity": {
+    "backend": {
+      "internalEdges": 112,
+      "totalEdges": 149,
+      "density": 0.7517
+    },
+    "tests": {
+      "internalEdges": 11,
+      "totalEdges": 48,
+      "density": 0.2292
+    },
+    "root": {
+      "internalEdges": 0,
+      "totalEdges": 0,
+      "density": 0
+    },
+    "docs": {
+      "internalEdges": 0,
+      "totalEdges": 0,
+      "density": 0
+    },
+    "frontend": {
+      "internalEdges": 0,
+      "totalEdges": 0,
+      "density": 0
+    },
+    "data": {
+      "internalEdges": 0,
+      "totalEdges": 0,
+      "density": 0
+    }
+  },
+  "patternMatches": {
+    "tests": "test",
+    "docs": "documentation",
+    "data": "data"
+  },
+  "filePatternMatches": {
+    "file:backend/main.py": "entry",
+    "file:tests/test_api.py": "test",
+    "file:tests/test_live.py": "test",
+    "file:tests/test_frontend_shell.py": "test",
+    "file:tests/test_parser_formats.py": "test",
+    "file:tests/conftest.py": "test",
+    "file:tests/test_artifacts.py": "test",
+    "file:tests/test_llm.py": "test",
+    "file:tests/test_retrieval.py": "test",
+    "file:tests/test_github.py": "test",
+    "file:tests/test_units.py": "test",
+    "file:tests/test_frontend_followup.py": "test",
+    "file:tests/test_frontend_guards.py": "test",
+    "file:tests/test_frontend_motion.py": "test",
+    "file:tests/test_frontend_startup.py": "test",
+    "file:tests/test_frontend_workspaces.py": "test",
+    "document:README.md": "documentation",
+    "document:skills.md": "documentation",
+    "document:docs/redesign/PROJECT_BRIEF.md": "documentation",
+    "document:docs/redesign/audit.md": "documentation",
+    "document:docs/redesign/design-spec.md": "documentation",
+    "document:docs/redesign/integration-notes.md": "documentation",
+    "document:docs/redesign/integration-test-plan.md": "documentation",
+    "document:docs/redesign/qa-report-04.md": "documentation",
+    "document:docs/redesign/qa-report-05.md": "documentation",
+    "document:docs/redesign/qa-report-06.md": "documentation",
+    "document:docs/redesign/security-issue-authz.md": "documentation",
+    "document:docs/redesign/stage4-backlog.md": "documentation",
+    "document:docs/redesign/ui-ux-implementation-notes.md": "documentation",
+    "document:docs/redesign/view-contract.md": "documentation",
+    "file:Pipfile": "config",
+    "file:backend/__init__.py": "entry",
+    "document:docs/AI_ASSISTANT_PRO_MASTER_TASK.md": "documentation",
+    "file:frontend/__init__.py": "entry",
+    "file:tests/__init__.py": "entry",
+    "file:tests/test_architecture.py": "test",
+    "file:tests/test_frontend_reference.py": "test",
+    "file:tests/test_frontend_sanitizer.py": "test"
+  },
+  "deploymentTopology": {
+    "hasDockerfile": false,
+    "hasCompose": false,
+    "hasK8s": false,
+    "hasTerraform": false,
+    "hasCI": false,
+    "infraFiles": [
+      "Procfile"
+    ]
+  },
+  "dataPipeline": {
+    "schemaFiles": [],
+    "migrationFiles": [],
+    "dataModelFiles": [
+      "backend/models/api.py",
+      "backend/core/exceptions.py",
+      "backend/models/db.py",
+      "table:backend/models/db.py:sessions",
+      "table:backend/models/db.py:messages",
+      "table:backend/models/db.py:documents",
+      "table:backend/models/db.py:github_credentials",
+      "table:backend/models/db.py:repo_contexts",
+      "backend/models/__init__.py"
+    ],
+    "apiHandlerFiles": [
+      "backend/api/mcp_server.py",
+      "backend/api/routes.py",
+      "tests/test_api.py",
+      "tests/test_artifacts.py",
+      "backend/api/__init__.py"
+    ]
+  },
+  "docCoverage": {
+    "groupsWithDocs": 3,
+    "totalGroups": 6,
+    "coverageRatio": 0.5,
+    "undocumentedGroups": [
+      "backend",
+      "data",
+      "tests"
+    ]
+  },
+  "dependencyDirection": [
+    {
+      "dependent": "tests",
+      "dependsOn": "backend"
+    }
+  ],
+  "packageDependencyDirection": [
+    {
+      "dependent": "backend/services",
+      "dependsOn": "backend/core",
+      "forward": 20,
+      "backward": 12
+    },
+    {
+      "dependent": "tests",
+      "dependsOn": "backend/services",
+      "forward": 14,
+      "backward": 0
+    },
+    {
+      "dependent": "backend/services",
+      "dependsOn": "backend/utils",
+      "forward": 13,
+      "backward": 0
+    },
+    {
+      "dependent": "backend/api",
+      "dependsOn": "backend/services",
+      "forward": 10,
+      "backward": 0
+    },
+    {
+      "dependent": "tests",
+      "dependsOn": "backend/core",
+      "forward": 10,
+      "backward": 0
+    },
+    {
+      "dependent": "tests",
+      "dependsOn": "backend/utils",
+      "forward": 9,
+      "backward": 0
+    },
+    {
+      "dependent": "backend/client",
+      "dependsOn": "backend/core",
+      "forward": 7,
+      "backward": 3
+    },
+    {
+      "dependent": "backend/services",
+      "dependsOn": "backend/models",
+      "forward": 6,
+      "backward": 0
+    },
+    {
+      "dependent": "backend/services",
+      "dependsOn": "backend/client",
+      "forward": 5,
+      "backward": 0
+    },
+    {
+      "dependent": "backend/api",
+      "dependsOn": "backend/core",
+      "forward": 4,
+      "backward": 0
+    },
+    {
+      "dependent": "backend/client",
+      "dependsOn": "backend/utils",
+      "forward": 4,
+      "backward": 0
+    },
+    {
+      "dependent": "backend",
+      "dependsOn": "backend/core",
+      "forward": 2,
+      "backward": 0
+    },
+    {
+      "dependent": "backend/api",
+      "dependsOn": "backend/models",
+      "forward": 2,
+      "backward": 0
+    },
+    {
+      "dependent": "backend/core",
+      "dependsOn": "backend/utils",
+      "forward": 2,
+      "backward": 0
+    },
+    {
+      "dependent": "tests",
+      "dependsOn": "backend/models",
+      "forward": 2,
+      "backward": 0
+    },
+    {
+      "dependent": "backend",
+      "dependsOn": "backend/api",
+      "forward": 1,
+      "backward": 0
+    },
+    {
+      "dependent": "backend/api",
+      "dependsOn": "backend/utils",
+      "forward": 1,
+      "backward": 0
+    },
+    {
+      "dependent": "backend/models",
+      "dependsOn": "backend/core",
+      "forward": 1,
+      "backward": 0
+    },
+    {
+      "dependent": "backend/models",
+      "dependsOn": "backend/utils",
+      "forward": 1,
+      "backward": 0
+    },
+    {
+      "dependent": "tests",
+      "dependsOn": "backend",
+      "forward": 1,
+      "backward": 0
+    },
+    {
+      "dependent": "tests",
+      "dependsOn": "backend/client",
+      "forward": 1,
+      "backward": 0
+    }
+  ],
+  "groupImportSets": {
+    "importsFrom": {
+      "backend": {},
+      "tests": {
+        "backend": 37
+      },
+      "root": {},
+      "docs": {},
+      "frontend": {},
+      "data": {}
+    },
+    "importedBy": {
+      "backend": {
+        "tests": 37
+      },
+      "tests": {},
+      "root": {},
+      "docs": {},
+      "frontend": {},
+      "data": {}
+    }
+  },
+  "fileStats": {
+    "totalFileNodes": 148,
+    "filesPerGroup": {
+      "backend": 75,
+      "tests": 20,
+      "root": 8,
+      "docs": 13,
+      "frontend": 31,
+      "data": 1
+    },
+    "nodeTypeCounts": {
+      "file": 97,
+      "endpoint": 25,
+      "table": 5,
+      "config": 2,
+      "service": 1,
+      "document": 18
+    }
+  },
+  "fileFanIn": {
+    "file:backend/api/routes.py": 1,
+    "file:backend/client/search_client.py": 2,
+    "file:backend/core/container.py": 5,
+    "file:backend/main.py": 1,
+    "file:backend/models/api.py": 7,
+    "file:backend/services/artifact.py": 3,
+    "file:backend/services/chat_service.py": 6,
+    "file:backend/services/search_service.py": 3,
+    "file:backend/utils/cache.py": 5,
+    "file:backend/utils/sse.py": 1,
+    "file:backend/client/embedding_client.py": 1,
+    "file:backend/client/http.py": 1,
+    "file:backend/client/rerank_client.py": 1,
+    "file:backend/core/config.py": 21,
+    "file:backend/services/__init__.py": 1,
+    "file:backend/services/embedding_service.py": 4,
+    "file:backend/services/rerank_service.py": 2,
+    "file:backend/utils/numeric.py": 2,
+    "file:backend/client/llm_client.py": 2,
+    "file:backend/core/exceptions.py": 15,
+    "file:backend/services/llm_service.py": 6,
+    "file:backend/utils/rate_limiter.py": 6,
+    "file:tests/conftest.py": 5,
+    "file:backend/core/database.py": 5,
+    "file:backend/models/db.py": 3,
+    "file:backend/services/document_service.py": 3,
+    "file:backend/services/github_service.py": 3,
+    "file:backend/services/session_service.py": 3,
+    "file:backend/utils/timeutil.py": 6,
+    "file:backend/services/index_store.py": 4,
+    "file:backend/services/prompt_builder.py": 3,
+    "file:backend/services/retrieval_service.py": 5,
+    "file:backend/utils/ranking.py": 2,
+    "file:backend/utils/streaming.py": 2,
+    "file:backend/utils/text.py": 6,
+    "file:tests/browser_harness.py": 1,
+    "file:tests/test_frontend_guards.py": 5,
+    "file:backend/client/web_client.py": 2,
+    "file:backend/services/parser.py": 5,
+    "file:backend/utils/net.py": 1
+  },
+  "fileFanOut": {
+    "file:backend/api/mcp_server.py": 4,
+    "file:backend/api/routes.py": 13,
+    "file:backend/core/container.py": 19,
+    "file:backend/main.py": 3,
+    "file:backend/services/chat_service.py": 9,
+    "file:backend/services/search_service.py": 5,
+    "file:tests/test_api.py": 3,
+    "file:tests/test_live.py": 4,
+    "file:backend/client/embedding_client.py": 3,
+    "file:backend/client/http.py": 1,
+    "file:backend/client/rerank_client.py": 2,
+    "file:backend/services/embedding_service.py": 3,
+    "file:backend/services/rerank_service.py": 2,
+    "file:tests/test_frontend_shell.py": 1,
+    "file:tests/test_parser_formats.py": 4,
+    "file:backend/client/llm_client.py": 3,
+    "file:backend/services/llm_service.py": 6,
+    "file:backend/utils/rate_limiter.py": 1,
+    "file:tests/conftest.py": 5,
+    "file:tests/test_artifacts.py": 3,
+    "file:tests/test_llm.py": 5,
+    "file:tests/test_retrieval.py": 3,
+    "file:backend/models/db.py": 2,
+    "file:backend/services/document_service.py": 7,
+    "file:backend/services/github_service.py": 7,
+    "file:backend/services/session_service.py": 6,
+    "file:tests/test_github.py": 2,
+    "file:backend/services/index_store.py": 1,
+    "file:backend/services/prompt_builder.py": 4,
+    "file:backend/services/retrieval_service.py": 7,
+    "file:tests/test_units.py": 12,
+    "file:tests/browser_harness.py": 1,
+    "file:tests/test_frontend_followup.py": 1,
+    "file:tests/test_frontend_motion.py": 1,
+    "file:tests/test_frontend_startup.py": 2,
+    "file:tests/test_frontend_workspaces.py": 1,
+    "file:backend/client/web_client.py": 2,
+    "file:backend/services/parser.py": 2
+  },
+  "importAdjacency": {
+    "file:backend/api/mcp_server.py": [
+      "file:backend/core/config.py",
+      "file:backend/core/container.py",
+      "file:backend/models/api.py",
+      "file:backend/services/chat_service.py"
+    ],
+    "file:backend/api/routes.py": [
+      "file:backend/core/container.py",
+      "file:backend/core/exceptions.py",
+      "file:backend/models/api.py",
+      "file:backend/services/artifact.py",
+      "file:backend/services/chat_service.py",
+      "file:backend/services/document_service.py",
+      "file:backend/services/github_service.py",
+      "file:backend/services/llm_service.py",
+      "file:backend/services/parser.py",
+      "file:backend/services/retrieval_service.py",
+      "file:backend/services/search_service.py",
+      "file:backend/services/session_service.py",
+      "file:backend/utils/sse.py"
+    ],
+    "file:backend/core/container.py": [
+      "file:backend/client/http.py",
+      "file:backend/client/search_client.py",
+      "file:backend/client/web_client.py",
+      "file:backend/core/config.py",
+      "file:backend/core/database.py",
+      "file:backend/services/chat_service.py",
+      "file:backend/services/document_service.py",
+      "file:backend/services/embedding_service.py",
+      "file:backend/services/github_service.py",
+      "file:backend/services/index_store.py",
+      "file:backend/services/llm_service.py",
+      "file:backend/services/parser.py",
+      "file:backend/services/prompt_builder.py",
+      "file:backend/services/rerank_service.py",
+      "file:backend/services/retrieval_service.py",
+      "file:backend/services/search_service.py",
+      "file:backend/services/session_service.py",
+      "file:backend/utils/cache.py",
+      "file:backend/utils/rate_limiter.py"
+    ],
+    "file:backend/main.py": [
+      "file:backend/api/routes.py",
+      "file:backend/core/config.py",
+      "file:backend/core/container.py"
+    ],
+    "file:backend/services/chat_service.py": [
+      "file:backend/core/config.py",
+      "file:backend/core/exceptions.py",
+      "file:backend/services/artifact.py",
+      "file:backend/services/llm_service.py",
+      "file:backend/services/prompt_builder.py",
+      "file:backend/services/retrieval_service.py",
+      "file:backend/services/search_service.py",
+      "file:backend/services/session_service.py",
+      "file:backend/utils/cache.py"
+    ],
+    "file:backend/services/search_service.py": [
+      "file:backend/client/search_client.py",
+      "file:backend/core/config.py",
+      "file:backend/models/api.py",
+      "file:backend/utils/cache.py",
+      "file:backend/utils/text.py"
+    ],
+    "file:tests/test_api.py": [
+      "file:backend/models/api.py",
+      "file:backend/services/chat_service.py",
+      "file:tests/conftest.py"
+    ],
+    "file:tests/test_live.py": [
+      "file:backend/core/config.py",
+      "file:backend/core/container.py",
+      "file:backend/models/api.py",
+      "file:backend/services/chat_service.py"
+    ],
+    "file:backend/client/embedding_client.py": [
+      "file:backend/core/config.py",
+      "file:backend/core/exceptions.py",
+      "file:backend/utils/numeric.py"
+    ],
+    "file:backend/client/http.py": [
+      "file:backend/core/config.py"
+    ],
+    "file:backend/client/rerank_client.py": [
+      "file:backend/core/config.py",
+      "file:backend/utils/numeric.py"
+    ],
+    "file:backend/services/embedding_service.py": [
+      "file:backend/client/embedding_client.py",
+      "file:backend/core/config.py",
+      "file:backend/core/exceptions.py"
+    ],
+    "file:backend/services/rerank_service.py": [
+      "file:backend/client/rerank_client.py",
+      "file:backend/core/config.py"
+    ],
+    "file:tests/test_frontend_shell.py": [
+      "file:backend/core/config.py"
+    ],
+    "file:tests/test_parser_formats.py": [
+      "file:backend/core/exceptions.py",
+      "file:backend/services/__init__.py",
+      "file:backend/services/embedding_service.py",
+      "file:backend/services/parser.py"
+    ],
+    "file:backend/client/llm_client.py": [
+      "file:backend/core/config.py",
+      "file:backend/core/exceptions.py",
+      "file:backend/utils/timeutil.py"
+    ],
+    "file:backend/services/llm_service.py": [
+      "file:backend/client/llm_client.py",
+      "file:backend/core/config.py",
+      "file:backend/core/exceptions.py",
+      "file:backend/utils/rate_limiter.py",
+      "file:backend/utils/streaming.py",
+      "file:backend/utils/text.py"
+    ],
+    "file:backend/utils/rate_limiter.py": [
+      "file:backend/utils/timeutil.py"
+    ],
+    "file:tests/conftest.py": [
+      "file:backend/core/config.py",
+      "file:backend/core/container.py",
+      "file:backend/main.py",
+      "file:backend/services/llm_service.py",
+      "file:backend/utils/rate_limiter.py"
+    ],
+    "file:tests/test_artifacts.py": [
+      "file:backend/services/artifact.py",
+      "file:backend/utils/rate_limiter.py",
+      "file:tests/conftest.py"
+    ],
+    "file:tests/test_llm.py": [
+      "file:backend/client/llm_client.py",
+      "file:backend/core/exceptions.py",
+      "file:backend/services/llm_service.py",
+      "file:backend/utils/rate_limiter.py",
+      "file:tests/conftest.py"
+    ],
+    "file:tests/test_retrieval.py": [
+      "file:backend/core/exceptions.py",
+      "file:backend/services/index_store.py",
+      "file:tests/conftest.py"
+    ],
+    "file:backend/models/db.py": [
+      "file:backend/core/database.py",
+      "file:backend/utils/timeutil.py"
+    ],
+    "file:backend/services/document_service.py": [
+      "file:backend/core/config.py",
+      "file:backend/core/database.py",
+      "file:backend/core/exceptions.py",
+      "file:backend/models/db.py",
+      "file:backend/services/embedding_service.py",
+      "file:backend/services/index_store.py",
+      "file:backend/services/parser.py"
+    ],
+    "file:backend/services/github_service.py": [
+      "file:backend/core/config.py",
+      "file:backend/core/database.py",
+      "file:backend/core/exceptions.py",
+      "file:backend/models/db.py",
+      "file:backend/services/document_service.py",
+      "file:backend/services/llm_service.py",
+      "file:backend/utils/timeutil.py"
+    ],
+    "file:backend/services/session_service.py": [
+      "file:backend/core/config.py",
+      "file:backend/core/database.py",
+      "file:backend/core/exceptions.py",
+      "file:backend/models/api.py",
+      "file:backend/models/db.py",
+      "file:backend/utils/timeutil.py"
+    ],
+    "file:tests/test_github.py": [
+      "file:backend/services/github_service.py",
+      "file:tests/conftest.py"
+    ],
+    "file:backend/services/index_store.py": [
+      "file:backend/utils/text.py"
+    ],
+    "file:backend/services/prompt_builder.py": [
+      "file:backend/core/config.py",
+      "file:backend/models/api.py",
+      "file:backend/services/retrieval_service.py",
+      "file:backend/utils/text.py"
+    ],
+    "file:backend/services/retrieval_service.py": [
+      "file:backend/core/config.py",
+      "file:backend/services/embedding_service.py",
+      "file:backend/services/index_store.py",
+      "file:backend/services/rerank_service.py",
+      "file:backend/utils/cache.py",
+      "file:backend/utils/ranking.py",
+      "file:backend/utils/text.py"
+    ],
+    "file:tests/test_units.py": [
+      "file:backend/core/config.py",
+      "file:backend/core/exceptions.py",
+      "file:backend/services/chat_service.py",
+      "file:backend/services/parser.py",
+      "file:backend/services/prompt_builder.py",
+      "file:backend/services/retrieval_service.py",
+      "file:backend/utils/cache.py",
+      "file:backend/utils/ranking.py",
+      "file:backend/utils/rate_limiter.py",
+      "file:backend/utils/streaming.py",
+      "file:backend/utils/text.py",
+      "file:backend/utils/timeutil.py"
+    ],
+    "file:tests/browser_harness.py": [
+      "file:tests/test_frontend_guards.py"
+    ],
+    "file:tests/test_frontend_followup.py": [
+      "file:tests/test_frontend_guards.py"
+    ],
+    "file:tests/test_frontend_motion.py": [
+      "file:tests/test_frontend_guards.py"
+    ],
+    "file:tests/test_frontend_startup.py": [
+      "file:tests/browser_harness.py",
+      "file:tests/test_frontend_guards.py"
+    ],
+    "file:tests/test_frontend_workspaces.py": [
+      "file:tests/test_frontend_guards.py"
+    ],
+    "file:backend/client/web_client.py": [
+      "file:backend/core/exceptions.py",
+      "file:backend/utils/net.py"
+    ],
+    "file:backend/services/parser.py": [
+      "file:backend/client/web_client.py",
+      "file:backend/core/exceptions.py"
+    ]
+  }
+}

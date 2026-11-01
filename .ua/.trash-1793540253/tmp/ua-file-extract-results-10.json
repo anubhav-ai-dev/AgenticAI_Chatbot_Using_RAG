@@ -1,0 +1,27 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 0,
+  "filesSkipped": [
+    "frontend/css/ai-viz.css",
+    "frontend/css/animations.css",
+    "frontend/css/components.css",
+    "frontend/css/intro.css",
+    "frontend/css/main.css",
+    "frontend/css/reference.css",
+    "frontend/css/syntax.css",
+    "frontend/css/workspace.css"
+  ],
+  "filesUnreadable": [],
+  "analysisOutcomes": {
+    "structure": {
+      "succeeded": 0,
+      "failed": 0
+    },
+    "callGraph": {
+      "succeeded": 0,
+      "failed": 0,
+      "skipped": 0
+    }
+  },
+  "results": []
+}

@@ -1,0 +1,15 @@
+{
+  "fixedSectionOk": true,
+  "nodesRecovered": 0,
+  "edgesRestored": 0,
+  "crossBatchEdgesAdded": 0,
+  "typesRemapped": 0,
+  "complexityRemapped": 0,
+  "notes": [
+    "Fixed section is sane: 11 tested_by edges dropped (orphan endpoint or test-test / prod-prod pairs) out of 2313 input edges. No node-ID or complexity rewrites, so the >30% ID-correction threshold does not apply.",
+    "Left dropped: file:frontend/index.html -> file:frontend/assets/logo.svg (depends_on). logo.svg is absent from scan-result.json (the assets directory only lists LICENSE-lucide.txt) and no batch produced a node for it.",
+    "Left dropped: file:frontend/js/components/motion.js -> file:frontend/js/vendor/gsap.min.js (depends_on). Minified vendor files are excluded from the scan on purpose and were not recreated.",
+    "Import map check: all 160 non-empty importMap relationships already have a matching imports edge between file: nodes (direction forward). Recovered 0; added 0.",
+    "21 scanned non-code files (docs, README, requirements, pytest.ini, Procfile, .env.example, skills.md, LICENSE-lucide.txt) have no file nodes. They were not dropped by the merge (983 nodes in, 983 out) and every one has an empty import list, so they do not create cross-batch import gaps."
+  ]
+}

@@ -1,0 +1,2389 @@
+{
+  "nodes": [
+    {
+      "id": "file:backend/client/llm_client.py",
+      "type": "file",
+      "name": "llm_client.py",
+      "summary": "OpenAI-compatible transport for Groq and Google chat models: opens streamed completions, lists model ids, and maps SDK failures to normalised LLMError codes.",
+      "tags": [
+        "service",
+        "llm",
+        "streaming",
+        "error-handling"
+      ],
+      "complexity": "moderate",
+      "filePath": "backend/client/llm_client.py",
+      "languageNotes": "Uses the OpenAI SDK raw response so rate-limit headers stay available to the quota guard."
+    },
+    {
+      "id": "file:backend/core/exceptions.py",
+      "type": "file",
+      "name": "exceptions.py",
+      "summary": "Shared application exception hierarchy whose messages are safe to show to clients and never echo upstream provider text.",
+      "tags": [
+        "error-handling",
+        "data-model",
+        "validation"
+      ],
+      "complexity": "simple",
+      "filePath": "backend/core/exceptions.py",
+      "languageNotes": "Every user-facing failure subclasses AppError; LLMError carries a machine-readable code plus a fixed safe message."
+    },
+    {
+      "id": "file:backend/services/llm_service.py",
+      "type": "file",
+      "name": "llm_service.py",
+      "summary": "LLM policy layer that selects a model chain, fails over before the first token, and applies a circuit breaker plus quota guard around provider clients.",
+      "tags": [
+        "service",
+        "llm",
+        "failover",
+        "streaming"
+      ],
+      "complexity": "complex",
+      "filePath": "backend/services/llm_service.py",
+      "languageNotes": "Failover runs only before the first visible token; a second pass ignores soft cooldowns when every model was skipped."
+    },
+    {
+      "id": "file:backend/utils/rate_limiter.py",
+      "type": "file",
+      "name": "rate_limiter.py",
+      "summary": "Per-user token-bucket throttling and a per-model rolling quota guard that lets the LLM layer skip exhausted free-tier models before they return 429.",
+      "tags": [
+        "utility",
+        "rate-limiting",
+        "quota"
+      ],
+      "complexity": "moderate",
+      "filePath": "backend/utils/rate_limiter.py"
+    },
+    {
+      "id": "file:tests/conftest.py",
+      "type": "file",
+      "name": "conftest.py",
+      "summary": "Offline pytest fixtures: deterministic embedder and reranker fakes, a scripted LLM provider, and a ServiceContainer factory that builds the FastAPI test client.",
+      "tags": [
+        "test",
+        "fixture",
+        "factory"
+      ],
+      "complexity": "complex",
+      "filePath": "tests/conftest.py"
+    },
+    {
+      "id": "file:tests/test_artifacts.py",
+      "type": "file",
+      "name": "test_artifacts.py",
+      "summary": "Exercises document validation, markdown-to-file rendering, and the chat SSE path that emits an artifact and serves every download format.",
+      "tags": [
+        "test",
+        "artifact",
+        "validation",
+        "api-handler"
+      ],
+      "complexity": "complex",
+      "filePath": "tests/test_artifacts.py"
+    },
+    {
+      "id": "file:tests/test_llm.py",
+      "type": "file",
+      "name": "test_llm.py",
+      "summary": "Covers LLMService failover, circuit-breaker trips, quota-guard skips, think-block filtering, and classify_exception status mapping.",
+      "tags": [
+        "test",
+        "llm",
+        "failover",
+        "streaming"
+      ],
+      "complexity": "moderate",
+      "filePath": "tests/test_llm.py"
+    },
+    {
+      "id": "file:tests/test_retrieval.py",
+      "type": "file",
+      "name": "test_retrieval.py",
+      "summary": "Offline checks for hybrid ingest and search, owner isolation, embedder and reranker degradation, and atomic index rollback.",
+      "tags": [
+        "test",
+        "retrieval",
+        "indexing"
+      ],
+      "complexity": "moderate",
+      "filePath": "tests/test_retrieval.py"
+    },
+    {
+      "id": "class:backend/client/llm_client.py:OpenedStream",
+      "type": "class",
+      "name": "OpenedStream",
+      "summary": "Dataclass holding response headers, the SDK stream, and its async iterator after a completion has started.",
+      "tags": [
+        "data-model",
+        "streaming",
+        "llm"
+      ],
+      "complexity": "simple",
+      "filePath": "backend/client/llm_client.py",
+      "lineRange": [
+        25,
+        30
+      ]
+    },
+    {
+      "id": "class:backend/client/llm_client.py:ProviderClient",
+      "type": "class",
+      "name": "ProviderClient",
+      "summary": "Wraps one OpenAI-compatible provider endpoint and opens streamed chat completions or lists model ids under a timeout.",
+      "tags": [
+        "service",
+        "llm",
+        "streaming"
+      ],
+      "complexity": "simple",
+      "filePath": "backend/client/llm_client.py",
+      "lineRange": [
+        33,
+        57
+      ]
+    },
+    {
+      "id": "function:backend/client/llm_client.py:build_provider_clients",
+      "type": "function",
+      "name": "build_provider_clients",
+      "summary": "Builds one ProviderClient per provider whose API key is configured, sharing a pooled HTTP client and disabling SDK retries.",
+      "tags": [
+        "factory",
+        "llm",
+        "configuration"
+      ],
+      "complexity": "simple",
+      "filePath": "backend/client/llm_client.py",
+      "lineRange": [
+        60,
+        66
+      ]
+    },
+    {
+      "id": "function:backend/client/llm_client.py:wrap_clients",
+      "type": "function",
+      "name": "wrap_clients",
+      "summary": "Normalises a map of SDK clients or existing ProviderClients so tests can inject doubles beside real clients.",
+      "tags": [
+        "factory",
+        "llm",
+        "test"
+      ],
+      "complexity": "simple",
+      "filePath": "backend/client/llm_client.py",
+      "lineRange": [
+        69,
+        71
+      ]
+    },
+    {
+      "id": "function:backend/client/llm_client.py:chunk_text",
+      "type": "function",
+      "name": "chunk_text",
+      "summary": "Returns the visible content delta of a chat chunk and ignores reasoning-only deltas.",
+      "tags": [
+        "streaming",
+        "llm",
+        "utility"
+      ],
+      "complexity": "simple",
+      "filePath": "backend/client/llm_client.py",
+      "lineRange": [
+        76,
+        80
+      ]
+    },
+    {
+      "id": "function:backend/client/llm_client.py:chunk_usage",
+      "type": "function",
+      "name": "chunk_usage",
+      "summary": "Extracts prompt, completion, and total token counts from a stream chunk when the provider includes usage.",
+      "tags": [
+        "streaming",
+        "llm",
+        "utility"
+      ],
+      "complexity": "simple",
+      "filePath": "backend/client/llm_client.py",
+      "lineRange": [
+        83,
+        91
+      ]
+    },
+    {
+      "id": "function:backend/client/llm_client.py:close_stream",
+      "type": "function",
+      "name": "close_stream",
+      "summary": "Closes an SDK stream best-effort, awaiting the closer when it returns a coroutine and swallowing shutdown errors.",
+      "tags": [
+        "streaming",
+        "llm",
+        "utility"
+      ],
+      "complexity": "simple",
+      "filePath": "backend/client/llm_client.py",
+      "lineRange": [
+        94,
+        104
+      ]
+    },
+    {
+      "id": "function:backend/client/llm_client.py:classify_exception",
+      "type": "function",
+      "name": "classify_exception",
+      "summary": "Maps OpenAI SDK and HTTP failures to an LLMError code, including retry-after hints parsed from rate-limit headers.",
+      "tags": [
+        "error-handling",
+        "llm",
+        "validation"
+      ],
+      "complexity": "moderate",
+      "filePath": "backend/client/llm_client.py",
+      "lineRange": [
+        109,
+        134
+      ]
+    },
+    {
+      "id": "class:backend/core/exceptions.py:AppError",
+      "type": "class",
+      "name": "AppError",
+      "summary": "Base exception for expected failures whose message is safe to present to the user.",
+      "tags": [
+        "error-handling",
+        "data-model",
+        "validation"
+      ],
+      "complexity": "simple",
+      "filePath": "backend/core/exceptions.py",
+      "lineRange": [
+        12,
+        13
+      ]
+    },
+    {
+      "id": "class:backend/core/exceptions.py:DocumentParseError",
+      "type": "class",
+      "name": "DocumentParseError",
+      "summary": "Raised when a document is unreadable, unsupported, or rejected as unsafe input.",
+      "tags": [
+        "error-handling",
+        "document",
+        "validation"
+      ],
+      "complexity": "simple",
+      "filePath": "backend/core/exceptions.py",
+      "lineRange": [
+        18,
+        19
+      ]
+    },
+    {
+      "id": "class:backend/core/exceptions.py:FetchError",
+      "type": "class",
+      "name": "FetchError",
+      "summary": "Raised when a web page cannot be fetched because of a bad URL, a blocked address, an HTTP error, or size limits.",
+      "tags": [
+        "error-handling",
+        "document",
+        "validation"
+      ],
+      "complexity": "simple",
+      "filePath": "backend/core/exceptions.py",
+      "lineRange": [
+        22,
+        23
+      ]
+    },
+    {
+      "id": "class:backend/core/exceptions.py:IngestError",
+      "type": "class",
+      "name": "IngestError",
+      "summary": "Ingestion failure that carries a user-safe message and an HTTP status hint, defaulting to 422.",
+      "tags": [
+        "error-handling",
+        "document",
+        "validation"
+      ],
+      "complexity": "simple",
+      "filePath": "backend/core/exceptions.py",
+      "lineRange": [
+        26,
+        32
+      ]
+    },
+    {
+      "id": "class:backend/core/exceptions.py:SessionNotFound",
+      "type": "class",
+      "name": "SessionNotFound",
+      "summary": "Raised when a session or message id does not exist.",
+      "tags": [
+        "error-handling",
+        "session",
+        "validation"
+      ],
+      "complexity": "simple",
+      "filePath": "backend/core/exceptions.py",
+      "lineRange": [
+        37,
+        38
+      ]
+    },
+    {
+      "id": "class:backend/core/exceptions.py:EmbeddingUnavailable",
+      "type": "class",
+      "name": "EmbeddingUnavailable",
+      "summary": "Raised when no embedding backend can serve the request.",
+      "tags": [
+        "error-handling",
+        "embedding",
+        "retrieval"
+      ],
+      "complexity": "simple",
+      "filePath": "backend/core/exceptions.py",
+      "lineRange": [
+        41,
+        42
+      ]
+    },
+    {
+      "id": "class:backend/core/exceptions.py:LLMError",
+      "type": "class",
+      "name": "LLMError",
+      "summary": "Normalised LLM failure with a machine-readable code, optional model and retry metadata, and a fixed user-safe message.",
+      "tags": [
+        "error-handling",
+        "llm",
+        "data-model"
+      ],
+      "complexity": "simple",
+      "filePath": "backend/core/exceptions.py",
+      "lineRange": [
+        63,
+        76
+      ]
+    },
+    {
+      "id": "class:backend/services/llm_service.py:LLMResult",
+      "type": "class",
+      "name": "LLMResult",
+      "summary": "Completed generation: joined text, chosen model, fallback list, time-to-first-token, and optional usage.",
+      "tags": [
+        "data-model",
+        "llm",
+        "streaming"
+      ],
+      "complexity": "simple",
+      "filePath": "backend/services/llm_service.py",
+      "lineRange": [
+        43,
+        48
+      ]
+    },
+    {
+      "id": "class:backend/services/llm_service.py:LLMStream",
+      "type": "class",
+      "name": "LLMStream",
+      "summary": "Async iterator of visible text deltas that strips think blocks, records usage, and closes the upstream stream when finished.",
+      "tags": [
+        "streaming",
+        "llm",
+        "service"
+      ],
+      "complexity": "moderate",
+      "filePath": "backend/services/llm_service.py",
+      "lineRange": [
+        51,
+        103
+      ]
+    },
+    {
+      "id": "class:backend/services/llm_service.py:CircuitBreaker",
+      "type": "class",
+      "name": "CircuitBreaker",
+      "summary": "Per-model cooldown tracker with soft trips that failover may override and hard trips that hide a model until reset.",
+      "tags": [
+        "service",
+        "llm",
+        "failover"
+      ],
+      "complexity": "moderate",
+      "filePath": "backend/services/llm_service.py",
+      "lineRange": [
+        108,
+        141
+      ]
+    },
+    {
+      "id": "class:backend/services/llm_service.py:LLMService",
+      "type": "class",
+      "name": "LLMService",
+      "summary": "Owns the model registry, discovery, and failover chain, opening a stream on the first model that yields visible text.",
+      "tags": [
+        "service",
+        "llm",
+        "failover",
+        "streaming"
+      ],
+      "complexity": "complex",
+      "filePath": "backend/services/llm_service.py",
+      "lineRange": [
+        146,
+        399
+      ]
+    },
+    {
+      "id": "class:backend/utils/rate_limiter.py:RateLimiter",
+      "type": "class",
+      "name": "RateLimiter",
+      "summary": "Thread-safe token bucket keyed by caller that returns whether a request is allowed and how long to wait.",
+      "tags": [
+        "rate-limiting",
+        "utility",
+        "middleware"
+      ],
+      "complexity": "moderate",
+      "filePath": "backend/utils/rate_limiter.py",
+      "lineRange": [
+        18,
+        49
+      ]
+    },
+    {
+      "id": "class:backend/utils/rate_limiter.py:QuotaGuard",
+      "type": "class",
+      "name": "QuotaGuard",
+      "summary": "Rolling 60-second request and token accounting per model, updated from local usage and provider rate-limit headers.",
+      "tags": [
+        "rate-limiting",
+        "llm",
+        "quota"
+      ],
+      "complexity": "moderate",
+      "filePath": "backend/utils/rate_limiter.py",
+      "lineRange": [
+        52,
+        107
+      ]
+    },
+    {
+      "id": "class:tests/conftest.py:FakeEmbedder",
+      "type": "class",
+      "name": "FakeEmbedder",
+      "summary": "Deterministic hashing bag-of-words embedder with a synonym table, used so retrieval tests run without a model download.",
+      "tags": [
+        "test",
+        "embedding",
+        "fixture"
+      ],
+      "complexity": "moderate",
+      "filePath": "tests/conftest.py",
+      "lineRange": [
+        43,
+        93
+      ]
+    },
+    {
+      "id": "class:tests/conftest.py:FakeReranker",
+      "type": "class",
+      "name": "FakeReranker",
+      "summary": "Deterministic reranker that scores passages by token overlap and can be switched into a failure mode.",
+      "tags": [
+        "test",
+        "retrieval",
+        "fixture"
+      ],
+      "complexity": "simple",
+      "filePath": "tests/conftest.py",
+      "lineRange": [
+        96,
+        127
+      ]
+    },
+    {
+      "id": "class:tests/conftest.py:_FakeStream",
+      "type": "class",
+      "name": "_FakeStream",
+      "summary": "Async iterator of scripted chat chunks that can raise a canned API error on a chosen step.",
+      "tags": [
+        "test",
+        "streaming",
+        "llm"
+      ],
+      "complexity": "simple",
+      "filePath": "tests/conftest.py",
+      "lineRange": [
+        150,
+        175
+      ]
+    },
+    {
+      "id": "class:tests/conftest.py:FakeProviderClient",
+      "type": "class",
+      "name": "FakeProviderClient",
+      "summary": "Scripted OpenAI-shaped provider that records calls and returns text, errors, or hangs according to a behaviour list.",
+      "tags": [
+        "test",
+        "llm",
+        "fixture"
+      ],
+      "complexity": "moderate",
+      "filePath": "tests/conftest.py",
+      "lineRange": [
+        178,
+        233
+      ]
+    },
+    {
+      "id": "function:tests/conftest.py:settings",
+      "type": "function",
+      "name": "settings",
+      "summary": "Pytest fixture that builds Settings with isolated temp paths and a cleared provider environment.",
+      "tags": [
+        "test",
+        "fixture",
+        "configuration"
+      ],
+      "complexity": "simple",
+      "filePath": "tests/conftest.py",
+      "lineRange": [
+        239,
+        249
+      ]
+    },
+    {
+      "id": "function:tests/conftest.py:tavily_transport",
+      "type": "function",
+      "name": "tavily_transport",
+      "summary": "Builds an httpx mock transport that replays Tavily and Serper search responses for offline web-search tests.",
+      "tags": [
+        "test",
+        "fixture",
+        "search"
+      ],
+      "complexity": "simple",
+      "filePath": "tests/conftest.py",
+      "lineRange": [
+        252,
+        272
+      ]
+    },
+    {
+      "id": "function:tests/conftest.py:build_container",
+      "type": "function",
+      "name": "build_container",
+      "summary": "Constructs a ServiceContainer with fake embeddings, reranking, and LLM clients, and disposes it after the test.",
+      "tags": [
+        "test",
+        "factory",
+        "fixture"
+      ],
+      "complexity": "moderate",
+      "filePath": "tests/conftest.py",
+      "lineRange": [
+        281,
+        306
+      ]
+    },
+    {
+      "id": "function:tests/conftest.py:client_factory",
+      "type": "function",
+      "name": "client_factory",
+      "summary": "Returns a callable that mounts the FastAPI app on a TestClient wired to a fresh offline container.",
+      "tags": [
+        "test",
+        "factory",
+        "api-handler"
+      ],
+      "complexity": "simple",
+      "filePath": "tests/conftest.py",
+      "lineRange": [
+        310,
+        324
+      ]
+    },
+    {
+      "id": "function:tests/conftest.py:parse_sse",
+      "type": "function",
+      "name": "parse_sse",
+      "summary": "Parses a Server-Sent Events payload into a list of event names and JSON data objects.",
+      "tags": [
+        "test",
+        "utility",
+        "streaming"
+      ],
+      "complexity": "simple",
+      "filePath": "tests/conftest.py",
+      "lineRange": [
+        327,
+        339
+      ]
+    },
+    {
+      "id": "function:tests/test_artifacts.py:test_validator_rejects_empty_and_over_cap_documents",
+      "type": "function",
+      "name": "test_validator_rejects_empty_and_over_cap_documents",
+      "summary": "Asserts validate_document rejects empty documents and documents that exceed the block cap.",
+      "tags": [
+        "test",
+        "validation",
+        "artifact"
+      ],
+      "complexity": "simple",
+      "filePath": "tests/test_artifacts.py",
+      "lineRange": [
+        75,
+        91
+      ]
+    },
+    {
+      "id": "function:tests/test_artifacts.py:test_when_a_document_is_and_is_not_authored",
+      "type": "function",
+      "name": "test_when_a_document_is_and_is_not_authored",
+      "summary": "Checks the predicates that decide whether a user turn should author, restyle, or save a file and which format they want.",
+      "tags": [
+        "test",
+        "artifact",
+        "validation"
+      ],
+      "complexity": "simple",
+      "filePath": "tests/test_artifacts.py",
+      "lineRange": [
+        94,
+        121
+      ]
+    },
+    {
+      "id": "function:tests/test_artifacts.py:test_five_formats_are_built_from_the_same_document",
+      "type": "function",
+      "name": "test_five_formats_are_built_from_the_same_document",
+      "summary": "Renders one validated document to markdown, text, xlsx, docx, and pdf and checks filenames and content types.",
+      "tags": [
+        "test",
+        "artifact",
+        "serialization"
+      ],
+      "complexity": "simple",
+      "filePath": "tests/test_artifacts.py",
+      "lineRange": [
+        134,
+        162
+      ]
+    },
+    {
+      "id": "function:tests/test_artifacts.py:test_awkward_answers_still_become_every_format",
+      "type": "function",
+      "name": "test_awkward_answers_still_become_every_format",
+      "summary": "Turns awkward markdown into a document and confirms every download format still builds.",
+      "tags": [
+        "test",
+        "artifact",
+        "serialization"
+      ],
+      "complexity": "simple",
+      "filePath": "tests/test_artifacts.py",
+      "lineRange": [
+        185,
+        202
+      ]
+    },
+    {
+      "id": "function:tests/test_artifacts.py:test_a_prose_answer_becomes_a_titled_sectioned_document",
+      "type": "function",
+      "name": "test_a_prose_answer_becomes_a_titled_sectioned_document",
+      "summary": "Converts a prose answer into a titled, sectioned document and checks the downloadable markdown.",
+      "tags": [
+        "test",
+        "artifact",
+        "serialization"
+      ],
+      "complexity": "simple",
+      "filePath": "tests/test_artifacts.py",
+      "lineRange": [
+        216,
+        236
+      ]
+    },
+    {
+      "id": "function:tests/test_artifacts.py:test_generate_pdf_saves_the_previous_answer",
+      "type": "function",
+      "name": "test_generate_pdf_saves_the_previous_answer",
+      "summary": "Streams a chat turn then downloads a PDF of the previous answer through the session API.",
+      "tags": [
+        "test",
+        "artifact",
+        "api-handler"
+      ],
+      "complexity": "simple",
+      "filePath": "tests/test_artifacts.py",
+      "lineRange": [
+        239,
+        260
+      ]
+    },
+    {
+      "id": "function:tests/test_artifacts.py:test_markdown_becomes_a_document_without_a_second_model_call",
+      "type": "function",
+      "name": "test_markdown_becomes_a_document_without_a_second_model_call",
+      "summary": "Shows document_source reuses existing markdown or the previous answer instead of calling the model again.",
+      "tags": [
+        "test",
+        "artifact",
+        "llm"
+      ],
+      "complexity": "simple",
+      "filePath": "tests/test_artifacts.py",
+      "lineRange": [
+        263,
+        284
+      ]
+    },
+    {
+      "id": "function:tests/test_artifacts.py:test_file_request_streams_the_answer_then_the_artifact",
+      "type": "function",
+      "name": "test_file_request_streams_the_answer_then_the_artifact",
+      "summary": "Asserts a file request streams answer tokens, then an artifact event, and that the saved file downloads.",
+      "tags": [
+        "test",
+        "artifact",
+        "streaming"
+      ],
+      "complexity": "simple",
+      "filePath": "tests/test_artifacts.py",
+      "lineRange": [
+        287,
+        318
+      ]
+    },
+    {
+      "id": "function:tests/test_artifacts.py:test_save_request_files_the_previous_answer_not_export_instructions",
+      "type": "function",
+      "name": "test_save_request_files_the_previous_answer_not_export_instructions",
+      "summary": "A bare save request files the previous answer rather than the export instructions themselves.",
+      "tags": [
+        "test",
+        "artifact",
+        "api-handler"
+      ],
+      "complexity": "simple",
+      "filePath": "tests/test_artifacts.py",
+      "lineRange": [
+        321,
+        336
+      ]
+    },
+    {
+      "id": "function:tests/test_artifacts.py:test_i_want_a_pdf_opens_a_file_even_when_the_model_refuses",
+      "type": "function",
+      "name": "test_i_want_a_pdf_opens_a_file_even_when_the_model_refuses",
+      "summary": "A PDF request still produces a download when the model replies with a refusal.",
+      "tags": [
+        "test",
+        "artifact",
+        "api-handler"
+      ],
+      "complexity": "simple",
+      "filePath": "tests/test_artifacts.py",
+      "lineRange": [
+        339,
+        355
+      ]
+    },
+    {
+      "id": "function:tests/test_artifacts.py:test_every_mode_downloads_every_format",
+      "type": "function",
+      "name": "test_every_mode_downloads_every_format",
+      "summary": "Parametrized check that each chat mode can download markdown, text, spreadsheet, docx, and pdf.",
+      "tags": [
+        "test",
+        "artifact",
+        "api-handler"
+      ],
+      "complexity": "simple",
+      "filePath": "tests/test_artifacts.py",
+      "lineRange": [
+        359,
+        387
+      ]
+    },
+    {
+      "id": "function:tests/test_artifacts.py:test_thin_answer_still_downloads_instead_of_failing",
+      "type": "function",
+      "name": "test_thin_answer_still_downloads_instead_of_failing",
+      "summary": "A very short answer still produces a downloadable file instead of an error.",
+      "tags": [
+        "test",
+        "artifact",
+        "validation"
+      ],
+      "complexity": "simple",
+      "filePath": "tests/test_artifacts.py",
+      "lineRange": [
+        390,
+        400
+      ]
+    },
+    {
+      "id": "function:tests/test_artifacts.py:test_download_rate_limit_is_separate_from_chat",
+      "type": "function",
+      "name": "test_download_rate_limit_is_separate_from_chat",
+      "summary": "Shows the download limiter can return 429 while a following chat post is still accepted.",
+      "tags": [
+        "test",
+        "rate-limiting",
+        "artifact"
+      ],
+      "complexity": "simple",
+      "filePath": "tests/test_artifacts.py",
+      "lineRange": [
+        412,
+        425
+      ]
+    },
+    {
+      "id": "function:tests/test_artifacts.py:test_inline_markdown_is_stripped_in_non_markdown_formats",
+      "type": "function",
+      "name": "test_inline_markdown_is_stripped_in_non_markdown_formats",
+      "summary": "Inline markdown markers are removed from text, spreadsheet, docx, and pdf renders.",
+      "tags": [
+        "test",
+        "artifact",
+        "serialization"
+      ],
+      "complexity": "simple",
+      "filePath": "tests/test_artifacts.py",
+      "lineRange": [
+        428,
+        450
+      ]
+    },
+    {
+      "id": "function:tests/test_llm.py:test_failover_on_rate_limit_and_5xx_and_timeout",
+      "type": "function",
+      "name": "test_failover_on_rate_limit_and_5xx_and_timeout",
+      "summary": "A rate limit, a 5xx, and a timeout each move the stream to the next model before any token is yielded.",
+      "tags": [
+        "test",
+        "failover",
+        "llm"
+      ],
+      "complexity": "simple",
+      "filePath": "tests/test_llm.py",
+      "lineRange": [
+        48,
+        62
+      ]
+    },
+    {
+      "id": "function:tests/test_llm.py:test_404_hard_disables_model_and_hides_it",
+      "type": "function",
+      "name": "test_404_hard_disables_model_and_hides_it",
+      "summary": "A 404 hard-disables the model so later availability and the public model list hide it.",
+      "tags": [
+        "test",
+        "failover",
+        "llm"
+      ],
+      "complexity": "simple",
+      "filePath": "tests/test_llm.py",
+      "lineRange": [
+        79,
+        92
+      ]
+    },
+    {
+      "id": "function:tests/test_llm.py:test_all_models_failing_raises_normalised_error",
+      "type": "function",
+      "name": "test_all_models_failing_raises_normalised_error",
+      "summary": "When every model in the chain fails, open_stream raises a normalised all_models_failed LLMError.",
+      "tags": [
+        "test",
+        "error-handling",
+        "llm"
+      ],
+      "complexity": "simple",
+      "filePath": "tests/test_llm.py",
+      "lineRange": [
+        95,
+        104
+      ]
+    },
+    {
+      "id": "function:tests/test_retrieval.py:test_delete_document_removes_dense_and_lexical",
+      "type": "function",
+      "name": "test_delete_document_removes_dense_and_lexical",
+      "summary": "Deleting a document drops both dense and lexical hits and leaves search empty for that owner.",
+      "tags": [
+        "test",
+        "retrieval",
+        "indexing"
+      ],
+      "complexity": "simple",
+      "filePath": "tests/test_retrieval.py",
+      "lineRange": [
+        56,
+        65
+      ]
+    },
+    {
+      "id": "function:tests/test_retrieval.py:test_user_id_cannot_escape_index_dir",
+      "type": "function",
+      "name": "test_user_id_cannot_escape_index_dir",
+      "summary": "A path-like user id is hashed into the index directory and cannot write outside it.",
+      "tags": [
+        "test",
+        "security",
+        "indexing"
+      ],
+      "complexity": "simple",
+      "filePath": "tests/test_retrieval.py",
+      "lineRange": [
+        95,
+        104
+      ]
+    },
+    {
+      "id": "function:tests/test_retrieval.py:test_index_store_atomic_rollback_on_dim_mismatch",
+      "type": "function",
+      "name": "test_index_store_atomic_rollback_on_dim_mismatch",
+      "summary": "Adding chunks with the wrong embedding dimension rolls the hybrid index back and leaves lexical search empty.",
+      "tags": [
+        "test",
+        "indexing",
+        "retrieval"
+      ],
+      "complexity": "simple",
+      "filePath": "tests/test_retrieval.py",
+      "lineRange": [
+        169,
+        178
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:backend/client/llm_client.py",
+      "target": "file:backend/core/config.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:backend/client/llm_client.py",
+      "target": "file:backend/core/exceptions.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:backend/client/llm_client.py",
+      "target": "file:backend/utils/timeutil.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:backend/services/llm_service.py",
+      "target": "file:backend/client/llm_client.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:backend/services/llm_service.py",
+      "target": "file:backend/core/config.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:backend/services/llm_service.py",
+      "target": "file:backend/core/exceptions.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:backend/services/llm_service.py",
+      "target": "file:backend/utils/rate_limiter.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:backend/services/llm_service.py",
+      "target": "file:backend/utils/streaming.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:backend/services/llm_service.py",
+      "target": "file:backend/utils/text.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:backend/utils/rate_limiter.py",
+      "target": "file:backend/utils/timeutil.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/conftest.py",
+      "target": "file:backend/core/config.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/conftest.py",
+      "target": "file:backend/core/container.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/conftest.py",
+      "target": "file:backend/main.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/conftest.py",
+      "target": "file:backend/services/llm_service.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/conftest.py",
+      "target": "file:backend/utils/rate_limiter.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/test_artifacts.py",
+      "target": "file:backend/services/artifact.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/test_artifacts.py",
+      "target": "file:backend/utils/rate_limiter.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/test_artifacts.py",
+      "target": "file:tests/conftest.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/test_llm.py",
+      "target": "file:backend/client/llm_client.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/test_llm.py",
+      "target": "file:backend/core/exceptions.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/test_llm.py",
+      "target": "file:backend/services/llm_service.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/test_llm.py",
+      "target": "file:backend/utils/rate_limiter.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/test_llm.py",
+      "target": "file:tests/conftest.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/test_retrieval.py",
+      "target": "file:backend/core/exceptions.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/test_retrieval.py",
+      "target": "file:backend/services/index_store.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/test_retrieval.py",
+      "target": "file:tests/conftest.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:backend/client/llm_client.py",
+      "target": "class:backend/client/llm_client.py:OpenedStream",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/client/llm_client.py",
+      "target": "class:backend/client/llm_client.py:OpenedStream",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/client/llm_client.py",
+      "target": "class:backend/client/llm_client.py:ProviderClient",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/client/llm_client.py",
+      "target": "class:backend/client/llm_client.py:ProviderClient",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/client/llm_client.py",
+      "target": "function:backend/client/llm_client.py:build_provider_clients",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/client/llm_client.py",
+      "target": "function:backend/client/llm_client.py:build_provider_clients",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/client/llm_client.py",
+      "target": "function:backend/client/llm_client.py:wrap_clients",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/client/llm_client.py",
+      "target": "function:backend/client/llm_client.py:wrap_clients",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/client/llm_client.py",
+      "target": "function:backend/client/llm_client.py:chunk_text",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/client/llm_client.py",
+      "target": "function:backend/client/llm_client.py:chunk_text",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/client/llm_client.py",
+      "target": "function:backend/client/llm_client.py:chunk_usage",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/client/llm_client.py",
+      "target": "function:backend/client/llm_client.py:chunk_usage",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/client/llm_client.py",
+      "target": "function:backend/client/llm_client.py:close_stream",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/client/llm_client.py",
+      "target": "function:backend/client/llm_client.py:close_stream",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/client/llm_client.py",
+      "target": "function:backend/client/llm_client.py:classify_exception",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/client/llm_client.py",
+      "target": "function:backend/client/llm_client.py:classify_exception",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/core/exceptions.py",
+      "target": "class:backend/core/exceptions.py:AppError",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/core/exceptions.py",
+      "target": "class:backend/core/exceptions.py:AppError",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/core/exceptions.py",
+      "target": "class:backend/core/exceptions.py:DocumentParseError",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/core/exceptions.py",
+      "target": "class:backend/core/exceptions.py:DocumentParseError",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/core/exceptions.py",
+      "target": "class:backend/core/exceptions.py:FetchError",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/core/exceptions.py",
+      "target": "class:backend/core/exceptions.py:FetchError",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/core/exceptions.py",
+      "target": "class:backend/core/exceptions.py:IngestError",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/core/exceptions.py",
+      "target": "class:backend/core/exceptions.py:IngestError",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/core/exceptions.py",
+      "target": "class:backend/core/exceptions.py:SessionNotFound",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/core/exceptions.py",
+      "target": "class:backend/core/exceptions.py:SessionNotFound",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/core/exceptions.py",
+      "target": "class:backend/core/exceptions.py:EmbeddingUnavailable",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/core/exceptions.py",
+      "target": "class:backend/core/exceptions.py:EmbeddingUnavailable",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/core/exceptions.py",
+      "target": "class:backend/core/exceptions.py:LLMError",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/core/exceptions.py",
+      "target": "class:backend/core/exceptions.py:LLMError",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/services/llm_service.py",
+      "target": "class:backend/services/llm_service.py:LLMResult",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/services/llm_service.py",
+      "target": "class:backend/services/llm_service.py:LLMResult",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/services/llm_service.py",
+      "target": "class:backend/services/llm_service.py:LLMStream",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/services/llm_service.py",
+      "target": "class:backend/services/llm_service.py:LLMStream",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/services/llm_service.py",
+      "target": "class:backend/services/llm_service.py:CircuitBreaker",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/services/llm_service.py",
+      "target": "class:backend/services/llm_service.py:CircuitBreaker",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/services/llm_service.py",
+      "target": "class:backend/services/llm_service.py:LLMService",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/services/llm_service.py",
+      "target": "class:backend/services/llm_service.py:LLMService",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/utils/rate_limiter.py",
+      "target": "class:backend/utils/rate_limiter.py:RateLimiter",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/utils/rate_limiter.py",
+      "target": "class:backend/utils/rate_limiter.py:RateLimiter",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/utils/rate_limiter.py",
+      "target": "class:backend/utils/rate_limiter.py:QuotaGuard",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/utils/rate_limiter.py",
+      "target": "class:backend/utils/rate_limiter.py:QuotaGuard",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/conftest.py",
+      "target": "class:tests/conftest.py:FakeEmbedder",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/conftest.py",
+      "target": "class:tests/conftest.py:FakeEmbedder",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/conftest.py",
+      "target": "class:tests/conftest.py:FakeReranker",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/conftest.py",
+      "target": "class:tests/conftest.py:FakeReranker",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/conftest.py",
+      "target": "class:tests/conftest.py:_FakeStream",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/conftest.py",
+      "target": "class:tests/conftest.py:_FakeStream",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/conftest.py",
+      "target": "class:tests/conftest.py:FakeProviderClient",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/conftest.py",
+      "target": "class:tests/conftest.py:FakeProviderClient",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/conftest.py",
+      "target": "function:tests/conftest.py:settings",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/conftest.py",
+      "target": "function:tests/conftest.py:settings",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/conftest.py",
+      "target": "function:tests/conftest.py:tavily_transport",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/conftest.py",
+      "target": "function:tests/conftest.py:tavily_transport",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/conftest.py",
+      "target": "function:tests/conftest.py:build_container",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/conftest.py",
+      "target": "function:tests/conftest.py:build_container",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/conftest.py",
+      "target": "function:tests/conftest.py:client_factory",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/conftest.py",
+      "target": "function:tests/conftest.py:client_factory",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/conftest.py",
+      "target": "function:tests/conftest.py:parse_sse",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/conftest.py",
+      "target": "function:tests/conftest.py:parse_sse",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_artifacts.py",
+      "target": "function:tests/test_artifacts.py:test_validator_rejects_empty_and_over_cap_documents",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_artifacts.py",
+      "target": "function:tests/test_artifacts.py:test_validator_rejects_empty_and_over_cap_documents",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_artifacts.py",
+      "target": "function:tests/test_artifacts.py:test_when_a_document_is_and_is_not_authored",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_artifacts.py",
+      "target": "function:tests/test_artifacts.py:test_when_a_document_is_and_is_not_authored",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_artifacts.py",
+      "target": "function:tests/test_artifacts.py:test_five_formats_are_built_from_the_same_document",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_artifacts.py",
+      "target": "function:tests/test_artifacts.py:test_five_formats_are_built_from_the_same_document",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_artifacts.py",
+      "target": "function:tests/test_artifacts.py:test_awkward_answers_still_become_every_format",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_artifacts.py",
+      "target": "function:tests/test_artifacts.py:test_awkward_answers_still_become_every_format",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_artifacts.py",
+      "target": "function:tests/test_artifacts.py:test_a_prose_answer_becomes_a_titled_sectioned_document",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_artifacts.py",
+      "target": "function:tests/test_artifacts.py:test_a_prose_answer_becomes_a_titled_sectioned_document",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_artifacts.py",
+      "target": "function:tests/test_artifacts.py:test_generate_pdf_saves_the_previous_answer",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_artifacts.py",
+      "target": "function:tests/test_artifacts.py:test_generate_pdf_saves_the_previous_answer",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_artifacts.py",
+      "target": "function:tests/test_artifacts.py:test_markdown_becomes_a_document_without_a_second_model_call",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_artifacts.py",
+      "target": "function:tests/test_artifacts.py:test_markdown_becomes_a_document_without_a_second_model_call",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_artifacts.py",
+      "target": "function:tests/test_artifacts.py:test_file_request_streams_the_answer_then_the_artifact",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_artifacts.py",
+      "target": "function:tests/test_artifacts.py:test_file_request_streams_the_answer_then_the_artifact",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_artifacts.py",
+      "target": "function:tests/test_artifacts.py:test_save_request_files_the_previous_answer_not_export_instructions",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_artifacts.py",
+      "target": "function:tests/test_artifacts.py:test_save_request_files_the_previous_answer_not_export_instructions",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_artifacts.py",
+      "target": "function:tests/test_artifacts.py:test_i_want_a_pdf_opens_a_file_even_when_the_model_refuses",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_artifacts.py",
+      "target": "function:tests/test_artifacts.py:test_i_want_a_pdf_opens_a_file_even_when_the_model_refuses",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_artifacts.py",
+      "target": "function:tests/test_artifacts.py:test_every_mode_downloads_every_format",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_artifacts.py",
+      "target": "function:tests/test_artifacts.py:test_every_mode_downloads_every_format",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_artifacts.py",
+      "target": "function:tests/test_artifacts.py:test_thin_answer_still_downloads_instead_of_failing",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_artifacts.py",
+      "target": "function:tests/test_artifacts.py:test_thin_answer_still_downloads_instead_of_failing",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_artifacts.py",
+      "target": "function:tests/test_artifacts.py:test_download_rate_limit_is_separate_from_chat",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_artifacts.py",
+      "target": "function:tests/test_artifacts.py:test_download_rate_limit_is_separate_from_chat",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_artifacts.py",
+      "target": "function:tests/test_artifacts.py:test_inline_markdown_is_stripped_in_non_markdown_formats",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_artifacts.py",
+      "target": "function:tests/test_artifacts.py:test_inline_markdown_is_stripped_in_non_markdown_formats",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_llm.py",
+      "target": "function:tests/test_llm.py:test_failover_on_rate_limit_and_5xx_and_timeout",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_llm.py",
+      "target": "function:tests/test_llm.py:test_failover_on_rate_limit_and_5xx_and_timeout",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_llm.py",
+      "target": "function:tests/test_llm.py:test_404_hard_disables_model_and_hides_it",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_llm.py",
+      "target": "function:tests/test_llm.py:test_404_hard_disables_model_and_hides_it",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_llm.py",
+      "target": "function:tests/test_llm.py:test_all_models_failing_raises_normalised_error",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_llm.py",
+      "target": "function:tests/test_llm.py:test_all_models_failing_raises_normalised_error",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_retrieval.py",
+      "target": "function:tests/test_retrieval.py:test_delete_document_removes_dense_and_lexical",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_retrieval.py",
+      "target": "function:tests/test_retrieval.py:test_delete_document_removes_dense_and_lexical",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_retrieval.py",
+      "target": "function:tests/test_retrieval.py:test_user_id_cannot_escape_index_dir",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_retrieval.py",
+      "target": "function:tests/test_retrieval.py:test_user_id_cannot_escape_index_dir",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_retrieval.py",
+      "target": "function:tests/test_retrieval.py:test_index_store_atomic_rollback_on_dim_mismatch",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_retrieval.py",
+      "target": "function:tests/test_retrieval.py:test_index_store_atomic_rollback_on_dim_mismatch",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:backend/core/exceptions.py:DocumentParseError",
+      "target": "class:backend/core/exceptions.py:AppError",
+      "type": "inherits",
+      "direction": "forward",
+      "weight": 0.9
+    },
+    {
+      "source": "class:backend/core/exceptions.py:FetchError",
+      "target": "class:backend/core/exceptions.py:DocumentParseError",
+      "type": "inherits",
+      "direction": "forward",
+      "weight": 0.9
+    },
+    {
+      "source": "class:backend/core/exceptions.py:IngestError",
+      "target": "class:backend/core/exceptions.py:AppError",
+      "type": "inherits",
+      "direction": "forward",
+      "weight": 0.9
+    },
+    {
+      "source": "class:backend/core/exceptions.py:SessionNotFound",
+      "target": "class:backend/core/exceptions.py:AppError",
+      "type": "inherits",
+      "direction": "forward",
+      "weight": 0.9
+    },
+    {
+      "source": "class:backend/core/exceptions.py:EmbeddingUnavailable",
+      "target": "class:backend/core/exceptions.py:AppError",
+      "type": "inherits",
+      "direction": "forward",
+      "weight": 0.9
+    },
+    {
+      "source": "class:backend/core/exceptions.py:LLMError",
+      "target": "class:backend/core/exceptions.py:AppError",
+      "type": "inherits",
+      "direction": "forward",
+      "weight": 0.9
+    },
+    {
+      "source": "file:backend/core/config.py",
+      "target": "file:tests/conftest.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:backend/core/container.py",
+      "target": "file:tests/conftest.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:backend/main.py",
+      "target": "file:tests/conftest.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:backend/services/llm_service.py",
+      "target": "file:tests/conftest.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:backend/utils/rate_limiter.py",
+      "target": "file:tests/conftest.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:backend/services/artifact.py",
+      "target": "file:tests/test_artifacts.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:backend/utils/rate_limiter.py",
+      "target": "file:tests/test_artifacts.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:backend/client/llm_client.py",
+      "target": "file:tests/test_llm.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:backend/core/exceptions.py",
+      "target": "file:tests/test_llm.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:backend/services/llm_service.py",
+      "target": "file:tests/test_llm.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:backend/utils/rate_limiter.py",
+      "target": "file:tests/test_llm.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:backend/core/exceptions.py",
+      "target": "file:tests/test_retrieval.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:backend/services/index_store.py",
+      "target": "file:tests/test_retrieval.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "function:backend/client/llm_client.py:classify_exception",
+      "target": "function:backend/utils/timeutil.py:parse_duration",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:backend/client/llm_client.py:classify_exception",
+      "target": "class:backend/core/exceptions.py:LLMError",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:backend/services/llm_service.py:LLMStream",
+      "target": "function:backend/client/llm_client.py:chunk_text",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:backend/services/llm_service.py:LLMStream",
+      "target": "function:backend/client/llm_client.py:chunk_usage",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:backend/services/llm_service.py:LLMStream",
+      "target": "function:backend/client/llm_client.py:classify_exception",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:backend/services/llm_service.py:LLMStream",
+      "target": "function:backend/client/llm_client.py:close_stream",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:backend/services/llm_service.py:LLMStream",
+      "target": "class:backend/core/exceptions.py:LLMError",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:backend/services/llm_service.py:LLMService",
+      "target": "function:backend/client/llm_client.py:build_provider_clients",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:backend/services/llm_service.py:LLMService",
+      "target": "function:backend/client/llm_client.py:wrap_clients",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:backend/services/llm_service.py:LLMService",
+      "target": "function:backend/client/llm_client.py:chunk_text",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:backend/services/llm_service.py:LLMService",
+      "target": "function:backend/client/llm_client.py:chunk_usage",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:backend/services/llm_service.py:LLMService",
+      "target": "function:backend/client/llm_client.py:classify_exception",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:backend/services/llm_service.py:LLMService",
+      "target": "function:backend/client/llm_client.py:close_stream",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:backend/services/llm_service.py:LLMService",
+      "target": "class:backend/client/llm_client.py:ProviderClient",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:backend/services/llm_service.py:LLMService",
+      "target": "class:backend/utils/streaming.py:ThinkFilter",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:backend/services/llm_service.py:LLMService",
+      "target": "function:backend/utils/text.py:estimate_tokens",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:backend/services/llm_service.py:LLMService",
+      "target": "class:backend/utils/rate_limiter.py:QuotaGuard",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:backend/services/llm_service.py:LLMService",
+      "target": "class:backend/core/exceptions.py:LLMError",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "class:backend/utils/rate_limiter.py:QuotaGuard",
+      "target": "function:backend/utils/timeutil.py:parse_duration",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:tests/conftest.py:settings",
+      "target": "class:backend/core/config.py:Settings",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:tests/conftest.py:build_container",
+      "target": "class:backend/services/llm_service.py:LLMService",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:tests/conftest.py:build_container",
+      "target": "class:backend/utils/rate_limiter.py:QuotaGuard",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:tests/conftest.py:build_container",
+      "target": "class:backend/core/container.py:ServiceContainer",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:tests/conftest.py:client_factory",
+      "target": "function:backend/main.py:create_app",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:tests/test_artifacts.py:test_validator_rejects_empty_and_over_cap_documents",
+      "target": "function:backend/services/artifact.py:validate_document",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:tests/test_artifacts.py:test_when_a_document_is_and_is_not_authored",
+      "target": "function:backend/services/artifact.py:should_author_document",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:tests/test_artifacts.py:test_when_a_document_is_and_is_not_authored",
+      "target": "function:backend/services/artifact.py:wants_file",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:tests/test_artifacts.py:test_when_a_document_is_and_is_not_authored",
+      "target": "function:backend/services/artifact.py:is_bare_save",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:tests/test_artifacts.py:test_when_a_document_is_and_is_not_authored",
+      "target": "function:backend/services/artifact.py:preferred_format",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:tests/test_artifacts.py:test_when_a_document_is_and_is_not_authored",
+      "target": "function:backend/services/artifact.py:is_restyle",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:tests/test_artifacts.py:test_five_formats_are_built_from_the_same_document",
+      "target": "function:backend/services/artifact.py:validate_document",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:tests/test_artifacts.py:test_five_formats_are_built_from_the_same_document",
+      "target": "function:backend/services/artifact.py:render_download",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:tests/test_artifacts.py:test_five_formats_are_built_from_the_same_document",
+      "target": "function:backend/services/artifact.py:safe_filename",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:tests/test_artifacts.py:test_five_formats_are_built_from_the_same_document",
+      "target": "function:backend/services/artifact.py:content_disposition",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:tests/test_artifacts.py:test_awkward_answers_still_become_every_format",
+      "target": "function:backend/services/artifact.py:document_from_markdown",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:tests/test_artifacts.py:test_awkward_answers_still_become_every_format",
+      "target": "function:backend/services/artifact.py:render_download",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:tests/test_artifacts.py:test_a_prose_answer_becomes_a_titled_sectioned_document",
+      "target": "function:backend/services/artifact.py:topic_title",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:tests/test_artifacts.py:test_a_prose_answer_becomes_a_titled_sectioned_document",
+      "target": "function:backend/services/artifact.py:document_from_markdown",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:tests/test_artifacts.py:test_a_prose_answer_becomes_a_titled_sectioned_document",
+      "target": "function:backend/services/artifact.py:render_download",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:tests/test_artifacts.py:test_generate_pdf_saves_the_previous_answer",
+      "target": "class:tests/conftest.py:FakeProviderClient",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:tests/test_artifacts.py:test_markdown_becomes_a_document_without_a_second_model_call",
+      "target": "function:backend/services/artifact.py:document_from_markdown",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:tests/test_artifacts.py:test_markdown_becomes_a_document_without_a_second_model_call",
+      "target": "function:backend/services/artifact.py:document_source",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:tests/test_artifacts.py:test_file_request_streams_the_answer_then_the_artifact",
+      "target": "class:tests/conftest.py:FakeProviderClient",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:tests/test_artifacts.py:test_save_request_files_the_previous_answer_not_export_instructions",
+      "target": "class:tests/conftest.py:FakeProviderClient",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:tests/test_artifacts.py:test_i_want_a_pdf_opens_a_file_even_when_the_model_refuses",
+      "target": "class:tests/conftest.py:FakeProviderClient",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:tests/test_artifacts.py:test_every_mode_downloads_every_format",
+      "target": "class:tests/conftest.py:FakeProviderClient",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:tests/test_artifacts.py:test_thin_answer_still_downloads_instead_of_failing",
+      "target": "class:tests/conftest.py:FakeProviderClient",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:tests/test_artifacts.py:test_download_rate_limit_is_separate_from_chat",
+      "target": "class:backend/utils/rate_limiter.py:RateLimiter",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:tests/test_artifacts.py:test_inline_markdown_is_stripped_in_non_markdown_formats",
+      "target": "function:backend/services/artifact.py:document_from_markdown",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:tests/test_artifacts.py:test_inline_markdown_is_stripped_in_non_markdown_formats",
+      "target": "function:backend/services/artifact.py:render_download",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:tests/test_artifacts.py:test_inline_markdown_is_stripped_in_non_markdown_formats",
+      "target": "function:backend/services/artifact.py:strip_markdown_inline",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:tests/test_llm.py:test_failover_on_rate_limit_and_5xx_and_timeout",
+      "target": "class:backend/services/llm_service.py:LLMService",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:tests/test_llm.py:test_failover_on_rate_limit_and_5xx_and_timeout",
+      "target": "class:tests/conftest.py:FakeProviderClient",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:tests/test_llm.py:test_404_hard_disables_model_and_hides_it",
+      "target": "class:backend/services/llm_service.py:LLMService",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:tests/test_llm.py:test_all_models_failing_raises_normalised_error",
+      "target": "class:backend/services/llm_service.py:LLMService",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:tests/test_llm.py:test_all_models_failing_raises_normalised_error",
+      "target": "class:backend/core/exceptions.py:LLMError",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:tests/test_retrieval.py:test_index_store_atomic_rollback_on_dim_mismatch",
+      "target": "class:backend/services/index_store.py:HybridIndexStore",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:tests/test_retrieval.py:test_index_store_atomic_rollback_on_dim_mismatch",
+      "target": "class:backend/services/index_store.py:ChunkIn",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    }
+  ]
+}

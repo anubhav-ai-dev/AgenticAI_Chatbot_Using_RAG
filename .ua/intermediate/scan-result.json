@@ -1,0 +1,1053 @@
+{
+  "name": "AgenticAI_Chatbot_Using_RAG",
+  "description": "A free-tier chatbot with streaming answers, hybrid retrieval (BM25 + vectors + reranking), web search, persistent chat history, and an automatic model fallback chain across Groq and Google Gemini. Note: this project has over 100 source files; consider scoping analysis to a subdirectory for faster results.",
+  "languages": [
+    "config",
+    "css",
+    "html",
+    "javascript",
+    "markdown",
+    "procfile",
+    "python",
+    "txt",
+    "unknown"
+  ],
+  "frameworks": [
+    "FastAPI",
+    "Uvicorn",
+    "Pydantic",
+    "SQLAlchemy",
+    "pytest"
+  ],
+  "files": [
+    {
+      "path": ".env.example",
+      "language": "config",
+      "sizeLines": 70,
+      "fileCategory": "config"
+    },
+    {
+      "path": "Pipfile",
+      "language": "unknown",
+      "sizeLines": 11,
+      "fileCategory": "code"
+    },
+    {
+      "path": "Procfile",
+      "language": "procfile",
+      "sizeLines": 1,
+      "fileCategory": "infra"
+    },
+    {
+      "path": "README.md",
+      "language": "markdown",
+      "sizeLines": 205,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "backend/__init__.py",
+      "language": "python",
+      "sizeLines": 0,
+      "fileCategory": "code"
+    },
+    {
+      "path": "backend/api/__init__.py",
+      "language": "python",
+      "sizeLines": 1,
+      "fileCategory": "code"
+    },
+    {
+      "path": "backend/api/mcp_server.py",
+      "language": "python",
+      "sizeLines": 124,
+      "fileCategory": "code"
+    },
+    {
+      "path": "backend/api/routes.py",
+      "language": "python",
+      "sizeLines": 410,
+      "fileCategory": "code"
+    },
+    {
+      "path": "backend/client/__init__.py",
+      "language": "python",
+      "sizeLines": 5,
+      "fileCategory": "code"
+    },
+    {
+      "path": "backend/client/embedding_client.py",
+      "language": "python",
+      "sizeLines": 122,
+      "fileCategory": "code"
+    },
+    {
+      "path": "backend/client/http.py",
+      "language": "python",
+      "sizeLines": 15,
+      "fileCategory": "code"
+    },
+    {
+      "path": "backend/client/llm_client.py",
+      "language": "python",
+      "sizeLines": 134,
+      "fileCategory": "code"
+    },
+    {
+      "path": "backend/client/rerank_client.py",
+      "language": "python",
+      "sizeLines": 61,
+      "fileCategory": "code"
+    },
+    {
+      "path": "backend/client/search_client.py",
+      "language": "python",
+      "sizeLines": 88,
+      "fileCategory": "code"
+    },
+    {
+      "path": "backend/client/web_client.py",
+      "language": "python",
+      "sizeLines": 53,
+      "fileCategory": "code"
+    },
+    {
+      "path": "backend/config.py",
+      "language": "python",
+      "sizeLines": 93,
+      "fileCategory": "code"
+    },
+    {
+      "path": "backend/core/__init__.py",
+      "language": "python",
+      "sizeLines": 5,
+      "fileCategory": "code"
+    },
+    {
+      "path": "backend/core/config.py",
+      "language": "python",
+      "sizeLines": 307,
+      "fileCategory": "code"
+    },
+    {
+      "path": "backend/core/container.py",
+      "language": "python",
+      "sizeLines": 196,
+      "fileCategory": "code"
+    },
+    {
+      "path": "backend/core/database.py",
+      "language": "python",
+      "sizeLines": 91,
+      "fileCategory": "code"
+    },
+    {
+      "path": "backend/core/exceptions.py",
+      "language": "python",
+      "sizeLines": 76,
+      "fileCategory": "code"
+    },
+    {
+      "path": "backend/main.py",
+      "language": "python",
+      "sizeLines": 119,
+      "fileCategory": "code"
+    },
+    {
+      "path": "backend/models/__init__.py",
+      "language": "python",
+      "sizeLines": 0,
+      "fileCategory": "code"
+    },
+    {
+      "path": "backend/models/api.py",
+      "language": "python",
+      "sizeLines": 253,
+      "fileCategory": "code"
+    },
+    {
+      "path": "backend/models/db.py",
+      "language": "python",
+      "sizeLines": 83,
+      "fileCategory": "code"
+    },
+    {
+      "path": "backend/services/__init__.py",
+      "language": "python",
+      "sizeLines": 0,
+      "fileCategory": "code"
+    },
+    {
+      "path": "backend/services/artifact.py",
+      "language": "python",
+      "sizeLines": 1201,
+      "fileCategory": "code"
+    },
+    {
+      "path": "backend/services/chat_service.py",
+      "language": "python",
+      "sizeLines": 538,
+      "fileCategory": "code"
+    },
+    {
+      "path": "backend/services/document_service.py",
+      "language": "python",
+      "sizeLines": 247,
+      "fileCategory": "code"
+    },
+    {
+      "path": "backend/services/embedding_service.py",
+      "language": "python",
+      "sizeLines": 111,
+      "fileCategory": "code"
+    },
+    {
+      "path": "backend/services/github_service.py",
+      "language": "python",
+      "sizeLines": 322,
+      "fileCategory": "code"
+    },
+    {
+      "path": "backend/services/index_store.py",
+      "language": "python",
+      "sizeLines": 363,
+      "fileCategory": "code"
+    },
+    {
+      "path": "backend/services/llm_service.py",
+      "language": "python",
+      "sizeLines": 399,
+      "fileCategory": "code"
+    },
+    {
+      "path": "backend/services/parser.py",
+      "language": "python",
+      "sizeLines": 525,
+      "fileCategory": "code"
+    },
+    {
+      "path": "backend/services/prompt_builder.py",
+      "language": "python",
+      "sizeLines": 292,
+      "fileCategory": "code"
+    },
+    {
+      "path": "backend/services/rerank_service.py",
+      "language": "python",
+      "sizeLines": 95,
+      "fileCategory": "code"
+    },
+    {
+      "path": "backend/services/retrieval_service.py",
+      "language": "python",
+      "sizeLines": 210,
+      "fileCategory": "code"
+    },
+    {
+      "path": "backend/services/search_service.py",
+      "language": "python",
+      "sizeLines": 133,
+      "fileCategory": "code"
+    },
+    {
+      "path": "backend/services/session_service.py",
+      "language": "python",
+      "sizeLines": 156,
+      "fileCategory": "code"
+    },
+    {
+      "path": "backend/utils/__init__.py",
+      "language": "python",
+      "sizeLines": 1,
+      "fileCategory": "code"
+    },
+    {
+      "path": "backend/utils/cache.py",
+      "language": "python",
+      "sizeLines": 167,
+      "fileCategory": "code"
+    },
+    {
+      "path": "backend/utils/net.py",
+      "language": "python",
+      "sizeLines": 28,
+      "fileCategory": "code"
+    },
+    {
+      "path": "backend/utils/numeric.py",
+      "language": "python",
+      "sizeLines": 25,
+      "fileCategory": "code"
+    },
+    {
+      "path": "backend/utils/ranking.py",
+      "language": "python",
+      "sizeLines": 12,
+      "fileCategory": "code"
+    },
+    {
+      "path": "backend/utils/rate_limiter.py",
+      "language": "python",
+      "sizeLines": 107,
+      "fileCategory": "code"
+    },
+    {
+      "path": "backend/utils/sse.py",
+      "language": "python",
+      "sizeLines": 12,
+      "fileCategory": "code"
+    },
+    {
+      "path": "backend/utils/streaming.py",
+      "language": "python",
+      "sizeLines": 76,
+      "fileCategory": "code"
+    },
+    {
+      "path": "backend/utils/text.py",
+      "language": "python",
+      "sizeLines": 54,
+      "fileCategory": "code"
+    },
+    {
+      "path": "backend/utils/timeutil.py",
+      "language": "python",
+      "sizeLines": 33,
+      "fileCategory": "code"
+    },
+    {
+      "path": "data/.gitkeep",
+      "language": "unknown",
+      "sizeLines": 0,
+      "fileCategory": "code"
+    },
+    {
+      "path": "docs/AI_ASSISTANT_PRO_MASTER_TASK.md",
+      "language": "markdown",
+      "sizeLines": 719,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/redesign/PROJECT_BRIEF.md",
+      "language": "markdown",
+      "sizeLines": 159,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/redesign/audit.md",
+      "language": "markdown",
+      "sizeLines": 485,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/redesign/design-spec.md",
+      "language": "markdown",
+      "sizeLines": 790,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/redesign/integration-notes.md",
+      "language": "markdown",
+      "sizeLines": 76,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/redesign/integration-test-plan.md",
+      "language": "markdown",
+      "sizeLines": 364,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/redesign/qa-report-04.md",
+      "language": "markdown",
+      "sizeLines": 32,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/redesign/qa-report-05.md",
+      "language": "markdown",
+      "sizeLines": 57,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/redesign/qa-report-06.md",
+      "language": "markdown",
+      "sizeLines": 34,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/redesign/security-issue-authz.md",
+      "language": "markdown",
+      "sizeLines": 17,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/redesign/stage4-backlog.md",
+      "language": "markdown",
+      "sizeLines": 13,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/redesign/ui-ux-implementation-notes.md",
+      "language": "markdown",
+      "sizeLines": 54,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/redesign/view-contract.md",
+      "language": "markdown",
+      "sizeLines": 613,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "frontend/__init__.py",
+      "language": "python",
+      "sizeLines": 0,
+      "fileCategory": "code"
+    },
+    {
+      "path": "frontend/assets/LICENSE-lucide.txt",
+      "language": "txt",
+      "sizeLines": 47,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "frontend/css/ai-viz.css",
+      "language": "css",
+      "sizeLines": 302,
+      "fileCategory": "markup"
+    },
+    {
+      "path": "frontend/css/animations.css",
+      "language": "css",
+      "sizeLines": 309,
+      "fileCategory": "markup"
+    },
+    {
+      "path": "frontend/css/components.css",
+      "language": "css",
+      "sizeLines": 2214,
+      "fileCategory": "markup"
+    },
+    {
+      "path": "frontend/css/intro.css",
+      "language": "css",
+      "sizeLines": 486,
+      "fileCategory": "markup"
+    },
+    {
+      "path": "frontend/css/main.css",
+      "language": "css",
+      "sizeLines": 718,
+      "fileCategory": "markup"
+    },
+    {
+      "path": "frontend/css/reference.css",
+      "language": "css",
+      "sizeLines": 933,
+      "fileCategory": "markup"
+    },
+    {
+      "path": "frontend/css/syntax.css",
+      "language": "css",
+      "sizeLines": 54,
+      "fileCategory": "markup"
+    },
+    {
+      "path": "frontend/css/workspace.css",
+      "language": "css",
+      "sizeLines": 594,
+      "fileCategory": "markup"
+    },
+    {
+      "path": "frontend/index.html",
+      "language": "html",
+      "sizeLines": 1022,
+      "fileCategory": "markup"
+    },
+    {
+      "path": "frontend/js/api.js",
+      "language": "javascript",
+      "sizeLines": 245,
+      "fileCategory": "code"
+    },
+    {
+      "path": "frontend/js/app.js",
+      "language": "javascript",
+      "sizeLines": 1017,
+      "fileCategory": "code"
+    },
+    {
+      "path": "frontend/js/chat.js",
+      "language": "javascript",
+      "sizeLines": 1157,
+      "fileCategory": "code"
+    },
+    {
+      "path": "frontend/js/components/ai-viz.js",
+      "language": "javascript",
+      "sizeLines": 116,
+      "fileCategory": "code"
+    },
+    {
+      "path": "frontend/js/components/code-preview.js",
+      "language": "javascript",
+      "sizeLines": 283,
+      "fileCategory": "code"
+    },
+    {
+      "path": "frontend/js/components/dialog.js",
+      "language": "javascript",
+      "sizeLines": 155,
+      "fileCategory": "code"
+    },
+    {
+      "path": "frontend/js/components/documents.js",
+      "language": "javascript",
+      "sizeLines": 269,
+      "fileCategory": "code"
+    },
+    {
+      "path": "frontend/js/components/menu.js",
+      "language": "javascript",
+      "sizeLines": 155,
+      "fileCategory": "code"
+    },
+    {
+      "path": "frontend/js/components/model-select.js",
+      "language": "javascript",
+      "sizeLines": 449,
+      "fileCategory": "code"
+    },
+    {
+      "path": "frontend/js/components/motion.js",
+      "language": "javascript",
+      "sizeLines": 205,
+      "fileCategory": "code"
+    },
+    {
+      "path": "frontend/js/components/notifications.js",
+      "language": "javascript",
+      "sizeLines": 180,
+      "fileCategory": "code"
+    },
+    {
+      "path": "frontend/js/components/prefs.js",
+      "language": "javascript",
+      "sizeLines": 69,
+      "fileCategory": "code"
+    },
+    {
+      "path": "frontend/js/components/radiogroup.js",
+      "language": "javascript",
+      "sizeLines": 64,
+      "fileCategory": "code"
+    },
+    {
+      "path": "frontend/js/components/settings.js",
+      "language": "javascript",
+      "sizeLines": 294,
+      "fileCategory": "code"
+    },
+    {
+      "path": "frontend/js/components/workspaces.js",
+      "language": "javascript",
+      "sizeLines": 159,
+      "fileCategory": "code"
+    },
+    {
+      "path": "frontend/js/icons.js",
+      "language": "javascript",
+      "sizeLines": 84,
+      "fileCategory": "code"
+    },
+    {
+      "path": "frontend/js/intro.js",
+      "language": "javascript",
+      "sizeLines": 104,
+      "fileCategory": "code"
+    },
+    {
+      "path": "frontend/js/theme.js",
+      "language": "javascript",
+      "sizeLines": 109,
+      "fileCategory": "code"
+    },
+    {
+      "path": "frontend/js/ui.js",
+      "language": "javascript",
+      "sizeLines": 1247,
+      "fileCategory": "code"
+    },
+    {
+      "path": "frontend/js/utils.js",
+      "language": "javascript",
+      "sizeLines": 502,
+      "fileCategory": "code"
+    },
+    {
+      "path": "pytest.ini",
+      "language": "config",
+      "sizeLines": 9,
+      "fileCategory": "config"
+    },
+    {
+      "path": "requirements-dev.txt",
+      "language": "txt",
+      "sizeLines": 4,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "requirements.txt",
+      "language": "txt",
+      "sizeLines": 42,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "skills.md",
+      "language": "markdown",
+      "sizeLines": 128,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "tests/__init__.py",
+      "language": "python",
+      "sizeLines": 0,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/browser_harness.py",
+      "language": "python",
+      "sizeLines": 76,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/conftest.py",
+      "language": "python",
+      "sizeLines": 339,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/test_api.py",
+      "language": "python",
+      "sizeLines": 503,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/test_architecture.py",
+      "language": "python",
+      "sizeLines": 129,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/test_artifacts.py",
+      "language": "python",
+      "sizeLines": 450,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/test_frontend_followup.py",
+      "language": "python",
+      "sizeLines": 563,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/test_frontend_guards.py",
+      "language": "python",
+      "sizeLines": 837,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/test_frontend_motion.py",
+      "language": "python",
+      "sizeLines": 222,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/test_frontend_reference.py",
+      "language": "python",
+      "sizeLines": 109,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/test_frontend_sanitizer.py",
+      "language": "python",
+      "sizeLines": 304,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/test_frontend_shell.py",
+      "language": "python",
+      "sizeLines": 109,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/test_frontend_startup.py",
+      "language": "python",
+      "sizeLines": 72,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/test_frontend_workspaces.py",
+      "language": "python",
+      "sizeLines": 405,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/test_github.py",
+      "language": "python",
+      "sizeLines": 153,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/test_live.py",
+      "language": "python",
+      "sizeLines": 224,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/test_llm.py",
+      "language": "python",
+      "sizeLines": 263,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/test_parser_formats.py",
+      "language": "python",
+      "sizeLines": 298,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/test_retrieval.py",
+      "language": "python",
+      "sizeLines": 178,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/test_units.py",
+      "language": "python",
+      "sizeLines": 316,
+      "fileCategory": "code"
+    }
+  ],
+  "totalFiles": 118,
+  "filteredByIgnore": 0,
+  "estimatedComplexity": "moderate",
+  "importMap": {
+    ".env.example": [],
+    "Pipfile": [],
+    "Procfile": [],
+    "README.md": [],
+    "backend/__init__.py": [],
+    "backend/api/__init__.py": [],
+    "backend/api/mcp_server.py": [
+      "backend/core/config.py",
+      "backend/core/container.py",
+      "backend/models/api.py",
+      "backend/services/chat_service.py"
+    ],
+    "backend/api/routes.py": [
+      "backend/core/container.py",
+      "backend/core/exceptions.py",
+      "backend/models/api.py",
+      "backend/services/artifact.py",
+      "backend/services/chat_service.py",
+      "backend/services/document_service.py",
+      "backend/services/github_service.py",
+      "backend/services/llm_service.py",
+      "backend/services/parser.py",
+      "backend/services/retrieval_service.py",
+      "backend/services/search_service.py",
+      "backend/services/session_service.py",
+      "backend/utils/sse.py"
+    ],
+    "backend/client/__init__.py": [],
+    "backend/client/embedding_client.py": [
+      "backend/core/config.py",
+      "backend/core/exceptions.py",
+      "backend/utils/numeric.py"
+    ],
+    "backend/client/http.py": [
+      "backend/core/config.py"
+    ],
+    "backend/client/llm_client.py": [
+      "backend/core/config.py",
+      "backend/core/exceptions.py",
+      "backend/utils/timeutil.py"
+    ],
+    "backend/client/rerank_client.py": [
+      "backend/core/config.py",
+      "backend/utils/numeric.py"
+    ],
+    "backend/client/search_client.py": [],
+    "backend/client/web_client.py": [
+      "backend/core/exceptions.py",
+      "backend/utils/net.py"
+    ],
+    "backend/config.py": [],
+    "backend/core/__init__.py": [],
+    "backend/core/config.py": [],
+    "backend/core/container.py": [
+      "backend/client/http.py",
+      "backend/client/search_client.py",
+      "backend/client/web_client.py",
+      "backend/core/config.py",
+      "backend/core/database.py",
+      "backend/services/chat_service.py",
+      "backend/services/document_service.py",
+      "backend/services/embedding_service.py",
+      "backend/services/github_service.py",
+      "backend/services/index_store.py",
+      "backend/services/llm_service.py",
+      "backend/services/parser.py",
+      "backend/services/prompt_builder.py",
+      "backend/services/rerank_service.py",
+      "backend/services/retrieval_service.py",
+      "backend/services/search_service.py",
+      "backend/services/session_service.py",
+      "backend/utils/cache.py",
+      "backend/utils/rate_limiter.py"
+    ],
+    "backend/core/database.py": [],
+    "backend/core/exceptions.py": [],
+    "backend/main.py": [
+      "backend/api/routes.py",
+      "backend/core/config.py",
+      "backend/core/container.py"
+    ],
+    "backend/models/__init__.py": [],
+    "backend/models/api.py": [],
+    "backend/models/db.py": [
+      "backend/core/database.py",
+      "backend/utils/timeutil.py"
+    ],
+    "backend/services/__init__.py": [],
+    "backend/services/artifact.py": [],
+    "backend/services/chat_service.py": [
+      "backend/core/config.py",
+      "backend/core/exceptions.py",
+      "backend/services/artifact.py",
+      "backend/services/llm_service.py",
+      "backend/services/prompt_builder.py",
+      "backend/services/retrieval_service.py",
+      "backend/services/search_service.py",
+      "backend/services/session_service.py",
+      "backend/utils/cache.py"
+    ],
+    "backend/services/document_service.py": [
+      "backend/core/config.py",
+      "backend/core/database.py",
+      "backend/core/exceptions.py",
+      "backend/models/db.py",
+      "backend/services/embedding_service.py",
+      "backend/services/index_store.py",
+      "backend/services/parser.py"
+    ],
+    "backend/services/embedding_service.py": [
+      "backend/client/embedding_client.py",
+      "backend/core/config.py",
+      "backend/core/exceptions.py"
+    ],
+    "backend/services/github_service.py": [
+      "backend/core/config.py",
+      "backend/core/database.py",
+      "backend/core/exceptions.py",
+      "backend/models/db.py",
+      "backend/services/document_service.py",
+      "backend/services/llm_service.py",
+      "backend/utils/timeutil.py"
+    ],
+    "backend/services/index_store.py": [
+      "backend/utils/text.py"
+    ],
+    "backend/services/llm_service.py": [
+      "backend/client/llm_client.py",
+      "backend/core/config.py",
+      "backend/core/exceptions.py",
+      "backend/utils/rate_limiter.py",
+      "backend/utils/streaming.py",
+      "backend/utils/text.py"
+    ],
+    "backend/services/parser.py": [
+      "backend/client/web_client.py",
+      "backend/core/exceptions.py"
+    ],
+    "backend/services/prompt_builder.py": [
+      "backend/core/config.py",
+      "backend/models/api.py",
+      "backend/services/retrieval_service.py",
+      "backend/utils/text.py"
+    ],
+    "backend/services/rerank_service.py": [
+      "backend/client/rerank_client.py",
+      "backend/core/config.py"
+    ],
+    "backend/services/retrieval_service.py": [
+      "backend/core/config.py",
+      "backend/services/embedding_service.py",
+      "backend/services/index_store.py",
+      "backend/services/rerank_service.py",
+      "backend/utils/cache.py",
+      "backend/utils/ranking.py",
+      "backend/utils/text.py"
+    ],
+    "backend/services/search_service.py": [
+      "backend/client/search_client.py",
+      "backend/core/config.py",
+      "backend/models/api.py",
+      "backend/utils/cache.py",
+      "backend/utils/text.py"
+    ],
+    "backend/services/session_service.py": [
+      "backend/core/config.py",
+      "backend/core/database.py",
+      "backend/core/exceptions.py",
+      "backend/models/api.py",
+      "backend/models/db.py",
+      "backend/utils/timeutil.py"
+    ],
+    "backend/utils/__init__.py": [],
+    "backend/utils/cache.py": [],
+    "backend/utils/net.py": [],
+    "backend/utils/numeric.py": [],
+    "backend/utils/ranking.py": [],
+    "backend/utils/rate_limiter.py": [
+      "backend/utils/timeutil.py"
+    ],
+    "backend/utils/sse.py": [],
+    "backend/utils/streaming.py": [],
+    "backend/utils/text.py": [],
+    "backend/utils/timeutil.py": [],
+    "data/.gitkeep": [],
+    "docs/AI_ASSISTANT_PRO_MASTER_TASK.md": [],
+    "docs/redesign/PROJECT_BRIEF.md": [],
+    "docs/redesign/audit.md": [],
+    "docs/redesign/design-spec.md": [],
+    "docs/redesign/integration-notes.md": [],
+    "docs/redesign/integration-test-plan.md": [],
+    "docs/redesign/qa-report-04.md": [],
+    "docs/redesign/qa-report-05.md": [],
+    "docs/redesign/qa-report-06.md": [],
+    "docs/redesign/security-issue-authz.md": [],
+    "docs/redesign/stage4-backlog.md": [],
+    "docs/redesign/ui-ux-implementation-notes.md": [],
+    "docs/redesign/view-contract.md": [],
+    "frontend/__init__.py": [],
+    "frontend/assets/LICENSE-lucide.txt": [],
+    "frontend/css/ai-viz.css": [],
+    "frontend/css/animations.css": [],
+    "frontend/css/components.css": [],
+    "frontend/css/intro.css": [],
+    "frontend/css/main.css": [],
+    "frontend/css/reference.css": [],
+    "frontend/css/syntax.css": [],
+    "frontend/css/workspace.css": [],
+    "frontend/index.html": [],
+    "frontend/js/api.js": [],
+    "frontend/js/app.js": [],
+    "frontend/js/chat.js": [],
+    "frontend/js/components/ai-viz.js": [],
+    "frontend/js/components/code-preview.js": [],
+    "frontend/js/components/dialog.js": [],
+    "frontend/js/components/documents.js": [],
+    "frontend/js/components/menu.js": [],
+    "frontend/js/components/model-select.js": [],
+    "frontend/js/components/motion.js": [],
+    "frontend/js/components/notifications.js": [],
+    "frontend/js/components/prefs.js": [],
+    "frontend/js/components/radiogroup.js": [],
+    "frontend/js/components/settings.js": [],
+    "frontend/js/components/workspaces.js": [],
+    "frontend/js/icons.js": [],
+    "frontend/js/intro.js": [],
+    "frontend/js/theme.js": [],
+    "frontend/js/ui.js": [],
+    "frontend/js/utils.js": [],
+    "pytest.ini": [],
+    "requirements-dev.txt": [],
+    "requirements.txt": [],
+    "skills.md": [],
+    "tests/__init__.py": [],
+    "tests/browser_harness.py": [
+      "tests/test_frontend_guards.py"
+    ],
+    "tests/conftest.py": [
+      "backend/core/config.py",
+      "backend/core/container.py",
+      "backend/main.py",
+      "backend/services/llm_service.py",
+      "backend/utils/rate_limiter.py"
+    ],
+    "tests/test_api.py": [
+      "backend/models/api.py",
+      "backend/services/chat_service.py",
+      "tests/conftest.py"
+    ],
+    "tests/test_architecture.py": [],
+    "tests/test_artifacts.py": [
+      "backend/services/artifact.py",
+      "backend/utils/rate_limiter.py",
+      "tests/conftest.py"
+    ],
+    "tests/test_frontend_followup.py": [
+      "tests/test_frontend_guards.py"
+    ],
+    "tests/test_frontend_guards.py": [],
+    "tests/test_frontend_motion.py": [
+      "tests/test_frontend_guards.py"
+    ],
+    "tests/test_frontend_reference.py": [],
+    "tests/test_frontend_sanitizer.py": [],
+    "tests/test_frontend_shell.py": [
+      "backend/core/config.py"
+    ],
+    "tests/test_frontend_startup.py": [
+      "tests/browser_harness.py",
+      "tests/test_frontend_guards.py"
+    ],
+    "tests/test_frontend_workspaces.py": [
+      "tests/test_frontend_guards.py"
+    ],
+    "tests/test_github.py": [
+      "backend/services/github_service.py",
+      "tests/conftest.py"
+    ],
+    "tests/test_live.py": [
+      "backend/core/config.py",
+      "backend/core/container.py",
+      "backend/models/api.py",
+      "backend/services/chat_service.py"
+    ],
+    "tests/test_llm.py": [
+      "backend/client/llm_client.py",
+      "backend/core/exceptions.py",
+      "backend/services/llm_service.py",
+      "backend/utils/rate_limiter.py",
+      "tests/conftest.py"
+    ],
+    "tests/test_parser_formats.py": [
+      "backend/core/exceptions.py",
+      "backend/services/__init__.py",
+      "backend/services/embedding_service.py",
+      "backend/services/parser.py"
+    ],
+    "tests/test_retrieval.py": [
+      "backend/core/exceptions.py",
+      "backend/services/index_store.py",
+      "tests/conftest.py"
+    ],
+    "tests/test_units.py": [
+      "backend/core/config.py",
+      "backend/core/exceptions.py",
+      "backend/services/chat_service.py",
+      "backend/services/parser.py",
+      "backend/services/prompt_builder.py",
+      "backend/services/retrieval_service.py",
+      "backend/utils/cache.py",
+      "backend/utils/ranking.py",
+      "backend/utils/rate_limiter.py",
+      "backend/utils/streaming.py",
+      "backend/utils/text.py",
+      "backend/utils/timeutil.py"
+    ]
+  }
+}

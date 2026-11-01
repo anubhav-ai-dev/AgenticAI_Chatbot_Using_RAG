@@ -1,0 +1,128 @@
+{
+  "nodes": [
+    {
+      "id": "file:Pipfile",
+      "type": "file",
+      "name": "Pipfile",
+      "filePath": "Pipfile",
+      "summary": "Pipenv manifest that points at PyPI and pins Python 3.13, with empty runtime and development package lists.",
+      "tags": [
+        "configuration",
+        "dependency-manifest",
+        "python",
+        "pipenv"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/__init__.py",
+      "type": "file",
+      "name": "__init__.py",
+      "filePath": "backend/__init__.py",
+      "summary": "Empty package marker for the backend so Python treats the directory as a package.",
+      "tags": [
+        "package-marker",
+        "backend",
+        "python"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/api/__init__.py",
+      "type": "file",
+      "name": "__init__.py",
+      "filePath": "backend/api/__init__.py",
+      "summary": "Package marker for the delivery layer, described as FastAPI HTTP routes plus an optional MCP server.",
+      "tags": [
+        "package-marker",
+        "api",
+        "http",
+        "backend"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/client/__init__.py",
+      "type": "file",
+      "name": "__init__.py",
+      "filePath": "backend/client/__init__.py",
+      "summary": "Package marker for external adapters (LLM providers, Tavily, embeddings, web pages), stating that clients own transport and policy stays in backend.services.",
+      "tags": [
+        "package-marker",
+        "client",
+        "integration",
+        "backend"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/config.py",
+      "type": "file",
+      "name": "config.py",
+      "filePath": "backend/config.py",
+      "summary": "Staged leftover settings module that loads dotenv and defines data and frontend paths, provider API keys, server bind and CORS, the SQLite URL, Cohere and FAISS retrieval constants, Tavily and LLM defaults, Groq and Puter model catalogs, four agent modes, and a 20-message session history limit.",
+      "tags": [
+        "configuration",
+        "settings",
+        "rag",
+        "llm"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Module-level constants and os.getenv reads only; the file defines no functions or classes."
+    },
+    {
+      "id": "file:backend/core/__init__.py",
+      "type": "file",
+      "name": "__init__.py",
+      "filePath": "backend/core/__init__.py",
+      "summary": "Package marker for settings, the database, shared exceptions, and the DI container, left empty so importing the container here does not cycle with services.",
+      "tags": [
+        "package-marker",
+        "core",
+        "dependency-injection",
+        "backend"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/models/__init__.py",
+      "type": "file",
+      "name": "__init__.py",
+      "filePath": "backend/models/__init__.py",
+      "summary": "Empty package marker for the backend models package.",
+      "tags": [
+        "package-marker",
+        "data-model",
+        "backend"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/utils/__init__.py",
+      "type": "file",
+      "name": "__init__.py",
+      "filePath": "backend/utils/__init__.py",
+      "summary": "Package marker for pure helpers that depend only on the standard library or numpy, not on the rest of the backend.",
+      "tags": [
+        "package-marker",
+        "utility",
+        "backend"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:data/.gitkeep",
+      "type": "file",
+      "name": ".gitkeep",
+      "filePath": "data/.gitkeep",
+      "summary": "Empty placeholder that keeps the data directory present in version control.",
+      "tags": [
+        "placeholder",
+        "data-directory",
+        "git"
+      ],
+      "complexity": "simple"
+    }
+  ],
+  "edges": []
+}

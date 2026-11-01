@@ -1,0 +1,483 @@
+{
+  "nodes": [
+    {
+      "id": "file:frontend/js/components/settings.js",
+      "type": "file",
+      "name": "settings.js",
+      "filePath": "frontend/js/components/settings.js",
+      "summary": "Settings dialog view for profile, appearance, models, notifications, integrations, privacy, and help. Controls write through Theme and Prefs and never fetch on their own.",
+      "tags": [
+        "component",
+        "settings",
+        "dialog",
+        "view"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:frontend/js/components/settings.js:select",
+      "type": "function",
+      "name": "select",
+      "filePath": "frontend/js/components/settings.js",
+      "lineRange": [
+        35,
+        48
+      ],
+      "summary": "Shows one settings pane, updates tab selection, and notifies the pane handler.",
+      "tags": [
+        "settings",
+        "navigation",
+        "view"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/components/settings.js:_wireTabs",
+      "type": "function",
+      "name": "_wireTabs",
+      "filePath": "frontend/js/components/settings.js",
+      "lineRange": [
+        50,
+        79
+      ],
+      "summary": "Binds tab clicks and arrow-key roving, and flips aria-orientation when the nav becomes a horizontal strip.",
+      "tags": [
+        "settings",
+        "accessibility",
+        "keyboard"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:frontend/js/components/settings.js:syncModels",
+      "type": "function",
+      "name": "syncModels",
+      "filePath": "frontend/js/components/settings.js",
+      "lineRange": [
+        91,
+        115
+      ],
+      "summary": "Copies options, groups, and disabled reasons from the composer model select into the settings model control.",
+      "tags": [
+        "settings",
+        "view",
+        "models"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:frontend/js/components/settings.js:_syncAll",
+      "type": "function",
+      "name": "_syncAll",
+      "filePath": "frontend/js/components/settings.js",
+      "lineRange": [
+        117,
+        128
+      ],
+      "summary": "Refreshes theme, text size, density, toast preference, user id, models, and the notice count from their sources of truth.",
+      "tags": [
+        "settings",
+        "view",
+        "sync"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/components/settings.js:_badge",
+      "type": "function",
+      "name": "_badge",
+      "filePath": "frontend/js/components/settings.js",
+      "lineRange": [
+        144,
+        159
+      ],
+      "summary": "Maps a health-service value to a text label, tone, and icon name so status is not conveyed by color alone.",
+      "tags": [
+        "settings",
+        "view",
+        "status"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/components/settings.js:renderIntegrations",
+      "type": "function",
+      "name": "renderIntegrations",
+      "filePath": "frontend/js/components/settings.js",
+      "lineRange": [
+        165,
+        191
+      ],
+      "summary": "Renders GET /health service rows with icon badges, or a loading or error note when status is unavailable.",
+      "tags": [
+        "settings",
+        "view",
+        "integrations"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:frontend/js/components/settings.js:renderGithubRepos",
+      "type": "function",
+      "name": "renderGithubRepos",
+      "filePath": "frontend/js/components/settings.js",
+      "lineRange": [
+        193,
+        223
+      ],
+      "summary": "Renders connected GitHub repositories and a Disconnect button that calls the supplied handler.",
+      "tags": [
+        "settings",
+        "view",
+        "github"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:frontend/js/components/settings.js:open",
+      "type": "function",
+      "name": "open",
+      "filePath": "frontend/js/components/settings.js",
+      "lineRange": [
+        227,
+        234
+      ],
+      "summary": "Syncs every control, selects a pane, and opens the settings dialog with the active tab focused.",
+      "tags": [
+        "settings",
+        "dialog",
+        "view"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/components/settings.js:close",
+      "type": "function",
+      "name": "close",
+      "filePath": "frontend/js/components/settings.js",
+      "lineRange": [
+        236,
+        236
+      ],
+      "summary": "Closes the settings dialog through the shared Dialog helper.",
+      "tags": [
+        "settings",
+        "dialog",
+        "view"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/components/settings.js:setUserId",
+      "type": "function",
+      "name": "setUserId",
+      "filePath": "frontend/js/components/settings.js",
+      "lineRange": [
+        237,
+        237
+      ],
+      "summary": "Stores the displayed user id and writes it into the profile pane.",
+      "tags": [
+        "settings",
+        "profile",
+        "view"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/components/settings.js:onPane",
+      "type": "function",
+      "name": "onPane",
+      "filePath": "frontend/js/components/settings.js",
+      "lineRange": [
+        238,
+        238
+      ],
+      "summary": "Registers the controller callback fired when the user changes settings pane.",
+      "tags": [
+        "settings",
+        "event-handler",
+        "view"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/components/settings.js:init",
+      "type": "function",
+      "name": "init",
+      "filePath": "frontend/js/components/settings.js",
+      "lineRange": [
+        240,
+        291
+      ],
+      "summary": "Wires tabs, theme and preference radios, model mirroring, notice clearing, user-id copy, and the integrations refresh.",
+      "tags": [
+        "settings",
+        "event-handler",
+        "initialization"
+      ],
+      "complexity": "complex"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:frontend/js/components/settings.js",
+      "target": "function:frontend/js/components/settings.js:select",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/components/settings.js",
+      "target": "function:frontend/js/components/settings.js:select",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/components/settings.js",
+      "target": "function:frontend/js/components/settings.js:_wireTabs",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/components/settings.js",
+      "target": "function:frontend/js/components/settings.js:syncModels",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/components/settings.js",
+      "target": "function:frontend/js/components/settings.js:syncModels",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/components/settings.js",
+      "target": "function:frontend/js/components/settings.js:_syncAll",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/components/settings.js",
+      "target": "function:frontend/js/components/settings.js:_badge",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/components/settings.js",
+      "target": "function:frontend/js/components/settings.js:renderIntegrations",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/components/settings.js",
+      "target": "function:frontend/js/components/settings.js:renderIntegrations",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/components/settings.js",
+      "target": "function:frontend/js/components/settings.js:renderGithubRepos",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/components/settings.js",
+      "target": "function:frontend/js/components/settings.js:renderGithubRepos",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/components/settings.js",
+      "target": "function:frontend/js/components/settings.js:open",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/components/settings.js",
+      "target": "function:frontend/js/components/settings.js:open",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/components/settings.js",
+      "target": "function:frontend/js/components/settings.js:close",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/components/settings.js",
+      "target": "function:frontend/js/components/settings.js:close",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/components/settings.js",
+      "target": "function:frontend/js/components/settings.js:setUserId",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/components/settings.js",
+      "target": "function:frontend/js/components/settings.js:setUserId",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/components/settings.js",
+      "target": "function:frontend/js/components/settings.js:onPane",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/components/settings.js",
+      "target": "function:frontend/js/components/settings.js:onPane",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/components/settings.js",
+      "target": "function:frontend/js/components/settings.js:init",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/components/settings.js",
+      "target": "function:frontend/js/components/settings.js:init",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/components/settings.js",
+      "target": "file:frontend/js/components/radiogroup.js",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:frontend/js/components/settings.js",
+      "target": "file:frontend/js/theme.js",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:frontend/js/components/settings.js",
+      "target": "file:frontend/js/icons.js",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:frontend/js/components/settings.js",
+      "target": "file:frontend/js/utils.js",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:frontend/js/components/settings.js",
+      "target": "file:frontend/js/ui.js",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "function:frontend/js/components/settings.js:_syncAll",
+      "target": "function:frontend/js/components/radiogroup.js:set",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:frontend/js/components/settings.js:_syncAll",
+      "target": "function:frontend/js/theme.js:get",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:frontend/js/components/settings.js:renderIntegrations",
+      "target": "function:frontend/js/icons.js:el",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:frontend/js/components/settings.js:init",
+      "target": "function:frontend/js/components/radiogroup.js:wire",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:frontend/js/components/settings.js:init",
+      "target": "function:frontend/js/theme.js:set",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:frontend/js/components/settings.js:init",
+      "target": "function:frontend/js/theme.js:onChange",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:frontend/js/components/settings.js:init",
+      "target": "function:frontend/js/components/radiogroup.js:set",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:frontend/js/components/settings.js:init",
+      "target": "function:frontend/js/ui.js:setLiveStatus",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:frontend/js/components/settings.js:init",
+      "target": "function:frontend/js/utils.js:copyText",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:frontend/js/components/settings.js:init",
+      "target": "function:frontend/js/ui.js:showToast",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/components/settings.js",
+      "target": "file:tests/test_frontend_reference.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    }
+  ]
+}

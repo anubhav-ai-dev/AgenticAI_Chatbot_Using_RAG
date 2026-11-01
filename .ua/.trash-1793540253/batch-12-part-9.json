@@ -1,0 +1,18 @@
+{
+  "nodes": [
+    {
+      "id": "file:tests/__init__.py",
+      "type": "file",
+      "name": "__init__.py",
+      "filePath": "tests/__init__.py",
+      "summary": "Empty tests package marker so pytest can import the suite.",
+      "tags": [
+        "test",
+        "package",
+        "entry-point"
+      ],
+      "complexity": "simple"
+    }
+  ],
+  "edges": []
+}

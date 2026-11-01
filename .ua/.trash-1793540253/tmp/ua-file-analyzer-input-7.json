@@ -1,0 +1,13 @@
+{
+  "projectRoot": "F:\\Personal Projects\\AgenticAI_Chatbot_Using_RAG",
+  "batchFiles": [
+    {"path": "backend/client/web_client.py", "language": "python", "sizeLines": 53, "fileCategory": "code"},
+    {"path": "backend/services/parser.py", "language": "python", "sizeLines": 525, "fileCategory": "code"},
+    {"path": "backend/utils/net.py", "language": "python", "sizeLines": 28, "fileCategory": "code"}
+  ],
+  "batchImportData": {
+    "backend/client/web_client.py": ["backend/core/exceptions.py", "backend/utils/net.py"],
+    "backend/services/parser.py": ["backend/client/web_client.py", "backend/core/exceptions.py"],
+    "backend/utils/net.py": []
+  }
+}

@@ -1,0 +1,845 @@
+{
+  "frontend/js/api.js": {
+    "exported": [],
+    "funcs": [
+      {
+        "name": "_errorMessage",
+        "start": 10,
+        "end": 19,
+        "span": 10,
+        "indent": 2,
+        "exported": false
+      },
+      {
+        "name": "request",
+        "start": 30,
+        "end": 45,
+        "span": 16,
+        "indent": 2,
+        "exported": false
+      },
+      {
+        "name": "chatStream",
+        "start": 149,
+        "end": 194,
+        "span": 46,
+        "indent": 2,
+        "exported": false
+      },
+      {
+        "name": "downloadArtifact",
+        "start": 207,
+        "end": 221,
+        "span": 15,
+        "indent": 2,
+        "exported": false
+      }
+    ]
+  },
+  "frontend/js/app.js": {
+    "exported": [],
+    "funcs": [
+      {
+        "name": "init",
+        "start": 36,
+        "end": 57,
+        "span": 22,
+        "indent": 2,
+        "exported": false
+      },
+      {
+        "name": "_loadModels",
+        "start": 68,
+        "end": 91,
+        "span": 24,
+        "indent": 2,
+        "exported": false
+      },
+      {
+        "name": "_bindEvents",
+        "start": 94,
+        "end": 196,
+        "span": 103,
+        "indent": 2,
+        "exported": false
+      },
+      {
+        "name": "_startCooldown",
+        "start": 231,
+        "end": 242,
+        "span": 12,
+        "indent": 2,
+        "exported": false
+      },
+      {
+        "name": "_requestErrorMessage",
+        "start": 263,
+        "end": 272,
+        "span": 10,
+        "indent": 2,
+        "exported": false
+      },
+      {
+        "name": "_retryAfterError",
+        "start": 570,
+        "end": 585,
+        "span": 16,
+        "indent": 2,
+        "exported": false
+      },
+      {
+        "name": "_ensureSession",
+        "start": 593,
+        "end": 603,
+        "span": 11,
+        "indent": 2,
+        "exported": false
+      },
+      {
+        "name": "_newChat",
+        "start": 605,
+        "end": 618,
+        "span": 14,
+        "indent": 2,
+        "exported": false
+      },
+      {
+        "name": "_selectSession",
+        "start": 620,
+        "end": 639,
+        "span": 20,
+        "indent": 2,
+        "exported": false
+      },
+      {
+        "name": "_deleteSession",
+        "start": 641,
+        "end": 662,
+        "span": 22,
+        "indent": 2,
+        "exported": false
+      },
+      {
+        "name": "_renameSession",
+        "start": 665,
+        "end": 680,
+        "span": 16,
+        "indent": 2,
+        "exported": false
+      },
+      {
+        "name": "_loadSessions",
+        "start": 692,
+        "end": 704,
+        "span": 13,
+        "indent": 2,
+        "exported": false
+      },
+      {
+        "name": "_loadConfig",
+        "start": 716,
+        "end": 731,
+        "span": 16,
+        "indent": 2,
+        "exported": false
+      },
+      {
+        "name": "_handleFiles",
+        "start": 734,
+        "end": 747,
+        "span": 14,
+        "indent": 2,
+        "exported": false
+      },
+      {
+        "name": "_handleFileUpload",
+        "start": 750,
+        "end": 782,
+        "span": 33,
+        "indent": 2,
+        "exported": false
+      },
+      {
+        "name": "_onUrlSubmit",
+        "start": 784,
+        "end": 800,
+        "span": 17,
+        "indent": 2,
+        "exported": false
+      },
+      {
+        "name": "_deleteDocument",
+        "start": 830,
+        "end": 846,
+        "span": 17,
+        "indent": 2,
+        "exported": false
+      },
+      {
+        "name": "_deleteSelectedDocuments",
+        "start": 848,
+        "end": 868,
+        "span": 21,
+        "indent": 2,
+        "exported": false
+      },
+      {
+        "name": "_loadDocuments",
+        "start": 870,
+        "end": 883,
+        "span": 14,
+        "indent": 2,
+        "exported": false
+      },
+      {
+        "name": "_disconnectGithub",
+        "start": 904,
+        "end": 914,
+        "span": 11,
+        "indent": 2,
+        "exported": false
+      },
+      {
+        "name": "_onGithubSubmit",
+        "start": 916,
+        "end": 938,
+        "span": 23,
+        "indent": 2,
+        "exported": false
+      },
+      {
+        "name": "_onGithubOauth",
+        "start": 948,
+        "end": 985,
+        "span": 38,
+        "indent": 2,
+        "exported": false
+      },
+      {
+        "name": "_setLoading",
+        "start": 990,
+        "end": 1002,
+        "span": 13,
+        "indent": 2,
+        "exported": false
+      }
+    ]
+  },
+  "frontend/js/chat.js": {
+    "exported": [],
+    "funcs": [
+      {
+        "name": "_bindScroll",
+        "start": 46,
+        "end": 63,
+        "span": 18,
+        "indent": 2,
+        "exported": false
+      },
+      {
+        "name": "_buildAssistant",
+        "start": 98,
+        "end": 139,
+        "span": 42,
+        "indent": 2,
+        "exported": false
+      },
+      {
+        "name": "_setNote",
+        "start": 166,
+        "end": 178,
+        "span": 13,
+        "indent": 2,
+        "exported": false
+      },
+      {
+        "name": "copyMessage",
+        "start": 443,
+        "end": 452,
+        "span": 10,
+        "indent": 2,
+        "exported": false
+      },
+      {
+        "name": "_resolveCitations",
+        "start": 460,
+        "end": 479,
+        "span": 20,
+        "indent": 2,
+        "exported": false
+      },
+      {
+        "name": "showThinking",
+        "start": 500,
+        "end": 518,
+        "span": 19,
+        "indent": 2,
+        "exported": false
+      },
+      {
+        "name": "renderHistory",
+        "start": 532,
+        "end": 567,
+        "span": 36,
+        "indent": 2,
+        "exported": false
+      },
+      {
+        "name": "_historyAssistant",
+        "start": 569,
+        "end": 600,
+        "span": 32,
+        "indent": 2,
+        "exported": false
+      },
+      {
+        "name": "_badgesHtml",
+        "start": 612,
+        "end": 623,
+        "span": 12,
+        "indent": 2,
+        "exported": false
+      },
+      {
+        "name": "_bindCitationBadges",
+        "start": 629,
+        "end": 649,
+        "span": 21,
+        "indent": 2,
+        "exported": false
+      },
+      {
+        "name": "_fillSources",
+        "start": 656,
+        "end": 726,
+        "span": 71,
+        "indent": 2,
+        "exported": false
+      },
+      {
+        "name": "_flashCopy",
+        "start": 729,
+        "end": 738,
+        "span": 10,
+        "indent": 2,
+        "exported": false
+      },
+      {
+        "name": "_renderActionButtons",
+        "start": 741,
+        "end": 785,
+        "span": 45,
+        "indent": 2,
+        "exported": false
+      },
+      {
+        "name": "holdLastAnswer",
+        "start": 814,
+        "end": 824,
+        "span": 11,
+        "indent": 2,
+        "exported": false
+      },
+      {
+        "name": "fileKeywordFormat",
+        "start": 841,
+        "end": 851,
+        "span": 11,
+        "indent": 2,
+        "exported": false
+      },
+      {
+        "name": "_mountFileCard",
+        "start": 875,
+        "end": 910,
+        "span": 36,
+        "indent": 2,
+        "exported": false
+      },
+      {
+        "name": "_syncArtifactLayer",
+        "start": 932,
+        "end": 943,
+        "span": 12,
+        "indent": 2,
+        "exported": false
+      },
+      {
+        "name": "_paintArtifactPreview",
+        "start": 945,
+        "end": 954,
+        "span": 10,
+        "indent": 2,
+        "exported": false
+      },
+      {
+        "name": "openArtifact",
+        "start": 956,
+        "end": 979,
+        "span": 24,
+        "indent": 2,
+        "exported": false
+      },
+      {
+        "name": "closeArtifact",
+        "start": 981,
+        "end": 997,
+        "span": 17,
+        "indent": 2,
+        "exported": false
+      },
+      {
+        "name": "_onArtifactKey",
+        "start": 999,
+        "end": 1022,
+        "span": 24,
+        "indent": 2,
+        "exported": false
+      },
+      {
+        "name": "_applyArtifactWidth",
+        "start": 1045,
+        "end": 1059,
+        "span": 15,
+        "indent": 2,
+        "exported": false
+      },
+      {
+        "name": "_resetArtifactWidth",
+        "start": 1061,
+        "end": 1070,
+        "span": 10,
+        "indent": 2,
+        "exported": false
+      },
+      {
+        "name": "_wireArtifactResize",
+        "start": 1079,
+        "end": 1111,
+        "span": 33,
+        "indent": 2,
+        "exported": false
+      },
+      {
+        "name": "_wireArtifactPane",
+        "start": 1113,
+        "end": 1132,
+        "span": 20,
+        "indent": 2,
+        "exported": false
+      }
+    ]
+  },
+  "frontend/js/components/ai-viz.js": {
+    "exported": [],
+    "funcs": [
+      {
+        "name": "_hero",
+        "start": 33,
+        "end": 64,
+        "span": 32,
+        "indent": 2,
+        "exported": false
+      },
+      {
+        "name": "create",
+        "start": 67,
+        "end": 77,
+        "span": 11,
+        "indent": 2,
+        "exported": false
+      }
+    ]
+  },
+  "frontend/js/components/code-preview.js": {
+    "exported": [],
+    "funcs": [
+      {
+        "name": "decorate",
+        "start": 42,
+        "end": 51,
+        "span": 10,
+        "indent": 2,
+        "exported": false
+      },
+      {
+        "name": "_addButtons",
+        "start": 53,
+        "end": 86,
+        "span": 34,
+        "indent": 2,
+        "exported": false
+      },
+      {
+        "name": "_downloadBlob",
+        "start": 88,
+        "end": 98,
+        "span": 11,
+        "indent": 2,
+        "exported": false
+      },
+      {
+        "name": "_syncLayer",
+        "start": 114,
+        "end": 124,
+        "span": 11,
+        "indent": 2,
+        "exported": false
+      },
+      {
+        "name": "_applyW",
+        "start": 134,
+        "end": 146,
+        "span": 13,
+        "indent": 2,
+        "exported": false
+      },
+      {
+        "name": "_resetW",
+        "start": 148,
+        "end": 157,
+        "span": 10,
+        "indent": 2,
+        "exported": false
+      },
+      {
+        "name": "_wireResize",
+        "start": 166,
+        "end": 198,
+        "span": 33,
+        "indent": 2,
+        "exported": false
+      },
+      {
+        "name": "_wirePane",
+        "start": 202,
+        "end": 217,
+        "span": 16,
+        "indent": 2,
+        "exported": false
+      },
+      {
+        "name": "_launch",
+        "start": 221,
+        "end": 253,
+        "span": 33,
+        "indent": 2,
+        "exported": false
+      },
+      {
+        "name": "close",
+        "start": 257,
+        "end": 280,
+        "span": 24,
+        "indent": 2,
+        "exported": false
+      }
+    ]
+  },
+  "frontend/js/components/dialog.js": {
+    "exported": [],
+    "funcs": [
+      {
+        "name": "open",
+        "start": 43,
+        "end": 58,
+        "span": 16,
+        "indent": 2,
+        "exported": false
+      },
+      {
+        "name": "confirm",
+        "start": 71,
+        "end": 152,
+        "span": 82,
+        "indent": 2,
+        "exported": false
+      }
+    ]
+  },
+  "frontend/js/components/documents.js": {
+    "exported": [],
+    "funcs": [
+      {
+        "name": "_metaText",
+        "start": 39,
+        "end": 50,
+        "span": 12,
+        "indent": 2,
+        "exported": false
+      },
+      {
+        "name": "_updateBulkBar",
+        "start": 53,
+        "end": 67,
+        "span": 15,
+        "indent": 2,
+        "exported": false
+      },
+      {
+        "name": "_row",
+        "start": 69,
+        "end": 112,
+        "span": 44,
+        "indent": 2,
+        "exported": false
+      },
+      {
+        "name": "_state",
+        "start": 114,
+        "end": 127,
+        "span": 14,
+        "indent": 2,
+        "exported": false
+      },
+      {
+        "name": "_skeleton",
+        "start": 129,
+        "end": 141,
+        "span": 13,
+        "indent": 2,
+        "exported": false
+      },
+      {
+        "name": "_fill",
+        "start": 143,
+        "end": 165,
+        "span": 23,
+        "indent": 2,
+        "exported": false
+      },
+      {
+        "name": "_counts",
+        "start": 171,
+        "end": 181,
+        "span": 11,
+        "indent": 2,
+        "exported": false
+      },
+      {
+        "name": "render",
+        "start": 188,
+        "end": 199,
+        "span": 12,
+        "indent": 2,
+        "exported": false
+      }
+    ]
+  },
+  "frontend/js/components/menu.js": {
+    "exported": [],
+    "funcs": [
+      {
+        "name": "close",
+        "start": 21,
+        "end": 31,
+        "span": 11,
+        "indent": 2,
+        "exported": false
+      },
+      {
+        "name": "_position",
+        "start": 33,
+        "end": 50,
+        "span": 18,
+        "indent": 2,
+        "exported": false
+      },
+      {
+        "name": "open",
+        "start": 52,
+        "end": 152,
+        "span": 101,
+        "indent": 2,
+        "exported": false
+      }
+    ]
+  },
+  "frontend/js/components/model-select.js": {
+    "exported": [],
+    "funcs": [
+      {
+        "name": "_item",
+        "start": 47,
+        "end": 57,
+        "span": 11,
+        "indent": 2,
+        "exported": false
+      },
+      {
+        "name": "_read",
+        "start": 59,
+        "end": 73,
+        "span": 15,
+        "indent": 2,
+        "exported": false
+      },
+      {
+        "name": "_syncChips",
+        "start": 94,
+        "end": 105,
+        "span": 12,
+        "indent": 2,
+        "exported": false
+      },
+      {
+        "name": "_syncTrigger",
+        "start": 107,
+        "end": 147,
+        "span": 41,
+        "indent": 2,
+        "exported": false
+      },
+      {
+        "name": "_position",
+        "start": 161,
+        "end": 173,
+        "span": 13,
+        "indent": 2,
+        "exported": false
+      },
+      {
+        "name": "_setActive",
+        "start": 175,
+        "end": 186,
+        "span": 12,
+        "indent": 2,
+        "exported": false
+      },
+      {
+        "name": "_typeahead",
+        "start": 198,
+        "end": 211,
+        "span": 14,
+        "indent": 2,
+        "exported": false
+      },
+      {
+        "name": "open",
+        "start": 225,
+        "end": 307,
+        "span": 83,
+        "indent": 2,
+        "exported": false
+      },
+      {
+        "name": "close",
+        "start": 309,
+        "end": 321,
+        "span": 13,
+        "indent": 2,
+        "exported": false
+      },
+      {
+        "name": "_onListKey",
+        "start": 323,
+        "end": 343,
+        "span": 21,
+        "indent": 2,
+        "exported": false
+      },
+      {
+        "name": "init",
+        "start": 357,
+        "end": 398,
+        "span": 42,
+        "indent": 2,
+        "exported": false
+      },
+      {
+        "name": "bindChip",
+        "start": 404,
+        "end": 414,
+        "span": 11,
+        "indent": 2,
+        "exported": false
+      },
+      {
+        "name": "_ensureRetry",
+        "start": 435,
+        "end": 446,
+        "span": 12,
+        "indent": 2,
+        "exported": false
+      }
+    ]
+  },
+  "frontend/js/components/motion.js": {
+    "exported": [],
+    "funcs": [
+      {
+        "name": "_load",
+        "start": 30,
+        "end": 44,
+        "span": 15,
+        "indent": 2,
+        "exported": false
+      },
+      {
+        "name": "_groups",
+        "start": 49,
+        "end": 61,
+        "span": 13,
+        "indent": 2,
+        "exported": false
+      },
+      {
+        "name": "_play",
+        "start": 90,
+        "end": 120,
+        "span": 31,
+        "indent": 2,
+        "exported": false
+      },
+      {
+        "name": "_playIntro",
+        "start": 154,
+        "end": 183,
+        "span": 30,
+        "indent": 2,
+        "exported": false
+      }
+    ]
+  },
+  "frontend/js/components/notifications.js": {
+    "exported": [],
+    "funcs": [
+      {
+        "name": "_render",
+        "start": 43,
+        "end": 64,
+        "span": 22,
+        "indent": 2,
+        "exported": false
+      },
+      {
+        "name": "_position",
+        "start": 95,
+        "end": 105,
+        "span": 11,
+        "indent": 2,
+        "exported": false
+      },
+      {
+        "name": "close",
+        "start": 107,
+        "end": 117,
+        "span": 11,
+        "indent": 2,
+        "exported": false
+      },
+      {
+        "name": "open",
+        "start": 119,
+        "end": 167,
+        "span": 49,
+        "indent": 2,
+        "exported": false
+      }
+    ]
+  },
+  "frontend/js/components/prefs.js": {
+    "exported": [],
+    "funcs": []
+  }
+}

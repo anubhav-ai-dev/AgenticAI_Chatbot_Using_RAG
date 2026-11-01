@@ -1,0 +1,1470 @@
+{
+  "nodes": [
+    {
+      "id": "file:backend/utils/streaming.py",
+      "type": "file",
+      "name": "streaming.py",
+      "filePath": "backend/utils/streaming.py",
+      "summary": "Streaming text filter that strips think-style reasoning blocks from model output even when tags are split across chunks.",
+      "tags": [
+        "streaming",
+        "filter",
+        "llm"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:backend/utils/streaming.py:ThinkFilter",
+      "type": "class",
+      "name": "ThinkFilter",
+      "filePath": "backend/utils/streaming.py",
+      "lineRange": [
+        13,
+        76
+      ],
+      "summary": "Removes think, thinking, thought, and reasoning blocks from a token stream and releases held text if a block is never closed.",
+      "tags": [
+        "streaming",
+        "filter",
+        "llm"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:backend/utils/streaming.py:feed",
+      "type": "function",
+      "name": "feed",
+      "filePath": "backend/utils/streaming.py",
+      "lineRange": [
+        36,
+        68
+      ],
+      "summary": "Consumes one chunk of model text and returns only the visible portion, holding a partial opening tag or an unclosed reasoning block.",
+      "tags": [
+        "streaming",
+        "filter",
+        "parser"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:backend/utils/text.py",
+      "type": "file",
+      "name": "text.py",
+      "filePath": "backend/utils/text.py",
+      "summary": "Text helpers for conservative token estimates, query normalization, content-term extraction, and safe FTS5 query strings.",
+      "tags": [
+        "utility",
+        "tokenization",
+        "full-text-search"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/utils/text.py:estimate_tokens",
+      "type": "function",
+      "name": "estimate_tokens",
+      "filePath": "backend/utils/text.py",
+      "lineRange": [
+        18,
+        19
+      ],
+      "summary": "Estimates token count as character length divided by a conservative characters-per-token constant, plus one.",
+      "tags": [
+        "tokenization",
+        "utility",
+        "budget"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/utils/text.py:normalize_query",
+      "type": "function",
+      "name": "normalize_query",
+      "filePath": "backend/utils/text.py",
+      "lineRange": [
+        22,
+        24
+      ],
+      "summary": "Collapses a query to lower-case single-spaced text so it can be used as a cache key.",
+      "tags": [
+        "normalization",
+        "cache",
+        "utility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/utils/text.py:query_terms",
+      "type": "function",
+      "name": "query_terms",
+      "filePath": "backend/utils/text.py",
+      "lineRange": [
+        27,
+        38
+      ],
+      "summary": "Extracts up to a capped number of distinct content tokens, dropping stop-words and single-character non-digits.",
+      "tags": [
+        "tokenization",
+        "full-text-search",
+        "utility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/utils/text.py:build_fts_query",
+      "type": "function",
+      "name": "build_fts_query",
+      "filePath": "backend/utils/text.py",
+      "lineRange": [
+        41,
+        46
+      ],
+      "summary": "Turns free text into a quoted FTS5 OR query, or returns None when no content terms remain.",
+      "tags": [
+        "full-text-search",
+        "query-builder",
+        "utility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/utils/text.py:term_coverage",
+      "type": "function",
+      "name": "term_coverage",
+      "filePath": "backend/utils/text.py",
+      "lineRange": [
+        49,
+        54
+      ],
+      "summary": "Returns the fraction of query terms whose six-character stem appears in a passage.",
+      "tags": [
+        "scoring",
+        "full-text-search",
+        "utility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:tests/test_units.py",
+      "type": "file",
+      "name": "test_units.py",
+      "filePath": "tests/test_units.py",
+      "summary": "Pytest unit tests for settings validation, caches, rate limits, think-tag filtering, FTS helpers, rank fusion, query routing, prompt assembly, and document parsing.",
+      "tags": [
+        "test",
+        "unit-test",
+        "pytest"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "class:tests/test_units.py:Clock",
+      "type": "class",
+      "name": "Clock",
+      "filePath": "tests/test_units.py",
+      "lineRange": [
+        24,
+        29
+      ],
+      "summary": "Mutable test clock that returns a controllable timestamp so cache TTL and rate-limit windows can be advanced.",
+      "tags": [
+        "test",
+        "helper",
+        "time"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_units.py:test_settings_defaults_and_registry",
+      "type": "function",
+      "name": "test_settings_defaults_and_registry",
+      "filePath": "tests/test_units.py",
+      "lineRange": [
+        34,
+        40
+      ],
+      "summary": "Checks the default model registry, the default model id, a clean runtime validation, and the four chat modes.",
+      "tags": [
+        "test",
+        "configuration",
+        "validation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_units.py:test_settings_llm_models_override",
+      "type": "function",
+      "name": "test_settings_llm_models_override",
+      "filePath": "tests/test_units.py",
+      "lineRange": [
+        43,
+        48
+      ],
+      "summary": "Checks that a JSON model override replaces the registry and still passes runtime validation.",
+      "tags": [
+        "test",
+        "configuration",
+        "validation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_units.py:test_settings_invalid_values_fail_fast",
+      "type": "function",
+      "name": "test_settings_invalid_values_fail_fast",
+      "filePath": "tests/test_units.py",
+      "lineRange": [
+        51,
+        60
+      ],
+      "summary": "Checks that invalid model JSON, an unknown default model, and an overlap larger than the chunk size raise ValueError.",
+      "tags": [
+        "test",
+        "configuration",
+        "validation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_units.py:test_settings_missing_keys_only_warn",
+      "type": "function",
+      "name": "test_settings_missing_keys_only_warn",
+      "filePath": "tests/test_units.py",
+      "lineRange": [
+        63,
+        67
+      ],
+      "summary": "Checks that missing provider keys produce warnings for the LLM provider and Tavily instead of raising.",
+      "tags": [
+        "test",
+        "configuration",
+        "validation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_units.py:test_settings_masked_hides_keys",
+      "type": "function",
+      "name": "test_settings_masked_hides_keys",
+      "filePath": "tests/test_units.py",
+      "lineRange": [
+        70,
+        73
+      ],
+      "summary": "Checks that the masked settings view reports a key as set without leaking the secret value.",
+      "tags": [
+        "test",
+        "configuration",
+        "security"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_units.py:test_blank_env_values_are_ignored",
+      "type": "function",
+      "name": "test_blank_env_values_are_ignored",
+      "filePath": "tests/test_units.py",
+      "lineRange": [
+        76,
+        80
+      ],
+      "summary": "Checks that blank environment values fall back to the default port and a missing API key.",
+      "tags": [
+        "test",
+        "configuration",
+        "environment"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_units.py:test_ttl_cache_expiry_and_lru",
+      "type": "function",
+      "name": "test_ttl_cache_expiry_and_lru",
+      "filePath": "tests/test_units.py",
+      "lineRange": [
+        85,
+        95
+      ],
+      "summary": "Checks TTLCache least-recently-used eviction, expiry when the test clock advances, and hit accounting.",
+      "tags": [
+        "test",
+        "cache",
+        "ttl"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_units.py:test_semantic_cache_scope_threshold_and_ttl",
+      "type": "function",
+      "name": "test_semantic_cache_scope_threshold_and_ttl",
+      "filePath": "tests/test_units.py",
+      "lineRange": [
+        98,
+        110
+      ],
+      "summary": "Checks that semantic cache hits stay inside user and mode scope, reject distant vectors, and expire with the clock.",
+      "tags": [
+        "test",
+        "cache",
+        "embeddings"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_units.py:test_semantic_cache_eviction_bound",
+      "type": "function",
+      "name": "test_semantic_cache_eviction_bound",
+      "filePath": "tests/test_units.py",
+      "lineRange": [
+        113,
+        117
+      ],
+      "summary": "Checks that the semantic cache never grows past its configured maximum size.",
+      "tags": [
+        "test",
+        "cache",
+        "eviction"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_units.py:test_rate_limiter_bucket_refill",
+      "type": "function",
+      "name": "test_rate_limiter_bucket_refill",
+      "filePath": "tests/test_units.py",
+      "lineRange": [
+        122,
+        130
+      ],
+      "summary": "Checks token-bucket rejection, independent keys, and refill after the test clock advances.",
+      "tags": [
+        "test",
+        "rate-limit",
+        "utility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_units.py:test_parse_duration",
+      "type": "function",
+      "name": "test_parse_duration",
+      "filePath": "tests/test_units.py",
+      "lineRange": [
+        137,
+        139
+      ],
+      "summary": "Checks parsing of seconds, minutes, milliseconds, and invalid duration strings.",
+      "tags": [
+        "test",
+        "parsing",
+        "time"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_units.py:test_quota_guard_rolling_window_and_headers",
+      "type": "function",
+      "name": "test_quota_guard_rolling_window_and_headers",
+      "filePath": "tests/test_units.py",
+      "lineRange": [
+        142,
+        156
+      ],
+      "summary": "Checks rolling token and request quotas, window expiry, and provider rate-limit header observation.",
+      "tags": [
+        "test",
+        "rate-limit",
+        "quota"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_units.py:_feed",
+      "type": "function",
+      "name": "_feed",
+      "filePath": "tests/test_units.py",
+      "lineRange": [
+        161,
+        164
+      ],
+      "summary": "Feeds chunked text through ThinkFilter and returns the concatenated visible output plus the flush.",
+      "tags": [
+        "test",
+        "helper",
+        "streaming"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_units.py:test_think_filter_variants",
+      "type": "function",
+      "name": "test_think_filter_variants",
+      "filePath": "tests/test_units.py",
+      "lineRange": [
+        167,
+        174
+      ],
+      "summary": "Checks that reasoning tags are removed across split chunks while ordinary angle brackets and HTML are kept.",
+      "tags": [
+        "test",
+        "streaming",
+        "filter"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_units.py:test_think_filter_unclosed_block_is_not_swallowed",
+      "type": "function",
+      "name": "test_think_filter_unclosed_block_is_not_swallowed",
+      "filePath": "tests/test_units.py",
+      "lineRange": [
+        177,
+        179
+      ],
+      "summary": "Checks that an unclosed reasoning block is returned on flush instead of being dropped.",
+      "tags": [
+        "test",
+        "streaming",
+        "filter"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_units.py:test_build_fts_query_sanitises",
+      "type": "function",
+      "name": "test_build_fts_query_sanitises",
+      "filePath": "tests/test_units.py",
+      "lineRange": [
+        184,
+        192
+      ],
+      "summary": "Checks FTS query quoting, stop-word removal, unicode terms, empty input, and the term cap.",
+      "tags": [
+        "test",
+        "full-text-search",
+        "validation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_units.py:test_term_coverage",
+      "type": "function",
+      "name": "test_term_coverage",
+      "filePath": "tests/test_units.py",
+      "lineRange": [
+        195,
+        199
+      ],
+      "summary": "Checks stem overlap scoring, a zero score for unrelated text, and an empty term list.",
+      "tags": [
+        "test",
+        "scoring",
+        "full-text-search"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_units.py:test_reciprocal_rank_fusion",
+      "type": "function",
+      "name": "test_reciprocal_rank_fusion",
+      "filePath": "tests/test_units.py",
+      "lineRange": [
+        202,
+        211
+      ],
+      "summary": "Checks fused id membership, reciprocal scores, weight ordering, and an empty ranking list.",
+      "tags": [
+        "test",
+        "ranking",
+        "fusion"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_units.py:test_smalltalk",
+      "type": "function",
+      "name": "test_smalltalk",
+      "filePath": "tests/test_units.py",
+      "lineRange": [
+        219,
+        220
+      ],
+      "summary": "Checks which short greetings QueryRouter treats as smalltalk versus a substantive question.",
+      "tags": [
+        "test",
+        "routing",
+        "chat"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_units.py:test_router_decisions",
+      "type": "function",
+      "name": "test_router_decisions",
+      "filePath": "tests/test_units.py",
+      "lineRange": [
+        223,
+        236
+      ],
+      "summary": "Checks direct, web, rag, and rag-plus-web routing when documents, the web toggle, and provider availability change.",
+      "tags": [
+        "test",
+        "routing",
+        "chat"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_units.py:test_followup_detection",
+      "type": "function",
+      "name": "test_followup_detection",
+      "filePath": "tests/test_units.py",
+      "lineRange": [
+        239,
+        246
+      ],
+      "summary": "Checks follow-up detection for short anaphoric questions and rejection of a long standalone question.",
+      "tags": [
+        "test",
+        "routing",
+        "chat"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_units.py:test_prompt_builder_context_and_budgets",
+      "type": "function",
+      "name": "test_prompt_builder_context_and_budgets",
+      "filePath": "tests/test_units.py",
+      "lineRange": [
+        251,
+        266
+      ],
+      "summary": "Checks that document mode includes numbered citations, respects the context budget, and drops an oversized history message.",
+      "tags": [
+        "test",
+        "prompt-assembly",
+        "token-budget"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_units.py:test_prompt_builder_without_context_has_no_grounding_block",
+      "type": "function",
+      "name": "test_prompt_builder_without_context_has_no_grounding_block",
+      "filePath": "tests/test_units.py",
+      "lineRange": [
+        269,
+        272
+      ],
+      "summary": "Checks that a prompt with no retrieved context omits the context block and citations while still including the quality contract.",
+      "tags": [
+        "test",
+        "prompt-assembly",
+        "citations"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_units.py:test_specialist_router_picks_task_prompts",
+      "type": "function",
+      "name": "test_specialist_router_picks_task_prompts",
+      "filePath": "tests/test_units.py",
+      "lineRange": [
+        275,
+        282
+      ],
+      "summary": "Checks specialist selection for file intent, code, debug logs, repository code, research, document mode, and general chat.",
+      "tags": [
+        "test",
+        "routing",
+        "prompt-assembly"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_units.py:test_parser_blocks_private_and_non_http",
+      "type": "function",
+      "name": "test_parser_blocks_private_and_non_http",
+      "filePath": "tests/test_units.py",
+      "lineRange": [
+        291,
+        293
+      ],
+      "summary": "Checks that private, loopback, link-local, and non-HTTP URLs are rejected before a fetch.",
+      "tags": [
+        "test",
+        "parser",
+        "security"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_units.py:test_parser_text_csv_and_errors",
+      "type": "function",
+      "name": "test_parser_text_csv_and_errors",
+      "filePath": "tests/test_units.py",
+      "lineRange": [
+        296,
+        316
+      ],
+      "summary": "Checks text and CSV parsing, unsupported extensions, a corrupt PDF, and an empty CSV.",
+      "tags": [
+        "test",
+        "parser",
+        "documents"
+      ],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:tests/test_units.py",
+      "target": "file:backend/core/config.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/test_units.py",
+      "target": "file:backend/core/exceptions.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/test_units.py",
+      "target": "file:backend/services/chat_service.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/test_units.py",
+      "target": "file:backend/services/parser.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/test_units.py",
+      "target": "file:backend/services/prompt_builder.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/test_units.py",
+      "target": "file:backend/services/retrieval_service.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/test_units.py",
+      "target": "file:backend/utils/cache.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/test_units.py",
+      "target": "file:backend/utils/ranking.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/test_units.py",
+      "target": "file:backend/utils/rate_limiter.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/test_units.py",
+      "target": "file:backend/utils/streaming.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/test_units.py",
+      "target": "file:backend/utils/text.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/test_units.py",
+      "target": "file:backend/utils/timeutil.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:backend/utils/streaming.py",
+      "target": "class:backend/utils/streaming.py:ThinkFilter",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/utils/streaming.py",
+      "target": "function:backend/utils/streaming.py:feed",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/utils/streaming.py",
+      "target": "class:backend/utils/streaming.py:ThinkFilter",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/utils/text.py",
+      "target": "function:backend/utils/text.py:estimate_tokens",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/utils/text.py",
+      "target": "function:backend/utils/text.py:normalize_query",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/utils/text.py",
+      "target": "function:backend/utils/text.py:query_terms",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/utils/text.py",
+      "target": "function:backend/utils/text.py:build_fts_query",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/utils/text.py",
+      "target": "function:backend/utils/text.py:term_coverage",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/utils/text.py",
+      "target": "function:backend/utils/text.py:estimate_tokens",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/utils/text.py",
+      "target": "function:backend/utils/text.py:normalize_query",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/utils/text.py",
+      "target": "function:backend/utils/text.py:query_terms",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/utils/text.py",
+      "target": "function:backend/utils/text.py:build_fts_query",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/utils/text.py",
+      "target": "function:backend/utils/text.py:term_coverage",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_units.py",
+      "target": "class:tests/test_units.py:Clock",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_units.py",
+      "target": "function:tests/test_units.py:test_settings_defaults_and_registry",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_units.py",
+      "target": "function:tests/test_units.py:test_settings_llm_models_override",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_units.py",
+      "target": "function:tests/test_units.py:test_settings_invalid_values_fail_fast",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_units.py",
+      "target": "function:tests/test_units.py:test_settings_missing_keys_only_warn",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_units.py",
+      "target": "function:tests/test_units.py:test_settings_masked_hides_keys",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_units.py",
+      "target": "function:tests/test_units.py:test_blank_env_values_are_ignored",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_units.py",
+      "target": "function:tests/test_units.py:test_ttl_cache_expiry_and_lru",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_units.py",
+      "target": "function:tests/test_units.py:test_semantic_cache_scope_threshold_and_ttl",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_units.py",
+      "target": "function:tests/test_units.py:test_semantic_cache_eviction_bound",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_units.py",
+      "target": "function:tests/test_units.py:test_rate_limiter_bucket_refill",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_units.py",
+      "target": "function:tests/test_units.py:test_parse_duration",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_units.py",
+      "target": "function:tests/test_units.py:test_quota_guard_rolling_window_and_headers",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_units.py",
+      "target": "function:tests/test_units.py:_feed",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_units.py",
+      "target": "function:tests/test_units.py:test_think_filter_variants",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_units.py",
+      "target": "function:tests/test_units.py:test_think_filter_unclosed_block_is_not_swallowed",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_units.py",
+      "target": "function:tests/test_units.py:test_build_fts_query_sanitises",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_units.py",
+      "target": "function:tests/test_units.py:test_term_coverage",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_units.py",
+      "target": "function:tests/test_units.py:test_reciprocal_rank_fusion",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_units.py",
+      "target": "function:tests/test_units.py:test_smalltalk",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_units.py",
+      "target": "function:tests/test_units.py:test_router_decisions",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_units.py",
+      "target": "function:tests/test_units.py:test_followup_detection",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_units.py",
+      "target": "function:tests/test_units.py:test_prompt_builder_context_and_budgets",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_units.py",
+      "target": "function:tests/test_units.py:test_prompt_builder_without_context_has_no_grounding_block",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_units.py",
+      "target": "function:tests/test_units.py:test_specialist_router_picks_task_prompts",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_units.py",
+      "target": "function:tests/test_units.py:test_parser_blocks_private_and_non_http",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_units.py",
+      "target": "function:tests/test_units.py:test_parser_text_csv_and_errors",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_units.py",
+      "target": "class:tests/test_units.py:Clock",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_units.py",
+      "target": "function:tests/test_units.py:test_settings_defaults_and_registry",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_units.py",
+      "target": "function:tests/test_units.py:test_settings_llm_models_override",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_units.py",
+      "target": "function:tests/test_units.py:test_settings_invalid_values_fail_fast",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_units.py",
+      "target": "function:tests/test_units.py:test_settings_missing_keys_only_warn",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_units.py",
+      "target": "function:tests/test_units.py:test_settings_masked_hides_keys",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_units.py",
+      "target": "function:tests/test_units.py:test_blank_env_values_are_ignored",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_units.py",
+      "target": "function:tests/test_units.py:test_ttl_cache_expiry_and_lru",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_units.py",
+      "target": "function:tests/test_units.py:test_semantic_cache_scope_threshold_and_ttl",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_units.py",
+      "target": "function:tests/test_units.py:test_semantic_cache_eviction_bound",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_units.py",
+      "target": "function:tests/test_units.py:test_rate_limiter_bucket_refill",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_units.py",
+      "target": "function:tests/test_units.py:test_parse_duration",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_units.py",
+      "target": "function:tests/test_units.py:test_quota_guard_rolling_window_and_headers",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_units.py",
+      "target": "function:tests/test_units.py:_feed",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_units.py",
+      "target": "function:tests/test_units.py:test_think_filter_variants",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_units.py",
+      "target": "function:tests/test_units.py:test_think_filter_unclosed_block_is_not_swallowed",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_units.py",
+      "target": "function:tests/test_units.py:test_build_fts_query_sanitises",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_units.py",
+      "target": "function:tests/test_units.py:test_term_coverage",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_units.py",
+      "target": "function:tests/test_units.py:test_reciprocal_rank_fusion",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_units.py",
+      "target": "function:tests/test_units.py:test_smalltalk",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_units.py",
+      "target": "function:tests/test_units.py:test_router_decisions",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_units.py",
+      "target": "function:tests/test_units.py:test_followup_detection",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_units.py",
+      "target": "function:tests/test_units.py:test_prompt_builder_context_and_budgets",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_units.py",
+      "target": "function:tests/test_units.py:test_prompt_builder_without_context_has_no_grounding_block",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_units.py",
+      "target": "function:tests/test_units.py:test_specialist_router_picks_task_prompts",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_units.py",
+      "target": "function:tests/test_units.py:test_parser_blocks_private_and_non_http",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_units.py",
+      "target": "function:tests/test_units.py:test_parser_text_csv_and_errors",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:tests/test_units.py:test_settings_defaults_and_registry",
+      "target": "class:backend/core/config.py:Settings",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:tests/test_units.py:test_settings_llm_models_override",
+      "target": "class:backend/core/config.py:Settings",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:tests/test_units.py:test_settings_invalid_values_fail_fast",
+      "target": "class:backend/core/config.py:Settings",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:tests/test_units.py:test_settings_missing_keys_only_warn",
+      "target": "class:backend/core/config.py:Settings",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:tests/test_units.py:test_settings_masked_hides_keys",
+      "target": "class:backend/core/config.py:Settings",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:tests/test_units.py:test_blank_env_values_are_ignored",
+      "target": "class:backend/core/config.py:Settings",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:tests/test_units.py:test_ttl_cache_expiry_and_lru",
+      "target": "class:backend/utils/cache.py:TTLCache",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:tests/test_units.py:test_semantic_cache_scope_threshold_and_ttl",
+      "target": "class:backend/utils/cache.py:SemanticCache",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:tests/test_units.py:test_semantic_cache_scope_threshold_and_ttl",
+      "target": "class:backend/utils/cache.py:CachedAnswer",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:tests/test_units.py:test_semantic_cache_eviction_bound",
+      "target": "class:backend/utils/cache.py:SemanticCache",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:tests/test_units.py:test_semantic_cache_eviction_bound",
+      "target": "class:backend/utils/cache.py:CachedAnswer",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:tests/test_units.py:test_rate_limiter_bucket_refill",
+      "target": "class:backend/utils/rate_limiter.py:RateLimiter",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:tests/test_units.py:test_parse_duration",
+      "target": "function:backend/utils/timeutil.py:parse_duration",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:tests/test_units.py:test_quota_guard_rolling_window_and_headers",
+      "target": "class:backend/utils/rate_limiter.py:QuotaGuard",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:tests/test_units.py:_feed",
+      "target": "class:backend/utils/streaming.py:ThinkFilter",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:tests/test_units.py:_feed",
+      "target": "function:backend/utils/streaming.py:feed",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:tests/test_units.py:test_build_fts_query_sanitises",
+      "target": "function:backend/utils/text.py:build_fts_query",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:tests/test_units.py:test_build_fts_query_sanitises",
+      "target": "function:backend/utils/text.py:query_terms",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:tests/test_units.py:test_term_coverage",
+      "target": "function:backend/utils/text.py:query_terms",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:tests/test_units.py:test_term_coverage",
+      "target": "function:backend/utils/text.py:term_coverage",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:tests/test_units.py:test_reciprocal_rank_fusion",
+      "target": "function:backend/utils/ranking.py:reciprocal_rank_fusion",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:tests/test_units.py:test_smalltalk",
+      "target": "class:backend/services/chat_service.py:QueryRouter",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:tests/test_units.py:test_router_decisions",
+      "target": "class:backend/services/chat_service.py:QueryRouter",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:tests/test_units.py:test_followup_detection",
+      "target": "class:backend/services/chat_service.py:QueryRouter",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:tests/test_units.py:test_prompt_builder_context_and_budgets",
+      "target": "class:backend/services/prompt_builder.py:PromptBuilder",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:tests/test_units.py:test_prompt_builder_context_and_budgets",
+      "target": "class:backend/services/retrieval_service.py:RetrievedItem",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:tests/test_units.py:test_prompt_builder_context_and_budgets",
+      "target": "class:backend/models/api.py:SearchResult",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:tests/test_units.py:test_prompt_builder_without_context_has_no_grounding_block",
+      "target": "class:backend/services/prompt_builder.py:PromptBuilder",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:tests/test_units.py:test_specialist_router_picks_task_prompts",
+      "target": "function:backend/services/prompt_builder.py:select_specialist",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:tests/test_units.py:test_parser_blocks_private_and_non_http",
+      "target": "class:backend/services/parser.py:DocumentParser",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:tests/test_units.py:test_parser_blocks_private_and_non_http",
+      "target": "class:backend/core/exceptions.py:DocumentParseError",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:tests/test_units.py:test_parser_text_csv_and_errors",
+      "target": "class:backend/services/parser.py:DocumentParser",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:tests/test_units.py:test_parser_text_csv_and_errors",
+      "target": "class:backend/core/exceptions.py:DocumentParseError",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/utils/streaming.py",
+      "target": "file:tests/test_units.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:backend/utils/text.py",
+      "target": "file:tests/test_units.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:backend/core/config.py",
+      "target": "file:tests/test_units.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:backend/core/exceptions.py",
+      "target": "file:tests/test_units.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:backend/services/chat_service.py",
+      "target": "file:tests/test_units.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:backend/services/parser.py",
+      "target": "file:tests/test_units.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:backend/utils/cache.py",
+      "target": "file:tests/test_units.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:backend/utils/rate_limiter.py",
+      "target": "file:tests/test_units.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:backend/utils/timeutil.py",
+      "target": "file:tests/test_units.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    }
+  ]
+}

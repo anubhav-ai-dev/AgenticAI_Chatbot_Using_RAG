@@ -1,0 +1,1833 @@
+{
+  "nodes": [
+    {
+      "id": "file:backend/database.py",
+      "type": "file",
+      "name": "database.py",
+      "filePath": "backend/database.py",
+      "summary": "SQLAlchemy engine, session factory, and declarative Base for the chatbot backend. Provides the FastAPI session dependency and creates tables at startup, enabling SQLite multi-thread access when DATABASE_URL is a SQLite path.",
+      "tags": ["database", "sqlalchemy", "session", "dependency"],
+      "complexity": "simple",
+      "languageNotes": "Uses SQLAlchemy 2.0 DeclarativeBase. get_db is a generator dependency that closes the session in a finally block, and SQLite engines pass check_same_thread=False."
+    },
+    {
+      "id": "class:backend/database.py:Base",
+      "type": "class",
+      "name": "Base",
+      "filePath": "backend/database.py",
+      "lineRange": [12, 13],
+      "summary": "Declarative base class that every ORM model inherits so table metadata is registered for create_all.",
+      "tags": ["data-model", "sqlalchemy", "base-class"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/database.py:get_db",
+      "type": "function",
+      "name": "get_db",
+      "filePath": "backend/database.py",
+      "lineRange": [24, 30],
+      "summary": "FastAPI dependency that opens a SQLAlchemy session, yields it to the request, and closes it when the request finishes.",
+      "tags": ["dependency", "database", "session"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/database.py:init_db",
+      "type": "function",
+      "name": "init_db",
+      "filePath": "backend/database.py",
+      "lineRange": [33, 36],
+      "summary": "Imports the ORM models so they register on Base.metadata, then creates any missing tables. Called once from the application lifespan.",
+      "tags": ["database", "startup", "migration"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/main.py",
+      "type": "file",
+      "name": "main.py",
+      "filePath": "backend/main.py",
+      "summary": "FastAPI application that exposes session, message, document, RAG retrieval, and web-search routes and serves the static single-page app. A lifespan hook creates database tables on startup, and CORS is configured from backend settings.",
+      "tags": ["entry-point", "api-handler", "fastapi", "rag"],
+      "complexity": "complex",
+      "languageNotes": "The lifespan async context manager calls init_db before traffic is served. Route handlers take a request-scoped session through Depends(get_db), and StaticFiles mounts expose /css, /js, and /assets."
+    },
+    {
+      "id": "function:backend/main.py:lifespan",
+      "type": "function",
+      "name": "lifespan",
+      "filePath": "backend/main.py",
+      "lineRange": [65, 69],
+      "summary": "Application lifespan hook that creates SQLite tables via init_db before the API starts accepting requests.",
+      "tags": ["startup", "lifecycle", "database"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/main.py:ping",
+      "type": "function",
+      "name": "ping",
+      "filePath": "backend/main.py",
+      "lineRange": [92, 94],
+      "summary": "Keepalive handler for GET /ping that returns a small JSON pong for uptime monitors.",
+      "tags": ["api-handler", "health", "keepalive"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/main.py:health_check",
+      "type": "function",
+      "name": "health_check",
+      "filePath": "backend/main.py",
+      "lineRange": [98, 110],
+      "summary": "GET /health handler that reports database connectivity plus whether Cohere and Tavily API keys are configured.",
+      "tags": ["api-handler", "health", "monitoring"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/main.py:get_models",
+      "type": "function",
+      "name": "get_models",
+      "filePath": "backend/main.py",
+      "lineRange": [114, 116],
+      "summary": "GET /models handler that returns the configured LLM catalog grouped by provider.",
+      "tags": ["api-handler", "models", "config"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/main.py:list_sessions",
+      "type": "function",
+      "name": "list_sessions",
+      "filePath": "backend/main.py",
+      "lineRange": [122, 130],
+      "summary": "GET /sessions handler that lists a user's chat sessions ordered by most recently updated.",
+      "tags": ["api-handler", "sessions", "crud"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/main.py:create_session",
+      "type": "function",
+      "name": "create_session",
+      "filePath": "backend/main.py",
+      "lineRange": [134, 145],
+      "summary": "POST /sessions handler that inserts a new ChatSession from the request body and returns the persisted row.",
+      "tags": ["api-handler", "sessions", "crud"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/main.py:get_session",
+      "type": "function",
+      "name": "get_session",
+      "filePath": "backend/main.py",
+      "lineRange": [149, 154],
+      "summary": "GET /sessions/{session_id} handler that loads one session and its message history, or raises 404 when the id is missing.",
+      "tags": ["api-handler", "sessions", "crud"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/main.py:update_session",
+      "type": "function",
+      "name": "update_session",
+      "filePath": "backend/main.py",
+      "lineRange": [158, 173],
+      "summary": "PATCH /sessions/{session_id} handler that updates title, model, or mode on an existing session.",
+      "tags": ["api-handler", "sessions", "crud"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/main.py:delete_session",
+      "type": "function",
+      "name": "delete_session",
+      "filePath": "backend/main.py",
+      "lineRange": [177, 184],
+      "summary": "DELETE /sessions/{session_id} handler that removes a session and, through the ORM cascade, its messages.",
+      "tags": ["api-handler", "sessions", "crud"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/main.py:save_message",
+      "type": "function",
+      "name": "save_message",
+      "filePath": "backend/main.py",
+      "lineRange": [190, 213],
+      "summary": "POST /sessions/{session_id}/messages handler that appends a user or assistant message and sets a short title from the first user message.",
+      "tags": ["api-handler", "messages", "persistence"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:backend/main.py:upload_document",
+      "type": "function",
+      "name": "upload_document",
+      "filePath": "backend/main.py",
+      "lineRange": [219, 283],
+      "summary": "POST /upload handler that parses an uploaded file or URL, indexes the pages into FAISS, and records the document in SQLite.",
+      "tags": ["api-handler", "ingestion", "rag"],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:backend/main.py:list_documents",
+      "type": "function",
+      "name": "list_documents",
+      "filePath": "backend/main.py",
+      "lineRange": [287, 295],
+      "summary": "GET /documents handler that lists a user's indexed documents, newest first.",
+      "tags": ["api-handler", "documents", "crud"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/main.py:retrieve_endpoint",
+      "type": "function",
+      "name": "retrieve_endpoint",
+      "filePath": "backend/main.py",
+      "lineRange": [301, 329],
+      "summary": "POST /retrieve handler that queries the FAISS index and returns chunks whose relevance meets the request threshold.",
+      "tags": ["api-handler", "rag", "retrieval"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:backend/main.py:search_endpoint",
+      "type": "function",
+      "name": "search_endpoint",
+      "filePath": "backend/main.py",
+      "lineRange": [335, 337],
+      "summary": "POST /search handler that forwards the query to the Tavily search service and returns structured results.",
+      "tags": ["api-handler", "search", "web-search"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/main.py:serve_spa",
+      "type": "function",
+      "name": "serve_spa",
+      "filePath": "backend/main.py",
+      "lineRange": [350, 355],
+      "summary": "GET / handler that returns the frontend index.html when it is present on disk.",
+      "tags": ["api-handler", "frontend", "static-files"],
+      "complexity": "simple"
+    },
+    {
+      "id": "endpoint:backend/main.py:GET-/ping",
+      "type": "endpoint",
+      "name": "GET /ping",
+      "filePath": "backend/main.py",
+      "summary": "Keepalive route handled by ping for free-tier uptime monitors.",
+      "tags": ["api-handler", "rest", "health"],
+      "complexity": "simple"
+    },
+    {
+      "id": "endpoint:backend/main.py:GET-/health",
+      "type": "endpoint",
+      "name": "GET /health",
+      "filePath": "backend/main.py",
+      "summary": "Health route handled by health_check. Returns HealthResponse with database, Cohere, and Tavily status.",
+      "tags": ["api-handler", "rest", "health"],
+      "complexity": "simple"
+    },
+    {
+      "id": "endpoint:backend/main.py:GET-/models",
+      "type": "endpoint",
+      "name": "GET /models",
+      "filePath": "backend/main.py",
+      "summary": "Model catalog route handled by get_models. Returns the configured LLM list grouped by provider.",
+      "tags": ["api-handler", "rest", "models"],
+      "complexity": "simple"
+    },
+    {
+      "id": "endpoint:backend/main.py:GET-/sessions",
+      "type": "endpoint",
+      "name": "GET /sessions",
+      "filePath": "backend/main.py",
+      "summary": "Session list route handled by list_sessions. Returns SessionSummary rows for a user_id query parameter.",
+      "tags": ["api-handler", "rest", "sessions"],
+      "complexity": "simple"
+    },
+    {
+      "id": "endpoint:backend/main.py:POST-/sessions",
+      "type": "endpoint",
+      "name": "POST /sessions",
+      "filePath": "backend/main.py",
+      "summary": "Session creation route handled by create_session. Accepts SessionCreate and returns the new SessionSchema with HTTP 201.",
+      "tags": ["api-handler", "rest", "sessions"],
+      "complexity": "simple"
+    },
+    {
+      "id": "endpoint:backend/main.py:GET-/sessions/{session_id}",
+      "type": "endpoint",
+      "name": "GET /sessions/{session_id}",
+      "filePath": "backend/main.py",
+      "summary": "Session detail route handled by get_session. Returns one session plus its full message history.",
+      "tags": ["api-handler", "rest", "sessions"],
+      "complexity": "simple"
+    },
+    {
+      "id": "endpoint:backend/main.py:PATCH-/sessions/{session_id}",
+      "type": "endpoint",
+      "name": "PATCH /sessions/{session_id}",
+      "filePath": "backend/main.py",
+      "summary": "Session update route handled by update_session. Accepts SessionUpdate for title, model, and mode.",
+      "tags": ["api-handler", "rest", "sessions"],
+      "complexity": "simple"
+    },
+    {
+      "id": "endpoint:backend/main.py:DELETE-/sessions/{session_id}",
+      "type": "endpoint",
+      "name": "DELETE /sessions/{session_id}",
+      "filePath": "backend/main.py",
+      "summary": "Session deletion route handled by delete_session. Responds with HTTP 204 after removing the session and its messages.",
+      "tags": ["api-handler", "rest", "sessions"],
+      "complexity": "simple"
+    },
+    {
+      "id": "endpoint:backend/main.py:POST-/sessions/{session_id}/messages",
+      "type": "endpoint",
+      "name": "POST /sessions/{session_id}/messages",
+      "filePath": "backend/main.py",
+      "summary": "Message append route handled by save_message. Accepts MessageCreate and returns the stored MessageSchema with HTTP 201.",
+      "tags": ["api-handler", "rest", "messages"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "endpoint:backend/main.py:POST-/upload",
+      "type": "endpoint",
+      "name": "POST /upload",
+      "filePath": "backend/main.py",
+      "summary": "Document ingestion route handled by upload_document. Accepts a file upload or a URL and returns UploadResponse after indexing.",
+      "tags": ["api-handler", "rest", "ingestion"],
+      "complexity": "complex"
+    },
+    {
+      "id": "endpoint:backend/main.py:GET-/documents",
+      "type": "endpoint",
+      "name": "GET /documents",
+      "filePath": "backend/main.py",
+      "summary": "Indexed-document list route handled by list_documents. Returns DocumentSchema rows for a user.",
+      "tags": ["api-handler", "rest", "documents"],
+      "complexity": "simple"
+    },
+    {
+      "id": "endpoint:backend/main.py:POST-/retrieve",
+      "type": "endpoint",
+      "name": "POST /retrieve",
+      "filePath": "backend/main.py",
+      "summary": "Hybrid RAG route handled by retrieve_endpoint. Accepts RetrieveRequest and returns RetrieveResponse chunks from FAISS plus Cohere reranking.",
+      "tags": ["api-handler", "rest", "rag"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "endpoint:backend/main.py:POST-/search",
+      "type": "endpoint",
+      "name": "POST /search",
+      "filePath": "backend/main.py",
+      "summary": "Web search route handled by search_endpoint. Accepts SearchRequest and returns a Tavily SearchResponse.",
+      "tags": ["api-handler", "rest", "search"],
+      "complexity": "simple"
+    },
+    {
+      "id": "endpoint:backend/main.py:GET-/",
+      "type": "endpoint",
+      "name": "GET /",
+      "filePath": "backend/main.py",
+      "summary": "SPA entry route handled by serve_spa. Returns the frontend index.html file.",
+      "tags": ["api-handler", "rest", "frontend"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/models/api.py",
+      "type": "file",
+      "name": "api.py",
+      "filePath": "backend/models/api.py",
+      "summary": "Pydantic request and response schemas for sessions, messages, document upload, RAG retrieval, web search, and health checks.",
+      "tags": ["type-definition", "validation", "pydantic", "api-schema"],
+      "complexity": "moderate",
+      "languageNotes": "Pydantic v2 models. Session, message, and document schemas that mirror ORM rows set model_config from_attributes so FastAPI can serialize SQLAlchemy instances."
+    },
+    {
+      "id": "class:backend/models/api.py:SessionCreate",
+      "type": "class",
+      "name": "SessionCreate",
+      "filePath": "backend/models/api.py",
+      "lineRange": [15, 19],
+      "summary": "Request body for creating a chat session, with user id, title, model, and mode defaults for a general session.",
+      "tags": ["validation", "sessions", "request-schema"],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/models/api.py:SessionUpdate",
+      "type": "class",
+      "name": "SessionUpdate",
+      "filePath": "backend/models/api.py",
+      "lineRange": [22, 25],
+      "summary": "Partial update body for a session. Title, model, and mode are each optional.",
+      "tags": ["validation", "sessions", "request-schema"],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/models/api.py:CitationSchema",
+      "type": "class",
+      "name": "CitationSchema",
+      "filePath": "backend/models/api.py",
+      "lineRange": [28, 32],
+      "summary": "Citation attached to a message, carrying an id, source name, page or row locator, and snippet.",
+      "tags": ["validation", "citations", "schema"],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/models/api.py:MessageSchema",
+      "type": "class",
+      "name": "MessageSchema",
+      "filePath": "backend/models/api.py",
+      "lineRange": [35, 43],
+      "summary": "API representation of a stored chat message, including role, content, optional citations, and created_at. Reads directly from ORM rows.",
+      "tags": ["validation", "messages", "response-schema"],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/models/api.py:SessionSchema",
+      "type": "class",
+      "name": "SessionSchema",
+      "filePath": "backend/models/api.py",
+      "lineRange": [46, 56],
+      "summary": "Full session response with metadata and the nested message history.",
+      "tags": ["validation", "sessions", "response-schema"],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/models/api.py:SessionSummary",
+      "type": "class",
+      "name": "SessionSummary",
+      "filePath": "backend/models/api.py",
+      "lineRange": [59, 68],
+      "summary": "Compact session list item with metadata and timestamps, used by the sessions list route.",
+      "tags": ["validation", "sessions", "response-schema"],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/models/api.py:MessageCreate",
+      "type": "class",
+      "name": "MessageCreate",
+      "filePath": "backend/models/api.py",
+      "lineRange": [73, 76],
+      "summary": "Request body for appending a user or assistant message, with an optional list of citations.",
+      "tags": ["validation", "messages", "request-schema"],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/models/api.py:UploadResponse",
+      "type": "class",
+      "name": "UploadResponse",
+      "filePath": "backend/models/api.py",
+      "lineRange": [81, 86],
+      "summary": "Response after document ingestion, reporting document id, filename, file type, chunk count, and user id.",
+      "tags": ["validation", "ingestion", "response-schema"],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/models/api.py:RetrieveRequest",
+      "type": "class",
+      "name": "RetrieveRequest",
+      "filePath": "backend/models/api.py",
+      "lineRange": [91, 95],
+      "summary": "RAG query body with the user id, a relevance threshold defaulting to 0.40, and a top_k bounded from 1 to 20.",
+      "tags": ["validation", "rag", "request-schema"],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/models/api.py:RetrievedChunk",
+      "type": "class",
+      "name": "RetrievedChunk",
+      "filePath": "backend/models/api.py",
+      "lineRange": [98, 102],
+      "summary": "One retrieved excerpt with source, page, snippet, and a relevance score.",
+      "tags": ["validation", "rag", "schema"],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/models/api.py:RetrieveResponse",
+      "type": "class",
+      "name": "RetrieveResponse",
+      "filePath": "backend/models/api.py",
+      "lineRange": [105, 108],
+      "summary": "RAG retrieval result containing the matching chunks, a used_rag flag, and the original query.",
+      "tags": ["validation", "rag", "response-schema"],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/models/api.py:SearchRequest",
+      "type": "class",
+      "name": "SearchRequest",
+      "filePath": "backend/models/api.py",
+      "lineRange": [113, 115],
+      "summary": "Web search request with a query and max_results bounded from 1 to 10.",
+      "tags": ["validation", "search", "request-schema"],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/models/api.py:SearchResult",
+      "type": "class",
+      "name": "SearchResult",
+      "filePath": "backend/models/api.py",
+      "lineRange": [118, 122],
+      "summary": "One Tavily hit with title, URL, snippet, and score.",
+      "tags": ["validation", "search", "schema"],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/models/api.py:SearchResponse",
+      "type": "class",
+      "name": "SearchResponse",
+      "filePath": "backend/models/api.py",
+      "lineRange": [125, 127],
+      "summary": "Web search response holding the result list and the query string that produced it.",
+      "tags": ["validation", "search", "response-schema"],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/models/api.py:DocumentSchema",
+      "type": "class",
+      "name": "DocumentSchema",
+      "filePath": "backend/models/api.py",
+      "lineRange": [132, 139],
+      "summary": "API view of an indexed document: id, filename, file type, chunk count, and indexed_at. Reads from the ORM row.",
+      "tags": ["validation", "documents", "response-schema"],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/models/api.py:HealthResponse",
+      "type": "class",
+      "name": "HealthResponse",
+      "filePath": "backend/models/api.py",
+      "lineRange": [144, 146],
+      "summary": "Health payload with an overall status and a map of service names to connection or configuration state.",
+      "tags": ["validation", "health", "response-schema"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/models/db.py",
+      "type": "file",
+      "name": "db.py",
+      "filePath": "backend/models/db.py",
+      "summary": "SQLAlchemy ORM models for chat sessions, messages, and indexed documents, stored in the sessions, messages, and documents tables.",
+      "tags": ["data-model", "sqlalchemy", "orm", "persistence"],
+      "complexity": "simple",
+      "languageNotes": "ChatSession.messages uses cascade all, delete-orphan and orders messages by created_at, so deleting a session removes its messages."
+    },
+    {
+      "id": "function:backend/models/db.py:_uuid",
+      "type": "function",
+      "name": "_uuid",
+      "filePath": "backend/models/db.py",
+      "lineRange": [16, 17],
+      "summary": "Returns a new UUID4 string used as the default primary key for sessions, messages, and documents.",
+      "tags": ["utility", "database", "identifier"],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/models/db.py:ChatSession",
+      "type": "class",
+      "name": "ChatSession",
+      "filePath": "backend/models/db.py",
+      "lineRange": [20, 34],
+      "summary": "ORM model for a chat session, storing user id, title, model, mode, and timestamps, with a cascade relationship to its messages.",
+      "tags": ["data-model", "sessions", "orm"],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/models/db.py:Message",
+      "type": "class",
+      "name": "Message",
+      "filePath": "backend/models/db.py",
+      "lineRange": [37, 47],
+      "summary": "ORM model for a chat message, storing role, content, JSON citations, and a cascading foreign key to sessions.",
+      "tags": ["data-model", "messages", "orm"],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/models/db.py:Document",
+      "type": "class",
+      "name": "Document",
+      "filePath": "backend/models/db.py",
+      "lineRange": [50, 58],
+      "summary": "ORM model for an indexed file or URL, recording filename, file type, chunk count, and indexed_at for a user.",
+      "tags": ["data-model", "documents", "orm"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/services/parser.py",
+      "type": "file",
+      "name": "parser.py",
+      "filePath": "backend/services/parser.py",
+      "summary": "Multi-format document parser that turns PDF, DOCX, CSV, Excel, plain text, and web URLs into page dictionaries for indexing.",
+      "tags": ["service", "document-parsing", "ingestion", "rag"],
+      "complexity": "complex",
+      "languageNotes": "Every parser returns a list of dicts with page_number, text, and metadata so the indexer can treat files and URLs the same way."
+    },
+    {
+      "id": "function:backend/services/parser.py:parse_file",
+      "type": "function",
+      "name": "parse_file",
+      "filePath": "backend/services/parser.py",
+      "lineRange": [16, 36],
+      "summary": "Dispatches a local file to the PDF, DOCX, CSV, Excel, or text parser based on the filename extension.",
+      "tags": ["document-parsing", "dispatcher", "ingestion"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/services/parser.py:parse_url",
+      "type": "function",
+      "name": "parse_url",
+      "filePath": "backend/services/parser.py",
+      "lineRange": [39, 41],
+      "summary": "Public entry point that extracts article text from a web URL into page dictionaries.",
+      "tags": ["document-parsing", "url", "ingestion"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/services/parser.py:_parse_pdf",
+      "type": "function",
+      "name": "_parse_pdf",
+      "filePath": "backend/services/parser.py",
+      "lineRange": [46, 89],
+      "summary": "Extracts per-page PDF text and tables with pdfplumber, falling back to PyPDF2 when that extraction fails.",
+      "tags": ["document-parsing", "pdf", "extraction"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:backend/services/parser.py:_parse_docx",
+      "type": "function",
+      "name": "_parse_docx",
+      "filePath": "backend/services/parser.py",
+      "lineRange": [92, 137],
+      "summary": "Reads a Word document, splitting paragraphs on headings and appending table rows as text sections.",
+      "tags": ["document-parsing", "docx", "extraction"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:backend/services/parser.py:_parse_csv",
+      "type": "function",
+      "name": "_parse_csv",
+      "filePath": "backend/services/parser.py",
+      "lineRange": [140, 180],
+      "summary": "Reads a CSV file and packs header-plus-row groups into page-sized text chunks.",
+      "tags": ["document-parsing", "csv", "extraction"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:backend/services/parser.py:_parse_excel",
+      "type": "function",
+      "name": "_parse_excel",
+      "filePath": "backend/services/parser.py",
+      "lineRange": [183, 225],
+      "summary": "Loads each Excel sheet with pandas and emits row-range chunks as page dictionaries.",
+      "tags": ["document-parsing", "excel", "extraction"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:backend/services/parser.py:_parse_text",
+      "type": "function",
+      "name": "_parse_text",
+      "filePath": "backend/services/parser.py",
+      "lineRange": [228, 260],
+      "summary": "Reads plain text or Markdown and groups paragraphs into size-bounded pages.",
+      "tags": ["document-parsing", "text", "chunking"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:backend/services/parser.py:_parse_url",
+      "type": "function",
+      "name": "_parse_url",
+      "filePath": "backend/services/parser.py",
+      "lineRange": [263, 314],
+      "summary": "Fetches a URL with trafilatura and, if that yields no text, scrapes it with requests and BeautifulSoup, then splits the article into chunks.",
+      "tags": ["document-parsing", "url", "scraping"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:backend/services/parser.py:_split_into_chunks",
+      "type": "function",
+      "name": "_split_into_chunks",
+      "filePath": "backend/services/parser.py",
+      "lineRange": [317, 336],
+      "summary": "Packs paragraphs into chunks that stay within a character budget, used by the URL parser.",
+      "tags": ["chunking", "text", "utility"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/services/search.py",
+      "type": "file",
+      "name": "search.py",
+      "filePath": "backend/services/search.py",
+      "summary": "Tavily web search service that runs a single query, merges several queries with URL deduplication, and expands a question into a few focused sub-queries.",
+      "tags": ["service", "web-search", "tavily"],
+      "complexity": "moderate",
+      "languageNotes": "The Tavily client is imported inside search, so a missing package surfaces only when a query actually runs. Empty results are returned when TAVILY_API_KEY is unset."
+    },
+    {
+      "id": "function:backend/services/search.py:search",
+      "type": "function",
+      "name": "search",
+      "filePath": "backend/services/search.py",
+      "lineRange": [11, 38],
+      "summary": "Runs one Tavily search and maps hits into SearchResult items inside a SearchResponse.",
+      "tags": ["web-search", "tavily", "service"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:backend/services/search.py:multi_search",
+      "type": "function",
+      "name": "multi_search",
+      "filePath": "backend/services/search.py",
+      "lineRange": [41, 58],
+      "summary": "Runs up to four sub-queries, drops duplicate URLs, and returns the combined hits sorted by score.",
+      "tags": ["web-search", "deduplication", "service"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/services/search.py:generate_sub_queries",
+      "type": "function",
+      "name": "generate_sub_queries",
+      "filePath": "backend/services/search.py",
+      "lineRange": [61, 77],
+      "summary": "Expands a research question into up to three search strings, adding a recency variant and an examples variant when the wording calls for them.",
+      "tags": ["web-search", "query-expansion", "utility"],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:backend/database.py",
+      "target": "class:backend/database.py:Base",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/database.py",
+      "target": "function:backend/database.py:get_db",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/database.py",
+      "target": "function:backend/database.py:init_db",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/database.py",
+      "target": "class:backend/database.py:Base",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/database.py",
+      "target": "function:backend/database.py:get_db",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/database.py",
+      "target": "function:backend/database.py:init_db",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/database.py",
+      "target": "file:backend/config.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:backend/database.py",
+      "target": "file:backend/models/db.py",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:backend/main.py",
+      "target": "function:backend/main.py:lifespan",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/main.py",
+      "target": "function:backend/main.py:ping",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/main.py",
+      "target": "function:backend/main.py:health_check",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/main.py",
+      "target": "function:backend/main.py:get_models",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/main.py",
+      "target": "function:backend/main.py:list_sessions",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/main.py",
+      "target": "function:backend/main.py:create_session",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/main.py",
+      "target": "function:backend/main.py:get_session",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/main.py",
+      "target": "function:backend/main.py:update_session",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/main.py",
+      "target": "function:backend/main.py:delete_session",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/main.py",
+      "target": "function:backend/main.py:save_message",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/main.py",
+      "target": "function:backend/main.py:upload_document",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/main.py",
+      "target": "function:backend/main.py:list_documents",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/main.py",
+      "target": "function:backend/main.py:retrieve_endpoint",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/main.py",
+      "target": "function:backend/main.py:search_endpoint",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/main.py",
+      "target": "function:backend/main.py:serve_spa",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/main.py",
+      "target": "endpoint:backend/main.py:GET-/ping",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/main.py",
+      "target": "endpoint:backend/main.py:GET-/health",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/main.py",
+      "target": "endpoint:backend/main.py:GET-/models",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/main.py",
+      "target": "endpoint:backend/main.py:GET-/sessions",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/main.py",
+      "target": "endpoint:backend/main.py:POST-/sessions",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/main.py",
+      "target": "endpoint:backend/main.py:GET-/sessions/{session_id}",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/main.py",
+      "target": "endpoint:backend/main.py:PATCH-/sessions/{session_id}",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/main.py",
+      "target": "endpoint:backend/main.py:DELETE-/sessions/{session_id}",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/main.py",
+      "target": "endpoint:backend/main.py:POST-/sessions/{session_id}/messages",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/main.py",
+      "target": "endpoint:backend/main.py:POST-/upload",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/main.py",
+      "target": "endpoint:backend/main.py:GET-/documents",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/main.py",
+      "target": "endpoint:backend/main.py:POST-/retrieve",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/main.py",
+      "target": "endpoint:backend/main.py:POST-/search",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/main.py",
+      "target": "endpoint:backend/main.py:GET-/",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/main.py",
+      "target": "function:backend/main.py:lifespan",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/main.py",
+      "target": "function:backend/main.py:ping",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/main.py",
+      "target": "function:backend/main.py:health_check",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/main.py",
+      "target": "function:backend/main.py:get_models",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/main.py",
+      "target": "function:backend/main.py:list_sessions",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/main.py",
+      "target": "function:backend/main.py:create_session",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/main.py",
+      "target": "function:backend/main.py:get_session",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/main.py",
+      "target": "function:backend/main.py:update_session",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/main.py",
+      "target": "function:backend/main.py:delete_session",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/main.py",
+      "target": "function:backend/main.py:save_message",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/main.py",
+      "target": "function:backend/main.py:upload_document",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/main.py",
+      "target": "function:backend/main.py:list_documents",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/main.py",
+      "target": "function:backend/main.py:retrieve_endpoint",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/main.py",
+      "target": "function:backend/main.py:search_endpoint",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/main.py",
+      "target": "function:backend/main.py:serve_spa",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/main.py",
+      "target": "file:backend/config.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:backend/main.py",
+      "target": "file:backend/database.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:backend/main.py",
+      "target": "file:backend/models/api.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:backend/main.py",
+      "target": "file:backend/models/db.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:backend/main.py",
+      "target": "file:backend/rag/retriever.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:backend/main.py",
+      "target": "file:backend/services/parser.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:backend/main.py",
+      "target": "file:backend/services/search.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "function:backend/main.py:lifespan",
+      "target": "function:backend/database.py:init_db",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:backend/main.py:health_check",
+      "target": "function:backend/database.py:get_db",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:backend/main.py:health_check",
+      "target": "class:backend/models/api.py:HealthResponse",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:backend/main.py:health_check",
+      "target": "class:backend/models/db.py:Message",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:backend/main.py:list_sessions",
+      "target": "function:backend/database.py:get_db",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:backend/main.py:create_session",
+      "target": "function:backend/database.py:get_db",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:backend/main.py:create_session",
+      "target": "class:backend/models/db.py:ChatSession",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:backend/main.py:get_session",
+      "target": "function:backend/database.py:get_db",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:backend/main.py:update_session",
+      "target": "function:backend/database.py:get_db",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:backend/main.py:delete_session",
+      "target": "function:backend/database.py:get_db",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:backend/main.py:save_message",
+      "target": "function:backend/database.py:get_db",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:backend/main.py:save_message",
+      "target": "class:backend/models/db.py:Message",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:backend/main.py:upload_document",
+      "target": "function:backend/database.py:get_db",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:backend/main.py:upload_document",
+      "target": "function:backend/services/parser.py:parse_url",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:backend/main.py:upload_document",
+      "target": "function:backend/services/parser.py:parse_file",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:backend/main.py:upload_document",
+      "target": "function:backend/rag/retriever.py:process_and_index",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:backend/main.py:upload_document",
+      "target": "class:backend/models/db.py:Document",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:backend/main.py:upload_document",
+      "target": "class:backend/models/api.py:UploadResponse",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:backend/main.py:list_documents",
+      "target": "function:backend/database.py:get_db",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:backend/main.py:retrieve_endpoint",
+      "target": "function:backend/rag/retriever.py:retrieve_documents",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:backend/main.py:retrieve_endpoint",
+      "target": "class:backend/models/api.py:RetrievedChunk",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:backend/main.py:retrieve_endpoint",
+      "target": "class:backend/models/api.py:RetrieveResponse",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:backend/main.py:search_endpoint",
+      "target": "function:backend/services/search.py:search",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/models/api.py",
+      "target": "class:backend/models/api.py:SessionCreate",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/models/api.py",
+      "target": "class:backend/models/api.py:SessionUpdate",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/models/api.py",
+      "target": "class:backend/models/api.py:CitationSchema",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/models/api.py",
+      "target": "class:backend/models/api.py:MessageSchema",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/models/api.py",
+      "target": "class:backend/models/api.py:SessionSchema",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/models/api.py",
+      "target": "class:backend/models/api.py:SessionSummary",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/models/api.py",
+      "target": "class:backend/models/api.py:MessageCreate",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/models/api.py",
+      "target": "class:backend/models/api.py:UploadResponse",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/models/api.py",
+      "target": "class:backend/models/api.py:RetrieveRequest",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/models/api.py",
+      "target": "class:backend/models/api.py:RetrievedChunk",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/models/api.py",
+      "target": "class:backend/models/api.py:RetrieveResponse",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/models/api.py",
+      "target": "class:backend/models/api.py:SearchRequest",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/models/api.py",
+      "target": "class:backend/models/api.py:SearchResult",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/models/api.py",
+      "target": "class:backend/models/api.py:SearchResponse",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/models/api.py",
+      "target": "class:backend/models/api.py:DocumentSchema",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/models/api.py",
+      "target": "class:backend/models/api.py:HealthResponse",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/models/api.py",
+      "target": "class:backend/models/api.py:SessionCreate",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/models/api.py",
+      "target": "class:backend/models/api.py:SessionUpdate",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/models/api.py",
+      "target": "class:backend/models/api.py:CitationSchema",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/models/api.py",
+      "target": "class:backend/models/api.py:MessageSchema",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/models/api.py",
+      "target": "class:backend/models/api.py:SessionSchema",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/models/api.py",
+      "target": "class:backend/models/api.py:SessionSummary",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/models/api.py",
+      "target": "class:backend/models/api.py:MessageCreate",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/models/api.py",
+      "target": "class:backend/models/api.py:UploadResponse",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/models/api.py",
+      "target": "class:backend/models/api.py:RetrieveRequest",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/models/api.py",
+      "target": "class:backend/models/api.py:RetrievedChunk",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/models/api.py",
+      "target": "class:backend/models/api.py:RetrieveResponse",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/models/api.py",
+      "target": "class:backend/models/api.py:SearchRequest",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/models/api.py",
+      "target": "class:backend/models/api.py:SearchResult",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/models/api.py",
+      "target": "class:backend/models/api.py:SearchResponse",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/models/api.py",
+      "target": "class:backend/models/api.py:DocumentSchema",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/models/api.py",
+      "target": "class:backend/models/api.py:HealthResponse",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/models/db.py",
+      "target": "function:backend/models/db.py:_uuid",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/models/db.py",
+      "target": "class:backend/models/db.py:ChatSession",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/models/db.py",
+      "target": "class:backend/models/db.py:Message",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/models/db.py",
+      "target": "class:backend/models/db.py:Document",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/models/db.py",
+      "target": "function:backend/models/db.py:_uuid",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/models/db.py",
+      "target": "class:backend/models/db.py:ChatSession",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/models/db.py",
+      "target": "class:backend/models/db.py:Message",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/models/db.py",
+      "target": "class:backend/models/db.py:Document",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/models/db.py",
+      "target": "file:backend/database.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "class:backend/models/db.py:ChatSession",
+      "target": "class:backend/database.py:Base",
+      "type": "inherits",
+      "direction": "forward",
+      "weight": 0.9
+    },
+    {
+      "source": "class:backend/models/db.py:Message",
+      "target": "class:backend/database.py:Base",
+      "type": "inherits",
+      "direction": "forward",
+      "weight": 0.9
+    },
+    {
+      "source": "class:backend/models/db.py:Document",
+      "target": "class:backend/database.py:Base",
+      "type": "inherits",
+      "direction": "forward",
+      "weight": 0.9
+    },
+    {
+      "source": "file:backend/services/parser.py",
+      "target": "function:backend/services/parser.py:parse_file",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/services/parser.py",
+      "target": "function:backend/services/parser.py:parse_url",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/services/parser.py",
+      "target": "function:backend/services/parser.py:_parse_pdf",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/services/parser.py",
+      "target": "function:backend/services/parser.py:_parse_docx",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/services/parser.py",
+      "target": "function:backend/services/parser.py:_parse_csv",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/services/parser.py",
+      "target": "function:backend/services/parser.py:_parse_excel",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/services/parser.py",
+      "target": "function:backend/services/parser.py:_parse_text",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/services/parser.py",
+      "target": "function:backend/services/parser.py:_parse_url",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/services/parser.py",
+      "target": "function:backend/services/parser.py:_split_into_chunks",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/services/parser.py",
+      "target": "function:backend/services/parser.py:parse_file",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/services/parser.py",
+      "target": "function:backend/services/parser.py:parse_url",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/services/parser.py",
+      "target": "function:backend/services/parser.py:_parse_pdf",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/services/parser.py",
+      "target": "function:backend/services/parser.py:_parse_docx",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/services/parser.py",
+      "target": "function:backend/services/parser.py:_parse_csv",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/services/parser.py",
+      "target": "function:backend/services/parser.py:_parse_excel",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/services/parser.py",
+      "target": "function:backend/services/parser.py:_parse_text",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/services/parser.py",
+      "target": "function:backend/services/parser.py:_parse_url",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/services/parser.py",
+      "target": "function:backend/services/parser.py:_split_into_chunks",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:backend/services/parser.py:parse_file",
+      "target": "function:backend/services/parser.py:_parse_pdf",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:backend/services/parser.py:parse_file",
+      "target": "function:backend/services/parser.py:_parse_docx",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:backend/services/parser.py:parse_file",
+      "target": "function:backend/services/parser.py:_parse_csv",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:backend/services/parser.py:parse_file",
+      "target": "function:backend/services/parser.py:_parse_excel",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:backend/services/parser.py:parse_file",
+      "target": "function:backend/services/parser.py:_parse_text",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:backend/services/parser.py:parse_url",
+      "target": "function:backend/services/parser.py:_parse_url",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:backend/services/parser.py:_parse_url",
+      "target": "function:backend/services/parser.py:_split_into_chunks",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/services/search.py",
+      "target": "function:backend/services/search.py:search",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/services/search.py",
+      "target": "function:backend/services/search.py:multi_search",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/services/search.py",
+      "target": "function:backend/services/search.py:generate_sub_queries",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/services/search.py",
+      "target": "function:backend/services/search.py:search",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/services/search.py",
+      "target": "function:backend/services/search.py:multi_search",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/services/search.py",
+      "target": "function:backend/services/search.py:generate_sub_queries",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/services/search.py",
+      "target": "file:backend/config.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:backend/services/search.py",
+      "target": "file:backend/models/api.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "function:backend/services/search.py:search",
+      "target": "class:backend/models/api.py:SearchResult",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:backend/services/search.py:search",
+      "target": "class:backend/models/api.py:SearchResponse",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:backend/services/search.py:multi_search",
+      "target": "function:backend/services/search.py:search",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:backend/services/search.py:multi_search",
+      "target": "class:backend/models/api.py:SearchResponse",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    }
+  ]
+}

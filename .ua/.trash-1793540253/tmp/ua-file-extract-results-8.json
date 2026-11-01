@@ -1,0 +1,519 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 3,
+  "filesSkipped": [
+    "Procfile",
+    "pytest.ini",
+    "requirements-dev.txt",
+    "requirements.txt"
+  ],
+  "filesUnreadable": [],
+  "analysisOutcomes": {
+    "structure": {
+      "succeeded": 3,
+      "failed": 0
+    },
+    "callGraph": {
+      "succeeded": 0,
+      "failed": 0,
+      "skipped": 3
+    }
+  },
+  "results": [
+    {
+      "path": ".env.example",
+      "language": "config",
+      "fileCategory": "config",
+      "totalLines": 70,
+      "nonEmptyLines": 63,
+      "definitions": [
+        {
+          "name": "GROQ_API_KEY",
+          "kind": "variable",
+          "fields": [],
+          "startLine": 6,
+          "endLine": 6
+        },
+        {
+          "name": "GOOGLE_API_KEY",
+          "kind": "variable",
+          "fields": [],
+          "startLine": 7,
+          "endLine": 7
+        },
+        {
+          "name": "TAVILY_API_KEY",
+          "kind": "variable",
+          "fields": [],
+          "startLine": 8,
+          "endLine": 8
+        },
+        {
+          "name": "SERPER_API_KEY",
+          "kind": "variable",
+          "fields": [],
+          "startLine": 9,
+          "endLine": 9
+        },
+        {
+          "name": "COHERE_API_KEY",
+          "kind": "variable",
+          "fields": [],
+          "startLine": 10,
+          "endLine": 10
+        },
+        {
+          "name": "LLM_DEFAULT_MODEL",
+          "kind": "variable",
+          "fields": [],
+          "startLine": 13,
+          "endLine": 13
+        },
+        {
+          "name": "LLM_FALLBACK_CHAIN",
+          "kind": "variable",
+          "fields": [],
+          "startLine": 15,
+          "endLine": 15
+        },
+        {
+          "name": "LLM_FAST_MODEL",
+          "kind": "variable",
+          "fields": [],
+          "startLine": 17,
+          "endLine": 17
+        },
+        {
+          "name": "LLM_MODELS",
+          "kind": "variable",
+          "fields": [],
+          "startLine": 20,
+          "endLine": 20
+        },
+        {
+          "name": "LLM_TEMPERATURE",
+          "kind": "variable",
+          "fields": [],
+          "startLine": 21,
+          "endLine": 21
+        },
+        {
+          "name": "LLM_MAX_TOKENS",
+          "kind": "variable",
+          "fields": [],
+          "startLine": 22,
+          "endLine": 22
+        },
+        {
+          "name": "LLM_FIRST_TOKEN_TIMEOUT_S",
+          "kind": "variable",
+          "fields": [],
+          "startLine": 23,
+          "endLine": 23
+        },
+        {
+          "name": "MODEL_DISCOVERY",
+          "kind": "variable",
+          "fields": [],
+          "startLine": 24,
+          "endLine": 24
+        },
+        {
+          "name": "EMBED_PROVIDER",
+          "kind": "variable",
+          "fields": [],
+          "startLine": 27,
+          "endLine": 27
+        },
+        {
+          "name": "EMBED_MODEL",
+          "kind": "variable",
+          "fields": [],
+          "startLine": 28,
+          "endLine": 28
+        },
+        {
+          "name": "RERANK_PROVIDER",
+          "kind": "variable",
+          "fields": [],
+          "startLine": 29,
+          "endLine": 29
+        },
+        {
+          "name": "RERANK_MODEL",
+          "kind": "variable",
+          "fields": [],
+          "startLine": 30,
+          "endLine": 30
+        },
+        {
+          "name": "RERANK_ENABLED",
+          "kind": "variable",
+          "fields": [],
+          "startLine": 31,
+          "endLine": 31
+        },
+        {
+          "name": "RERANK_CANDIDATES",
+          "kind": "variable",
+          "fields": [],
+          "startLine": 32,
+          "endLine": 32
+        },
+        {
+          "name": "RERANK_MAX_CHARS",
+          "kind": "variable",
+          "fields": [],
+          "startLine": 33,
+          "endLine": 33
+        },
+        {
+          "name": "CHUNK_SIZE",
+          "kind": "variable",
+          "fields": [],
+          "startLine": 36,
+          "endLine": 36
+        },
+        {
+          "name": "CHUNK_OVERLAP",
+          "kind": "variable",
+          "fields": [],
+          "startLine": 37,
+          "endLine": 37
+        },
+        {
+          "name": "RAG_CANDIDATE_K",
+          "kind": "variable",
+          "fields": [],
+          "startLine": 38,
+          "endLine": 38
+        },
+        {
+          "name": "RAG_TOP_K",
+          "kind": "variable",
+          "fields": [],
+          "startLine": 39,
+          "endLine": 39
+        },
+        {
+          "name": "RRF_K",
+          "kind": "variable",
+          "fields": [],
+          "startLine": 40,
+          "endLine": 40
+        },
+        {
+          "name": "RAG_MIN_RELEVANCE",
+          "kind": "variable",
+          "fields": [],
+          "startLine": 41,
+          "endLine": 41
+        },
+        {
+          "name": "RAG_COSINE_FLOOR",
+          "kind": "variable",
+          "fields": [],
+          "startLine": 42,
+          "endLine": 42
+        },
+        {
+          "name": "RAG_COSINE_CEIL",
+          "kind": "variable",
+          "fields": [],
+          "startLine": 43,
+          "endLine": 43
+        },
+        {
+          "name": "TAVILY_SEARCH_DEPTH",
+          "kind": "variable",
+          "fields": [],
+          "startLine": 46,
+          "endLine": 46
+        },
+        {
+          "name": "TAVILY_RESEARCH_DEPTH",
+          "kind": "variable",
+          "fields": [],
+          "startLine": 47,
+          "endLine": 47
+        },
+        {
+          "name": "TAVILY_MAX_RESULTS",
+          "kind": "variable",
+          "fields": [],
+          "startLine": 48,
+          "endLine": 48
+        },
+        {
+          "name": "SEARCH_TIMEOUT_S",
+          "kind": "variable",
+          "fields": [],
+          "startLine": 49,
+          "endLine": 49
+        },
+        {
+          "name": "HISTORY_MAX_MESSAGES",
+          "kind": "variable",
+          "fields": [],
+          "startLine": 52,
+          "endLine": 52
+        },
+        {
+          "name": "HISTORY_TOKEN_BUDGET",
+          "kind": "variable",
+          "fields": [],
+          "startLine": 53,
+          "endLine": 53
+        },
+        {
+          "name": "CONTEXT_TOKEN_BUDGET",
+          "kind": "variable",
+          "fields": [],
+          "startLine": 54,
+          "endLine": 54
+        },
+        {
+          "name": "QUERY_REWRITE_ENABLED",
+          "kind": "variable",
+          "fields": [],
+          "startLine": 55,
+          "endLine": 55
+        },
+        {
+          "name": "SEMANTIC_CACHE_ENABLED",
+          "kind": "variable",
+          "fields": [],
+          "startLine": 56,
+          "endLine": 56
+        },
+        {
+          "name": "SEMANTIC_CACHE_THRESHOLD",
+          "kind": "variable",
+          "fields": [],
+          "startLine": 57,
+          "endLine": 57
+        },
+        {
+          "name": "RATE_LIMIT_RPM_PER_USER",
+          "kind": "variable",
+          "fields": [],
+          "startLine": 58,
+          "endLine": 58
+        },
+        {
+          "name": "MAX_UPLOAD_MB",
+          "kind": "variable",
+          "fields": [],
+          "startLine": 59,
+          "endLine": 59
+        },
+        {
+          "name": "BACKEND_HOST",
+          "kind": "variable",
+          "fields": [],
+          "startLine": 62,
+          "endLine": 62
+        },
+        {
+          "name": "BACKEND_PORT",
+          "kind": "variable",
+          "fields": [],
+          "startLine": 63,
+          "endLine": 63
+        },
+        {
+          "name": "ALLOWED_ORIGINS",
+          "kind": "variable",
+          "fields": [],
+          "startLine": 65,
+          "endLine": 65
+        },
+        {
+          "name": "DATABASE_URL",
+          "kind": "variable",
+          "fields": [],
+          "startLine": 67,
+          "endLine": 67
+        },
+        {
+          "name": "DATA_DIR",
+          "kind": "variable",
+          "fields": [],
+          "startLine": 69,
+          "endLine": 69
+        },
+        {
+          "name": "LOG_LEVEL",
+          "kind": "variable",
+          "fields": [],
+          "startLine": 70,
+          "endLine": 70
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "definitionCount": 46
+      }
+    },
+    {
+      "path": "README.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 205,
+      "nonEmptyLines": 167,
+      "sections": [
+        {
+          "heading": "AI Assistant Pro — low-latency Agentic RAG chatbot",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Quick start",
+          "level": 2,
+          "line": 19
+        },
+        {
+          "heading": "Architecture",
+          "level": 2,
+          "line": 40
+        },
+        {
+          "heading": "Frontend",
+          "level": 2,
+          "line": 84
+        },
+        {
+          "heading": "Chat request lifecycle",
+          "level": 3,
+          "line": 114
+        },
+        {
+          "heading": "API",
+          "level": 2,
+          "line": 128
+        },
+        {
+          "heading": "Configuration",
+          "level": 2,
+          "line": 148
+        },
+        {
+          "heading": "Graceful degradation",
+          "level": 3,
+          "line": 159
+        },
+        {
+          "heading": "Testing",
+          "level": 2,
+          "line": 170
+        },
+        {
+          "heading": "MCP server (optional)",
+          "level": 2,
+          "line": 179
+        },
+        {
+          "heading": "Measured performance (8-core CPU dev machine, free-tier APIs)",
+          "level": 2,
+          "line": 188
+        },
+        {
+          "heading": "Notes",
+          "level": 2,
+          "line": 201
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 12
+      }
+    },
+    {
+      "path": "skills.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 128,
+      "nonEmptyLines": 98,
+      "sections": [
+        {
+          "heading": "skills.md — reusable task recipes for this project",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "1. Add or change a chat model (config only)",
+          "level": 2,
+          "line": 8
+        },
+        {
+          "heading": "2. Add a new LLM provider",
+          "level": 2,
+          "line": 28
+        },
+        {
+          "heading": "3. Switch embedding / rerank provider (and reindex)",
+          "level": 2,
+          "line": 36
+        },
+        {
+          "heading": "4. Support a new document format",
+          "level": 2,
+          "line": 46
+        },
+        {
+          "heading": "5. Add or edit an agent mode / system prompt",
+          "level": 2,
+          "line": 55
+        },
+        {
+          "heading": "6. Tune retrieval quality / thresholds",
+          "level": 2,
+          "line": 62
+        },
+        {
+          "heading": "7. Latency benchmark",
+          "level": 2,
+          "line": 71
+        },
+        {
+          "heading": "8. Diagnose a failing / slow stream",
+          "level": 2,
+          "line": 80
+        },
+        {
+          "heading": "9. Full verification (run before every release)",
+          "level": 2,
+          "line": 89
+        },
+        {
+          "heading": "10. Add an endpoint the project way",
+          "level": 2,
+          "line": 102
+        },
+        {
+          "heading": "11. Inspect or repair the index",
+          "level": 2,
+          "line": 112
+        },
+        {
+          "heading": "12. Register the MCP server with Claude Code",
+          "level": 2,
+          "line": 122
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 13
+      }
+    }
+  ]
+}

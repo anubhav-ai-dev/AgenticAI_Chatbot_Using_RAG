@@ -1,0 +1,101 @@
+{
+  "nodes": [
+    {
+      "id": "config:.env.example",
+      "type": "config",
+      "name": ".env.example",
+      "filePath": ".env.example",
+      "summary": "Environment template listing Groq, Tavily, Cohere, and optional LLM API keys plus server host, CORS origins, and the SQLite database URL loaded at startup.",
+      "tags": ["configuration", "environment", "secrets", "api-keys"],
+      "complexity": "simple",
+      "languageNotes": "Placeholder values only; python-dotenv reads a copied .env so secrets stay out of version control."
+    },
+    {
+      "id": "service:Procfile",
+      "type": "service",
+      "name": "Procfile",
+      "filePath": "Procfile",
+      "summary": "Render and Railway process declaration that starts the FastAPI app with uvicorn, binding to the platform-assigned port.",
+      "tags": ["infrastructure", "deployment", "process-manager"],
+      "complexity": "simple",
+      "languageNotes": "A single web process type runs uvicorn backend.main:app and uses $PORT instead of a fixed local port."
+    },
+    {
+      "id": "document:README.md",
+      "type": "document",
+      "name": "README.md",
+      "filePath": "README.md",
+      "summary": "Getting-started guide for the RAG chatbot covering project layout, local setup, environment variables, FastAPI endpoints, and the LangGraph router-to-agent workflow.",
+      "tags": ["documentation", "entry-point", "overview", "architecture"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:requirements.txt",
+      "type": "document",
+      "name": "requirements.txt",
+      "filePath": "requirements.txt",
+      "summary": "Python package list for the FastAPI server, LangChain and LangGraph providers, FAISS retrieval, PDF and document parsing, and SQLAlchemy persistence.",
+      "tags": ["documentation", "dependencies", "python"],
+      "complexity": "simple",
+      "languageNotes": "Packages are unpinned, so installs follow the latest compatible releases of FastAPI, LangChain, and FAISS."
+    }
+  ],
+  "edges": [
+    {
+      "source": "config:.env.example",
+      "target": "file:backend/config.py",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:.env.example",
+      "target": "file:backend/main.py",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "document:README.md",
+      "target": "file:backend/main.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:README.md",
+      "target": "file:backend/agent.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:README.md",
+      "target": "file:frontend/app.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:README.md",
+      "target": "file:backend/config.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "service:Procfile",
+      "target": "file:backend/main.py",
+      "type": "deploys",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "document:requirements.txt",
+      "target": "file:backend/main.py",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    }
+  ]
+}

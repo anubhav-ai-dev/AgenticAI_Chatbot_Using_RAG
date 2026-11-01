@@ -1,0 +1,21 @@
+{
+  "projectRoot": "F:\\Personal Projects\\AgenticAI_Chatbot_Using_RAG",
+  "batchFiles": [
+    {"path": "backend/core/database.py", "language": "python", "sizeLines": 91, "fileCategory": "code"},
+    {"path": "backend/models/db.py", "language": "python", "sizeLines": 83, "fileCategory": "code"},
+    {"path": "backend/services/document_service.py", "language": "python", "sizeLines": 247, "fileCategory": "code"},
+    {"path": "backend/services/github_service.py", "language": "python", "sizeLines": 322, "fileCategory": "code"},
+    {"path": "backend/services/session_service.py", "language": "python", "sizeLines": 156, "fileCategory": "code"},
+    {"path": "backend/utils/timeutil.py", "language": "python", "sizeLines": 33, "fileCategory": "code"},
+    {"path": "tests/test_github.py", "language": "python", "sizeLines": 153, "fileCategory": "code"}
+  ],
+  "batchImportData": {
+    "backend/core/database.py": [],
+    "backend/models/db.py": ["backend/core/database.py", "backend/utils/timeutil.py"],
+    "backend/services/document_service.py": ["backend/core/config.py", "backend/core/database.py", "backend/core/exceptions.py", "backend/models/db.py", "backend/services/embedding_service.py", "backend/services/index_store.py", "backend/services/parser.py"],
+    "backend/services/github_service.py": ["backend/core/config.py", "backend/core/database.py", "backend/core/exceptions.py", "backend/models/db.py", "backend/services/document_service.py", "backend/services/llm_service.py", "backend/utils/timeutil.py"],
+    "backend/services/session_service.py": ["backend/core/config.py", "backend/core/database.py", "backend/core/exceptions.py", "backend/models/api.py", "backend/models/db.py", "backend/utils/timeutil.py"],
+    "backend/utils/timeutil.py": [],
+    "tests/test_github.py": ["backend/services/github_service.py", "tests/conftest.py"]
+  }
+}

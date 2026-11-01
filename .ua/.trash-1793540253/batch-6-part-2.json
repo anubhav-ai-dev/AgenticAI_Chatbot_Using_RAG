@@ -1,0 +1,2086 @@
+{
+  "nodes": [
+    {
+      "id": "file:tests/test_frontend_guards.py",
+      "type": "file",
+      "name": "test_frontend_guards.py",
+      "filePath": "tests/test_frontend_guards.py",
+      "summary": "Offline guards for the frontend shell, chat renderer, citations, and controller, plus a stub-only Chrome run of send, retry, and upload failures. View scripts are forbidden from calling the backend or injecting HTML.",
+      "tags": [
+        "test",
+        "frontend",
+        "static-analysis",
+        "accessibility",
+        "security"
+      ],
+      "complexity": "complex",
+      "languageNotes": "Static checks use the standard library. The citation and stage-4 fixtures launch headless Chrome and skip, rather than fail, when Chrome or the CDN libraries are missing."
+    },
+    {
+      "id": "function:tests/test_frontend_guards.py:_read",
+      "type": "function",
+      "name": "_read",
+      "filePath": "tests/test_frontend_guards.py",
+      "lineRange": [
+        19,
+        20
+      ],
+      "summary": "Reads a path under frontend/ as UTF-8 text for the static guard assertions.",
+      "tags": [
+        "test",
+        "utility",
+        "filesystem"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_guards.py:test_entrypoints_exist",
+      "type": "function",
+      "name": "test_entrypoints_exist",
+      "filePath": "tests/test_frontend_guards.py",
+      "lineRange": [
+        23,
+        26
+      ],
+      "summary": "Checks that frontend/js/app.js, frontend/css/main.css, and the Lucide license file are present.",
+      "tags": [
+        "test",
+        "frontend",
+        "entry-point"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_guards.py:test_view_files_do_not_call_backend",
+      "type": "function",
+      "name": "test_view_files_do_not_call_backend",
+      "filePath": "tests/test_frontend_guards.py",
+      "lineRange": [
+        29,
+        33
+      ],
+      "summary": "Checks that view scripts never call fetch, API, or State and never use eval, document.write, or new Function.",
+      "tags": [
+        "test",
+        "security",
+        "view-layer"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_guards.py:test_no_inline_handlers_or_styles_in_markup",
+      "type": "function",
+      "name": "test_no_inline_handlers_or_styles_in_markup",
+      "filePath": "tests/test_frontend_guards.py",
+      "lineRange": [
+        36,
+        39
+      ],
+      "summary": "Checks that index.html has no inline event handlers and that the only inline style is display:none on the stop button.",
+      "tags": [
+        "test",
+        "markup",
+        "security"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_guards.py:test_no_new_external_origins",
+      "type": "function",
+      "name": "test_no_new_external_origins",
+      "filePath": "tests/test_frontend_guards.py",
+      "lineRange": [
+        42,
+        47
+      ],
+      "summary": "Checks that first-party HTML, CSS, and JS reference only the allow-listed font and CDN origins, ignoring the vendored directory.",
+      "tags": [
+        "test",
+        "security",
+        "csp"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_guards.py:test_app_js_ids_exist_in_index",
+      "type": "function",
+      "name": "test_app_js_ids_exist_in_index",
+      "filePath": "tests/test_frontend_guards.py",
+      "lineRange": [
+        50,
+        53
+      ],
+      "summary": "Checks that every getElementById target in app.js is an id present in index.html.",
+      "tags": [
+        "test",
+        "dom",
+        "controller"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_guards.py:test_sprite_references_resolve",
+      "type": "function",
+      "name": "test_sprite_references_resolve",
+      "filePath": "tests/test_frontend_guards.py",
+      "lineRange": [
+        56,
+        62
+      ],
+      "summary": "Checks that every icon used in markup or via Icons.html and Icons.el has a matching symbol in the index.html sprite.",
+      "tags": [
+        "test",
+        "icons",
+        "markup"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_guards.py:test_no_hex_colors_outside_token_files",
+      "type": "function",
+      "name": "test_no_hex_colors_outside_token_files",
+      "filePath": "tests/test_frontend_guards.py",
+      "lineRange": [
+        65,
+        67
+      ],
+      "summary": "Checks that components.css and animations.css contain no raw hex colors.",
+      "tags": [
+        "test",
+        "css",
+        "design-tokens"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_guards.py:test_reduced_motion_rule_present",
+      "type": "function",
+      "name": "test_reduced_motion_rule_present",
+      "filePath": "tests/test_frontend_guards.py",
+      "lineRange": [
+        70,
+        71
+      ],
+      "summary": "Checks that animations.css contains a prefers-reduced-motion: reduce rule.",
+      "tags": [
+        "test",
+        "accessibility",
+        "motion"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_guards.py:test_no_right_sidebar_region",
+      "type": "function",
+      "name": "test_no_right_sidebar_region",
+      "filePath": "tests/test_frontend_guards.py",
+      "lineRange": [
+        74,
+        75
+      ],
+      "summary": "Checks that index.html does not define a right sidebar or right panel region.",
+      "tags": [
+        "test",
+        "layout",
+        "markup"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_guards.py:test_buttons_have_accessible_name",
+      "type": "function",
+      "name": "test_buttons_have_accessible_name",
+      "filePath": "tests/test_frontend_guards.py",
+      "lineRange": [
+        78,
+        101
+      ],
+      "summary": "Parses index.html and checks that every button has visible text, an aria-label, aria-labelledby, or a title.",
+      "tags": [
+        "test",
+        "accessibility",
+        "markup"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_guards.py:test_index_ids_are_unique",
+      "type": "function",
+      "name": "test_index_ids_are_unique",
+      "filePath": "tests/test_frontend_guards.py",
+      "lineRange": [
+        106,
+        109
+      ],
+      "summary": "Checks that id attributes in index.html are unique.",
+      "tags": [
+        "test",
+        "dom",
+        "markup"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_guards.py:test_ui_ids_exist_in_index_or_are_created_dynamically",
+      "type": "function",
+      "name": "test_ui_ids_exist_in_index_or_are_created_dynamically",
+      "filePath": "tests/test_frontend_guards.py",
+      "lineRange": [
+        112,
+        118
+      ],
+      "summary": "Checks that ids looked up by ui.js and model-select.js exist in index.html, except modelTrigger which the component creates.",
+      "tags": [
+        "test",
+        "dom",
+        "ui"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_guards.py:test_model_select_never_uses_html_injection",
+      "type": "function",
+      "name": "test_model_select_never_uses_html_injection",
+      "filePath": "tests/test_frontend_guards.py",
+      "lineRange": [
+        121,
+        123
+      ],
+      "summary": "Checks that model-select.js never assigns innerHTML, outerHTML, insertAdjacentHTML, or document.write.",
+      "tags": [
+        "test",
+        "security",
+        "xss"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_guards.py:test_session_list_interpolations_are_escaped",
+      "type": "function",
+      "name": "test_session_list_interpolations_are_escaped",
+      "filePath": "tests/test_frontend_guards.py",
+      "lineRange": [
+        126,
+        140
+      ],
+      "summary": "Checks that renderSessionList interpolations are escaped or on a reviewed allow-list, including title and session id.",
+      "tags": [
+        "test",
+        "security",
+        "xss"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_guards.py:test_file_accept_matches_controller_allow_list",
+      "type": "function",
+      "name": "test_file_accept_matches_controller_allow_list",
+      "filePath": "tests/test_frontend_guards.py",
+      "lineRange": [
+        143,
+        146
+      ],
+      "summary": "Checks that the file input accept attribute lists the same extensions as ALLOWED in app.js.",
+      "tags": [
+        "test",
+        "uploads",
+        "validation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_guards.py:test_welcome_cards_and_mode_dropdown_are_consistent",
+      "type": "function",
+      "name": "test_welcome_cards_and_mode_dropdown_are_consistent",
+      "filePath": "tests/test_frontend_guards.py",
+      "lineRange": [
+        149,
+        169
+      ],
+      "summary": "Checks that welcome cards cover the same four modes as the ui.js dropdown, that their names describe a switch-and-fill action, and that workspace prompts never send.",
+      "tags": [
+        "test",
+        "welcome-cards",
+        "accessibility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_guards.py:test_no_unverifiable_marketing_claims",
+      "type": "function",
+      "name": "test_no_unverifiable_marketing_claims",
+      "filePath": "tests/test_frontend_guards.py",
+      "lineRange": [
+        172,
+        175
+      ],
+      "summary": "Checks that index.html and ui.js do not claim the product is free, fully private, encrypted, unlimited, or the fastest.",
+      "tags": [
+        "test",
+        "copy",
+        "validation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_guards.py:test_shell_breakpoints_match_between_head_snippet_and_ui",
+      "type": "function",
+      "name": "test_shell_breakpoints_match_between_head_snippet_and_ui",
+      "filePath": "tests/test_frontend_guards.py",
+      "lineRange": [
+        178,
+        181
+      ],
+      "summary": "Checks that the 768px and 1024px width checks in index.html match the 767px and 1023px media queries in ui.js.",
+      "tags": [
+        "test",
+        "layout",
+        "responsive"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_guards.py:test_sidebar_toggle_controls_existing_region",
+      "type": "function",
+      "name": "test_sidebar_toggle_controls_existing_region",
+      "filePath": "tests/test_frontend_guards.py",
+      "lineRange": [
+        184,
+        187
+      ],
+      "summary": "Checks that the sidebar toggle's aria-controls target exists and that the toggle starts aria-expanded false.",
+      "tags": [
+        "test",
+        "accessibility",
+        "sidebar"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_guards.py:test_sidebar_is_hidden_from_tab_order_when_closed_drawer",
+      "type": "function",
+      "name": "test_sidebar_is_hidden_from_tab_order_when_closed_drawer",
+      "filePath": "tests/test_frontend_guards.py",
+      "lineRange": [
+        190,
+        193
+      ],
+      "summary": "Checks that closed-drawer styles use visibility:hidden and that ui.js sets the sidebar inert.",
+      "tags": [
+        "test",
+        "accessibility",
+        "sidebar"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_guards.py:test_coarse_pointer_targets_are_44px",
+      "type": "function",
+      "name": "test_coarse_pointer_targets_are_44px",
+      "filePath": "tests/test_frontend_guards.py",
+      "lineRange": [
+        196,
+        199
+      ],
+      "summary": "Checks that a pointer: coarse media query exists and that the shell styles include a 44px target size.",
+      "tags": [
+        "test",
+        "accessibility",
+        "touch"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_guards.py:test_model_select_keeps_native_select_as_source_of_truth",
+      "type": "function",
+      "name": "test_model_select_keeps_native_select_as_source_of_truth",
+      "filePath": "tests/test_frontend_guards.py",
+      "lineRange": [
+        202,
+        210
+      ],
+      "summary": "Checks that the custom listbox updates the native select, exposes listbox ARIA, and refuses a no-op or disabled choice.",
+      "tags": [
+        "test",
+        "accessibility",
+        "model-select"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_guards.py:_css_rules",
+      "type": "function",
+      "name": "_css_rules",
+      "filePath": "tests/test_frontend_guards.py",
+      "lineRange": [
+        213,
+        218
+      ],
+      "summary": "Yields selector and body pairs for simple CSS rules, including rules nested in @media, whose selector matches a pattern.",
+      "tags": [
+        "test",
+        "css",
+        "utility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_guards.py:test_feature_card_try_line_is_never_hidden",
+      "type": "function",
+      "name": "test_feature_card_try_line_is_never_hidden",
+      "filePath": "tests/test_frontend_guards.py",
+      "lineRange": [
+        221,
+        228
+      ],
+      "summary": "Checks that .feature-card__try rules never use display:none, visibility:hidden, or height:0.",
+      "tags": [
+        "test",
+        "css",
+        "welcome-cards"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_guards.py:test_feature_card_border_uses_control_token",
+      "type": "function",
+      "name": "test_feature_card_border_uses_control_token",
+      "filePath": "tests/test_frontend_guards.py",
+      "lineRange": [
+        231,
+        238
+      ],
+      "summary": "Checks that .welcome__starter borders use var(--border-control) and do not fall back to var(--border).",
+      "tags": [
+        "test",
+        "css",
+        "design-tokens"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_guards.py:_fn_body",
+      "type": "function",
+      "name": "_fn_body",
+      "filePath": "tests/test_frontend_guards.py",
+      "lineRange": [
+        339,
+        342
+      ],
+      "summary": "Returns the brace body of a named function in a JavaScript source string and fails the test when that function is missing. This definition replaces an earlier helper of the same name.",
+      "tags": [
+        "test",
+        "utility",
+        "source-parse"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_guards.py:test_sources_block_never_uses_html_injection",
+      "type": "function",
+      "name": "test_sources_block_never_uses_html_injection",
+      "filePath": "tests/test_frontend_guards.py",
+      "lineRange": [
+        250,
+        254
+      ],
+      "summary": "Checks that chat.js _fillSources writes text only, builds links with Utils.safeUrl, and sets noopener noreferrer on new tabs.",
+      "tags": [
+        "test",
+        "security",
+        "citations"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_guards.py:test_every_blank_target_has_noopener_noreferrer",
+      "type": "function",
+      "name": "test_every_blank_target_has_noopener_noreferrer",
+      "filePath": "tests/test_frontend_guards.py",
+      "lineRange": [
+        257,
+        263
+      ],
+      "summary": "Checks that every _blank target in chat.js, ui.js, utils.js, and index.html is paired with rel=\"noopener\".",
+      "tags": [
+        "test",
+        "security",
+        "links"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_guards.py:test_chat_innerhtml_templates_interpolate_only_safe_values",
+      "type": "function",
+      "name": "test_chat_innerhtml_templates_interpolate_only_safe_values",
+      "filePath": "tests/test_frontend_guards.py",
+      "lineRange": [
+        266,
+        276
+      ],
+      "summary": "Checks that chat.js innerHTML templates interpolate only escaped or static values and that badge text goes through Utils.escapeHtml.",
+      "tags": [
+        "test",
+        "security",
+        "xss"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_guards.py:test_renderer_and_chat_api_used_by_app_js_still_exists",
+      "type": "function",
+      "name": "test_renderer_and_chat_api_used_by_app_js_still_exists",
+      "filePath": "tests/test_frontend_guards.py",
+      "lineRange": [
+        279,
+        287
+      ],
+      "summary": "Checks that every renderer and Chat method called from app.js is still defined in chat.js, including markPartial and setVizState.",
+      "tags": [
+        "test",
+        "api-contract",
+        "renderer"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_guards.py:test_ai_viz_is_css_only_and_decorative",
+      "type": "function",
+      "name": "test_ai_viz_is_css_only_and_decorative",
+      "filePath": "tests/test_frontend_guards.py",
+      "lineRange": [
+        290,
+        296
+      ],
+      "summary": "Checks that the AI visualization is aria-hidden, uses no timers or random motion in script, and animates only through tokenized CSS.",
+      "tags": [
+        "test",
+        "accessibility",
+        "animation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_guards.py:test_ai_viz_reduced_motion_and_hidden_tab_rules",
+      "type": "function",
+      "name": "test_ai_viz_reduced_motion_and_hidden_tab_rules",
+      "filePath": "tests/test_frontend_guards.py",
+      "lineRange": [
+        299,
+        305
+      ],
+      "summary": "Checks that ai-viz.css disables animation under reduced motion, pauses it when the page is hidden, and keyframes only transform and opacity.",
+      "tags": [
+        "test",
+        "accessibility",
+        "animation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_guards.py:test_no_interval_timers_or_raf_loops_in_frontend",
+      "type": "function",
+      "name": "test_no_interval_timers_or_raf_loops_in_frontend",
+      "filePath": "tests/test_frontend_guards.py",
+      "lineRange": [
+        308,
+        313
+      ],
+      "summary": "Checks that no frontend script uses setInterval and that chat.js calls requestAnimationFrame at most twice.",
+      "tags": [
+        "test",
+        "performance",
+        "frontend"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_guards.py:test_streaming_does_not_announce_per_token",
+      "type": "function",
+      "name": "test_streaming_does_not_announce_per_token",
+      "filePath": "tests/test_frontend_guards.py",
+      "lineRange": [
+        316,
+        320
+      ],
+      "summary": "Checks that appendToken does not announce each token and that token rendering stays throttled to 60ms.",
+      "tags": [
+        "test",
+        "accessibility",
+        "streaming"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_guards.py:test_stage3_ids_exist",
+      "type": "function",
+      "name": "test_stage3_ids_exist",
+      "filePath": "tests/test_frontend_guards.py",
+      "lineRange": [
+        323,
+        328
+      ],
+      "summary": "Checks that the welcome visualization, jump-latest, live status, and chat area ids exist and that chat.js element lookups resolve.",
+      "tags": [
+        "test",
+        "dom",
+        "chat"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_guards.py:test_sanitizer_policy_forbids_class_role_download_ping_in_utils",
+      "type": "function",
+      "name": "test_sanitizer_policy_forbids_class_role_download_ping_in_utils",
+      "filePath": "tests/test_frontend_guards.py",
+      "lineRange": [
+        331,
+        333
+      ],
+      "summary": "Checks that the utils.js sanitizer FORBID_ATTR list includes class, role, download, and ping.",
+      "tags": [
+        "test",
+        "security",
+        "sanitizer"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_guards.py:test_citation_label_falls_back_to_source_n_and_is_used_everywhere",
+      "type": "function",
+      "name": "test_citation_label_falls_back_to_source_n_and_is_used_everywhere",
+      "filePath": "tests/test_frontend_guards.py",
+      "lineRange": [
+        345,
+        352
+      ],
+      "summary": "Checks that a blank citation title becomes \"Source N\" and that both citation dialogs go through _citationLabel.",
+      "tags": [
+        "test",
+        "citations",
+        "accessibility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_guards.py:test_citation_ids_resolved_once_for_stream_and_history_paths",
+      "type": "function",
+      "name": "test_citation_ids_resolved_once_for_stream_and_history_paths",
+      "filePath": "tests/test_frontend_guards.py",
+      "lineRange": [
+        355,
+        360
+      ],
+      "summary": "Checks that stream and history citations are resolved once and that _resolveCitations copies objects instead of mutating the input.",
+      "tags": [
+        "test",
+        "citations",
+        "immutability"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_guards.py:test_coarse_pointer_citation_hit_area_rule_present_and_scoped",
+      "type": "function",
+      "name": "test_coarse_pointer_citation_hit_area_rule_present_and_scoped",
+      "filePath": "tests/test_frontend_guards.py",
+      "lineRange": [
+        363,
+        370
+      ],
+      "summary": "Checks that coarse pointers get a 44px absolutely positioned hit area on citation buttons without changing the visual badge.",
+      "tags": [
+        "test",
+        "accessibility",
+        "citations"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_guards.py:cite_result",
+      "type": "function",
+      "name": "cite_result",
+      "filePath": "tests/test_frontend_guards.py",
+      "lineRange": [
+        424,
+        450
+      ],
+      "summary": "Runs chat.js, utils.js, and icons.js in headless Chrome with citation fixtures and returns the JSON the harness writes, skipping when Chrome or the CDN libraries are missing.",
+      "tags": [
+        "test",
+        "fixture",
+        "headless-chrome",
+        "citations"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_guards.py:_id_list",
+      "type": "function",
+      "name": "_id_list",
+      "filePath": "tests/test_frontend_guards.py",
+      "lineRange": [
+        453,
+        454
+      ],
+      "summary": "Returns the citation id column for one named case in the browser citation result.",
+      "tags": [
+        "test",
+        "utility",
+        "citations"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_guards.py:test_browser_citation_ids_consistent_unique_and_input_not_mutated",
+      "type": "function",
+      "name": "test_browser_citation_ids_consistent_unique_and_input_not_mutated",
+      "filePath": "tests/test_frontend_guards.py",
+      "lineRange": [
+        457,
+        469
+      ],
+      "summary": "Asserts citation ids stay unique across missing, explicit, duplicate, and invalid inputs and that the source array is not mutated.",
+      "tags": [
+        "test",
+        "citations",
+        "browser"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_guards.py:test_browser_blank_citations_get_accessible_source_n_names",
+      "type": "function",
+      "name": "test_browser_blank_citations_get_accessible_source_n_names",
+      "filePath": "tests/test_frontend_guards.py",
+      "lineRange": [
+        472,
+        480
+      ],
+      "summary": "Asserts blank citations are named Source 1, Source 2, and Source 3, a javascript: URL is not linked, and the dialog title matches the row.",
+      "tags": [
+        "test",
+        "citations",
+        "accessibility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_guards.py:test_browser_isolated_badge_reaches_44px_on_coarse_pointers",
+      "type": "function",
+      "name": "test_browser_isolated_badge_reaches_44px_on_coarse_pointers",
+      "filePath": "tests/test_frontend_guards.py",
+      "lineRange": [
+        483,
+        486
+      ],
+      "summary": "Asserts an isolated citation badge stays visually small while its coarse-pointer hit target is at least 44 by 44 pixels.",
+      "tags": [
+        "test",
+        "accessibility",
+        "touch"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_guards.py:test_browser_multi_citation_sentence_badges_reach_44px_wide",
+      "type": "function",
+      "name": "test_browser_multi_citation_sentence_badges_reach_44px_wide",
+      "filePath": "tests/test_frontend_guards.py",
+      "lineRange": [
+        489,
+        491
+      ],
+      "summary": "Asserts adjacent citation badges in one sentence each have a coarse-pointer hit area at least 44 by 44 pixels.",
+      "tags": [
+        "test",
+        "accessibility",
+        "touch"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_guards.py:_code",
+      "type": "function",
+      "name": "_code",
+      "filePath": "tests/test_frontend_guards.py",
+      "lineRange": [
+        502,
+        505
+      ],
+      "summary": "Strips block comments and line comments from a source string so later assertions do not match commented-out code.",
+      "tags": [
+        "test",
+        "utility",
+        "source-parse"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_guards.py:_app_fn",
+      "type": "function",
+      "name": "_app_fn",
+      "filePath": "tests/test_frontend_guards.py",
+      "lineRange": [
+        508,
+        513
+      ],
+      "summary": "Returns the body of a top-level function in app.js, from its opening brace up to the next sibling function.",
+      "tags": [
+        "test",
+        "utility",
+        "controller"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_guards.py:test_app_js_has_no_native_confirm_inline_color_interval_or_emoji",
+      "type": "function",
+      "name": "test_app_js_has_no_native_confirm_inline_color_interval_or_emoji",
+      "filePath": "tests/test_frontend_guards.py",
+      "lineRange": [
+        516,
+        522
+      ],
+      "summary": "Checks that app.js uses UI.confirm four times and does not call window.confirm, set inline colors, use setInterval, or embed emoji.",
+      "tags": [
+        "test",
+        "controller",
+        "accessibility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_guards.py:test_welcome_card_handler_never_sends",
+      "type": "function",
+      "name": "test_welcome_card_handler_never_sends",
+      "filePath": "tests/test_frontend_guards.py",
+      "lineRange": [
+        525,
+        540
+      ],
+      "summary": "Checks that the welcome-card handler, file picker, and composer filler only switch mode and fill text, and that ui.js does not send from those cards.",
+      "tags": [
+        "test",
+        "welcome-cards",
+        "controller"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_guards.py:test_allowed_extensions_include_rst_and_match_accept_and_backend",
+      "type": "function",
+      "name": "test_allowed_extensions_include_rst_and_match_accept_and_backend",
+      "filePath": "tests/test_frontend_guards.py",
+      "lineRange": [
+        543,
+        549
+      ],
+      "summary": "Checks that app.js allows .rst and that the accept attribute, the client allow-list, and parser.SUPPORTED_EXTENSIONS are the same set.",
+      "tags": [
+        "test",
+        "uploads",
+        "api-contract"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_guards.py:test_request_payload_shapes_match_the_backend_contract",
+      "type": "function",
+      "name": "test_request_payload_shapes_match_the_backend_contract",
+      "filePath": "tests/test_frontend_guards.py",
+      "lineRange": [
+        552,
+        570
+      ],
+      "summary": "Checks that chat and session payloads in app.js and api.js match ChatRequest and the session body fields in the backend models.",
+      "tags": [
+        "test",
+        "api-contract",
+        "controller"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_guards.py:test_regenerate_and_retry_send_the_head_shape",
+      "type": "function",
+      "name": "test_regenerate_and_retry_send_the_head_shape",
+      "filePath": "tests/test_frontend_guards.py",
+      "lineRange": [
+        573,
+        579
+      ],
+      "summary": "Checks that regenerate and the retry helper send message as an empty string and pass regenerate through _onSend.",
+      "tags": [
+        "test",
+        "regenerate",
+        "api-contract"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_guards.py:test_composer_is_cleared_only_after_the_server_accepted",
+      "type": "function",
+      "name": "test_composer_is_cleared_only_after_the_server_accepted",
+      "filePath": "tests/test_frontend_guards.py",
+      "lineRange": [
+        582,
+        587
+      ],
+      "summary": "Checks that the composer is cleared inside the onAccepted callback, which runs only after api.js has seen a successful response.",
+      "tags": [
+        "test",
+        "composer",
+        "streaming"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_guards.py:test_no_new_timer_or_listener_patterns_in_controller",
+      "type": "function",
+      "name": "test_no_new_timer_or_listener_patterns_in_controller",
+      "filePath": "tests/test_frontend_guards.py",
+      "lineRange": [
+        590,
+        594
+      ],
+      "summary": "Checks that app.js has a single setTimeout, clears the cooldown timer, and never writes HTML.",
+      "tags": [
+        "test",
+        "controller",
+        "security"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_guards.py:stub_run",
+      "type": "function",
+      "name": "stub_run",
+      "filePath": "tests/test_frontend_guards.py",
+      "lineRange": [
+        724,
+        787
+      ],
+      "summary": "Serves the frontend on a GET-only port, injects the shared fetch stub and stage-4 scenario, and returns the JSON from headless Chrome.",
+      "tags": [
+        "test",
+        "fixture",
+        "headless-chrome",
+        "stub"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:tests/test_frontend_guards.py:test_stub_nothing_reached_a_server",
+      "type": "function",
+      "name": "test_stub_nothing_reached_a_server",
+      "filePath": "tests/test_frontend_guards.py",
+      "lineRange": [
+        790,
+        792
+      ],
+      "summary": "Asserts the stage-4 browser run served only static GETs and recorded no page errors.",
+      "tags": [
+        "test",
+        "stub",
+        "isolation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_guards.py:test_stub_welcome_cards_never_submit_and_fill_the_composer",
+      "type": "function",
+      "name": "test_stub_welcome_cards_never_submit_and_fill_the_composer",
+      "filePath": "tests/test_frontend_guards.py",
+      "lineRange": [
+        795,
+        800
+      ],
+      "summary": "Asserts each welcome card fills the composer with its prompt, focuses the input, and never POSTs.",
+      "tags": [
+        "test",
+        "welcome-cards",
+        "stub"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_guards.py:test_stub_failures_before_accept_keep_the_draft_and_add_no_bubble",
+      "type": "function",
+      "name": "test_stub_failures_before_accept_keep_the_draft_and_add_no_bubble",
+      "filePath": "tests/test_frontend_guards.py",
+      "lineRange": [
+        803,
+        812
+      ],
+      "summary": "Asserts session-create and HTTP failures before accept keep the draft, add no bubbles, and that a 429 cooldown blocks then allows one later send.",
+      "tags": [
+        "test",
+        "error-handling",
+        "composer"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_guards.py:test_stub_stream_error_restores_draft_and_never_duplicates_the_user_bubble",
+      "type": "function",
+      "name": "test_stub_stream_error_restores_draft_and_never_duplicates_the_user_bubble",
+      "filePath": "tests/test_frontend_guards.py",
+      "lineRange": [
+        815,
+        825
+      ],
+      "summary": "Asserts a stream error keeps one user bubble and that both resend and retry regenerate with an empty message.",
+      "tags": [
+        "test",
+        "error-handling",
+        "resend"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_guards.py:test_stub_failed_regenerate_keeps_the_previous_answer",
+      "type": "function",
+      "name": "test_stub_failed_regenerate_keeps_the_previous_answer",
+      "filePath": "tests/test_frontend_guards.py",
+      "lineRange": [
+        828,
+        831
+      ],
+      "summary": "Asserts a failed regenerate leaves the previous answer in place and sends regenerate with an empty message.",
+      "tags": [
+        "test",
+        "regenerate",
+        "error-handling"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_guards.py:test_stub_upload_failure_retry_resends_the_same_file",
+      "type": "function",
+      "name": "test_stub_upload_failure_retry_resends_the_same_file",
+      "filePath": "tests/test_frontend_guards.py",
+      "lineRange": [
+        834,
+        837
+      ],
+      "summary": "Asserts a failed upload can be retried with the same notes.rst file and that .exe and extensionless names are never posted.",
+      "tags": [
+        "test",
+        "uploads",
+        "error-handling"
+      ],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:_read",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:_read",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:test_entrypoints_exist",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:test_entrypoints_exist",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:test_view_files_do_not_call_backend",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:test_view_files_do_not_call_backend",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:test_no_inline_handlers_or_styles_in_markup",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:test_no_inline_handlers_or_styles_in_markup",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:test_no_new_external_origins",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:test_no_new_external_origins",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:test_app_js_ids_exist_in_index",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:test_app_js_ids_exist_in_index",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:test_sprite_references_resolve",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:test_sprite_references_resolve",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:test_no_hex_colors_outside_token_files",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:test_no_hex_colors_outside_token_files",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:test_reduced_motion_rule_present",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:test_reduced_motion_rule_present",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:test_no_right_sidebar_region",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:test_no_right_sidebar_region",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:test_buttons_have_accessible_name",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:test_buttons_have_accessible_name",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:test_index_ids_are_unique",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:test_index_ids_are_unique",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:test_ui_ids_exist_in_index_or_are_created_dynamically",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:test_ui_ids_exist_in_index_or_are_created_dynamically",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:test_model_select_never_uses_html_injection",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:test_model_select_never_uses_html_injection",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:test_session_list_interpolations_are_escaped",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:test_session_list_interpolations_are_escaped",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:test_file_accept_matches_controller_allow_list",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:test_file_accept_matches_controller_allow_list",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:test_welcome_cards_and_mode_dropdown_are_consistent",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:test_welcome_cards_and_mode_dropdown_are_consistent",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:test_no_unverifiable_marketing_claims",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:test_no_unverifiable_marketing_claims",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:test_shell_breakpoints_match_between_head_snippet_and_ui",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:test_shell_breakpoints_match_between_head_snippet_and_ui",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:test_sidebar_toggle_controls_existing_region",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:test_sidebar_toggle_controls_existing_region",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:test_sidebar_is_hidden_from_tab_order_when_closed_drawer",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:test_sidebar_is_hidden_from_tab_order_when_closed_drawer",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:test_coarse_pointer_targets_are_44px",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:test_coarse_pointer_targets_are_44px",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:test_model_select_keeps_native_select_as_source_of_truth",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:test_model_select_keeps_native_select_as_source_of_truth",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:_css_rules",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:_css_rules",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:test_feature_card_try_line_is_never_hidden",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:test_feature_card_try_line_is_never_hidden",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:test_feature_card_border_uses_control_token",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:test_feature_card_border_uses_control_token",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:_fn_body",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:_fn_body",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:test_sources_block_never_uses_html_injection",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:test_sources_block_never_uses_html_injection",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:test_every_blank_target_has_noopener_noreferrer",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:test_every_blank_target_has_noopener_noreferrer",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:test_chat_innerhtml_templates_interpolate_only_safe_values",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:test_chat_innerhtml_templates_interpolate_only_safe_values",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:test_renderer_and_chat_api_used_by_app_js_still_exists",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:test_renderer_and_chat_api_used_by_app_js_still_exists",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:test_ai_viz_is_css_only_and_decorative",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:test_ai_viz_is_css_only_and_decorative",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:test_ai_viz_reduced_motion_and_hidden_tab_rules",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:test_ai_viz_reduced_motion_and_hidden_tab_rules",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:test_no_interval_timers_or_raf_loops_in_frontend",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:test_no_interval_timers_or_raf_loops_in_frontend",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:test_streaming_does_not_announce_per_token",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:test_streaming_does_not_announce_per_token",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:test_stage3_ids_exist",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:test_stage3_ids_exist",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:test_sanitizer_policy_forbids_class_role_download_ping_in_utils",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:test_sanitizer_policy_forbids_class_role_download_ping_in_utils",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:test_citation_label_falls_back_to_source_n_and_is_used_everywhere",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:test_citation_label_falls_back_to_source_n_and_is_used_everywhere",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:test_citation_ids_resolved_once_for_stream_and_history_paths",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:test_citation_ids_resolved_once_for_stream_and_history_paths",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:test_coarse_pointer_citation_hit_area_rule_present_and_scoped",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:test_coarse_pointer_citation_hit_area_rule_present_and_scoped",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:cite_result",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:cite_result",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:_id_list",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:_id_list",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:test_browser_citation_ids_consistent_unique_and_input_not_mutated",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:test_browser_citation_ids_consistent_unique_and_input_not_mutated",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:test_browser_blank_citations_get_accessible_source_n_names",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:test_browser_blank_citations_get_accessible_source_n_names",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:test_browser_isolated_badge_reaches_44px_on_coarse_pointers",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:test_browser_isolated_badge_reaches_44px_on_coarse_pointers",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:test_browser_multi_citation_sentence_badges_reach_44px_wide",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:test_browser_multi_citation_sentence_badges_reach_44px_wide",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:_code",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:_code",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:_app_fn",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:_app_fn",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:test_app_js_has_no_native_confirm_inline_color_interval_or_emoji",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:test_app_js_has_no_native_confirm_inline_color_interval_or_emoji",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:test_welcome_card_handler_never_sends",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:test_welcome_card_handler_never_sends",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:test_allowed_extensions_include_rst_and_match_accept_and_backend",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:test_allowed_extensions_include_rst_and_match_accept_and_backend",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:test_request_payload_shapes_match_the_backend_contract",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:test_request_payload_shapes_match_the_backend_contract",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:test_regenerate_and_retry_send_the_head_shape",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:test_regenerate_and_retry_send_the_head_shape",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:test_composer_is_cleared_only_after_the_server_accepted",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:test_composer_is_cleared_only_after_the_server_accepted",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:test_no_new_timer_or_listener_patterns_in_controller",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:test_no_new_timer_or_listener_patterns_in_controller",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:stub_run",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:stub_run",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:test_stub_nothing_reached_a_server",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:test_stub_nothing_reached_a_server",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:test_stub_welcome_cards_never_submit_and_fill_the_composer",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:test_stub_welcome_cards_never_submit_and_fill_the_composer",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:test_stub_failures_before_accept_keep_the_draft_and_add_no_bubble",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:test_stub_failures_before_accept_keep_the_draft_and_add_no_bubble",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:test_stub_stream_error_restores_draft_and_never_duplicates_the_user_bubble",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:test_stub_stream_error_restores_draft_and_never_duplicates_the_user_bubble",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:test_stub_failed_regenerate_keeps_the_previous_answer",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:test_stub_failed_regenerate_keeps_the_previous_answer",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:test_stub_upload_failure_retry_resends_the_same_file",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_guards.py",
+      "target": "function:tests/test_frontend_guards.py:test_stub_upload_failure_retry_resends_the_same_file",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/index.html",
+      "target": "file:tests/test_frontend_guards.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:frontend/js/app.js",
+      "target": "file:tests/test_frontend_guards.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:frontend/js/api.js",
+      "target": "file:tests/test_frontend_guards.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:frontend/js/chat.js",
+      "target": "file:tests/test_frontend_guards.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "file:tests/test_frontend_guards.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:frontend/js/utils.js",
+      "target": "file:tests/test_frontend_guards.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:frontend/js/icons.js",
+      "target": "file:tests/test_frontend_guards.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:frontend/js/theme.js",
+      "target": "file:tests/test_frontend_guards.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:frontend/js/components/menu.js",
+      "target": "file:tests/test_frontend_guards.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:frontend/js/components/dialog.js",
+      "target": "file:tests/test_frontend_guards.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:frontend/js/components/model-select.js",
+      "target": "file:tests/test_frontend_guards.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:frontend/js/components/ai-viz.js",
+      "target": "file:tests/test_frontend_guards.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:frontend/js/components/workspaces.js",
+      "target": "file:tests/test_frontend_guards.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:frontend/css/main.css",
+      "target": "file:tests/test_frontend_guards.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:frontend/css/components.css",
+      "target": "file:tests/test_frontend_guards.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:frontend/css/animations.css",
+      "target": "file:tests/test_frontend_guards.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:frontend/css/ai-viz.css",
+      "target": "file:tests/test_frontend_guards.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:frontend/assets/LICENSE-lucide.txt",
+      "target": "file:tests/test_frontend_guards.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:backend/models/api.py",
+      "target": "file:tests/test_frontend_guards.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:backend/services/parser.py",
+      "target": "file:tests/test_frontend_guards.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    }
+  ]
+}

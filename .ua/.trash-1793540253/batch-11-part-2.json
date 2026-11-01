@@ -1,0 +1,3154 @@
+{
+  "nodes": [
+    {
+      "id": "document:docs/AI_ASSISTANT_PRO_MASTER_TASK.md",
+      "type": "document",
+      "name": "AI_ASSISTANT_PRO_MASTER_TASK.md",
+      "filePath": "docs/AI_ASSISTANT_PRO_MASTER_TASK.md",
+      "summary": "Implementation brief for turning AI Assistant Pro into a production frontend, in 18 phases covering inspection, the design system, layout, theme, animated identity, welcome and chat, composer, model selection, document, research, and code workspaces, accessibility, and verification.",
+      "tags": [
+        "documentation",
+        "design-system",
+        "frontend",
+        "product-spec"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:frontend/__init__.py",
+      "type": "file",
+      "name": "__init__.py",
+      "filePath": "frontend/__init__.py",
+      "summary": "Empty package marker so the frontend directory is importable as a Python package.",
+      "tags": [
+        "package-marker",
+        "frontend",
+        "python"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:frontend/assets/LICENSE-lucide.txt",
+      "type": "document",
+      "name": "LICENSE-lucide.txt",
+      "filePath": "frontend/assets/LICENSE-lucide.txt",
+      "summary": "ISC license for the Lucide icon set vendored as an inline SVG sprite in frontend/index.html (lucide-static v1.60.0, unmodified path data).",
+      "tags": [
+        "documentation",
+        "license",
+        "icons",
+        "third-party"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:frontend/index.html",
+      "type": "file",
+      "name": "index.html",
+      "filePath": "frontend/index.html",
+      "summary": "Single-page shell for AI Assistant Pro. An inline script sets theme, shell, and workspace before first paint, then the page loads the local stylesheets and classic scripts, with app.js last.",
+      "tags": [
+        "entry-point",
+        "markup",
+        "spa",
+        "chat-ui"
+      ],
+      "complexity": "complex",
+      "languageNotes": "The head script is an anonymous IIFE that mirrors js/theme.js and the shell rules in js/ui.js so the first paint does not flash."
+    },
+    {
+      "id": "file:frontend/js/api.js",
+      "type": "file",
+      "name": "api.js",
+      "filePath": "frontend/js/api.js",
+      "summary": "Browser HTTP client exposed as window.API. It wraps JSON REST calls for sessions, documents, GitHub, models, and health, and it opens the POST /chat/stream SSE channel plus artifact downloads.",
+      "tags": [
+        "api-client",
+        "http",
+        "sse",
+        "spa"
+      ],
+      "complexity": "complex",
+      "languageNotes": "Classic script IIFE, not an ES module. SSE frames are split on LF blank lines because the backend emits LF only."
+    },
+    {
+      "id": "file:frontend/js/app.js",
+      "type": "file",
+      "name": "app.js",
+      "filePath": "frontend/js/app.js",
+      "summary": "Browser entry and state owner. It boots the page, wires composer, session, upload, and GitHub controls, and drives the single POST /chat/stream round trip through window.API and window.Chat.",
+      "tags": [
+        "entry-point",
+        "spa",
+        "state",
+        "streaming"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:frontend/js/chat.js",
+      "type": "file",
+      "name": "chat.js",
+      "filePath": "frontend/js/chat.js",
+      "summary": "Chat view layer exposed as window.Chat. It builds user and assistant message DOM, streams Markdown, renders citations and file cards, and opens the artifact pane. It does not call fetch.",
+      "tags": [
+        "view",
+        "chat-ui",
+        "streaming",
+        "markdown"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:frontend/js/components/ai-viz.js",
+      "type": "file",
+      "name": "ai-viz.js",
+      "filePath": "frontend/js/components/ai-viz.js",
+      "summary": "Decorative AI status mark (window.AIViz) with idle, processing, responding, and error states. Motion is CSS-only; the module never fetches and holds no app state.",
+      "tags": [
+        "component",
+        "visualization",
+        "view",
+        "accessibility"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:frontend/js/components/code-preview.js",
+      "type": "file",
+      "name": "code-preview.js",
+      "filePath": "frontend/js/components/code-preview.js",
+      "summary": "Sandboxed iframe preview pane (window.CodePreview) for HTML and SVG in the Code workspace, including Run and Download actions and a resizable pane.",
+      "tags": [
+        "component",
+        "code-preview",
+        "sandbox",
+        "view"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:frontend/js/api.js:_errorMessage",
+      "type": "function",
+      "name": "_errorMessage",
+      "filePath": "frontend/js/api.js",
+      "lineRange": [
+        10,
+        19
+      ],
+      "summary": "Reads a non-OK response body and prefers a FastAPI detail string, the first validation message, or data.message, otherwise the HTTP status.",
+      "tags": [
+        "error-handling",
+        "http",
+        "api-client"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/api.js:request",
+      "type": "function",
+      "name": "request",
+      "filePath": "frontend/js/api.js",
+      "lineRange": [
+        30,
+        45
+      ],
+      "summary": "Shared JSON fetch: sets Accept and Content-Type (except FormData), throws on non-2xx, and returns parsed JSON or null for 204.",
+      "tags": [
+        "http",
+        "api-client",
+        "json"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/api.js:listSessions",
+      "type": "function",
+      "name": "listSessions",
+      "filePath": "frontend/js/api.js",
+      "lineRange": [
+        49,
+        51
+      ],
+      "summary": "GET /sessions for a user id and returns the session list JSON.",
+      "tags": [
+        "api-client",
+        "http",
+        "sessions"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/api.js:createSession",
+      "type": "function",
+      "name": "createSession",
+      "filePath": "frontend/js/api.js",
+      "lineRange": [
+        53,
+        55
+      ],
+      "summary": "POST /sessions with a JSON body to create a chat session, forwarding an optional abort signal.",
+      "tags": [
+        "api-client",
+        "http",
+        "sessions"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/api.js:getSession",
+      "type": "function",
+      "name": "getSession",
+      "filePath": "frontend/js/api.js",
+      "lineRange": [
+        57,
+        59
+      ],
+      "summary": "GET /sessions/{sessionId} and returns that session's JSON.",
+      "tags": [
+        "api-client",
+        "http",
+        "sessions"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/api.js:updateSession",
+      "type": "function",
+      "name": "updateSession",
+      "filePath": "frontend/js/api.js",
+      "lineRange": [
+        61,
+        63
+      ],
+      "summary": "PATCH /sessions/{sessionId} with a JSON body to update title, model, or other session fields.",
+      "tags": [
+        "api-client",
+        "http",
+        "sessions"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/api.js:deleteSession",
+      "type": "function",
+      "name": "deleteSession",
+      "filePath": "frontend/js/api.js",
+      "lineRange": [
+        65,
+        67
+      ],
+      "summary": "DELETE /sessions/{sessionId} to remove a chat session.",
+      "tags": [
+        "api-client",
+        "http",
+        "sessions"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/api.js:setFeedback",
+      "type": "function",
+      "name": "setFeedback",
+      "filePath": "frontend/js/api.js",
+      "lineRange": [
+        69,
+        74
+      ],
+      "summary": "POST /messages/{messageId}/feedback with a JSON value for thumbs feedback on an answer.",
+      "tags": [
+        "api-client",
+        "http",
+        "feedback"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/api.js:listDocuments",
+      "type": "function",
+      "name": "listDocuments",
+      "filePath": "frontend/js/api.js",
+      "lineRange": [
+        78,
+        80
+      ],
+      "summary": "GET /documents for a user id and returns the uploaded document list.",
+      "tags": [
+        "api-client",
+        "http",
+        "documents"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/api.js:uploadFile",
+      "type": "function",
+      "name": "uploadFile",
+      "filePath": "frontend/js/api.js",
+      "lineRange": [
+        82,
+        86
+      ],
+      "summary": "POST /upload as multipart FormData for one file, scoped by user id.",
+      "tags": [
+        "api-client",
+        "http",
+        "upload"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/api.js:uploadUrl",
+      "type": "function",
+      "name": "uploadUrl",
+      "filePath": "frontend/js/api.js",
+      "lineRange": [
+        88,
+        92
+      ],
+      "summary": "POST /upload with a url query parameter so the backend ingests a remote page.",
+      "tags": [
+        "api-client",
+        "http",
+        "upload"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/api.js:deleteDocument",
+      "type": "function",
+      "name": "deleteDocument",
+      "filePath": "frontend/js/api.js",
+      "lineRange": [
+        94,
+        96
+      ],
+      "summary": "DELETE /documents/{docId} for a user id to remove one ingested document.",
+      "tags": [
+        "api-client",
+        "http",
+        "documents"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/api.js:listGithubRepos",
+      "type": "function",
+      "name": "listGithubRepos",
+      "filePath": "frontend/js/api.js",
+      "lineRange": [
+        98,
+        100
+      ],
+      "summary": "GET /github/repos for a user id and returns connected repositories.",
+      "tags": [
+        "api-client",
+        "http",
+        "github"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/api.js:connectGithub",
+      "type": "function",
+      "name": "connectGithub",
+      "filePath": "frontend/js/api.js",
+      "lineRange": [
+        102,
+        106
+      ],
+      "summary": "POST /github/connect with a repository URL, optional token, and user id.",
+      "tags": [
+        "api-client",
+        "http",
+        "github"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/api.js:deleteGithubRepo",
+      "type": "function",
+      "name": "deleteGithubRepo",
+      "filePath": "frontend/js/api.js",
+      "lineRange": [
+        108,
+        112
+      ],
+      "summary": "DELETE /github/repos/{repoId} for a user id to disconnect a repository.",
+      "tags": [
+        "api-client",
+        "http",
+        "github"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/api.js:startGithubDevice",
+      "type": "function",
+      "name": "startGithubDevice",
+      "filePath": "frontend/js/api.js",
+      "lineRange": [
+        114,
+        116
+      ],
+      "summary": "POST /github/oauth/device to begin a GitHub device-code login.",
+      "tags": [
+        "api-client",
+        "http",
+        "oauth"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/api.js:pollGithubDevice",
+      "type": "function",
+      "name": "pollGithubDevice",
+      "filePath": "frontend/js/api.js",
+      "lineRange": [
+        118,
+        123
+      ],
+      "summary": "POST /github/oauth/poll with the device code and user id until the login completes.",
+      "tags": [
+        "api-client",
+        "http",
+        "oauth"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/api.js:getHealth",
+      "type": "function",
+      "name": "getHealth",
+      "filePath": "frontend/js/api.js",
+      "lineRange": [
+        128,
+        130
+      ],
+      "summary": "GET /health and returns read-only service status for the database, providers, and embeddings.",
+      "tags": [
+        "api-client",
+        "http",
+        "health"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/api.js:getConfig",
+      "type": "function",
+      "name": "getConfig",
+      "filePath": "frontend/js/api.js",
+      "lineRange": [
+        133,
+        135
+      ],
+      "summary": "GET /config and returns advertised upload limits (max size and extensions).",
+      "tags": [
+        "api-client",
+        "http",
+        "configuration"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/api.js:getModels",
+      "type": "function",
+      "name": "getModels",
+      "filePath": "frontend/js/api.js",
+      "lineRange": [
+        137,
+        139
+      ],
+      "summary": "GET /models and returns the model catalog the composer can offer.",
+      "tags": [
+        "api-client",
+        "http",
+        "models"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/api.js:chatStream",
+      "type": "function",
+      "name": "chatStream",
+      "filePath": "frontend/js/api.js",
+      "lineRange": [
+        149,
+        194
+      ],
+      "summary": "POST /chat/stream and reads the SSE body, dispatching meta, status, citations, model, token, artifact, error, and done events until the stream ends.",
+      "tags": [
+        "api-client",
+        "sse",
+        "streaming",
+        "chat"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:frontend/js/api.js:dispatch",
+      "type": "function",
+      "name": "dispatch",
+      "filePath": "frontend/js/api.js",
+      "lineRange": [
+        164,
+        181
+      ],
+      "summary": "Parses one LF-delimited SSE block into an event name and JSON data, then invokes the matching own-property handler.",
+      "tags": [
+        "sse",
+        "parser",
+        "streaming"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/api.js:downloadArtifact",
+      "type": "function",
+      "name": "downloadArtifact",
+      "filePath": "frontend/js/api.js",
+      "lineRange": [
+        207,
+        221
+      ],
+      "summary": "GET /messages/{messageId}/download and starts a browser download using the Content-Disposition filename.",
+      "tags": [
+        "api-client",
+        "http",
+        "download"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/app.js:init",
+      "type": "function",
+      "name": "init",
+      "filePath": "frontend/js/app.js",
+      "lineRange": [
+        36,
+        57
+      ],
+      "summary": "Boots theme, mode, and user id, loads models, sessions, documents, and config in parallel, then binds artifact download and DOM events.",
+      "tags": [
+        "entry-point",
+        "bootstrap",
+        "state"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:frontend/js/app.js:_loadModels",
+      "type": "function",
+      "name": "_loadModels",
+      "filePath": "frontend/js/app.js",
+      "lineRange": [
+        68,
+        91
+      ],
+      "summary": "GET /models via API.getModels, keeps usable ids, persists the selection, and asks the UI to render the model select.",
+      "tags": [
+        "models",
+        "state",
+        "bootstrap"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:frontend/js/app.js:_bindEvents",
+      "type": "function",
+      "name": "_bindEvents",
+      "filePath": "frontend/js/app.js",
+      "lineRange": [
+        94,
+        196
+      ],
+      "summary": "Wires send, stop, composer keys, mode and model changes, new chat, sidebar, file and URL upload, and the GitHub connect controls.",
+      "tags": [
+        "event-handler",
+        "composer",
+        "wiring"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:frontend/js/app.js:_startCooldown",
+      "type": "function",
+      "name": "_startCooldown",
+      "filePath": "frontend/js/app.js",
+      "lineRange": [
+        231,
+        242
+      ],
+      "summary": "Starts a send cooldown from a Retry-After duration and announces when the user can send again.",
+      "tags": [
+        "rate-limit",
+        "composer",
+        "state"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/app.js:_requestErrorMessage",
+      "type": "function",
+      "name": "_requestErrorMessage",
+      "filePath": "frontend/js/app.js",
+      "lineRange": [
+        263,
+        272
+      ],
+      "summary": "Turns a failed request error into the toast text shown for a send that never started.",
+      "tags": [
+        "error-handling",
+        "composer",
+        "http"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/app.js:_onSend",
+      "type": "function",
+      "name": "_onSend",
+      "filePath": "frontend/js/app.js",
+      "lineRange": [
+        282,
+        559
+      ],
+      "summary": "Runs one chat turn: ensures a session, POSTs /chat/stream through API.chatStream, and maps SSE events onto the Chat renderer until done, stop, or error.",
+      "tags": [
+        "streaming",
+        "chat",
+        "orchestrator",
+        "sse"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:frontend/js/app.js:_retryAfterError",
+      "type": "function",
+      "name": "_retryAfterError",
+      "filePath": "frontend/js/app.js",
+      "lineRange": [
+        570,
+        585
+      ],
+      "summary": "Retries the last failed send after the server cooldown, using the regenerate path when the user turn was already stored.",
+      "tags": [
+        "error-handling",
+        "streaming",
+        "retry"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/app.js:_ensureSession",
+      "type": "function",
+      "name": "_ensureSession",
+      "filePath": "frontend/js/app.js",
+      "lineRange": [
+        593,
+        603
+      ],
+      "summary": "Creates a session with API.createSession when the composer has no session id yet, and stores the returned id.",
+      "tags": [
+        "sessions",
+        "state",
+        "http"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/app.js:_newChat",
+      "type": "function",
+      "name": "_newChat",
+      "filePath": "frontend/js/app.js",
+      "lineRange": [
+        605,
+        618
+      ],
+      "summary": "Clears the current transcript and session id so the next send starts a new conversation.",
+      "tags": [
+        "sessions",
+        "chat",
+        "state"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/app.js:_selectSession",
+      "type": "function",
+      "name": "_selectSession",
+      "filePath": "frontend/js/app.js",
+      "lineRange": [
+        620,
+        639
+      ],
+      "summary": "Loads one session with API.getSession and renders its history in the transcript.",
+      "tags": [
+        "sessions",
+        "history",
+        "http"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:frontend/js/app.js:_deleteSession",
+      "type": "function",
+      "name": "_deleteSession",
+      "filePath": "frontend/js/app.js",
+      "lineRange": [
+        641,
+        662
+      ],
+      "summary": "Confirms and DELETE /sessions via API.deleteSession, then refreshes the sidebar list.",
+      "tags": [
+        "sessions",
+        "http",
+        "state"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:frontend/js/app.js:_renameSession",
+      "type": "function",
+      "name": "_renameSession",
+      "filePath": "frontend/js/app.js",
+      "lineRange": [
+        665,
+        680
+      ],
+      "summary": "PATCH /sessions with a new title via API.updateSession and refreshes the session row.",
+      "tags": [
+        "sessions",
+        "http",
+        "state"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/app.js:_loadSessions",
+      "type": "function",
+      "name": "_loadSessions",
+      "filePath": "frontend/js/app.js",
+      "lineRange": [
+        692,
+        704
+      ],
+      "summary": "GET /sessions via API.listSessions and stores the sidebar list, marking sessions as loaded.",
+      "tags": [
+        "sessions",
+        "http",
+        "bootstrap"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/app.js:_loadConfig",
+      "type": "function",
+      "name": "_loadConfig",
+      "filePath": "frontend/js/app.js",
+      "lineRange": [
+        716,
+        731
+      ],
+      "summary": "GET /config via API.getConfig and stores the upload size and extension limits used by the composer.",
+      "tags": [
+        "configuration",
+        "upload",
+        "http"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/app.js:_handleFiles",
+      "type": "function",
+      "name": "_handleFiles",
+      "filePath": "frontend/js/app.js",
+      "lineRange": [
+        734,
+        747
+      ],
+      "summary": "Accepts the file input selection and starts an upload for each chosen file.",
+      "tags": [
+        "upload",
+        "files",
+        "event-handler"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/app.js:_handleFileUpload",
+      "type": "function",
+      "name": "_handleFileUpload",
+      "filePath": "frontend/js/app.js",
+      "lineRange": [
+        750,
+        782
+      ],
+      "summary": "Builds an upload job that POSTs one file through API.uploadFile and runs it with the shared upload helper.",
+      "tags": [
+        "upload",
+        "files",
+        "http"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:frontend/js/app.js:_onUrlSubmit",
+      "type": "function",
+      "name": "_onUrlSubmit",
+      "filePath": "frontend/js/app.js",
+      "lineRange": [
+        784,
+        800
+      ],
+      "summary": "Reads the URL modal and POSTs the address through API.uploadUrl as an ingest job.",
+      "tags": [
+        "upload",
+        "url",
+        "http"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/app.js:_runUpload",
+      "type": "function",
+      "name": "_runUpload",
+      "filePath": "frontend/js/app.js",
+      "lineRange": [
+        802,
+        828
+      ],
+      "summary": "Runs one upload job, shows progress and success or the server error, then reloads the document list.",
+      "tags": [
+        "upload",
+        "error-handling",
+        "documents"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:frontend/js/app.js:_deleteDocument",
+      "type": "function",
+      "name": "_deleteDocument",
+      "filePath": "frontend/js/app.js",
+      "lineRange": [
+        830,
+        846
+      ],
+      "summary": "Confirms and DELETE /documents via API.deleteDocument for a single row, then reloads the list.",
+      "tags": [
+        "documents",
+        "http",
+        "delete"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/app.js:_deleteSelectedDocuments",
+      "type": "function",
+      "name": "_deleteSelectedDocuments",
+      "filePath": "frontend/js/app.js",
+      "lineRange": [
+        848,
+        868
+      ],
+      "summary": "Deletes every selected document id with API.deleteDocument and then reloads the list.",
+      "tags": [
+        "documents",
+        "http",
+        "delete"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:frontend/js/app.js:_loadDocuments",
+      "type": "function",
+      "name": "_loadDocuments",
+      "filePath": "frontend/js/app.js",
+      "lineRange": [
+        870,
+        883
+      ],
+      "summary": "GET /documents via API.listDocuments and stores the rows the document view renders.",
+      "tags": [
+        "documents",
+        "http",
+        "bootstrap"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/app.js:_disconnectGithub",
+      "type": "function",
+      "name": "_disconnectGithub",
+      "filePath": "frontend/js/app.js",
+      "lineRange": [
+        904,
+        914
+      ],
+      "summary": "DELETE /github/repos via API.deleteGithubRepo and refreshes the connected-repo list.",
+      "tags": [
+        "github",
+        "http",
+        "delete"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/app.js:_onGithubSubmit",
+      "type": "function",
+      "name": "_onGithubSubmit",
+      "filePath": "frontend/js/app.js",
+      "lineRange": [
+        916,
+        938
+      ],
+      "summary": "POSTs a repository URL and optional token through API.connectGithub, then reloads connected repos.",
+      "tags": [
+        "github",
+        "http",
+        "connect"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:frontend/js/app.js:_onGithubOauth",
+      "type": "function",
+      "name": "_onGithubOauth",
+      "filePath": "frontend/js/app.js",
+      "lineRange": [
+        948,
+        985
+      ],
+      "summary": "Starts GitHub device login with API.startGithubDevice and polls API.pollGithubDevice until it completes or fails.",
+      "tags": [
+        "github",
+        "oauth",
+        "http"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:frontend/js/app.js:_setLoading",
+      "type": "function",
+      "name": "_setLoading",
+      "filePath": "frontend/js/app.js",
+      "lineRange": [
+        990,
+        1002
+      ],
+      "summary": "Toggles the send and stop buttons and keeps focus on the composer while a stream is in flight.",
+      "tags": [
+        "composer",
+        "ui-state",
+        "streaming"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/chat.js:_bindScroll",
+      "type": "function",
+      "name": "_bindScroll",
+      "filePath": "frontend/js/chat.js",
+      "lineRange": [
+        46,
+        63
+      ],
+      "summary": "Tracks whether the reader is near the bottom of the transcript so streaming auto-scroll can stick or release.",
+      "tags": [
+        "scroll",
+        "chat-ui",
+        "streaming"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/chat.js:_buildAssistant",
+      "type": "function",
+      "name": "_buildAssistant",
+      "filePath": "frontend/js/chat.js",
+      "lineRange": [
+        98,
+        139
+      ],
+      "summary": "Builds the assistant message shell: avatar, activity steps, Markdown body, sources, and action row.",
+      "tags": [
+        "dom",
+        "chat-ui",
+        "message"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:frontend/js/chat.js:_setNote",
+      "type": "function",
+      "name": "_setNote",
+      "filePath": "frontend/js/chat.js",
+      "lineRange": [
+        166,
+        178
+      ],
+      "summary": "Writes a status note on an assistant message, used for interruptions, partial answers, and artifact errors.",
+      "tags": [
+        "chat-ui",
+        "status",
+        "dom"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/chat.js:appendUserMessage",
+      "type": "function",
+      "name": "appendUserMessage",
+      "filePath": "frontend/js/chat.js",
+      "lineRange": [
+        187,
+        194
+      ],
+      "summary": "Appends a user bubble to the transcript, hides the welcome screen, and scrolls to the new message.",
+      "tags": [
+        "chat-ui",
+        "message",
+        "dom"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/chat.js:startAssistantMessage",
+      "type": "function",
+      "name": "startAssistantMessage",
+      "filePath": "frontend/js/chat.js",
+      "lineRange": [
+        202,
+        440
+      ],
+      "summary": "Starts a live assistant message and returns the controller for thoughts, tokens, citations, badges, errors, and artifact cards.",
+      "tags": [
+        "streaming",
+        "chat-ui",
+        "sse",
+        "markdown"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:frontend/js/chat.js:copyMessage",
+      "type": "function",
+      "name": "copyMessage",
+      "filePath": "frontend/js/chat.js",
+      "lineRange": [
+        443,
+        452
+      ],
+      "summary": "Copies the stored Markdown for a message to the clipboard and flashes the copy control.",
+      "tags": [
+        "clipboard",
+        "markdown",
+        "chat-ui"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/chat.js:_resolveCitations",
+      "type": "function",
+      "name": "_resolveCitations",
+      "filePath": "frontend/js/chat.js",
+      "lineRange": [
+        460,
+        479
+      ],
+      "summary": "Normalizes citation records from a stream or history payload into the shape the badges and source list use.",
+      "tags": [
+        "citations",
+        "normalization",
+        "chat-ui"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:frontend/js/chat.js:getCitation",
+      "type": "function",
+      "name": "getCitation",
+      "filePath": "frontend/js/chat.js",
+      "lineRange": [
+        495,
+        497
+      ],
+      "summary": "Looks up one citation object by message id and citation number.",
+      "tags": [
+        "citations",
+        "lookup",
+        "chat-ui"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/chat.js:showThinking",
+      "type": "function",
+      "name": "showThinking",
+      "filePath": "frontend/js/chat.js",
+      "lineRange": [
+        500,
+        518
+      ],
+      "summary": "Inserts a temporary Thinking placeholder with a processing AIViz mark until the live assistant message replaces it.",
+      "tags": [
+        "chat-ui",
+        "loading",
+        "placeholder"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/chat.js:removeThinking",
+      "type": "function",
+      "name": "removeThinking",
+      "filePath": "frontend/js/chat.js",
+      "lineRange": [
+        520,
+        523
+      ],
+      "summary": "Removes the Thinking placeholder element if it is still in the transcript.",
+      "tags": [
+        "chat-ui",
+        "loading",
+        "dom"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/chat.js:renderHistory",
+      "type": "function",
+      "name": "renderHistory",
+      "filePath": "frontend/js/chat.js",
+      "lineRange": [
+        532,
+        567
+      ],
+      "summary": "Rebuilds the transcript from stored messages, highlights code once, and binds citation badges.",
+      "tags": [
+        "history",
+        "chat-ui",
+        "markdown"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:frontend/js/chat.js:_historyAssistant",
+      "type": "function",
+      "name": "_historyAssistant",
+      "filePath": "frontend/js/chat.js",
+      "lineRange": [
+        569,
+        600
+      ],
+      "summary": "Renders one stored assistant message, including its Markdown, citations, and action row.",
+      "tags": [
+        "history",
+        "chat-ui",
+        "message"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:frontend/js/chat.js:clearChat",
+      "type": "function",
+      "name": "clearChat",
+      "filePath": "frontend/js/chat.js",
+      "lineRange": [
+        602,
+        608
+      ],
+      "summary": "Empties the transcript and shows the welcome screen again.",
+      "tags": [
+        "chat-ui",
+        "state",
+        "dom"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/chat.js:_badgesHtml",
+      "type": "function",
+      "name": "_badgesHtml",
+      "filePath": "frontend/js/chat.js",
+      "lineRange": [
+        612,
+        623
+      ],
+      "summary": "Builds the model, cache, and fallback badges shown on an assistant message.",
+      "tags": [
+        "badges",
+        "chat-ui",
+        "models"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/chat.js:_bindCitationBadges",
+      "type": "function",
+      "name": "_bindCitationBadges",
+      "filePath": "frontend/js/chat.js",
+      "lineRange": [
+        629,
+        649
+      ],
+      "summary": "Makes inline citation markers open the matching source details.",
+      "tags": [
+        "citations",
+        "event-handler",
+        "chat-ui"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:frontend/js/chat.js:_fillSources",
+      "type": "function",
+      "name": "_fillSources",
+      "filePath": "frontend/js/chat.js",
+      "lineRange": [
+        656,
+        726
+      ],
+      "summary": "Renders the source list under an answer from the resolved citation records.",
+      "tags": [
+        "citations",
+        "sources",
+        "chat-ui"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:frontend/js/chat.js:_flashCopy",
+      "type": "function",
+      "name": "_flashCopy",
+      "filePath": "frontend/js/chat.js",
+      "lineRange": [
+        729,
+        738
+      ],
+      "summary": "Temporarily changes a copy button label to show that the clipboard write succeeded or failed.",
+      "tags": [
+        "clipboard",
+        "feedback",
+        "chat-ui"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/chat.js:_renderActionButtons",
+      "type": "function",
+      "name": "_renderActionButtons",
+      "filePath": "frontend/js/chat.js",
+      "lineRange": [
+        741,
+        785
+      ],
+      "summary": "Builds copy, feedback, and regenerate controls for an assistant message and wires their callbacks.",
+      "tags": [
+        "chat-ui",
+        "feedback",
+        "actions"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:frontend/js/chat.js:holdLastAnswer",
+      "type": "function",
+      "name": "holdLastAnswer",
+      "filePath": "frontend/js/chat.js",
+      "lineRange": [
+        814,
+        824
+      ],
+      "summary": "Keeps the previous assistant answer on screen while a regenerate request is still being accepted.",
+      "tags": [
+        "streaming",
+        "regenerate",
+        "chat-ui"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/chat.js:fileKeywordFormat",
+      "type": "function",
+      "name": "fileKeywordFormat",
+      "filePath": "frontend/js/chat.js",
+      "lineRange": [
+        841,
+        851
+      ],
+      "summary": "Detects a requested download format from phrases in the user text, used before a file card is shown.",
+      "tags": [
+        "artifacts",
+        "format",
+        "parsing"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/chat.js:prepareFilePreview",
+      "type": "function",
+      "name": "prepareFilePreview",
+      "filePath": "frontend/js/chat.js",
+      "lineRange": [
+        853,
+        861
+      ],
+      "summary": "Prepares the transcript for a file preview when the user message asks for a generated document.",
+      "tags": [
+        "artifacts",
+        "preview",
+        "chat-ui"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/chat.js:_mountFileCard",
+      "type": "function",
+      "name": "_mountFileCard",
+      "filePath": "frontend/js/chat.js",
+      "lineRange": [
+        875,
+        910
+      ],
+      "summary": "Inserts the file card for an artifact, including open and save actions, into the message slot.",
+      "tags": [
+        "artifacts",
+        "file-card",
+        "dom"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:frontend/js/chat.js:_syncArtifactLayer",
+      "type": "function",
+      "name": "_syncArtifactLayer",
+      "filePath": "frontend/js/chat.js",
+      "lineRange": [
+        932,
+        943
+      ],
+      "summary": "Updates the artifact pane's dialog versus side-panel layer to match the viewport.",
+      "tags": [
+        "artifacts",
+        "layout",
+        "dialog"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/chat.js:_paintArtifactPreview",
+      "type": "function",
+      "name": "_paintArtifactPreview",
+      "filePath": "frontend/js/chat.js",
+      "lineRange": [
+        945,
+        954
+      ],
+      "summary": "Fills the artifact pane body from the document payload and runs syntax highlighting.",
+      "tags": [
+        "artifacts",
+        "preview",
+        "markdown"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/chat.js:openArtifact",
+      "type": "function",
+      "name": "openArtifact",
+      "filePath": "frontend/js/chat.js",
+      "lineRange": [
+        956,
+        979
+      ],
+      "summary": "Opens the artifact pane for a generated document, closing the code preview so only one pane is open.",
+      "tags": [
+        "artifacts",
+        "preview",
+        "pane"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:frontend/js/chat.js:closeArtifact",
+      "type": "function",
+      "name": "closeArtifact",
+      "filePath": "frontend/js/chat.js",
+      "lineRange": [
+        981,
+        997
+      ],
+      "summary": "Closes the artifact pane, restores inertness, and returns focus to the control that opened it.",
+      "tags": [
+        "artifacts",
+        "pane",
+        "focus"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/chat.js:_onArtifactKey",
+      "type": "function",
+      "name": "_onArtifactKey",
+      "filePath": "frontend/js/chat.js",
+      "lineRange": [
+        999,
+        1022
+      ],
+      "summary": "Handles keyboard input while the artifact pane is open, including Escape to close.",
+      "tags": [
+        "artifacts",
+        "keyboard",
+        "accessibility"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:frontend/js/chat.js:_applyArtifactWidth",
+      "type": "function",
+      "name": "_applyArtifactWidth",
+      "filePath": "frontend/js/chat.js",
+      "lineRange": [
+        1045,
+        1059
+      ],
+      "summary": "Applies a resized width to the artifact pane and optionally stores it for the next visit.",
+      "tags": [
+        "artifacts",
+        "resize",
+        "layout"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/chat.js:_resetArtifactWidth",
+      "type": "function",
+      "name": "_resetArtifactWidth",
+      "filePath": "frontend/js/chat.js",
+      "lineRange": [
+        1061,
+        1070
+      ],
+      "summary": "Clears the stored artifact pane width and returns the pane to its default size.",
+      "tags": [
+        "artifacts",
+        "resize",
+        "layout"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/chat.js:_wireArtifactResize",
+      "type": "function",
+      "name": "_wireArtifactResize",
+      "filePath": "frontend/js/chat.js",
+      "lineRange": [
+        1079,
+        1111
+      ],
+      "summary": "Drags the artifact pane handle and clamps the width while the pointer is down.",
+      "tags": [
+        "artifacts",
+        "resize",
+        "pointer"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:frontend/js/chat.js:_wireArtifactPane",
+      "type": "function",
+      "name": "_wireArtifactPane",
+      "filePath": "frontend/js/chat.js",
+      "lineRange": [
+        1113,
+        1132
+      ],
+      "summary": "Binds the artifact pane's close, format, download, and resize controls once.",
+      "tags": [
+        "artifacts",
+        "event-handler",
+        "pane"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:frontend/js/chat.js:bindArtifact",
+      "type": "function",
+      "name": "bindArtifact",
+      "filePath": "frontend/js/chat.js",
+      "lineRange": [
+        1135,
+        1138
+      ],
+      "summary": "Stores the download callback from app.js and wires the artifact pane controls.",
+      "tags": [
+        "artifacts",
+        "wiring",
+        "callback"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/components/ai-viz.js:_hero",
+      "type": "function",
+      "name": "_hero",
+      "filePath": "frontend/js/components/ai-viz.js",
+      "lineRange": [
+        33,
+        64
+      ],
+      "summary": "Builds the large welcome-orb markup, a div scene rather than the small SVG mark.",
+      "tags": [
+        "visualization",
+        "dom",
+        "welcome"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:frontend/js/components/ai-viz.js:create",
+      "type": "function",
+      "name": "create",
+      "filePath": "frontend/js/components/ai-viz.js",
+      "lineRange": [
+        67,
+        77
+      ],
+      "summary": "Builds an AIViz node for a size and state: the hero scene, or an SVG mark with the static path markup.",
+      "tags": [
+        "visualization",
+        "factory",
+        "svg"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/components/ai-viz.js:setState",
+      "type": "function",
+      "name": "setState",
+      "filePath": "frontend/js/components/ai-viz.js",
+      "lineRange": [
+        86,
+        91
+      ],
+      "summary": "Sets data-state on an AIViz node or a container that holds one, ignoring unknown state names.",
+      "tags": [
+        "visualization",
+        "state",
+        "dom"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/components/ai-viz.js:getState",
+      "type": "function",
+      "name": "getState",
+      "filePath": "frontend/js/components/ai-viz.js",
+      "lineRange": [
+        93,
+        96
+      ],
+      "summary": "Reads the current data-state from an AIViz node or from a container that holds one.",
+      "tags": [
+        "visualization",
+        "state",
+        "dom"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/components/ai-viz.js:mount",
+      "type": "function",
+      "name": "mount",
+      "filePath": "frontend/js/components/ai-viz.js",
+      "lineRange": [
+        99,
+        105
+      ],
+      "summary": "Replaces a container's children with a new AIViz instance and returns that node.",
+      "tags": [
+        "visualization",
+        "dom",
+        "mount"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/components/code-preview.js:decorate",
+      "type": "function",
+      "name": "decorate",
+      "filePath": "frontend/js/components/code-preview.js",
+      "lineRange": [
+        42,
+        51
+      ],
+      "summary": "Adds Run and Download controls to a highlighted code block after Utils.highlightCode wraps it.",
+      "tags": [
+        "code-preview",
+        "dom",
+        "code-block"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/components/code-preview.js:_addButtons",
+      "type": "function",
+      "name": "_addButtons",
+      "filePath": "frontend/js/components/code-preview.js",
+      "lineRange": [
+        53,
+        86
+      ],
+      "summary": "Creates the Run and Download buttons for one code block and wires their click handlers.",
+      "tags": [
+        "code-preview",
+        "dom",
+        "event-handler"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:frontend/js/components/code-preview.js:_downloadBlob",
+      "type": "function",
+      "name": "_downloadBlob",
+      "filePath": "frontend/js/components/code-preview.js",
+      "lineRange": [
+        88,
+        98
+      ],
+      "summary": "Starts a browser download of the code block source as a text file.",
+      "tags": [
+        "download",
+        "code-preview",
+        "blob"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/components/code-preview.js:sync",
+      "type": "function",
+      "name": "sync",
+      "filePath": "frontend/js/components/code-preview.js",
+      "lineRange": [
+        108,
+        110
+      ],
+      "summary": "Closes the preview pane when the workspace leaves Code. Called from UI.setActiveMode.",
+      "tags": [
+        "code-preview",
+        "workspace",
+        "pane"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/components/code-preview.js:_syncLayer",
+      "type": "function",
+      "name": "_syncLayer",
+      "filePath": "frontend/js/components/code-preview.js",
+      "lineRange": [
+        114,
+        124
+      ],
+      "summary": "Switches the open preview pane between a modal dialog on a narrow viewport and a side pane.",
+      "tags": [
+        "code-preview",
+        "layout",
+        "dialog"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/components/code-preview.js:_applyW",
+      "type": "function",
+      "name": "_applyW",
+      "filePath": "frontend/js/components/code-preview.js",
+      "lineRange": [
+        134,
+        146
+      ],
+      "summary": "Applies a width to the code preview pane and can persist it for the next open.",
+      "tags": [
+        "code-preview",
+        "resize",
+        "layout"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/components/code-preview.js:_resetW",
+      "type": "function",
+      "name": "_resetW",
+      "filePath": "frontend/js/components/code-preview.js",
+      "lineRange": [
+        148,
+        157
+      ],
+      "summary": "Clears the stored preview width and restores the pane's default size.",
+      "tags": [
+        "code-preview",
+        "resize",
+        "layout"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/components/code-preview.js:_wireResize",
+      "type": "function",
+      "name": "_wireResize",
+      "filePath": "frontend/js/components/code-preview.js",
+      "lineRange": [
+        166,
+        198
+      ],
+      "summary": "Drags the preview pane resize handle and clamps the width to the viewport.",
+      "tags": [
+        "code-preview",
+        "resize",
+        "pointer"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:frontend/js/components/code-preview.js:_wirePane",
+      "type": "function",
+      "name": "_wirePane",
+      "filePath": "frontend/js/components/code-preview.js",
+      "lineRange": [
+        202,
+        217
+      ],
+      "summary": "Binds close, scrim, and resize controls on the code preview pane once.",
+      "tags": [
+        "code-preview",
+        "event-handler",
+        "pane"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/components/code-preview.js:_launch",
+      "type": "function",
+      "name": "_launch",
+      "filePath": "frontend/js/components/code-preview.js",
+      "lineRange": [
+        221,
+        253
+      ],
+      "summary": "Opens the sandboxed iframe preview for HTML or SVG source. Exposed as CodePreview.open.",
+      "tags": [
+        "code-preview",
+        "sandbox",
+        "iframe"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:frontend/js/components/code-preview.js:close",
+      "type": "function",
+      "name": "close",
+      "filePath": "frontend/js/components/code-preview.js",
+      "lineRange": [
+        257,
+        280
+      ],
+      "summary": "Closes the preview pane, drops the iframe srcdoc so scripts stop, and returns focus to the opener.",
+      "tags": [
+        "code-preview",
+        "pane",
+        "focus"
+      ],
+      "complexity": "moderate"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:frontend/js/api.js",
+      "target": "function:frontend/js/api.js:_errorMessage",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/api.js",
+      "target": "function:frontend/js/api.js:request",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/api.js",
+      "target": "function:frontend/js/api.js:listSessions",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/api.js",
+      "target": "function:frontend/js/api.js:listSessions",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/api.js",
+      "target": "function:frontend/js/api.js:createSession",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/api.js",
+      "target": "function:frontend/js/api.js:createSession",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/api.js",
+      "target": "function:frontend/js/api.js:getSession",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/api.js",
+      "target": "function:frontend/js/api.js:getSession",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/api.js",
+      "target": "function:frontend/js/api.js:updateSession",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/api.js",
+      "target": "function:frontend/js/api.js:updateSession",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/api.js",
+      "target": "function:frontend/js/api.js:deleteSession",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/api.js",
+      "target": "function:frontend/js/api.js:deleteSession",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/api.js",
+      "target": "function:frontend/js/api.js:setFeedback",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/api.js",
+      "target": "function:frontend/js/api.js:setFeedback",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/api.js",
+      "target": "function:frontend/js/api.js:listDocuments",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/api.js",
+      "target": "function:frontend/js/api.js:listDocuments",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/api.js",
+      "target": "function:frontend/js/api.js:uploadFile",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/api.js",
+      "target": "function:frontend/js/api.js:uploadFile",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/api.js",
+      "target": "function:frontend/js/api.js:uploadUrl",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/api.js",
+      "target": "function:frontend/js/api.js:uploadUrl",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/api.js",
+      "target": "function:frontend/js/api.js:deleteDocument",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/api.js",
+      "target": "function:frontend/js/api.js:deleteDocument",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/api.js",
+      "target": "function:frontend/js/api.js:listGithubRepos",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/api.js",
+      "target": "function:frontend/js/api.js:listGithubRepos",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/api.js",
+      "target": "function:frontend/js/api.js:connectGithub",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/api.js",
+      "target": "function:frontend/js/api.js:connectGithub",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/api.js",
+      "target": "function:frontend/js/api.js:deleteGithubRepo",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/api.js",
+      "target": "function:frontend/js/api.js:deleteGithubRepo",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/api.js",
+      "target": "function:frontend/js/api.js:startGithubDevice",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/api.js",
+      "target": "function:frontend/js/api.js:startGithubDevice",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/api.js",
+      "target": "function:frontend/js/api.js:pollGithubDevice",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/api.js",
+      "target": "function:frontend/js/api.js:pollGithubDevice",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/api.js",
+      "target": "function:frontend/js/api.js:getHealth",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/api.js",
+      "target": "function:frontend/js/api.js:getHealth",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/api.js",
+      "target": "function:frontend/js/api.js:getConfig",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/api.js",
+      "target": "function:frontend/js/api.js:getConfig",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/api.js",
+      "target": "function:frontend/js/api.js:getModels",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/api.js",
+      "target": "function:frontend/js/api.js:getModels",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/api.js",
+      "target": "function:frontend/js/api.js:chatStream",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/api.js",
+      "target": "function:frontend/js/api.js:chatStream",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/api.js",
+      "target": "function:frontend/js/api.js:dispatch",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/api.js",
+      "target": "function:frontend/js/api.js:downloadArtifact",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/api.js",
+      "target": "function:frontend/js/api.js:downloadArtifact",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/app.js",
+      "target": "function:frontend/js/app.js:init",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/app.js",
+      "target": "function:frontend/js/app.js:_loadModels",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/app.js",
+      "target": "function:frontend/js/app.js:_bindEvents",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/app.js",
+      "target": "function:frontend/js/app.js:_startCooldown",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/app.js",
+      "target": "function:frontend/js/app.js:_requestErrorMessage",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/app.js",
+      "target": "function:frontend/js/app.js:_onSend",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/app.js",
+      "target": "function:frontend/js/app.js:_retryAfterError",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/app.js",
+      "target": "function:frontend/js/app.js:_ensureSession",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/app.js",
+      "target": "function:frontend/js/app.js:_newChat",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/app.js",
+      "target": "function:frontend/js/app.js:_selectSession",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/app.js",
+      "target": "function:frontend/js/app.js:_deleteSession",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/app.js",
+      "target": "function:frontend/js/app.js:_renameSession",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/app.js",
+      "target": "function:frontend/js/app.js:_loadSessions",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/app.js",
+      "target": "function:frontend/js/app.js:_loadConfig",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/app.js",
+      "target": "function:frontend/js/app.js:_handleFiles",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/app.js",
+      "target": "function:frontend/js/app.js:_handleFileUpload",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/app.js",
+      "target": "function:frontend/js/app.js:_onUrlSubmit",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/app.js",
+      "target": "function:frontend/js/app.js:_runUpload",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/app.js",
+      "target": "function:frontend/js/app.js:_deleteDocument",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/app.js",
+      "target": "function:frontend/js/app.js:_deleteSelectedDocuments",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/app.js",
+      "target": "function:frontend/js/app.js:_loadDocuments",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/app.js",
+      "target": "function:frontend/js/app.js:_disconnectGithub",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/app.js",
+      "target": "function:frontend/js/app.js:_onGithubSubmit",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/app.js",
+      "target": "function:frontend/js/app.js:_onGithubOauth",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/app.js",
+      "target": "function:frontend/js/app.js:_setLoading",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/chat.js",
+      "target": "function:frontend/js/chat.js:_bindScroll",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/chat.js",
+      "target": "function:frontend/js/chat.js:_buildAssistant",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/chat.js",
+      "target": "function:frontend/js/chat.js:_setNote",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/chat.js",
+      "target": "function:frontend/js/chat.js:appendUserMessage",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/chat.js",
+      "target": "function:frontend/js/chat.js:appendUserMessage",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/chat.js",
+      "target": "function:frontend/js/chat.js:startAssistantMessage",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/chat.js",
+      "target": "function:frontend/js/chat.js:startAssistantMessage",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/chat.js",
+      "target": "function:frontend/js/chat.js:copyMessage",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/chat.js",
+      "target": "function:frontend/js/chat.js:copyMessage",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/chat.js",
+      "target": "function:frontend/js/chat.js:_resolveCitations",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/chat.js",
+      "target": "function:frontend/js/chat.js:getCitation",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/chat.js",
+      "target": "function:frontend/js/chat.js:getCitation",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/chat.js",
+      "target": "function:frontend/js/chat.js:showThinking",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/chat.js",
+      "target": "function:frontend/js/chat.js:showThinking",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/chat.js",
+      "target": "function:frontend/js/chat.js:removeThinking",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/chat.js",
+      "target": "function:frontend/js/chat.js:removeThinking",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/chat.js",
+      "target": "function:frontend/js/chat.js:renderHistory",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/chat.js",
+      "target": "function:frontend/js/chat.js:renderHistory",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/chat.js",
+      "target": "function:frontend/js/chat.js:_historyAssistant",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/chat.js",
+      "target": "function:frontend/js/chat.js:clearChat",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/chat.js",
+      "target": "function:frontend/js/chat.js:clearChat",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/chat.js",
+      "target": "function:frontend/js/chat.js:_badgesHtml",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/chat.js",
+      "target": "function:frontend/js/chat.js:_bindCitationBadges",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/chat.js",
+      "target": "function:frontend/js/chat.js:_fillSources",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/chat.js",
+      "target": "function:frontend/js/chat.js:_flashCopy",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/chat.js",
+      "target": "function:frontend/js/chat.js:_renderActionButtons",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/chat.js",
+      "target": "function:frontend/js/chat.js:holdLastAnswer",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/chat.js",
+      "target": "function:frontend/js/chat.js:holdLastAnswer",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/chat.js",
+      "target": "function:frontend/js/chat.js:fileKeywordFormat",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/chat.js",
+      "target": "function:frontend/js/chat.js:fileKeywordFormat",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/chat.js",
+      "target": "function:frontend/js/chat.js:prepareFilePreview",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/chat.js",
+      "target": "function:frontend/js/chat.js:prepareFilePreview",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/chat.js",
+      "target": "function:frontend/js/chat.js:_mountFileCard",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/chat.js",
+      "target": "function:frontend/js/chat.js:_syncArtifactLayer",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/chat.js",
+      "target": "function:frontend/js/chat.js:_paintArtifactPreview",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/chat.js",
+      "target": "function:frontend/js/chat.js:openArtifact",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/chat.js",
+      "target": "function:frontend/js/chat.js:openArtifact",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/chat.js",
+      "target": "function:frontend/js/chat.js:closeArtifact",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/chat.js",
+      "target": "function:frontend/js/chat.js:closeArtifact",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/chat.js",
+      "target": "function:frontend/js/chat.js:_onArtifactKey",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/chat.js",
+      "target": "function:frontend/js/chat.js:_applyArtifactWidth",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/chat.js",
+      "target": "function:frontend/js/chat.js:_resetArtifactWidth",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/chat.js",
+      "target": "function:frontend/js/chat.js:_wireArtifactResize",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/chat.js",
+      "target": "function:frontend/js/chat.js:_wireArtifactPane",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/chat.js",
+      "target": "function:frontend/js/chat.js:bindArtifact",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/chat.js",
+      "target": "function:frontend/js/chat.js:bindArtifact",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/components/ai-viz.js",
+      "target": "function:frontend/js/components/ai-viz.js:_hero",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/components/ai-viz.js",
+      "target": "function:frontend/js/components/ai-viz.js:create",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/components/ai-viz.js",
+      "target": "function:frontend/js/components/ai-viz.js:create",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/components/ai-viz.js",
+      "target": "function:frontend/js/components/ai-viz.js:setState",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/components/ai-viz.js",
+      "target": "function:frontend/js/components/ai-viz.js:setState",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/components/ai-viz.js",
+      "target": "function:frontend/js/components/ai-viz.js:getState",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/components/ai-viz.js",
+      "target": "function:frontend/js/components/ai-viz.js:getState",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/components/ai-viz.js",
+      "target": "function:frontend/js/components/ai-viz.js:mount",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/components/ai-viz.js",
+      "target": "function:frontend/js/components/ai-viz.js:mount",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/components/code-preview.js",
+      "target": "function:frontend/js/components/code-preview.js:decorate",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/components/code-preview.js",
+      "target": "function:frontend/js/components/code-preview.js:decorate",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/components/code-preview.js",
+      "target": "function:frontend/js/components/code-preview.js:_addButtons",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/components/code-preview.js",
+      "target": "function:frontend/js/components/code-preview.js:_downloadBlob",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/components/code-preview.js",
+      "target": "function:frontend/js/components/code-preview.js:sync",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/components/code-preview.js",
+      "target": "function:frontend/js/components/code-preview.js:sync",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/components/code-preview.js",
+      "target": "function:frontend/js/components/code-preview.js:_syncLayer",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/components/code-preview.js",
+      "target": "function:frontend/js/components/code-preview.js:_applyW",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/components/code-preview.js",
+      "target": "function:frontend/js/components/code-preview.js:_resetW",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/components/code-preview.js",
+      "target": "function:frontend/js/components/code-preview.js:_wireResize",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/components/code-preview.js",
+      "target": "function:frontend/js/components/code-preview.js:_wirePane",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/components/code-preview.js",
+      "target": "function:frontend/js/components/code-preview.js:_launch",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/components/code-preview.js",
+      "target": "function:frontend/js/components/code-preview.js:_launch",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/components/code-preview.js",
+      "target": "function:frontend/js/components/code-preview.js:close",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/components/code-preview.js",
+      "target": "function:frontend/js/components/code-preview.js:close",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/index.html",
+      "target": "file:frontend/css/main.css",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:frontend/index.html",
+      "target": "file:frontend/css/animations.css",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:frontend/index.html",
+      "target": "file:frontend/css/components.css",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:frontend/index.html",
+      "target": "file:frontend/css/ai-viz.css",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:frontend/index.html",
+      "target": "file:frontend/css/reference.css",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:frontend/index.html",
+      "target": "file:frontend/css/workspace.css",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:frontend/index.html",
+      "target": "file:frontend/css/intro.css",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:frontend/index.html",
+      "target": "file:frontend/css/syntax.css",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:frontend/index.html",
+      "target": "file:frontend/assets/logo.svg",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:frontend/index.html",
+      "target": "file:frontend/js/icons.js",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:frontend/index.html",
+      "target": "file:frontend/js/utils.js",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:frontend/index.html",
+      "target": "file:frontend/js/api.js",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:frontend/index.html",
+      "target": "file:frontend/js/chat.js",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:frontend/index.html",
+      "target": "file:frontend/js/theme.js",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:frontend/index.html",
+      "target": "file:frontend/js/components/menu.js",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:frontend/index.html",
+      "target": "file:frontend/js/components/dialog.js",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:frontend/index.html",
+      "target": "file:frontend/js/components/model-select.js",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:frontend/index.html",
+      "target": "file:frontend/js/components/ai-viz.js",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:frontend/index.html",
+      "target": "file:frontend/js/components/notifications.js",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:frontend/index.html",
+      "target": "file:frontend/js/components/prefs.js",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:frontend/index.html",
+      "target": "file:frontend/js/components/radiogroup.js",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:frontend/index.html",
+      "target": "file:frontend/js/components/documents.js",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:frontend/index.html",
+      "target": "file:frontend/js/components/workspaces.js",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:frontend/index.html",
+      "target": "file:frontend/js/components/settings.js",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:frontend/index.html",
+      "target": "file:frontend/js/components/motion.js",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:frontend/index.html",
+      "target": "file:frontend/js/components/code-preview.js",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:frontend/index.html",
+      "target": "file:frontend/js/intro.js",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:frontend/index.html",
+      "target": "file:frontend/js/ui.js",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:frontend/index.html",
+      "target": "file:frontend/js/app.js",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "document:frontend/assets/LICENSE-lucide.txt",
+      "target": "file:frontend/index.html",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:frontend/js/api.js",
+      "target": "file:backend/main.py",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:frontend/js/app.js",
+      "target": "file:backend/main.py",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:frontend/js/app.js",
+      "target": "file:frontend/js/api.js",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:frontend/js/app.js",
+      "target": "file:frontend/js/chat.js",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:frontend/js/chat.js",
+      "target": "file:frontend/js/components/code-preview.js",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:frontend/js/chat.js",
+      "target": "file:frontend/js/components/ai-viz.js",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "function:frontend/js/app.js:init",
+      "target": "function:frontend/js/chat.js:bindArtifact",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:frontend/js/app.js:_loadModels",
+      "target": "function:frontend/js/api.js:getModels",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:frontend/js/app.js:_bindEvents",
+      "target": "function:frontend/js/api.js:updateSession",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:frontend/js/app.js:_onSend",
+      "target": "function:frontend/js/api.js:chatStream",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:frontend/js/app.js:_onSend",
+      "target": "function:frontend/js/chat.js:appendUserMessage",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:frontend/js/app.js:_onSend",
+      "target": "function:frontend/js/chat.js:startAssistantMessage",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:frontend/js/app.js:_onSend",
+      "target": "function:frontend/js/chat.js:prepareFilePreview",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:frontend/js/app.js:_ensureSession",
+      "target": "function:frontend/js/api.js:createSession",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:frontend/js/app.js:_selectSession",
+      "target": "function:frontend/js/api.js:getSession",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:frontend/js/app.js:_deleteSession",
+      "target": "function:frontend/js/api.js:deleteSession",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:frontend/js/app.js:_renameSession",
+      "target": "function:frontend/js/api.js:updateSession",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:frontend/js/app.js:_loadSessions",
+      "target": "function:frontend/js/api.js:listSessions",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:frontend/js/app.js:_loadConfig",
+      "target": "function:frontend/js/api.js:getConfig",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:frontend/js/app.js:_handleFileUpload",
+      "target": "function:frontend/js/api.js:uploadFile",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:frontend/js/app.js:_onUrlSubmit",
+      "target": "function:frontend/js/api.js:uploadUrl",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:frontend/js/app.js:_deleteDocument",
+      "target": "function:frontend/js/api.js:deleteDocument",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:frontend/js/app.js:_deleteSelectedDocuments",
+      "target": "function:frontend/js/api.js:deleteDocument",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:frontend/js/app.js:_loadDocuments",
+      "target": "function:frontend/js/api.js:listDocuments",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:frontend/js/app.js:_disconnectGithub",
+      "target": "function:frontend/js/api.js:deleteGithubRepo",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:frontend/js/app.js:_onGithubSubmit",
+      "target": "function:frontend/js/api.js:connectGithub",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:frontend/js/app.js:_onGithubOauth",
+      "target": "function:frontend/js/api.js:startGithubDevice",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:frontend/js/app.js:_onGithubOauth",
+      "target": "function:frontend/js/api.js:pollGithubDevice",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:frontend/js/chat.js:openArtifact",
+      "target": "function:frontend/js/components/code-preview.js:close",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:frontend/js/chat.js:showThinking",
+      "target": "function:frontend/js/components/ai-viz.js:mount",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    }
+  ]
+}

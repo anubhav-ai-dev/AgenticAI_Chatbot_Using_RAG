@@ -1,0 +1,110 @@
+[
+  {
+    "id": "layer:ui",
+    "name": "Frontend",
+    "description": "Static chat SPA and Streamlit client that render sessions, citations, and uploads and call the FastAPI backend for retrieval, search, and model replies.",
+    "nodeIds": [
+      "file:frontend/index.html",
+      "file:frontend/app.py",
+      "file:frontend/__init__.py",
+      "file:frontend/css/main.css",
+      "file:frontend/css/components.css",
+      "file:frontend/css/animations.css",
+      "file:frontend/js/app.js",
+      "file:frontend/js/api.js",
+      "file:frontend/js/chat.js",
+      "file:frontend/js/ui.js",
+      "file:frontend/js/utils.js",
+      "file:frontend/js/puter_client.js",
+      "file:frontend/js/config.example.js"
+    ]
+  },
+  {
+    "id": "layer:api",
+    "name": "API Layer",
+    "description": "FastAPI application that exposes session, document, RAG retrieval, web-search, and health routes, plus the Python HTTP client for those endpoints.",
+    "nodeIds": [
+      "file:backend/main.py",
+      "file:backend/__init__.py",
+      "file:backend/client.py",
+      "endpoint:backend/main.py:GET-/ping",
+      "endpoint:backend/main.py:GET-/health",
+      "endpoint:backend/main.py:GET-/models",
+      "endpoint:backend/main.py:GET-/sessions",
+      "endpoint:backend/main.py:POST-/sessions",
+      "endpoint:backend/main.py:GET-/sessions/{session_id}",
+      "endpoint:backend/main.py:PATCH-/sessions/{session_id}",
+      "endpoint:backend/main.py:DELETE-/sessions/{session_id}",
+      "endpoint:backend/main.py:POST-/sessions/{session_id}/messages",
+      "endpoint:backend/main.py:POST-/upload",
+      "endpoint:backend/main.py:GET-/documents",
+      "endpoint:backend/main.py:POST-/retrieve",
+      "endpoint:backend/main.py:POST-/search",
+      "endpoint:backend/main.py:GET-/"
+    ]
+  },
+  {
+    "id": "layer:types",
+    "name": "API Schemas",
+    "description": "Pydantic request and response models for sessions, messages, document upload, RAG retrieval, web search, and health checks, including the legacy chat schemas.",
+    "nodeIds": [
+      "file:backend/models/api.py",
+      "file:backend/models.py"
+    ]
+  },
+  {
+    "id": "layer:service",
+    "name": "Service Layer",
+    "description": "LangGraph chat agent and the retrieval pipeline that parse documents, embed and rerank chunks with Cohere, persist per-user FAISS indexes, and query Tavily.",
+    "nodeIds": [
+      "file:backend/agent.py",
+      "file:backend/rag/__init__.py",
+      "file:backend/rag/embeddings.py",
+      "file:backend/rag/retriever.py",
+      "file:backend/services/__init__.py",
+      "file:backend/services/parser.py",
+      "file:backend/services/search.py",
+      "file:backend/services/vector_store.py"
+    ]
+  },
+  {
+    "id": "layer:data",
+    "name": "Data Layer",
+    "description": "SQLAlchemy engine, session dependency, and ORM models for chat sessions, messages, and indexed documents, plus the placeholder for on-disk runtime data.",
+    "nodeIds": [
+      "file:backend/database.py",
+      "file:backend/models/db.py",
+      "file:backend/models/__init__.py",
+      "file:data/.gitkeep"
+    ]
+  },
+  {
+    "id": "layer:config",
+    "name": "Configuration",
+    "description": "Runtime settings for paths, model catalogs, RAG chunking, and API keys, with the environment template, Pipenv manifest, and graph language setting.",
+    "nodeIds": [
+      "file:backend/config.py",
+      "config:.env.example",
+      "file:Pipfile",
+      "config:.ua/config.json"
+    ]
+  },
+  {
+    "id": "layer:infrastructure",
+    "name": "Infrastructure",
+    "description": "Uvicorn process declaration for Render or Railway and the Dev Container that installs dependencies and starts FastAPI and Streamlit.",
+    "nodeIds": [
+      "service:Procfile",
+      "config:.devcontainer/devcontainer.json"
+    ]
+  },
+  {
+    "id": "layer:documentation",
+    "name": "Documentation",
+    "description": "Getting-started guide covering layout, setup, FastAPI endpoints, and the LangGraph router workflow, together with the Python package list.",
+    "nodeIds": [
+      "document:README.md",
+      "document:requirements.txt"
+    ]
+  }
+]

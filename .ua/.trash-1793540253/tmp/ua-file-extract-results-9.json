@@ -1,0 +1,1491 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 12,
+  "filesSkipped": [],
+  "filesUnreadable": [],
+  "analysisOutcomes": {
+    "structure": {
+      "succeeded": 12,
+      "failed": 0
+    },
+    "callGraph": {
+      "succeeded": 0,
+      "failed": 0,
+      "skipped": 12
+    }
+  },
+  "results": [
+    {
+      "path": "docs/redesign/PROJECT_BRIEF.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 159,
+      "nonEmptyLines": 135,
+      "sections": [
+        {
+          "heading": "AI Assistant Pro redesign — shared project brief",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "1. Verified facts about the repo",
+          "level": 2,
+          "line": 13
+        },
+        {
+          "heading": "Stack and serving",
+          "level": 3,
+          "line": 15
+        },
+        {
+          "heading": "Existing checks (the only ones — do not invent others)",
+          "level": 3,
+          "line": 35
+        },
+        {
+          "heading": "DOM coupling (the main regression risk)",
+          "level": 3,
+          "line": 43
+        },
+        {
+          "heading": "Persistence and identity",
+          "level": 3,
+          "line": 53
+        },
+        {
+          "heading": "Backend contract the UI must honor (read `backend/api/routes.py`, `backend/models/api.py`)",
+          "level": 3,
+          "line": 62
+        },
+        {
+          "heading": "2. Ownership map (exclusive write access — no overlaps)",
+          "level": 2,
+          "line": 80
+        },
+        {
+          "heading": "The view / controller seam",
+          "level": 3,
+          "line": 97
+        },
+        {
+          "heading": "Keep the app bootable at every handoff",
+          "level": 3,
+          "line": 109
+        },
+        {
+          "heading": "Cross-boundary requests",
+          "level": 3,
+          "line": 116
+        },
+        {
+          "heading": "3. Global rules (apply to every agent)",
+          "level": 2,
+          "line": 124
+        },
+        {
+          "heading": "4. Artifact flow",
+          "level": 2,
+          "line": 151
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 13
+      }
+    },
+    {
+      "path": "docs/redesign/audit.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 485,
+      "nonEmptyLines": 411,
+      "sections": [
+        {
+          "heading": "AI Assistant Pro: Phase 1 audit",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "1. Summary",
+          "level": 2,
+          "line": 8
+        },
+        {
+          "heading": "2. Stack, serving, build",
+          "level": 2,
+          "line": 28
+        },
+        {
+          "heading": "3. File inventory",
+          "level": 2,
+          "line": 48
+        },
+        {
+          "heading": "4. DOM contract",
+          "level": 2,
+          "line": 69
+        },
+        {
+          "heading": "Static ids",
+          "level": 3,
+          "line": 75
+        },
+        {
+          "heading": "Selectors and inline handlers",
+          "level": 3,
+          "line": 104
+        },
+        {
+          "heading": "Dynamic ids (created in `chat.js`, all consumed in `chat.js`)",
+          "level": 3,
+          "line": 117
+        },
+        {
+          "heading": "5. State and persistence map",
+          "level": 2,
+          "line": 127
+        },
+        {
+          "heading": "Client `State` (`app.js:11-23`, private, not exported)",
+          "level": 3,
+          "line": 129
+        },
+        {
+          "heading": "Other client state",
+          "level": 3,
+          "line": 140
+        },
+        {
+          "heading": "Server persistence",
+          "level": 3,
+          "line": 145
+        },
+        {
+          "heading": "6. API and SSE inventory",
+          "level": 2,
+          "line": 155
+        },
+        {
+          "heading": "Endpoints (`backend/api/routes.py`)",
+          "level": 3,
+          "line": 157
+        },
+        {
+          "heading": "SSE events (`chat_service.py`), and what `app.js:217-238` does with each",
+          "level": 3,
+          "line": 171
+        },
+        {
+          "heading": "Error / cancel / fallback / rate-limit behaviour today",
+          "level": 3,
+          "line": 185
+        },
+        {
+          "heading": "7. Feature matrix (master prompt vs repo)",
+          "level": 2,
+          "line": 197
+        },
+        {
+          "heading": "Phase 4: layout and sidebar",
+          "level": 3,
+          "line": 201
+        },
+        {
+          "heading": "Phase 5: theme",
+          "level": 3,
+          "line": 223
+        },
+        {
+          "heading": "Phase 6: animated AI identity",
+          "level": 3,
+          "line": 236
+        },
+        {
+          "heading": "Phase 7: welcome",
+          "level": 3,
+          "line": 243
+        },
+        {
+          "heading": "Phase 8: general chat",
+          "level": 3,
+          "line": 251
+        },
+        {
+          "heading": "Phase 9: composer",
+          "level": 3,
+          "line": 268
+        },
+        {
+          "heading": "Phase 10: model selection",
+          "level": 3,
+          "line": 283
+        },
+        {
+          "heading": "Phase 11: documents workspace",
+          "level": 3,
+          "line": 294
+        },
+        {
+          "heading": "Phase 12: research workspace",
+          "level": 3,
+          "line": 308
+        },
+        {
+          "heading": "Phase 13: code workspace",
+          "level": 3,
+          "line": 319
+        },
+        {
+          "heading": "Phases 14-17: icons, libraries, responsive, a11y",
+          "level": 3,
+          "line": 326
+        },
+        {
+          "heading": "8. Backend gaps and contradictions",
+          "level": 2,
+          "line": 342
+        },
+        {
+          "heading": "9. Defects and risks observed (verified unless marked)",
+          "level": 2,
+          "line": 363
+        },
+        {
+          "heading": "Security observations on the rendering path",
+          "level": 3,
+          "line": 388
+        },
+        {
+          "heading": "10. Baseline verification",
+          "level": 2,
+          "line": 399
+        },
+        {
+          "heading": "11. Recommended implementation plan",
+          "level": 2,
+          "line": 420
+        },
+        {
+          "heading": "12. Open questions for the user",
+          "level": 2,
+          "line": 475
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 34
+      }
+    },
+    {
+      "path": "docs/redesign/design-spec.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 790,
+      "nonEmptyLines": 686,
+      "sections": [
+        {
+          "heading": "AI Assistant Pro — Design Spec (Phase 1)",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "1. Principles and scope",
+          "level": 2,
+          "line": 18
+        },
+        {
+          "heading": "2. Tokens",
+          "level": 2,
+          "line": 40
+        },
+        {
+          "heading": "2.1 Method for contrast",
+          "level": 3,
+          "line": 42
+        },
+        {
+          "heading": "2.2 Palette changes from the master prompt (and why)",
+          "level": 3,
+          "line": 49
+        },
+        {
+          "heading": "2.3 Color tokens (CSS custom properties)",
+          "level": 3,
+          "line": 70
+        },
+        {
+          "heading": "2.4 Contrast table (all computed 2026-10-20; \"**FAIL**\" rows are intentional rules, not used)",
+          "level": 3,
+          "line": 122
+        },
+        {
+          "heading": "2.5 Typography",
+          "level": 3,
+          "line": 170
+        },
+        {
+          "heading": "2.6 Spacing, sizes, radii",
+          "level": 3,
+          "line": 193
+        },
+        {
+          "heading": "2.7 Motion",
+          "level": 3,
+          "line": 206
+        },
+        {
+          "heading": "2.8 Focus ring",
+          "level": 3,
+          "line": 222
+        },
+        {
+          "heading": "2.9 Legacy-variable migration map",
+          "level": 3,
+          "line": 228
+        },
+        {
+          "heading": "3. Theme mechanics",
+          "level": 2,
+          "line": 265
+        },
+        {
+          "heading": "3.1 Model",
+          "level": 3,
+          "line": 267
+        },
+        {
+          "heading": "3.2 Migration of the old default",
+          "level": 3,
+          "line": 273
+        },
+        {
+          "heading": "3.3 No-flash snippet (first element inside `<head>`, before any stylesheet; not deferred, not external)",
+          "level": 3,
+          "line": 283
+        },
+        {
+          "heading": "3.4 Theme control (`ThemeSwitcher`, in the top bar, right side)",
+          "level": 3,
+          "line": 306
+        },
+        {
+          "heading": "3.5 Where it applies",
+          "level": 3,
+          "line": 312
+        },
+        {
+          "heading": "3.6 highlight.js theming without a swap",
+          "level": 3,
+          "line": 315
+        },
+        {
+          "heading": "4. Layout and responsive rules",
+          "level": 2,
+          "line": 320
+        },
+        {
+          "heading": "4.1 Regions",
+          "level": 3,
+          "line": 322
+        },
+        {
+          "heading": "4.2 Breakpoints",
+          "level": 3,
+          "line": 334
+        },
+        {
+          "heading": "4.3 Sidebar states",
+          "level": 3,
+          "line": 345
+        },
+        {
+          "heading": "4.4 Top bar (56px, `--surface`, bottom border `--border`, padding 0 16px (0 8px at xs))",
+          "level": 3,
+          "line": 352
+        },
+        {
+          "heading": "4.5 Workspace widths",
+          "level": 3,
+          "line": 356
+        },
+        {
+          "heading": "4.6 Composer docking, safe areas, keyboard",
+          "level": 3,
+          "line": 367
+        },
+        {
+          "heading": "4.7 Behavior per width",
+          "level": 3,
+          "line": 374
+        },
+        {
+          "heading": "5. Component hierarchy and module ownership",
+          "level": 2,
+          "line": 387
+        },
+        {
+          "heading": "6. State matrix and accessibility per interactive component",
+          "level": 2,
+          "line": 440
+        },
+        {
+          "heading": "6.1 Buttons",
+          "level": 3,
+          "line": 444
+        },
+        {
+          "heading": "6.2 Navigation item (Sidebar)",
+          "level": 3,
+          "line": 453
+        },
+        {
+          "heading": "6.3 Session row",
+          "level": 3,
+          "line": 456
+        },
+        {
+          "heading": "6.4 Composer controls",
+          "level": 3,
+          "line": 461
+        },
+        {
+          "heading": "6.5 Attachment chip (AttachmentList)",
+          "level": 3,
+          "line": 471
+        },
+        {
+          "heading": "6.6 Model selector",
+          "level": 3,
+          "line": 475
+        },
+        {
+          "heading": "6.7 Feature card (`FeatureCard`)",
+          "level": 3,
+          "line": 486
+        },
+        {
+          "heading": "6.8 Chat message",
+          "level": 3,
+          "line": 489
+        },
+        {
+          "heading": "6.9 Dialogs (`ConfirmationDialog`, CitationDialog, UrlDialog)",
+          "level": 3,
+          "line": 499
+        },
+        {
+          "heading": "6.10 Toast",
+          "level": 3,
+          "line": 504
+        },
+        {
+          "heading": "6.11 Dropzone overlay",
+          "level": 3,
+          "line": 507
+        },
+        {
+          "heading": "6.12 Tooltip",
+          "level": 3,
+          "line": 510
+        },
+        {
+          "heading": "7. Screen specs",
+          "level": 2,
+          "line": 515
+        },
+        {
+          "heading": "7.1 Welcome (General mode, no messages, `#welcomeScreen`)",
+          "level": 3,
+          "line": 517
+        },
+        {
+          "heading": "7.2 Chat (General)",
+          "level": 3,
+          "line": 538
+        },
+        {
+          "heading": "7.3 Documents (mode `document`)",
+          "level": 3,
+          "line": 541
+        },
+        {
+          "heading": "7.4 Research (mode `research`) — answer vs. sources",
+          "level": 3,
+          "line": 550
+        },
+        {
+          "heading": "7.5 Mode empty states (document is 7.3)",
+          "level": 3,
+          "line": 559
+        },
+        {
+          "heading": "7.6 Code (mode `code`)",
+          "level": 3,
+          "line": 562
+        },
+        {
+          "heading": "7.7 Conversation history",
+          "level": 3,
+          "line": 568
+        },
+        {
+          "heading": "8. AI visualization (`AIVisualization`)",
+          "level": 2,
+          "line": 578
+        },
+        {
+          "heading": "8.1 Placement and size",
+          "level": 3,
+          "line": 582
+        },
+        {
+          "heading": "8.2 Structure (inline SVG, viewBox 0 0 96 96, 7 nodes)",
+          "level": 3,
+          "line": 587
+        },
+        {
+          "heading": "8.3 States, triggers, motion",
+          "level": 3,
+          "line": 600
+        },
+        {
+          "heading": "8.4 Reduced motion",
+          "level": 3,
+          "line": 610
+        },
+        {
+          "heading": "8.5 Performance budget (hard)",
+          "level": 3,
+          "line": 613
+        },
+        {
+          "heading": "9. Icon plan",
+          "level": 2,
+          "line": 624
+        },
+        {
+          "heading": "9.1 Library and shipping",
+          "level": 3,
+          "line": 626
+        },
+        {
+          "heading": "9.2 Icon list (all 16/20/24 as noted, stroke 1.75)",
+          "level": 3,
+          "line": 636
+        },
+        {
+          "heading": "9.3 Emoji → icon mapping (every emoji used as an icon today)",
+          "level": 3,
+          "line": 668
+        },
+        {
+          "heading": "10. Not designable from current data",
+          "level": 2,
+          "line": 701
+        },
+        {
+          "heading": "11. Figma",
+          "level": 2,
+          "line": 720
+        },
+        {
+          "heading": "12. Implementation notes for `frontend-developer`",
+          "level": 2,
+          "line": 731
+        },
+        {
+          "heading": "12.1 Order of work",
+          "level": 3,
+          "line": 733
+        },
+        {
+          "heading": "12.2 Ids and functions that must survive",
+          "level": 3,
+          "line": 743
+        },
+        {
+          "heading": "12.3 Acceptance checks QA should apply",
+          "level": 3,
+          "line": 746
+        },
+        {
+          "heading": "12.4 Cross-boundary requests (for the orchestrator)",
+          "level": 3,
+          "line": 759
+        },
+        {
+          "heading": "12.5 Risks",
+          "level": 3,
+          "line": 773
+        },
+        {
+          "heading": "12.6 Open questions for the user",
+          "level": 3,
+          "line": 783
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 68
+      }
+    },
+    {
+      "path": "docs/redesign/integration-notes.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 76,
+      "nonEmptyLines": 62,
+      "sections": [
+        {
+          "heading": "Integration notes (controller layer: api.js, app.js)",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Workflow map",
+          "level": 2,
+          "line": 5
+        },
+        {
+          "heading": "Preservation checklist",
+          "level": 2,
+          "line": 22
+        },
+        {
+          "heading": "Backend gaps (honest UI instead)",
+          "level": 2,
+          "line": 29
+        },
+        {
+          "heading": "Known issues",
+          "level": 2,
+          "line": 34
+        },
+        {
+          "heading": "Cross-boundary requests",
+          "level": 2,
+          "line": 38
+        },
+        {
+          "heading": "Commands run",
+          "level": 2,
+          "line": 41
+        },
+        {
+          "heading": "QA-04 m1 follow-up",
+          "level": 2,
+          "line": 46
+        },
+        {
+          "heading": "QA-05 m3 follow-up",
+          "level": 2,
+          "line": 50
+        },
+        {
+          "heading": "Reference-fidelity pass (AI Assistant Pro Responsive Dashboard.png)",
+          "level": 2,
+          "line": 57
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 10
+      }
+    },
+    {
+      "path": "docs/redesign/integration-test-plan.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 364,
+      "nonEmptyLines": 311,
+      "sections": [
+        {
+          "heading": "Integration test plan: real backend, isolated environment",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "0. What the code allows (facts the plan rests on)",
+          "level": 2,
+          "line": 9
+        },
+        {
+          "heading": "1. Isolation design",
+          "level": 2,
+          "line": 38
+        },
+        {
+          "heading": "1.1 Environment shape",
+          "level": 3,
+          "line": 40
+        },
+        {
+          "heading": "1.2 Settings that isolate state (all via environment variables)",
+          "level": 3,
+          "line": 48
+        },
+        {
+          "heading": "1.3 Separate user_id namespace",
+          "level": 3,
+          "line": 74
+        },
+        {
+          "heading": "1.4 What is NOT isolatable (must be accepted or controlled otherwise)",
+          "level": 3,
+          "line": 77
+        },
+        {
+          "heading": "2. LLM strategy",
+          "level": 2,
+          "line": 87
+        },
+        {
+          "heading": "2.1 Preferred: local scripted fake provider (no code changes needed)",
+          "level": 3,
+          "line": 89
+        },
+        {
+          "heading": "2.2 If a fake were NOT sufficient (decision for the user)",
+          "level": 3,
+          "line": 102
+        },
+        {
+          "heading": "2.3 Optional tier 2: real provider, only with explicit approval",
+          "level": 3,
+          "line": 108
+        },
+        {
+          "heading": "3. Test matrix",
+          "level": 2,
+          "line": 115
+        },
+        {
+          "heading": "G1 SSE streaming (fake `ok`, cache off)",
+          "level": 3,
+          "line": 119
+        },
+        {
+          "heading": "G2 Stop and cancellation (fake `[[sc:long:200]]`)",
+          "level": 3,
+          "line": 132
+        },
+        {
+          "heading": "G3 Regenerate",
+          "level": 3,
+          "line": 144
+        },
+        {
+          "heading": "G4 Model fallback and model list",
+          "level": 3,
+          "line": 153
+        },
+        {
+          "heading": "G5 Upload / ingestion (user `it-<run>-up`)",
+          "level": 3,
+          "line": 169
+        },
+        {
+          "heading": "G6 URL ingestion and SSRF (all targets local or literal; no outbound internet)",
+          "level": 3,
+          "line": 189
+        },
+        {
+          "heading": "G7 Error handling and cooldown",
+          "level": 3,
+          "line": 205
+        },
+        {
+          "heading": "G8 Draft preservation and duplicate user turn (QA M1)",
+          "level": 3,
+          "line": 221
+        },
+        {
+          "heading": "G9 Session CRUD (throwaway user only)",
+          "level": 3,
+          "line": 231
+        },
+        {
+          "heading": "G10 Concurrency",
+          "level": 3,
+          "line": 242
+        },
+        {
+          "heading": "G11 Authorization gap (current behaviour, documented only)",
+          "level": 3,
+          "line": 252
+        },
+        {
+          "heading": "4. Browser automation approach",
+          "level": 2,
+          "line": 264
+        },
+        {
+          "heading": "5. Procedure, gates and cleanup",
+          "level": 2,
+          "line": 276
+        },
+        {
+          "heading": "5.1 Pre-flight checklist (all must be true before the first request)",
+          "level": 3,
+          "line": 278
+        },
+        {
+          "heading": "5.2 Safety gates and stop conditions",
+          "level": 3,
+          "line": 288
+        },
+        {
+          "heading": "5.3 Secrets handling",
+          "level": 3,
+          "line": 298
+        },
+        {
+          "heading": "5.4 Data cleanup",
+          "level": 3,
+          "line": 301
+        },
+        {
+          "heading": "5.5 Evidence to capture",
+          "level": 3,
+          "line": 304
+        },
+        {
+          "heading": "5.6 Pass/fail criteria",
+          "level": 3,
+          "line": 307
+        },
+        {
+          "heading": "5.7 Exit criteria",
+          "level": 3,
+          "line": 313
+        },
+        {
+          "heading": "5.8 Estimated effort",
+          "level": 3,
+          "line": 316
+        },
+        {
+          "heading": "6. Known risks and open observations to resolve while building the harness",
+          "level": 2,
+          "line": 326
+        },
+        {
+          "heading": "7. What this plan deliberately does not do",
+          "level": 2,
+          "line": 334
+        },
+        {
+          "heading": "8. Mapping to the requested coverage",
+          "level": 2,
+          "line": 337
+        },
+        {
+          "heading": "9. Items that cannot be tested in this environment",
+          "level": 2,
+          "line": 353
+        },
+        {
+          "heading": "10. Decisions needed from the user",
+          "level": 2,
+          "line": 356
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 38
+      }
+    },
+    {
+      "path": "docs/redesign/qa-report-04.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 32,
+      "nonEmptyLines": 25,
+      "sections": [
+        {
+          "heading": "QA report 04 - Stage 4 (controller integration + view seam)",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "1. Verdict: PASS WITH ISSUES",
+          "level": 2,
+          "line": 3
+        },
+        {
+          "heading": "2. Scope",
+          "level": 2,
+          "line": 6
+        },
+        {
+          "heading": "3. Findings",
+          "level": 2,
+          "line": 9
+        },
+        {
+          "heading": "4. Verified with evidence (puppeteer-core 23.11.1, axe-core 4.10.2 in scratch dir under /tmp; Chrome 148; static server on 127.0.0.1:8765, stopped)",
+          "level": 2,
+          "line": 18
+        },
+        {
+          "heading": "5. Checks run",
+          "level": 2,
+          "line": 25
+        },
+        {
+          "heading": "6. Not verified",
+          "level": 2,
+          "line": 31
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 7
+      }
+    },
+    {
+      "path": "docs/redesign/qa-report-05.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 57,
+      "nonEmptyLines": 50,
+      "sections": [
+        {
+          "heading": "QA report 05 - Reference-design pass (reference.css, notifications.js, shell restyle)",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "1. Verdict: PASS WITH ISSUES",
+          "level": 2,
+          "line": 3
+        },
+        {
+          "heading": "2. Scope",
+          "level": 2,
+          "line": 6
+        },
+        {
+          "heading": "3. Findings",
+          "level": 2,
+          "line": 9
+        },
+        {
+          "heading": "Fidelity differences (screenshots in `/tmp/claude-1000/-home-anubhav-personal-proj-AgenticAI-Chatbot-Using-RAG/caf02d66-07c4-4aa7-91dd-f93346a21f08/scratchpad/shots/`: d1440_light/dark, t768, t1024, m390_light/dark)",
+          "level": 3,
+          "line": 20
+        },
+        {
+          "heading": "4. Verified with evidence (puppeteer-core 23.11.1, axe-core 4.10.2 in scratch dir `.../scratchpad/pkg`; Chrome via `/usr/bin/google-chrome`; hover/pointer-fine emulated with `--blink-settings`; stub fetch; static server on 127.0.0.1:8765, stopped)",
+          "level": 2,
+          "line": 31
+        },
+        {
+          "heading": "5. Checks run",
+          "level": 2,
+          "line": 49
+        },
+        {
+          "heading": "6. Not verified",
+          "level": 2,
+          "line": 56
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 8
+      }
+    },
+    {
+      "path": "docs/redesign/qa-report-06.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 34,
+      "nonEmptyLines": 26,
+      "sections": [
+        {
+          "heading": "QA report 06 - Re-verification after QA-05 fixes",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "1. Verdict: PASS",
+          "level": 2,
+          "line": 3
+        },
+        {
+          "heading": "2. QA-05 closure",
+          "level": 2,
+          "line": 6
+        },
+        {
+          "heading": "3. Regression (QA-04/05 suite re-run)",
+          "level": 2,
+          "line": 14
+        },
+        {
+          "heading": "4. A11y / layout",
+          "level": 2,
+          "line": 17
+        },
+        {
+          "heading": "5. Fidelity vs reference (screens in .../scratchpad/shots6/)",
+          "level": 2,
+          "line": 20
+        },
+        {
+          "heading": "6. Observations (not findings)",
+          "level": 2,
+          "line": 23
+        },
+        {
+          "heading": "7. Checks run",
+          "level": 2,
+          "line": 26
+        },
+        {
+          "heading": "8. Not verified",
+          "level": 2,
+          "line": 33
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 9
+      }
+    },
+    {
+      "path": "docs/redesign/security-issue-authz.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 17,
+      "nonEmptyLines": 12,
+      "sections": [
+        {
+          "heading": "Security issue (separate from the redesign): missing ownership checks",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Finding",
+          "level": 2,
+          "line": 7
+        },
+        {
+          "heading": "Recommended follow-up (owner decision, separate change)",
+          "level": 2,
+          "line": 10
+        },
+        {
+          "heading": "Redesign constraints",
+          "level": 2,
+          "line": 15
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 4
+      }
+    },
+    {
+      "path": "docs/redesign/stage4-backlog.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 13,
+      "nonEmptyLines": 10,
+      "sections": [
+        {
+          "heading": "Stage 4 backlog (controller work: app.js, api.js, js/workflows/)",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "S4-1 Welcome cards must not auto-send (approved requirement)",
+          "level": 2,
+          "line": 5
+        },
+        {
+          "heading": "Other items carried from QA",
+          "level": 2,
+          "line": 10
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 3
+      }
+    },
+    {
+      "path": "docs/redesign/ui-ux-implementation-notes.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 54,
+      "nonEmptyLines": 43,
+      "sections": [
+        {
+          "heading": "UI/UX implementation notes — workspace dropdown, workspaces, Settings, motion",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "Where the brief and the board disagree (the brief wins)",
+          "level": 2,
+          "line": 6
+        },
+        {
+          "heading": "Stack decisions",
+          "level": 2,
+          "line": 15
+        },
+        {
+          "heading": "Backend change (the only one)",
+          "level": 2,
+          "line": 27
+        },
+        {
+          "heading": "Behaviour that follows from the backend (not invented)",
+          "level": 2,
+          "line": 33
+        },
+        {
+          "heading": "Checklist",
+          "level": 2,
+          "line": 42
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 6
+      }
+    },
+    {
+      "path": "docs/redesign/view-contract.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 613,
+      "nonEmptyLines": 500,
+      "sections": [
+        {
+          "heading": "View / Controller contract",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "0. Layers and ownership",
+          "level": 2,
+          "line": 12
+        },
+        {
+          "heading": "1. DOM ids and selectors the controller depends on (must be preserved)",
+          "level": 2,
+          "line": 34
+        },
+        {
+          "heading": "2. Functions the view exports and the controller calls",
+          "level": 2,
+          "line": 74
+        },
+        {
+          "heading": "2.1 Existing, must keep signature (additions only)",
+          "level": 3,
+          "line": 76
+        },
+        {
+          "heading": "2.2 Renderer object returned by `Chat.startAssistantMessage()` (`chat.js:92-207`)",
+          "level": 3,
+          "line": 105
+        },
+        {
+          "heading": "3. Additions the spec requires (new API; view implements, controller adopts)",
+          "level": 2,
+          "line": 125
+        },
+        {
+          "heading": "4. Events and callbacks flowing view -> controller",
+          "level": 2,
+          "line": 153
+        },
+        {
+          "heading": "5. Controller-supplied data shapes the view relies on (verified)",
+          "level": 2,
+          "line": 188
+        },
+        {
+          "heading": "6. Theme storage contract (view-owned; the controller does not read or write it)",
+          "level": 2,
+          "line": 199
+        },
+        {
+          "heading": "7. Stage 1 changes: view-only, must not break `app.js`",
+          "level": 2,
+          "line": 214
+        },
+        {
+          "heading": "8. Upload type contract",
+          "level": 2,
+          "line": 241
+        },
+        {
+          "heading": "9. Compatibility checklist before the controller migrates",
+          "level": 2,
+          "line": 249
+        },
+        {
+          "heading": "10. Summary of ambiguities",
+          "level": 2,
+          "line": 258
+        },
+        {
+          "heading": "11. Stage 1 as implemented (frontend-developer, view-only; `app.js` / `api.js` untouched)",
+          "level": 2,
+          "line": 273
+        },
+        {
+          "heading": "11.1 Script load order (current `index.html`)",
+          "level": 3,
+          "line": 278
+        },
+        {
+          "heading": "11.2 Ids (unchanged unless listed)",
+          "level": 3,
+          "line": 283
+        },
+        {
+          "heading": "11.3 New / changed view API",
+          "level": 3,
+          "line": 291
+        },
+        {
+          "heading": "11.4 Markup / behaviour changes the controller may notice (no id or selector in section 1 changed)",
+          "level": 3,
+          "line": 311
+        },
+        {
+          "heading": "11.5 Controls intentionally not rendered (no backing action)",
+          "level": 3,
+          "line": 321
+        },
+        {
+          "heading": "11.6 Still open for later stages",
+          "level": 3,
+          "line": 324
+        },
+        {
+          "heading": "12. Stage 2 as implemented (shell, welcome, composer, model selector; frontend-developer, view-only)",
+          "level": 2,
+          "line": 329
+        },
+        {
+          "heading": "12.1 Script load order (changed)",
+          "level": 3,
+          "line": 336
+        },
+        {
+          "heading": "12.2 Shell",
+          "level": 3,
+          "line": 340
+        },
+        {
+          "heading": "12.3 Session list",
+          "level": 3,
+          "line": 359
+        },
+        {
+          "heading": "12.4 Welcome and example prompts",
+          "level": 3,
+          "line": 367
+        },
+        {
+          "heading": "12.5 Composer",
+          "level": 3,
+          "line": 372
+        },
+        {
+          "heading": "12.6 Model selector (`js/components/model-select.js`)",
+          "level": 3,
+          "line": 381
+        },
+        {
+          "heading": "12.7 Breaking / behavioural changes",
+          "level": 3,
+          "line": 390
+        },
+        {
+          "heading": "12.8 Still open",
+          "level": 3,
+          "line": 401
+        },
+        {
+          "heading": "13. Stage 3 as implemented (messages, citations, AI visualization, smart scroll; frontend-developer, view-only)",
+          "level": 2,
+          "line": 407
+        },
+        {
+          "heading": "13.1 Script / style order and new ids",
+          "level": 3,
+          "line": 413
+        },
+        {
+          "heading": "13.2 Decisions",
+          "level": 3,
+          "line": 420
+        },
+        {
+          "heading": "13.3 View API",
+          "level": 3,
+          "line": 433
+        },
+        {
+          "heading": "13.3a Citation badge hit areas (coarse pointers)",
+          "level": 3,
+          "line": 457
+        },
+        {
+          "heading": "13.4 Breaking / behavioural changes (none for `app.js`)",
+          "level": 3,
+          "line": 462
+        },
+        {
+          "heading": "13.5 Controller requests for Stage 4 (optional, additive)",
+          "level": 3,
+          "line": 466
+        },
+        {
+          "heading": "14. Stage 4 as implemented (integration-developer; `app.js` and `api.js` only)",
+          "level": 2,
+          "line": 471
+        },
+        {
+          "heading": "14.1 Controller changes",
+          "level": 3,
+          "line": 476
+        },
+        {
+          "heading": "14.1a QA follow-up fixes (supersede the N2/M1 wording above where they differ)",
+          "level": 3,
+          "line": 488
+        },
+        {
+          "heading": "14.2 Cross-boundary requests",
+          "level": 3,
+          "line": 495
+        },
+        {
+          "heading": "15. Stage 4 view-side follow-up (frontend-developer; answers 14.2)",
+          "level": 2,
+          "line": 500
+        },
+        {
+          "heading": "16. Stage 4 seam and view hooks (frontend-developer)",
+          "level": 2,
+          "line": 510
+        },
+        {
+          "heading": "16.1 Stage 4 seam: welcome cards (S4-1)  -- controller must wire",
+          "level": 3,
+          "line": 514
+        },
+        {
+          "heading": "16.2 New view functions (all additive)",
+          "level": 3,
+          "line": 520
+        },
+        {
+          "heading": "16.3 Backlog items already present in the view (no new work)",
+          "level": 3,
+          "line": 527
+        },
+        {
+          "heading": "16.4 Visual changes",
+          "level": 3,
+          "line": 530
+        },
+        {
+          "heading": "17. Reference-design pass (frontend-developer; \"AI Assistant Pro Responsive Dashboard.png\")",
+          "level": 2,
+          "line": 536
+        },
+        {
+          "heading": "17.1 Files and load order",
+          "level": 3,
+          "line": 544
+        },
+        {
+          "heading": "17.2 Ids and markup the controller may rely on",
+          "level": 3,
+          "line": 550
+        },
+        {
+          "heading": "17.3 Behaviour implemented in the view (works without controller changes)",
+          "level": 3,
+          "line": 559
+        },
+        {
+          "heading": "17.4 Capability strip copy (static)",
+          "level": 3,
+          "line": 580
+        },
+        {
+          "heading": "17.5 New view functions (all additive)",
+          "level": 3,
+          "line": 584
+        },
+        {
+          "heading": "17.6 Controller wiring list",
+          "level": 3,
+          "line": 594
+        },
+        {
+          "heading": "17.7 Breaking / behavioural changes",
+          "level": 3,
+          "line": 599
+        },
+        {
+          "heading": "17.8 QA-05 follow-ups",
+          "level": 3,
+          "line": 607
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 56
+      }
+    }
+  ]
+}

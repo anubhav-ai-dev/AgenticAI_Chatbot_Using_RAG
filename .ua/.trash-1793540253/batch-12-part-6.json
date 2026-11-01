@@ -1,0 +1,207 @@
+{
+  "nodes": [
+    {
+      "id": "file:frontend/js/theme.js",
+      "type": "file",
+      "name": "theme.js",
+      "filePath": "frontend/js/theme.js",
+      "summary": "Persists the light, dark, or system theme preference, migrates the legacy stored value, and applies the resolved theme to the document and theme-color meta tag.",
+      "tags": [
+        "theme",
+        "persistence",
+        "utility",
+        "accessibility"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Migrates localStorage theme to version 2 so a previously stored dark default becomes system, then follows prefers-color-scheme."
+    },
+    {
+      "id": "function:frontend/js/theme.js:resolved",
+      "type": "function",
+      "name": "resolved",
+      "filePath": "frontend/js/theme.js",
+      "lineRange": [
+        49,
+        51
+      ],
+      "summary": "Returns the theme currently painted on the document element, light or dark.",
+      "tags": [
+        "theme",
+        "view",
+        "utility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/theme.js:get",
+      "type": "function",
+      "name": "get",
+      "filePath": "frontend/js/theme.js",
+      "lineRange": [
+        53,
+        53
+      ],
+      "summary": "Returns the stored preference: light, dark, or system.",
+      "tags": [
+        "theme",
+        "persistence",
+        "utility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/theme.js:_apply",
+      "type": "function",
+      "name": "_apply",
+      "filePath": "frontend/js/theme.js",
+      "lineRange": [
+        55,
+        65
+      ],
+      "summary": "Writes the resolved theme onto the document, color-scheme, theme-color meta, and change listeners.",
+      "tags": [
+        "theme",
+        "dom",
+        "utility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/theme.js:set",
+      "type": "function",
+      "name": "set",
+      "filePath": "frontend/js/theme.js",
+      "lineRange": [
+        68,
+        73
+      ],
+      "summary": "Normalizes a preference, stores it, and applies the resolved theme.",
+      "tags": [
+        "theme",
+        "persistence",
+        "utility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/theme.js:onChange",
+      "type": "function",
+      "name": "onChange",
+      "filePath": "frontend/js/theme.js",
+      "lineRange": [
+        76,
+        82
+      ],
+      "summary": "Subscribes to preference changes and returns an unsubscribe function.",
+      "tags": [
+        "theme",
+        "event-handler",
+        "utility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/theme.js:init",
+      "type": "function",
+      "name": "init",
+      "filePath": "frontend/js/theme.js",
+      "lineRange": [
+        85,
+        104
+      ],
+      "summary": "Migrates storage, applies the saved preference once, and listens for OS theme changes and other tabs.",
+      "tags": [
+        "theme",
+        "initialization",
+        "persistence"
+      ],
+      "complexity": "moderate"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:frontend/js/theme.js",
+      "target": "function:frontend/js/theme.js:resolved",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/theme.js",
+      "target": "function:frontend/js/theme.js:resolved",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/theme.js",
+      "target": "function:frontend/js/theme.js:get",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/theme.js",
+      "target": "function:frontend/js/theme.js:get",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/theme.js",
+      "target": "function:frontend/js/theme.js:_apply",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/theme.js",
+      "target": "function:frontend/js/theme.js:set",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/theme.js",
+      "target": "function:frontend/js/theme.js:set",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/theme.js",
+      "target": "function:frontend/js/theme.js:onChange",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/theme.js",
+      "target": "function:frontend/js/theme.js:onChange",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/theme.js",
+      "target": "function:frontend/js/theme.js:init",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/theme.js",
+      "target": "function:frontend/js/theme.js:init",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/theme.js",
+      "target": "file:tests/test_frontend_reference.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    }
+  ]
+}

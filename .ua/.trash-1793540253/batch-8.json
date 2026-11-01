@@ -1,0 +1,156 @@
+{
+  "nodes": [
+    {
+      "id": "config:.env.example",
+      "type": "config",
+      "name": ".env.example",
+      "filePath": ".env.example",
+      "summary": "Sample environment file read only by backend/core/config.py, listing API keys plus defaults for models, embeddings, retrieval, search, history, and the HTTP server.",
+      "tags": ["configuration", "environment", "secrets", "runtime"],
+      "complexity": "moderate",
+      "languageNotes": "Blank values are ignored. Every setting has a safe default, and only API keys are required to start."
+    },
+    {
+      "id": "service:Procfile",
+      "type": "service",
+      "name": "Procfile",
+      "filePath": "Procfile",
+      "summary": "Process file that starts one uvicorn worker serving backend.main:app on the platform-assigned port.",
+      "tags": ["deployment", "infrastructure", "process-manager"],
+      "complexity": "simple",
+      "languageNotes": "The web process binds to $PORT and forces a single worker because caches and indexes are per-process."
+    },
+    {
+      "id": "document:README.md",
+      "type": "document",
+      "name": "README.md",
+      "filePath": "README.md",
+      "summary": "Getting-started and architecture guide for the low-latency agentic RAG chatbot, covering the chat lifecycle, API, configuration, testing, and the optional MCP server.",
+      "tags": ["documentation", "entry-point", "overview", "architecture"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "config:pytest.ini",
+      "type": "config",
+      "name": "pytest.ini",
+      "filePath": "pytest.ini",
+      "summary": "Pytest settings that collect tests from tests/, add the project root to the path, and exclude live provider tests unless the live marker is selected.",
+      "tags": ["configuration", "testing", "pytest"],
+      "complexity": "simple",
+      "languageNotes": "asyncio_mode is auto, and addopts applies -m \"not live\" so Groq, Gemini, and Tavily calls stay opt-in."
+    },
+    {
+      "id": "document:requirements-dev.txt",
+      "type": "document",
+      "name": "requirements-dev.txt",
+      "filePath": "requirements-dev.txt",
+      "summary": "Development dependency list that includes the runtime requirements and pins pytest, pytest-asyncio, and ruff.",
+      "tags": ["documentation", "dependencies", "development", "testing"],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:requirements.txt",
+      "type": "document",
+      "name": "requirements.txt",
+      "filePath": "requirements.txt",
+      "summary": "Pinned runtime dependencies for the FastAPI server, OpenAI-compatible LLM clients, local ONNX embeddings, FAISS retrieval, document parsers, and the optional MCP server.",
+      "tags": ["documentation", "dependencies", "runtime"],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:skills.md",
+      "type": "document",
+      "name": "skills.md",
+      "filePath": "skills.md",
+      "summary": "Twelve task runbooks for changing models and providers, adding document formats and endpoints, tuning retrieval, and verifying a release.",
+      "tags": ["documentation", "development", "runbook"],
+      "complexity": "moderate"
+    }
+  ],
+  "edges": [
+    {
+      "source": "config:.env.example",
+      "target": "file:backend/core/config.py",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "document:README.md",
+      "target": "file:backend/main.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:README.md",
+      "target": "file:backend/services/chat_service.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:README.md",
+      "target": "config:.env.example",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:README.md",
+      "target": "document:requirements.txt",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:README.md",
+      "target": "document:requirements-dev.txt",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:README.md",
+      "target": "service:Procfile",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "service:Procfile",
+      "target": "file:backend/main.py",
+      "type": "deploys",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "document:requirements.txt",
+      "target": "file:backend/main.py",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:requirements-dev.txt",
+      "target": "document:requirements.txt",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "document:skills.md",
+      "target": "file:backend/core/config.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:skills.md",
+      "target": "config:.env.example",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    }
+  ]
+}

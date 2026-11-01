@@ -1,0 +1,78 @@
+{
+  "nodes": [
+    {
+      "id": "file:frontend/css/animations.css",
+      "type": "file",
+      "name": "animations.css",
+      "filePath": "frontend/css/animations.css",
+      "summary": "Motion stylesheet for the static chatbot SPA: keyframe animations and utility classes for fades, slides, skeletons, the streaming cursor, spinners, and progress fills. Honors prefers-reduced-motion and is linked from frontend/index.html, reusing color and radius tokens from main.css.",
+      "tags": ["stylesheet", "animation", "keyframes", "motion", "accessibility"],
+      "complexity": "moderate",
+      "languageNotes": "A prefers-reduced-motion media query collapses animation and transition durations to near zero for the whole document."
+    },
+    {
+      "id": "file:frontend/css/components.css",
+      "type": "file",
+      "name": "components.css",
+      "filePath": "frontend/css/components.css",
+      "summary": "Component stylesheet for the chatbot UI, covering buttons, inputs, session items, messages, thought steps, citations, code blocks, the input dock, modals, the welcome screen, and upload controls. Loaded by frontend/index.html and styled with design tokens from main.css plus motion classes from animations.css.",
+      "tags": ["stylesheet", "component", "ui", "chat-interface", "design-system"],
+      "complexity": "complex",
+      "languageNotes": "BEM-style class names consume custom properties (colors, radii, transitions) declared in main.css rather than hard-coding the theme."
+    },
+    {
+      "id": "file:frontend/css/main.css",
+      "type": "file",
+      "name": "main.css",
+      "filePath": "frontend/css/main.css",
+      "summary": "Foundation stylesheet that defines the dark-by-default design tokens, light-theme overrides, app-shell layout (sidebar, top bar, chat area, input dock), typography, and the mobile breakpoint. Linked first from frontend/index.html so animations.css and components.css can reuse its custom properties.",
+      "tags": ["stylesheet", "design-tokens", "layout", "theme", "typography"],
+      "complexity": "complex",
+      "languageNotes": "Custom properties live on :root with a [data-theme=\"light\"] override, and an @import loads Inter and JetBrains Mono."
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:frontend/css/animations.css",
+      "target": "file:frontend/css/components.css",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:frontend/css/animations.css",
+      "target": "file:frontend/css/main.css",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:frontend/css/components.css",
+      "target": "file:frontend/css/main.css",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:frontend/css/animations.css",
+      "target": "file:frontend/index.html",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:frontend/css/components.css",
+      "target": "file:frontend/index.html",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:frontend/css/main.css",
+      "target": "file:frontend/index.html",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    }
+  ]
+}

@@ -1,0 +1,1495 @@
+{
+  "scriptCompleted": true,
+  "entryPointCandidates": [
+    {
+      "id": "document:README.md",
+      "score": 5,
+      "name": "README.md",
+      "summary": "Getting-started and architecture guide for the low-latency agentic RAG chatbot, covering the chat lifecycle, API, configuration, testing, and the optional MCP server.",
+      "type": "document"
+    },
+    {
+      "id": "file:backend/main.py",
+      "score": 4,
+      "name": "main.py",
+      "summary": "FastAPI application factory that configures CORS, mounts the SPA, and owns container startup and shutdown.",
+      "type": "file"
+    },
+    {
+      "id": "file:frontend/js/app.js",
+      "score": 4,
+      "name": "app.js",
+      "summary": "Browser entry and state owner. It boots the page, wires composer, session, upload, and GitHub controls, and drives the single POST /chat/stream round trip through window.API and window.Chat.",
+      "type": "file"
+    },
+    {
+      "id": "document:skills.md",
+      "score": 2,
+      "name": "skills.md",
+      "summary": "Twelve task runbooks for changing models and providers, adding document formats and endpoints, tuning retrieval, and verifying a release.",
+      "type": "document"
+    },
+    {
+      "id": "file:backend/__init__.py",
+      "score": 2,
+      "name": "__init__.py",
+      "summary": "Empty package marker for the backend so Python treats the directory as a package.",
+      "type": "file"
+    }
+  ],
+  "fanInRanking": [
+    {
+      "id": "file:tests/test_frontend_guards.py",
+      "fanIn": 24,
+      "name": "test_frontend_guards.py"
+    },
+    {
+      "id": "file:backend/core/config.py",
+      "fanIn": 23,
+      "name": "config.py"
+    },
+    {
+      "id": "file:backend/core/exceptions.py",
+      "fanIn": 15,
+      "name": "exceptions.py"
+    },
+    {
+      "id": "file:tests/test_frontend_workspaces.py",
+      "fanIn": 14,
+      "name": "test_frontend_workspaces.py"
+    },
+    {
+      "id": "file:frontend/index.html",
+      "fanIn": 13,
+      "name": "index.html"
+    },
+    {
+      "id": "file:tests/test_units.py",
+      "fanIn": 12,
+      "name": "test_units.py"
+    },
+    {
+      "id": "file:backend/main.py",
+      "fanIn": 9,
+      "name": "main.py"
+    },
+    {
+      "id": "file:tests/test_api.py",
+      "fanIn": 9,
+      "name": "test_api.py"
+    },
+    {
+      "id": "file:frontend/css/main.css",
+      "fanIn": 8,
+      "name": "main.css"
+    },
+    {
+      "id": "file:backend/models/api.py",
+      "fanIn": 7,
+      "name": "api.py"
+    },
+    {
+      "id": "file:backend/services/chat_service.py",
+      "fanIn": 7,
+      "name": "chat_service.py"
+    },
+    {
+      "id": "file:tests/test_frontend_reference.py",
+      "fanIn": 7,
+      "name": "test_frontend_reference.py"
+    },
+    {
+      "id": "file:tests/test_live.py",
+      "fanIn": 7,
+      "name": "test_live.py"
+    },
+    {
+      "id": "file:backend/services/llm_service.py",
+      "fanIn": 6,
+      "name": "llm_service.py"
+    },
+    {
+      "id": "file:backend/utils/rate_limiter.py",
+      "fanIn": 6,
+      "name": "rate_limiter.py"
+    },
+    {
+      "id": "file:backend/utils/text.py",
+      "fanIn": 6,
+      "name": "text.py"
+    },
+    {
+      "id": "file:backend/utils/timeutil.py",
+      "fanIn": 6,
+      "name": "timeutil.py"
+    },
+    {
+      "id": "file:frontend/css/animations.css",
+      "fanIn": 6,
+      "name": "animations.css"
+    },
+    {
+      "id": "file:backend/core/container.py",
+      "fanIn": 5,
+      "name": "container.py"
+    },
+    {
+      "id": "file:backend/core/database.py",
+      "fanIn": 5,
+      "name": "database.py"
+    }
+  ],
+  "fanOutRanking": [
+    {
+      "id": "file:tests/test_frontend_guards.py",
+      "fanOut": 124,
+      "name": "test_frontend_guards.py"
+    },
+    {
+      "id": "file:frontend/js/ui.js",
+      "fanOut": 110,
+      "name": "ui.js"
+    },
+    {
+      "id": "file:backend/api/routes.py",
+      "fanOut": 89,
+      "name": "routes.py"
+    },
+    {
+      "id": "file:tests/test_api.py",
+      "fanOut": 77,
+      "name": "test_api.py"
+    },
+    {
+      "id": "file:tests/test_frontend_followup.py",
+      "fanOut": 67,
+      "name": "test_frontend_followup.py"
+    },
+    {
+      "id": "file:tests/test_units.py",
+      "fanOut": 66,
+      "name": "test_units.py"
+    },
+    {
+      "id": "file:backend/services/artifact.py",
+      "fanOut": 62,
+      "name": "artifact.py"
+    },
+    {
+      "id": "file:backend/models/api.py",
+      "fanOut": 61,
+      "name": "api.py"
+    },
+    {
+      "id": "file:tests/test_frontend_workspaces.py",
+      "fanOut": 57,
+      "name": "test_frontend_workspaces.py"
+    },
+    {
+      "id": "file:frontend/js/chat.js",
+      "fanOut": 51,
+      "name": "chat.js"
+    },
+    {
+      "id": "file:frontend/js/api.js",
+      "fanOut": 47,
+      "name": "api.js"
+    },
+    {
+      "id": "file:tests/test_frontend_sanitizer.py",
+      "fanOut": 44,
+      "name": "test_frontend_sanitizer.py"
+    },
+    {
+      "id": "file:backend/core/container.py",
+      "fanOut": 39,
+      "name": "container.py"
+    },
+    {
+      "id": "file:backend/services/parser.py",
+      "fanOut": 36,
+      "name": "parser.py"
+    },
+    {
+      "id": "file:frontend/index.html",
+      "fanOut": 33,
+      "name": "index.html"
+    },
+    {
+      "id": "file:frontend/js/app.js",
+      "fanOut": 32,
+      "name": "app.js"
+    },
+    {
+      "id": "file:frontend/js/utils.js",
+      "fanOut": 31,
+      "name": "utils.js"
+    },
+    {
+      "id": "file:tests/test_artifacts.py",
+      "fanOut": 31,
+      "name": "test_artifacts.py"
+    },
+    {
+      "id": "file:tests/test_frontend_motion.py",
+      "fanOut": 29,
+      "name": "test_frontend_motion.py"
+    },
+    {
+      "id": "file:frontend/js/components/settings.js",
+      "fanOut": 28,
+      "name": "settings.js"
+    }
+  ],
+  "bfsTraversal": {
+    "startNode": "file:backend/main.py",
+    "order": [
+      "file:backend/main.py",
+      "file:backend/api/routes.py",
+      "file:backend/core/config.py",
+      "file:backend/core/container.py",
+      "file:backend/core/exceptions.py",
+      "file:backend/models/api.py",
+      "file:backend/services/artifact.py",
+      "file:backend/services/chat_service.py",
+      "file:backend/services/document_service.py",
+      "file:backend/services/github_service.py",
+      "file:backend/services/llm_service.py",
+      "file:backend/services/parser.py",
+      "file:backend/services/retrieval_service.py",
+      "file:backend/services/search_service.py",
+      "file:backend/services/session_service.py",
+      "file:backend/utils/sse.py",
+      "file:backend/client/http.py",
+      "file:backend/client/search_client.py",
+      "file:backend/client/web_client.py",
+      "file:backend/core/database.py",
+      "file:backend/services/embedding_service.py",
+      "file:backend/services/index_store.py",
+      "file:backend/services/prompt_builder.py",
+      "file:backend/services/rerank_service.py",
+      "file:backend/utils/cache.py",
+      "file:backend/utils/rate_limiter.py",
+      "file:backend/models/db.py",
+      "file:backend/utils/timeutil.py",
+      "file:backend/client/llm_client.py",
+      "file:backend/utils/streaming.py",
+      "file:backend/utils/text.py",
+      "file:backend/utils/ranking.py",
+      "file:backend/utils/net.py",
+      "file:backend/client/embedding_client.py",
+      "file:backend/client/rerank_client.py",
+      "file:backend/utils/numeric.py"
+    ],
+    "depthMap": {
+      "file:backend/main.py": 0,
+      "file:backend/api/routes.py": 1,
+      "file:backend/core/config.py": 1,
+      "file:backend/core/container.py": 1,
+      "file:backend/core/exceptions.py": 2,
+      "file:backend/models/api.py": 2,
+      "file:backend/services/artifact.py": 2,
+      "file:backend/services/chat_service.py": 2,
+      "file:backend/services/document_service.py": 2,
+      "file:backend/services/github_service.py": 2,
+      "file:backend/services/llm_service.py": 2,
+      "file:backend/services/parser.py": 2,
+      "file:backend/services/retrieval_service.py": 2,
+      "file:backend/services/search_service.py": 2,
+      "file:backend/services/session_service.py": 2,
+      "file:backend/utils/sse.py": 2,
+      "file:backend/client/http.py": 2,
+      "file:backend/client/search_client.py": 2,
+      "file:backend/client/web_client.py": 2,
+      "file:backend/core/database.py": 2,
+      "file:backend/services/embedding_service.py": 2,
+      "file:backend/services/index_store.py": 2,
+      "file:backend/services/prompt_builder.py": 2,
+      "file:backend/services/rerank_service.py": 2,
+      "file:backend/utils/cache.py": 2,
+      "file:backend/utils/rate_limiter.py": 2,
+      "file:backend/models/db.py": 3,
+      "file:backend/utils/timeutil.py": 3,
+      "file:backend/client/llm_client.py": 3,
+      "file:backend/utils/streaming.py": 3,
+      "file:backend/utils/text.py": 3,
+      "file:backend/utils/ranking.py": 3,
+      "file:backend/utils/net.py": 3,
+      "file:backend/client/embedding_client.py": 3,
+      "file:backend/client/rerank_client.py": 3,
+      "file:backend/utils/numeric.py": 4
+    },
+    "byDepth": {
+      "0": [
+        "file:backend/main.py"
+      ],
+      "1": [
+        "file:backend/api/routes.py",
+        "file:backend/core/config.py",
+        "file:backend/core/container.py"
+      ],
+      "2": [
+        "file:backend/core/exceptions.py",
+        "file:backend/models/api.py",
+        "file:backend/services/artifact.py",
+        "file:backend/services/chat_service.py",
+        "file:backend/services/document_service.py",
+        "file:backend/services/github_service.py",
+        "file:backend/services/llm_service.py",
+        "file:backend/services/parser.py",
+        "file:backend/services/retrieval_service.py",
+        "file:backend/services/search_service.py",
+        "file:backend/services/session_service.py",
+        "file:backend/utils/sse.py",
+        "file:backend/client/http.py",
+        "file:backend/client/search_client.py",
+        "file:backend/client/web_client.py",
+        "file:backend/core/database.py",
+        "file:backend/services/embedding_service.py",
+        "file:backend/services/index_store.py",
+        "file:backend/services/prompt_builder.py",
+        "file:backend/services/rerank_service.py",
+        "file:backend/utils/cache.py",
+        "file:backend/utils/rate_limiter.py"
+      ],
+      "3": [
+        "file:backend/models/db.py",
+        "file:backend/utils/timeutil.py",
+        "file:backend/client/llm_client.py",
+        "file:backend/utils/streaming.py",
+        "file:backend/utils/text.py",
+        "file:backend/utils/ranking.py",
+        "file:backend/utils/net.py",
+        "file:backend/client/embedding_client.py",
+        "file:backend/client/rerank_client.py"
+      ],
+      "4": [
+        "file:backend/utils/numeric.py"
+      ]
+    }
+  },
+  "nonCodeFiles": {
+    "documentation": [
+      {
+        "id": "document:README.md",
+        "name": "README.md",
+        "type": "document",
+        "summary": "Getting-started and architecture guide for the low-latency agentic RAG chatbot, covering the chat lifecycle, API, configuration, testing, and the optional MCP server."
+      },
+      {
+        "id": "document:requirements-dev.txt",
+        "name": "requirements-dev.txt",
+        "type": "document",
+        "summary": "Development dependency list that includes the runtime requirements and pins pytest, pytest-asyncio, and ruff."
+      },
+      {
+        "id": "document:requirements.txt",
+        "name": "requirements.txt",
+        "type": "document",
+        "summary": "Pinned runtime dependencies for the FastAPI server, OpenAI-compatible LLM clients, local ONNX embeddings, FAISS retrieval, document parsers, and the optional MCP server."
+      },
+      {
+        "id": "document:skills.md",
+        "name": "skills.md",
+        "type": "document",
+        "summary": "Twelve task runbooks for changing models and providers, adding document formats and endpoints, tuning retrieval, and verifying a release."
+      },
+      {
+        "id": "document:docs/redesign/PROJECT_BRIEF.md",
+        "name": "PROJECT_BRIEF.md",
+        "type": "document",
+        "summary": "Shared brief for the AI Assistant Pro redesign: verified stack and serving facts, the DOM and API contracts the UI must keep, exclusive file ownership, and the view/controller seam every subagent follows."
+      },
+      {
+        "id": "document:docs/redesign/audit.md",
+        "name": "audit.md",
+        "type": "document",
+        "summary": "Read-only Phase 1 audit of the vanilla frontend and FastAPI RAG backend, covering the DOM contract, persistence, SSE endpoints, feature gaps, security risks, and a staged implementation plan."
+      },
+      {
+        "id": "document:docs/redesign/design-spec.md",
+        "name": "design-spec.md",
+        "type": "document",
+        "summary": "Phase 1 design specification for the chat shell: color and type tokens, theme and responsive layout, component states and ARIA, screen specs, the AI visualization, and the icon plan implementers must follow."
+      },
+      {
+        "id": "document:docs/redesign/integration-notes.md",
+        "name": "integration-notes.md",
+        "type": "document",
+        "summary": "Controller-layer notes mapping each UI action in app.js and api.js to its endpoint and view calls, plus backend gaps, QA follow-ups, and the reference-fidelity deviations that were left in place."
+      },
+      {
+        "id": "document:docs/redesign/integration-test-plan.md",
+        "name": "integration-test-plan.md",
+        "type": "document",
+        "summary": "Unexecuted plan for testing the real backend in an isolated loopback environment, with a scripted fake LLM and a matrix covering streaming, cancellation, uploads, SSRF, sessions, and the authorization gap."
+      },
+      {
+        "id": "document:docs/redesign/qa-report-04.md",
+        "name": "qa-report-04.md",
+        "type": "document",
+        "summary": "Stage 4 QA report that passes the controller and view seam with issues: welcome cards never send, streaming and focus behave, and axe finds no violations, while a toast can cover Stop."
+      },
+      {
+        "id": "document:docs/redesign/qa-report-05.md",
+        "name": "qa-report-05.md",
+        "type": "document",
+        "summary": "Reference-design QA report that passes the restyled shell with issues, closing the toast overlap and flagging an unverifiable privacy claim, weak outline contrast, and a misleading Upload Files card."
+      },
+      {
+        "id": "document:docs/redesign/qa-report-06.md",
+        "name": "qa-report-06.md",
+        "type": "document",
+        "summary": "Re-verification report that closes every QA-05 finding, confirms the safer upload copy and file-chooser card, and re-runs the accessibility and regression suite with a clean pass."
+      },
+      {
+        "id": "document:docs/redesign/security-issue-authz.md",
+        "name": "security-issue-authz.md",
+        "type": "document",
+        "summary": "Recorded, unfixed finding that session read, rename, delete, and message feedback do not check ownership, so a guessed session id is enough because user_id is client-supplied and not authentication."
+      },
+      {
+        "id": "document:docs/redesign/stage4-backlog.md",
+        "name": "stage4-backlog.md",
+        "type": "document",
+        "summary": "Stage 4 controller backlog requiring welcome cards to switch mode and fill the composer without sending, plus carried QA items for focus, confirm dialogs, rename, model retry, and upload types."
+      },
+      {
+        "id": "document:docs/redesign/ui-ux-implementation-notes.md",
+        "name": "ui-ux-implementation-notes.md",
+        "type": "document",
+        "summary": "Implementation record of the workspace dropdown, workspaces, and Settings screen, stating where the written brief overrides the presentation board and which controls were omitted because the backend cannot back them."
+      },
+      {
+        "id": "document:docs/redesign/view-contract.md",
+        "name": "view-contract.md",
+        "type": "document",
+        "summary": "View/controller contract listing preserved DOM ids, exported view functions, callbacks, theme storage, and the stage-by-stage markup and script-order changes through the reference-design pass."
+      },
+      {
+        "id": "document:docs/AI_ASSISTANT_PRO_MASTER_TASK.md",
+        "name": "AI_ASSISTANT_PRO_MASTER_TASK.md",
+        "type": "document",
+        "summary": "Implementation brief for turning AI Assistant Pro into a production frontend, in 18 phases covering inspection, the design system, layout, theme, animated identity, welcome and chat, composer, model selection, document, research, and code w"
+      },
+      {
+        "id": "document:frontend/assets/LICENSE-lucide.txt",
+        "name": "LICENSE-lucide.txt",
+        "type": "document",
+        "summary": "ISC license for the Lucide icon set vendored as an inline SVG sprite in frontend/index.html (lucide-static v1.60.0, unmodified path data)."
+      }
+    ],
+    "infrastructure": [
+      {
+        "id": "service:Procfile",
+        "name": "Procfile",
+        "type": "service",
+        "summary": "Process file that starts one uvicorn worker serving backend.main:app on the platform-assigned port."
+      }
+    ],
+    "data": [
+      {
+        "id": "endpoint:backend/api/routes.py:GET /ping",
+        "name": "GET /ping",
+        "type": "endpoint",
+        "summary": "Liveness route used by uptime monitors."
+      },
+      {
+        "id": "endpoint:backend/api/routes.py:GET /health",
+        "name": "GET /health",
+        "type": "endpoint",
+        "summary": "Service health route returning status, dependency checks, and details."
+      },
+      {
+        "id": "endpoint:backend/api/routes.py:GET /config",
+        "name": "GET /config",
+        "type": "endpoint",
+        "summary": "Public configuration route for upload limits and GitHub OAuth readiness."
+      },
+      {
+        "id": "endpoint:backend/api/routes.py:GET /models",
+        "name": "GET /models",
+        "type": "endpoint",
+        "summary": "Model catalog route listing available chat models and the default id."
+      },
+      {
+        "id": "endpoint:backend/api/routes.py:POST /chat/stream",
+        "name": "POST /chat/stream",
+        "type": "endpoint",
+        "summary": "Streaming chat route that emits SSE events from the chat pipeline."
+      },
+      {
+        "id": "endpoint:backend/api/routes.py:POST /chat",
+        "name": "POST /chat",
+        "type": "endpoint",
+        "summary": "Non-streaming chat route that returns the finished answer as JSON."
+      },
+      {
+        "id": "endpoint:backend/api/routes.py:POST /generate",
+        "name": "POST /generate",
+        "type": "endpoint",
+        "summary": "Legacy generate route for a plain completion without retrieval or history."
+      },
+      {
+        "id": "endpoint:backend/api/routes.py:GET /sessions",
+        "name": "GET /sessions",
+        "type": "endpoint",
+        "summary": "Lists chat session summaries for a user."
+      },
+      {
+        "id": "endpoint:backend/api/routes.py:POST /sessions",
+        "name": "POST /sessions",
+        "type": "endpoint",
+        "summary": "Creates a chat session."
+      },
+      {
+        "id": "endpoint:backend/api/routes.py:GET /sessions/{session_id}",
+        "name": "GET /sessions/{session_id}",
+        "type": "endpoint",
+        "summary": "Fetches one session including its messages."
+      },
+      {
+        "id": "endpoint:backend/api/routes.py:PATCH /sessions/{session_id}",
+        "name": "PATCH /sessions/{session_id}",
+        "type": "endpoint",
+        "summary": "Updates session title, model, or mode."
+      },
+      {
+        "id": "endpoint:backend/api/routes.py:DELETE /sessions/{session_id}",
+        "name": "DELETE /sessions/{session_id}",
+        "type": "endpoint",
+        "summary": "Deletes a session."
+      },
+      {
+        "id": "endpoint:backend/api/routes.py:POST /sessions/{session_id}/messages",
+        "name": "POST /sessions/{session_id}/messages",
+        "type": "endpoint",
+        "summary": "Appends a message to a session."
+      },
+      {
+        "id": "endpoint:backend/api/routes.py:GET /messages/{message_id}/download",
+        "name": "GET /messages/{message_id}/download",
+        "type": "endpoint",
+        "summary": "Downloads a message artifact as Markdown, text, Excel, Word, or PDF."
+      },
+      {
+        "id": "endpoint:backend/api/routes.py:POST /messages/{message_id}/feedback",
+        "name": "POST /messages/{message_id}/feedback",
+        "type": "endpoint",
+        "summary": "Records feedback on an assistant message."
+      },
+      {
+        "id": "endpoint:backend/api/routes.py:POST /upload",
+        "name": "POST /upload",
+        "type": "endpoint",
+        "summary": "Uploads a file or URL for parsing and indexing."
+      },
+      {
+        "id": "endpoint:backend/api/routes.py:GET /documents",
+        "name": "GET /documents",
+        "type": "endpoint",
+        "summary": "Lists indexed documents for a user."
+      },
+      {
+        "id": "endpoint:backend/api/routes.py:DELETE /documents/{doc_id}",
+        "name": "DELETE /documents/{doc_id}",
+        "type": "endpoint",
+        "summary": "Deletes an indexed document."
+      },
+      {
+        "id": "endpoint:backend/api/routes.py:POST /github/connect",
+        "name": "POST /github/connect",
+        "type": "endpoint",
+        "summary": "Connects and indexes a GitHub repository."
+      },
+      {
+        "id": "endpoint:backend/api/routes.py:GET /github/repos",
+        "name": "GET /github/repos",
+        "type": "endpoint",
+        "summary": "Lists connected GitHub repositories."
+      },
+      {
+        "id": "endpoint:backend/api/routes.py:DELETE /github/repos/{repo_id}",
+        "name": "DELETE /github/repos/{repo_id}",
+        "type": "endpoint",
+        "summary": "Removes a connected GitHub repository."
+      },
+      {
+        "id": "endpoint:backend/api/routes.py:POST /github/oauth/device",
+        "name": "POST /github/oauth/device",
+        "type": "endpoint",
+        "summary": "Starts GitHub device-code OAuth."
+      },
+      {
+        "id": "endpoint:backend/api/routes.py:POST /github/oauth/poll",
+        "name": "POST /github/oauth/poll",
+        "type": "endpoint",
+        "summary": "Polls GitHub device-code OAuth until it completes or expires."
+      },
+      {
+        "id": "endpoint:backend/api/routes.py:POST /retrieve",
+        "name": "POST /retrieve",
+        "type": "endpoint",
+        "summary": "Hybrid RAG retrieval route with optional reranking."
+      },
+      {
+        "id": "endpoint:backend/api/routes.py:POST /search",
+        "name": "POST /search",
+        "type": "endpoint",
+        "summary": "Web search route backed by Tavily with a Serper fallback."
+      },
+      {
+        "id": "table:backend/models/db.py:sessions",
+        "name": "sessions",
+        "type": "table",
+        "summary": "Chat sessions keyed by user, with title, model, mode, and created/updated timestamps. Deleting a session cascades to its messages."
+      },
+      {
+        "id": "table:backend/models/db.py:messages",
+        "name": "messages",
+        "type": "table",
+        "summary": "Chat turns belonging to a session, storing role, content, citations, thumbs feedback, and JSON metadata."
+      },
+      {
+        "id": "table:backend/models/db.py:documents",
+        "name": "documents",
+        "type": "table",
+        "summary": "Ingested uploads, URLs, and GitHub files per user, with file type, chunk count, and index time."
+      },
+      {
+        "id": "table:backend/models/db.py:github_credentials",
+        "name": "github_credentials",
+        "type": "table",
+        "summary": "One GitHub token per user, marked as a personal access token or an OAuth token, with an updated timestamp."
+      },
+      {
+        "id": "table:backend/models/db.py:repo_contexts",
+        "name": "repo_contexts",
+        "type": "table",
+        "summary": "Connected repositories for a user, including owner, name, branch, generated brief, and indexed file count."
+      }
+    ],
+    "config": [
+      {
+        "id": "config:.env.example",
+        "name": ".env.example",
+        "type": "config",
+        "summary": "Sample environment file read only by backend/core/config.py, listing API keys plus defaults for models, embeddings, retrieval, search, history, and the HTTP server."
+      },
+      {
+        "id": "config:pytest.ini",
+        "name": "pytest.ini",
+        "type": "config",
+        "summary": "Pytest settings that collect tests from tests/, add the project root to the path, and exclude live provider tests unless the live marker is selected."
+      }
+    ]
+  },
+  "clusters": [],
+  "layers": {
+    "count": 10,
+    "list": [
+      {
+        "id": "layer:api",
+        "name": "API Layer",
+        "description": "FastAPI factory in main.py, HTTP routes, and the MCP server that stream chat, sessions, uploads, retrieval, and GitHub."
+      },
+      {
+        "id": "layer:service",
+        "name": "Service Layer",
+        "description": "Chat streaming, hybrid BM25 and FAISS retrieval, Groq and Gemini failover, document ingestion, GitHub context, and session orchestration."
+      },
+      {
+        "id": "layer:client",
+        "name": "Client Layer",
+        "description": "Outbound adapters for LLM chat, embeddings, reranking, web search, and SSRF-guarded HTTP fetches."
+      },
+      {
+        "id": "layer:core",
+        "name": "Core Layer",
+        "description": "Composition root, the sole environment reader, shared exceptions, and the SQLAlchemy engine and session factory."
+      },
+      {
+        "id": "layer:data",
+        "name": "Data Layer",
+        "description": "Pydantic API schemas, SQLAlchemy tables for sessions, messages, documents, and GitHub, plus the on-disk data directory."
+      },
+      {
+        "id": "layer:utility",
+        "name": "Utility Layer",
+        "description": "Shared text, ranking, SSE, cache, rate-limit, time, and URL-safety helpers used across the backend."
+      },
+      {
+        "id": "layer:frontend",
+        "name": "Frontend",
+        "description": "Vanilla JavaScript chat SPA: shell, workspace components, theme, and stylesheets mounted by the FastAPI app."
+      },
+      {
+        "id": "layer:test",
+        "name": "Test Layer",
+        "description": "Pytest suite and headless browser harness that lock import boundaries, retrieval, providers, and the SPA."
+      },
+      {
+        "id": "layer:documentation",
+        "name": "Documentation",
+        "description": "README, dependency lists, redesign specs, QA reports, and the vendored Lucide icon license."
+      },
+      {
+        "id": "layer:config",
+        "name": "Configuration",
+        "description": "Environment sample, Pipenv manifest, pytest settings, the staged settings module, and the Procfile that starts uvicorn."
+      }
+    ]
+  },
+  "nodeSummaryIndex": {
+    "file:backend/api/mcp_server.py": {
+      "name": "mcp_server.py",
+      "type": "file",
+      "summary": "Optional stdio MCP server that exposes document search, web search, GitHub connect, and the full chat pipeline to MCP clients."
+    },
+    "file:backend/api/routes.py": {
+      "name": "routes.py",
+      "type": "file",
+      "summary": "FastAPI router of thin HTTP handlers for chat streaming, sessions, uploads, GitHub, retrieval, and web search."
+    },
+    "file:backend/client/search_client.py": {
+      "name": "search_client.py",
+      "type": "file",
+      "summary": "Async HTTP clients for Tavily and Serper web search, each with a pooled client and one retry on transient failures."
+    },
+    "file:backend/core/container.py": {
+      "name": "container.py",
+      "type": "file",
+      "summary": "Composition root that constructs every service once, wires constructor dependencies, and exposes FastAPI Depends getters."
+    },
+    "file:backend/main.py": {
+      "name": "main.py",
+      "type": "file",
+      "summary": "FastAPI application factory that configures CORS, mounts the SPA, and owns container startup and shutdown."
+    },
+    "file:backend/models/api.py": {
+      "name": "api.py",
+      "type": "file",
+      "summary": "Pydantic request and response schemas for sessions, chat, uploads, retrieval, search, GitHub, and health."
+    },
+    "file:backend/services/artifact.py": {
+      "name": "artifact.py",
+      "type": "file",
+      "summary": "Validates a structured download document and renders it to Markdown, text, Excel, Word, or PDF only when a file is requested."
+    },
+    "file:backend/services/chat_service.py": {
+      "name": "chat_service.py",
+      "type": "file",
+      "summary": "Chat pipeline that routes a turn, checks the semantic cache, retrieves and searches in parallel, then streams a model answer with failover."
+    },
+    "file:backend/services/search_service.py": {
+      "name": "search_service.py",
+      "type": "file",
+      "summary": "Web search policy with TTL caching, a hard deadline, Tavily-to-Serper fallback, and parallel sub-queries for research mode."
+    },
+    "file:backend/utils/cache.py": {
+      "name": "cache.py",
+      "type": "file",
+      "summary": "Thread-safe in-process caches: a bounded TTL LRU cache and a per-scope cosine similarity cache of previous answers."
+    },
+    "file:backend/utils/sse.py": {
+      "name": "sse.py",
+      "type": "file",
+      "summary": "Encodes a pipeline event dict as one Server-Sent Events frame with an event name and JSON data."
+    },
+    "file:tests/test_api.py": {
+      "name": "test_api.py",
+      "type": "file",
+      "summary": "Offline HTTP tests that exercise every API route, the SSE chat contract, uploads, search fallback, and rate limits."
+    },
+    "file:tests/test_live.py": {
+      "name": "test_live.py",
+      "type": "file",
+      "summary": "Opt-in live tests that measure real model streaming, hybrid retrieval quality, and Tavily latency against provider keys."
+    },
+    "endpoint:backend/api/routes.py:GET /ping": {
+      "name": "GET /ping",
+      "type": "endpoint",
+      "summary": "Liveness route used by uptime monitors."
+    },
+    "endpoint:backend/api/routes.py:GET /health": {
+      "name": "GET /health",
+      "type": "endpoint",
+      "summary": "Service health route returning status, dependency checks, and details."
+    },
+    "endpoint:backend/api/routes.py:GET /config": {
+      "name": "GET /config",
+      "type": "endpoint",
+      "summary": "Public configuration route for upload limits and GitHub OAuth readiness."
+    },
+    "endpoint:backend/api/routes.py:GET /models": {
+      "name": "GET /models",
+      "type": "endpoint",
+      "summary": "Model catalog route listing available chat models and the default id."
+    },
+    "endpoint:backend/api/routes.py:POST /chat/stream": {
+      "name": "POST /chat/stream",
+      "type": "endpoint",
+      "summary": "Streaming chat route that emits SSE events from the chat pipeline."
+    },
+    "endpoint:backend/api/routes.py:POST /chat": {
+      "name": "POST /chat",
+      "type": "endpoint",
+      "summary": "Non-streaming chat route that returns the finished answer as JSON."
+    },
+    "endpoint:backend/api/routes.py:POST /generate": {
+      "name": "POST /generate",
+      "type": "endpoint",
+      "summary": "Legacy generate route for a plain completion without retrieval or history."
+    },
+    "endpoint:backend/api/routes.py:GET /sessions": {
+      "name": "GET /sessions",
+      "type": "endpoint",
+      "summary": "Lists chat session summaries for a user."
+    },
+    "endpoint:backend/api/routes.py:POST /sessions": {
+      "name": "POST /sessions",
+      "type": "endpoint",
+      "summary": "Creates a chat session."
+    },
+    "endpoint:backend/api/routes.py:GET /sessions/{session_id}": {
+      "name": "GET /sessions/{session_id}",
+      "type": "endpoint",
+      "summary": "Fetches one session including its messages."
+    },
+    "endpoint:backend/api/routes.py:PATCH /sessions/{session_id}": {
+      "name": "PATCH /sessions/{session_id}",
+      "type": "endpoint",
+      "summary": "Updates session title, model, or mode."
+    },
+    "endpoint:backend/api/routes.py:DELETE /sessions/{session_id}": {
+      "name": "DELETE /sessions/{session_id}",
+      "type": "endpoint",
+      "summary": "Deletes a session."
+    },
+    "endpoint:backend/api/routes.py:POST /sessions/{session_id}/messages": {
+      "name": "POST /sessions/{session_id}/messages",
+      "type": "endpoint",
+      "summary": "Appends a message to a session."
+    },
+    "endpoint:backend/api/routes.py:GET /messages/{message_id}/download": {
+      "name": "GET /messages/{message_id}/download",
+      "type": "endpoint",
+      "summary": "Downloads a message artifact as Markdown, text, Excel, Word, or PDF."
+    },
+    "endpoint:backend/api/routes.py:POST /messages/{message_id}/feedback": {
+      "name": "POST /messages/{message_id}/feedback",
+      "type": "endpoint",
+      "summary": "Records feedback on an assistant message."
+    },
+    "endpoint:backend/api/routes.py:POST /upload": {
+      "name": "POST /upload",
+      "type": "endpoint",
+      "summary": "Uploads a file or URL for parsing and indexing."
+    },
+    "endpoint:backend/api/routes.py:GET /documents": {
+      "name": "GET /documents",
+      "type": "endpoint",
+      "summary": "Lists indexed documents for a user."
+    },
+    "endpoint:backend/api/routes.py:DELETE /documents/{doc_id}": {
+      "name": "DELETE /documents/{doc_id}",
+      "type": "endpoint",
+      "summary": "Deletes an indexed document."
+    },
+    "endpoint:backend/api/routes.py:POST /github/connect": {
+      "name": "POST /github/connect",
+      "type": "endpoint",
+      "summary": "Connects and indexes a GitHub repository."
+    },
+    "endpoint:backend/api/routes.py:GET /github/repos": {
+      "name": "GET /github/repos",
+      "type": "endpoint",
+      "summary": "Lists connected GitHub repositories."
+    },
+    "endpoint:backend/api/routes.py:DELETE /github/repos/{repo_id}": {
+      "name": "DELETE /github/repos/{repo_id}",
+      "type": "endpoint",
+      "summary": "Removes a connected GitHub repository."
+    },
+    "endpoint:backend/api/routes.py:POST /github/oauth/device": {
+      "name": "POST /github/oauth/device",
+      "type": "endpoint",
+      "summary": "Starts GitHub device-code OAuth."
+    },
+    "endpoint:backend/api/routes.py:POST /github/oauth/poll": {
+      "name": "POST /github/oauth/poll",
+      "type": "endpoint",
+      "summary": "Polls GitHub device-code OAuth until it completes or expires."
+    },
+    "endpoint:backend/api/routes.py:POST /retrieve": {
+      "name": "POST /retrieve",
+      "type": "endpoint",
+      "summary": "Hybrid RAG retrieval route with optional reranking."
+    },
+    "endpoint:backend/api/routes.py:POST /search": {
+      "name": "POST /search",
+      "type": "endpoint",
+      "summary": "Web search route backed by Tavily with a Serper fallback."
+    },
+    "file:backend/client/embedding_client.py": {
+      "name": "embedding_client.py",
+      "type": "file",
+      "summary": "Synchronous embedding backends for local fastembed ONNX, Google Gemini, and Cohere. Each client returns L2-normalised float32 vectors so inner product equals cosine."
+    },
+    "file:backend/client/http.py": {
+      "name": "http.py",
+      "type": "file",
+      "summary": "Factory for one shared httpx AsyncClient with a connect timeout from Settings and a keep-alive pool for outbound LLM and search calls."
+    },
+    "file:backend/client/rerank_client.py": {
+      "name": "rerank_client.py",
+      "type": "file",
+      "summary": "Cross-encoder rerank backends for local fastembed ONNX and Cohere. rerank returns one score in [0, 1] per document, aligned with input order."
+    },
+    "file:backend/core/config.py": {
+      "name": "config.py",
+      "type": "file",
+      "summary": "Sole environment reader for the app. Pydantic settings hold API keys, the free-tier model registry, RAG and rerank thresholds, and derived data paths."
+    },
+    "file:backend/services/__init__.py": {
+      "name": "__init__.py",
+      "type": "file",
+      "summary": "Empty package marker that lets backend.services modules be imported as a package."
+    },
+    "file:backend/services/embedding_service.py": {
+      "name": "embedding_service.py",
+      "type": "file",
+      "summary": "Lazy embedding lifecycle with a 60-second failure cooldown, thread-safe load, and async wrappers around the synchronous clients."
+    },
+    "file:backend/services/rerank_service.py": {
+      "name": "rerank_service.py",
+      "type": "file",
+      "summary": "Lazy reranker lifecycle with cooldown, a timeout-bounded async rerank, and status so retrieval can fall back to fused order when the model is down."
+    },
+    "file:backend/utils/numeric.py": {
+      "name": "numeric.py",
+      "type": "file",
+      "summary": "Shared numeric helpers: row-wise L2 normalisation for embedding matrices and a numerically stable sigmoid for rerank logits."
+    },
+    "file:tests/test_frontend_shell.py": {
+      "name": "test_frontend_shell.py",
+      "type": "file",
+      "summary": "Static checks that the four workspace modes live in one composer dropdown matching backend MODES, and that the sidebar, header, and rail tooltips stay accessible."
+    },
+    "file:tests/test_parser_formats.py": {
+      "name": "test_parser_formats.py",
+      "type": "file",
+      "summary": "Covers document parsing for office, web, legacy, and image/OCR formats, PDF pdfium versus pdfplumber fallbacks, and embedding load cooldown plus vector order."
+    },
+    "file:backend/client/llm_client.py": {
+      "name": "llm_client.py",
+      "type": "file",
+      "summary": "OpenAI-compatible transport for Groq and Google chat models: opens streamed completions, lists model ids, and maps SDK failures to normalised LLMError codes."
+    },
+    "file:backend/core/exceptions.py": {
+      "name": "exceptions.py",
+      "type": "file",
+      "summary": "Shared application exception hierarchy whose messages are safe to show to clients and never echo upstream provider text."
+    },
+    "file:backend/services/llm_service.py": {
+      "name": "llm_service.py",
+      "type": "file",
+      "summary": "LLM policy layer that selects a model chain, fails over before the first token, and applies a circuit breaker plus quota guard around provider clients."
+    },
+    "file:backend/utils/rate_limiter.py": {
+      "name": "rate_limiter.py",
+      "type": "file",
+      "summary": "Per-user token-bucket throttling and a per-model rolling quota guard that lets the LLM layer skip exhausted free-tier models before they return 429."
+    },
+    "file:tests/conftest.py": {
+      "name": "conftest.py",
+      "type": "file",
+      "summary": "Offline pytest fixtures: deterministic embedder and reranker fakes, a scripted LLM provider, and a ServiceContainer factory that builds the FastAPI test client."
+    },
+    "file:tests/test_artifacts.py": {
+      "name": "test_artifacts.py",
+      "type": "file",
+      "summary": "Exercises document validation, markdown-to-file rendering, and the chat SSE path that emits an artifact and serves every download format."
+    },
+    "file:tests/test_llm.py": {
+      "name": "test_llm.py",
+      "type": "file",
+      "summary": "Covers LLMService failover, circuit-breaker trips, quota-guard skips, think-block filtering, and classify_exception status mapping."
+    },
+    "file:tests/test_retrieval.py": {
+      "name": "test_retrieval.py",
+      "type": "file",
+      "summary": "Offline checks for hybrid ingest and search, owner isolation, embedder and reranker degradation, and atomic index rollback."
+    },
+    "file:backend/core/database.py": {
+      "name": "database.py",
+      "type": "file",
+      "summary": "Owns the SQLAlchemy engine and session factory for chat persistence. Defines the declarative Base and a Database wrapper that creates tables, runs short transactions, and applies additive column migrations."
+    },
+    "file:backend/models/db.py": {
+      "name": "db.py",
+      "type": "file",
+      "summary": "SQLAlchemy ORM models for chat sessions, messages, uploaded documents, GitHub credentials, and connected repository briefs."
+    },
+    "file:backend/services/document_service.py": {
+      "name": "document_service.py",
+      "type": "file",
+      "summary": "Ingests files, URLs, and raw text by parsing, chunking, embedding, and writing a hybrid search index plus a document row. Also lists and deletes documents and re-embeds chunks when the embedding model changes."
+    },
+    "file:backend/services/github_service.py": {
+      "name": "github_service.py",
+      "type": "file",
+      "summary": "Connects a GitHub repository, indexes selected source files into the RAG store, and keeps a per-user token plus an LLM-written repository brief. Supports personal access tokens and the OAuth device flow."
+    },
+    "file:backend/services/session_service.py": {
+      "name": "session_service.py",
+      "type": "file",
+      "summary": "Creates, lists, updates, and deletes chat sessions and messages in short database transactions, returning pydantic schemas so callers never hold ORM objects."
+    },
+    "file:backend/utils/timeutil.py": {
+      "name": "timeutil.py",
+      "type": "file",
+      "summary": "Provides a naive UTC timestamp for database defaults and parses duration strings such as 2.28s, 1m26.4s, and 120ms into seconds."
+    },
+    "file:tests/test_github.py": {
+      "name": "test_github.py",
+      "type": "file",
+      "summary": "Tests GitHub URL parsing, source-path selection, repository connect and delete, OAuth device flow, code-mode chat that receives the repo brief, and MCP GitHub tool exposure."
+    },
+    "table:backend/models/db.py:sessions": {
+      "name": "sessions",
+      "type": "table",
+      "summary": "Chat sessions keyed by user, with title, model, mode, and created/updated timestamps. Deleting a session cascades to its messages."
+    },
+    "table:backend/models/db.py:messages": {
+      "name": "messages",
+      "type": "table",
+      "summary": "Chat turns belonging to a session, storing role, content, citations, thumbs feedback, and JSON metadata."
+    },
+    "table:backend/models/db.py:documents": {
+      "name": "documents",
+      "type": "table",
+      "summary": "Ingested uploads, URLs, and GitHub files per user, with file type, chunk count, and index time."
+    },
+    "table:backend/models/db.py:github_credentials": {
+      "name": "github_credentials",
+      "type": "table",
+      "summary": "One GitHub token per user, marked as a personal access token or an OAuth token, with an updated timestamp."
+    },
+    "table:backend/models/db.py:repo_contexts": {
+      "name": "repo_contexts",
+      "type": "table",
+      "summary": "Connected repositories for a user, including owner, name, branch, generated brief, and indexed file count."
+    },
+    "file:backend/services/index_store.py": {
+      "name": "index_store.py",
+      "type": "file",
+      "summary": "Persistent hybrid index that stores chunk text in SQLite with FTS5 BM25 and per-user FAISS indexes keyed by a hash of the user id, committing rows and vectors together."
+    },
+    "file:backend/services/prompt_builder.py": {
+      "name": "prompt_builder.py",
+      "type": "file",
+      "summary": "Assembles mode and specialist system prompts, numbered document and web context, and a token-budgeted chat history so every client gets the same prompt."
+    },
+    "file:backend/services/retrieval_service.py": {
+      "name": "retrieval_service.py",
+      "type": "file",
+      "summary": "Fuses FAISS cosine hits with FTS5 BM25 through reciprocal rank fusion, reranks the candidates, and gates them by relevance, falling back to lexical search when embeddings or the reranker fail."
+    },
+    "file:backend/utils/ranking.py": {
+      "name": "ranking.py",
+      "type": "file",
+      "summary": "Rank-fusion helper that merges weighted ranked id lists with reciprocal rank fusion."
+    },
+    "file:backend/utils/streaming.py": {
+      "name": "streaming.py",
+      "type": "file",
+      "summary": "Streaming text filter that strips think-style reasoning blocks from model output even when tags are split across chunks."
+    },
+    "file:backend/utils/text.py": {
+      "name": "text.py",
+      "type": "file",
+      "summary": "Text helpers for conservative token estimates, query normalization, content-term extraction, and safe FTS5 query strings."
+    },
+    "file:tests/test_units.py": {
+      "name": "test_units.py",
+      "type": "file",
+      "summary": "Pytest unit tests for settings validation, caches, rate limits, think-tag filtering, FTS helpers, rank fusion, query routing, prompt assembly, and document parsing."
+    },
+    "file:tests/browser_harness.py": {
+      "name": "browser_harness.py",
+      "type": "file",
+      "summary": "Shared headless-Chrome runner for frontend scenario tests. It serves frontend/ with GET only, injects the fetch stub from the guard suite, and returns the JSON a scenario writes into the page."
+    },
+    "file:tests/test_frontend_followup.py": {
+      "name": "test_frontend_followup.py",
+      "type": "file",
+      "summary": "Stage-4 follow-up tests for resend, abort, busy notices, and SSE error handling. Static checks read the controller and chat renderer; browser checks run against a fetch stub and never start the backend."
+    },
+    "file:tests/test_frontend_guards.py": {
+      "name": "test_frontend_guards.py",
+      "type": "file",
+      "summary": "Offline guards for the frontend shell, chat renderer, citations, and controller, plus a stub-only Chrome run of send, retry, and upload failures. View scripts are forbidden from calling the backend or injecting HTML."
+    },
+    "file:tests/test_frontend_motion.py": {
+      "name": "test_frontend_motion.py",
+      "type": "file",
+      "summary": "Guards the GSAP motion layer: the library is vendored and hash-pinned, loaded lazily from the same origin, and skipped entirely under reduced motion. Browser cases confirm content stays visible and interactive."
+    },
+    "file:tests/test_frontend_startup.py": {
+      "name": "test_frontend_startup.py",
+      "type": "file",
+      "summary": "Regression tests that a startup failure must not leave the model list stuck on \"Loading models…\". Data loading starts before event binding, and a stale ui.js still surfaces a reload hint."
+    },
+    "file:tests/test_frontend_workspaces.py": {
+      "name": "test_frontend_workspaces.py",
+      "type": "file",
+      "summary": "Guards for the Documents, Research, and Code workspaces, settings, preferences, and uploads. Static checks stay offline; the browser scenario uses the shared fetch stub and refuses every non-GET."
+    },
+    "file:backend/client/web_client.py": {
+      "name": "web_client.py",
+      "type": "file",
+      "summary": "SSRF-safe HTTP client that downloads HTML and text pages for URL ingestion, re-validating every redirect and rejecting oversized responses."
+    },
+    "file:backend/services/parser.py": {
+      "name": "parser.py",
+      "type": "file",
+      "summary": "Converts uploaded documents and web pages into page records of text plus metadata, covering PDF, Office, CSV, Excel, HTML, JSON, images, and plain text."
+    },
+    "file:backend/utils/net.py": {
+      "name": "net.py",
+      "type": "file",
+      "summary": "SSRF guard that allows only http(s) URLs whose resolved addresses are public."
+    },
+    "config:.env.example": {
+      "name": ".env.example",
+      "type": "config",
+      "summary": "Sample environment file read only by backend/core/config.py, listing API keys plus defaults for models, embeddings, retrieval, search, history, and the HTTP server."
+    },
+    "service:Procfile": {
+      "name": "Procfile",
+      "type": "service",
+      "summary": "Process file that starts one uvicorn worker serving backend.main:app on the platform-assigned port."
+    },
+    "document:README.md": {
+      "name": "README.md",
+      "type": "document",
+      "summary": "Getting-started and architecture guide for the low-latency agentic RAG chatbot, covering the chat lifecycle, API, configuration, testing, and the optional MCP server."
+    },
+    "config:pytest.ini": {
+      "name": "pytest.ini",
+      "type": "config",
+      "summary": "Pytest settings that collect tests from tests/, add the project root to the path, and exclude live provider tests unless the live marker is selected."
+    },
+    "document:requirements-dev.txt": {
+      "name": "requirements-dev.txt",
+      "type": "document",
+      "summary": "Development dependency list that includes the runtime requirements and pins pytest, pytest-asyncio, and ruff."
+    },
+    "document:requirements.txt": {
+      "name": "requirements.txt",
+      "type": "document",
+      "summary": "Pinned runtime dependencies for the FastAPI server, OpenAI-compatible LLM clients, local ONNX embeddings, FAISS retrieval, document parsers, and the optional MCP server."
+    },
+    "document:skills.md": {
+      "name": "skills.md",
+      "type": "document",
+      "summary": "Twelve task runbooks for changing models and providers, adding document formats and endpoints, tuning retrieval, and verifying a release."
+    },
+    "document:docs/redesign/PROJECT_BRIEF.md": {
+      "name": "PROJECT_BRIEF.md",
+      "type": "document",
+      "summary": "Shared brief for the AI Assistant Pro redesign: verified stack and serving facts, the DOM and API contracts the UI must keep, exclusive file ownership, and the view/controller seam every subagent follows."
+    },
+    "document:docs/redesign/audit.md": {
+      "name": "audit.md",
+      "type": "document",
+      "summary": "Read-only Phase 1 audit of the vanilla frontend and FastAPI RAG backend, covering the DOM contract, persistence, SSE endpoints, feature gaps, security risks, and a staged implementation plan."
+    },
+    "document:docs/redesign/design-spec.md": {
+      "name": "design-spec.md",
+      "type": "document",
+      "summary": "Phase 1 design specification for the chat shell: color and type tokens, theme and responsive layout, component states and ARIA, screen specs, the AI visualization, and the icon plan implementers must follow."
+    },
+    "document:docs/redesign/integration-notes.md": {
+      "name": "integration-notes.md",
+      "type": "document",
+      "summary": "Controller-layer notes mapping each UI action in app.js and api.js to its endpoint and view calls, plus backend gaps, QA follow-ups, and the reference-fidelity deviations that were left in place."
+    },
+    "document:docs/redesign/integration-test-plan.md": {
+      "name": "integration-test-plan.md",
+      "type": "document",
+      "summary": "Unexecuted plan for testing the real backend in an isolated loopback environment, with a scripted fake LLM and a matrix covering streaming, cancellation, uploads, SSRF, sessions, and the authorization gap."
+    },
+    "document:docs/redesign/qa-report-04.md": {
+      "name": "qa-report-04.md",
+      "type": "document",
+      "summary": "Stage 4 QA report that passes the controller and view seam with issues: welcome cards never send, streaming and focus behave, and axe finds no violations, while a toast can cover Stop."
+    },
+    "document:docs/redesign/qa-report-05.md": {
+      "name": "qa-report-05.md",
+      "type": "document",
+      "summary": "Reference-design QA report that passes the restyled shell with issues, closing the toast overlap and flagging an unverifiable privacy claim, weak outline contrast, and a misleading Upload Files card."
+    },
+    "document:docs/redesign/qa-report-06.md": {
+      "name": "qa-report-06.md",
+      "type": "document",
+      "summary": "Re-verification report that closes every QA-05 finding, confirms the safer upload copy and file-chooser card, and re-runs the accessibility and regression suite with a clean pass."
+    },
+    "document:docs/redesign/security-issue-authz.md": {
+      "name": "security-issue-authz.md",
+      "type": "document",
+      "summary": "Recorded, unfixed finding that session read, rename, delete, and message feedback do not check ownership, so a guessed session id is enough because user_id is client-supplied and not authentication."
+    },
+    "document:docs/redesign/stage4-backlog.md": {
+      "name": "stage4-backlog.md",
+      "type": "document",
+      "summary": "Stage 4 controller backlog requiring welcome cards to switch mode and fill the composer without sending, plus carried QA items for focus, confirm dialogs, rename, model retry, and upload types."
+    },
+    "document:docs/redesign/ui-ux-implementation-notes.md": {
+      "name": "ui-ux-implementation-notes.md",
+      "type": "document",
+      "summary": "Implementation record of the workspace dropdown, workspaces, and Settings screen, stating where the written brief overrides the presentation board and which controls were omitted because the backend cannot back them."
+    },
+    "document:docs/redesign/view-contract.md": {
+      "name": "view-contract.md",
+      "type": "document",
+      "summary": "View/controller contract listing preserved DOM ids, exported view functions, callbacks, theme storage, and the stage-by-stage markup and script-order changes through the reference-design pass."
+    },
+    "file:frontend/css/ai-viz.css": {
+      "name": "ai-viz.css",
+      "type": "file",
+      "summary": "Styles the assistant avatar SVG and the welcome hero scene, switching idle, processing, responding, and error looks from data-state. Continuous motion is limited to transform and opacity, and it stops under reduced motion or while the tab i"
+    },
+    "file:frontend/css/animations.css": {
+      "name": "animations.css",
+      "type": "file",
+      "summary": "Defines the shared @keyframes, motion utility classes, skeleton and progress treatments, and the dashboard and intro motion pack. A reduced-motion block at the end turns continuous animation off for the rest of the UI."
+    },
+    "file:frontend/css/components.css": {
+      "name": "components.css",
+      "type": "file",
+      "summary": "Styles the chat UI component set—buttons, inputs, session list, messages, citations, code blocks, composer, dialogs, menus, welcome screen, and sidebar controls—using design tokens from main.css."
+    },
+    "file:frontend/css/intro.css": {
+      "name": "intro.css",
+      "type": "file",
+      "summary": "Styles the AI Assistant Pro introduction page, scoped to .intro and html[data-view], including the sticky header, hero copy, product preview, and feature grid, with tablet and mobile breakpoints."
+    },
+    "file:frontend/css/main.css": {
+      "name": "main.css",
+      "type": "file",
+      "summary": "Design-token source of truth for spacing, type, motion, z-index, and light and dark color schemes, plus reset, layout grid, typography, scrollbar, focus ring, and skip-link primitives."
+    },
+    "file:frontend/css/reference.css": {
+      "name": "reference.css",
+      "type": "file",
+      "summary": "Restyles the shell, welcome hero, feature cards, capability strip, and composer to the AI Assistant Pro dashboard, and adds the brand header, workspace tabs, theme switch, documents card, and ambient aurora."
+    },
+    "file:frontend/css/syntax.css": {
+      "name": "syntax.css",
+      "type": "file",
+      "summary": "Maps highlight.js token classes to --syn-* color tokens so light and dark themes share one syntax stylesheet, with no CDN theme swap and no flash when data-theme changes."
+    },
+    "file:frontend/css/workspace.css": {
+      "name": "workspace.css",
+      "type": "file",
+      "summary": "Styles the Documents, Research, and Code workspace panels, the My Documents side panel, the Settings dialog, and the text-size and density preferences. Panels are shown from html[data-workspace]."
+    },
+    "file:Pipfile": {
+      "name": "Pipfile",
+      "type": "file",
+      "summary": "Pipenv manifest that points at PyPI and pins Python 3.13, with empty runtime and development package lists."
+    },
+    "file:backend/__init__.py": {
+      "name": "__init__.py",
+      "type": "file",
+      "summary": "Empty package marker for the backend so Python treats the directory as a package."
+    },
+    "file:backend/api/__init__.py": {
+      "name": "__init__.py",
+      "type": "file",
+      "summary": "Package marker for the delivery layer, described as FastAPI HTTP routes plus an optional MCP server."
+    },
+    "file:backend/client/__init__.py": {
+      "name": "__init__.py",
+      "type": "file",
+      "summary": "Package marker for external adapters (LLM providers, Tavily, embeddings, web pages), stating that clients own transport and policy stays in backend.services."
+    },
+    "file:backend/config.py": {
+      "name": "config.py",
+      "type": "file",
+      "summary": "Staged leftover settings module that loads dotenv and defines data and frontend paths, provider API keys, server bind and CORS, the SQLite URL, Cohere and FAISS retrieval constants, Tavily and LLM defaults, Groq and Puter model catalogs, fo"
+    },
+    "file:backend/core/__init__.py": {
+      "name": "__init__.py",
+      "type": "file",
+      "summary": "Package marker for settings, the database, shared exceptions, and the DI container, left empty so importing the container here does not cycle with services."
+    },
+    "file:backend/models/__init__.py": {
+      "name": "__init__.py",
+      "type": "file",
+      "summary": "Empty package marker for the backend models package."
+    },
+    "file:backend/utils/__init__.py": {
+      "name": "__init__.py",
+      "type": "file",
+      "summary": "Package marker for pure helpers that depend only on the standard library or numpy, not on the rest of the backend."
+    },
+    "file:data/.gitkeep": {
+      "name": ".gitkeep",
+      "type": "file",
+      "summary": "Empty placeholder that keeps the data directory present in version control."
+    },
+    "document:docs/AI_ASSISTANT_PRO_MASTER_TASK.md": {
+      "name": "AI_ASSISTANT_PRO_MASTER_TASK.md",
+      "type": "document",
+      "summary": "Implementation brief for turning AI Assistant Pro into a production frontend, in 18 phases covering inspection, the design system, layout, theme, animated identity, welcome and chat, composer, model selection, document, research, and code w"
+    },
+    "file:frontend/__init__.py": {
+      "name": "__init__.py",
+      "type": "file",
+      "summary": "Empty package marker so the frontend directory is importable as a Python package."
+    },
+    "document:frontend/assets/LICENSE-lucide.txt": {
+      "name": "LICENSE-lucide.txt",
+      "type": "document",
+      "summary": "ISC license for the Lucide icon set vendored as an inline SVG sprite in frontend/index.html (lucide-static v1.60.0, unmodified path data)."
+    },
+    "file:frontend/index.html": {
+      "name": "index.html",
+      "type": "file",
+      "summary": "Single-page shell for AI Assistant Pro. An inline script sets theme, shell, and workspace before first paint, then the page loads the local stylesheets and classic scripts, with app.js last."
+    },
+    "file:frontend/js/api.js": {
+      "name": "api.js",
+      "type": "file",
+      "summary": "Browser HTTP client exposed as window.API. It wraps JSON REST calls for sessions, documents, GitHub, models, and health, and it opens the POST /chat/stream SSE channel plus artifact downloads."
+    },
+    "file:frontend/js/app.js": {
+      "name": "app.js",
+      "type": "file",
+      "summary": "Browser entry and state owner. It boots the page, wires composer, session, upload, and GitHub controls, and drives the single POST /chat/stream round trip through window.API and window.Chat."
+    },
+    "file:frontend/js/chat.js": {
+      "name": "chat.js",
+      "type": "file",
+      "summary": "Chat view layer exposed as window.Chat. It builds user and assistant message DOM, streams Markdown, renders citations and file cards, and opens the artifact pane. It does not call fetch."
+    },
+    "file:frontend/js/components/ai-viz.js": {
+      "name": "ai-viz.js",
+      "type": "file",
+      "summary": "Decorative AI status mark (window.AIViz) with idle, processing, responding, and error states. Motion is CSS-only; the module never fetches and holds no app state."
+    },
+    "file:frontend/js/components/code-preview.js": {
+      "name": "code-preview.js",
+      "type": "file",
+      "summary": "Sandboxed iframe preview pane (window.CodePreview) for HTML and SVG in the Code workspace, including Run and Download actions and a resizable pane."
+    },
+    "file:frontend/js/components/dialog.js": {
+      "name": "dialog.js",
+      "type": "file",
+      "summary": "Native dialog helpers (window.Dialog) for modal open and close with focus return, plus an accessible confirm() that replaces window.confirm."
+    },
+    "file:frontend/js/components/documents.js": {
+      "name": "documents.js",
+      "type": "file",
+      "summary": "Document list view (window.DocsView) for the Documents workspace and the My Documents dialog. It renders rows the controller supplies and reports delete clicks; it does not fetch."
+    },
+    "file:frontend/js/components/menu.js": {
+      "name": "menu.js",
+      "type": "file",
+      "summary": "Anchored popover menu (window.Menu) with roving focus, menuitem and menuitemradio rows, and separators. Labels are set with textContent."
+    },
+    "file:frontend/js/components/model-select.js": {
+      "name": "model-select.js",
+      "type": "file",
+      "summary": "Listbox popover (window.ModelSelect) over the native model select, which stays the source of truth. Choices dispatch a real change event that app.js already listens for."
+    },
+    "file:frontend/js/components/motion.js": {
+      "name": "motion.js",
+      "type": "file",
+      "summary": "The only GSAP user (window.Motion). It plays the welcome, workspace, and intro entrances, skips animation when reduced motion is requested, and never fetches application data."
+    },
+    "file:frontend/js/components/notifications.js": {
+      "name": "notifications.js",
+      "type": "file",
+      "summary": "In-memory notification popover (window.Notifications) for toasts and upload errors from this page session, with an unread dot on the bell. It does not persist or fetch."
+    },
+    "file:frontend/js/components/prefs.js": {
+      "name": "prefs.js",
+      "type": "file",
+      "summary": "Browser-local view preferences (window.Prefs) for text size, chat density, and which toasts appear. Values are stored under pref.* keys and mirrored onto the html element; nothing is sent to the server."
+    },
+    "file:frontend/js/components/radiogroup.js": {
+      "name": "radiogroup.js",
+      "type": "file",
+      "summary": "ARIA radio-group helper that moves selection with clicks and arrow keys while keeping all state in DOM attributes."
+    },
+    "file:frontend/js/components/settings.js": {
+      "name": "settings.js",
+      "type": "file",
+      "summary": "Settings dialog view for profile, appearance, models, notifications, integrations, privacy, and help. Controls write through Theme and Prefs and never fetch on their own."
+    },
+    "file:frontend/js/components/workspaces.js": {
+      "name": "workspaces.js",
+      "type": "file",
+      "summary": "Welcome-screen workspace panels for Documents, Research, and Code. Actions only fill the composer and focus it; nothing is sent from a panel."
+    },
+    "file:frontend/js/icons.js": {
+      "name": "icons.js",
+      "type": "file",
+      "summary": "Sprite-icon helper over the inline SVG symbols in index.html. Unknown names, including legacy emoji from the app, fall back to escaped text."
+    },
+    "file:frontend/js/intro.js": {
+      "name": "intro.js",
+      "type": "file",
+      "summary": "Introduction page that reveals the chatbot shell, toggles the mobile nav, and switches theme through the shared Theme store. It makes no network calls."
+    },
+    "file:frontend/js/theme.js": {
+      "name": "theme.js",
+      "type": "file",
+      "summary": "Persists the light, dark, or system theme preference, migrates the legacy stored value, and applies the resolved theme to the document and theme-color meta tag."
+    },
+    "file:frontend/js/ui.js": {
+      "name": "ui.js",
+      "type": "file",
+      "summary": "Shell renderer for the sidebar, session list, composer menus, upload toasts, citation and URL dialogs, and settings hand-off. It paints DOM only and reaches sibling views through window globals."
+    },
+    "file:frontend/js/utils.js": {
+      "name": "utils.js",
+      "type": "file",
+      "summary": "Markdown, artifact, and code-preview helpers. Chat HTML is sanitized with DOMPurify before citation badges and highlight.js chrome are added."
+    },
+    "file:tests/__init__.py": {
+      "name": "__init__.py",
+      "type": "file",
+      "summary": "Empty tests package marker so pytest can import the suite."
+    },
+    "file:tests/test_architecture.py": {
+      "name": "test_architecture.py",
+      "type": "file",
+      "summary": "Guards backend layout: imports may only point at allowed lower layers, module-level imports must be acyclic, and environment reads and model ids stay in core.config."
+    },
+    "file:tests/test_frontend_reference.py": {
+      "name": "test_frontend_reference.py",
+      "type": "file",
+      "summary": "Static checks for the reference-design pass: token-only CSS, view-only frontend scripts, reduced-motion guards, and contrast of control outlines and welcome-card text."
+    },
+    "file:tests/test_frontend_sanitizer.py": {
+      "name": "test_frontend_sanitizer.py",
+      "type": "file",
+      "summary": "Regression guards for the Markdown sanitizer in utils.js. Static source checks always run; a headless Chrome harness exercises DOMPurify when a browser and CDN libraries are available."
+    }
+  },
+  "totalNodes": 148,
+  "totalEdges": 2300,
+  "_meta": {
+    "countedEdgesBetweenKnownNodes": 387,
+    "highFanOutThreshold": 33,
+    "lowFanInThreshold": 1,
+    "bottomCutoff": 1,
+    "topCutoff": 36,
+    "bidirectionalPairs": 0
+  }
+}

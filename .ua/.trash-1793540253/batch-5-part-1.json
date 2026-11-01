@@ -1,0 +1,936 @@
+{
+  "nodes": [
+    {
+      "id": "file:backend/services/index_store.py",
+      "type": "file",
+      "name": "index_store.py",
+      "filePath": "backend/services/index_store.py",
+      "summary": "Persistent hybrid index that stores chunk text in SQLite with FTS5 BM25 and per-user FAISS indexes keyed by a hash of the user id, committing rows and vectors together.",
+      "tags": [
+        "hybrid-index",
+        "sqlite",
+        "faiss",
+        "retrieval",
+        "persistence"
+      ],
+      "complexity": "complex",
+      "languageNotes": "FTS5 is an external-content table kept in sync by insert, delete, and update triggers. FAISS IndexIDMap2 files are written with an atomic replace and loaded with read_index so user ids never become filesystem paths."
+    },
+    {
+      "id": "class:backend/services/index_store.py:ChunkIn",
+      "type": "class",
+      "name": "ChunkIn",
+      "filePath": "backend/services/index_store.py",
+      "lineRange": [
+        62,
+        66
+      ],
+      "summary": "Input record for a chunk about to be indexed, carrying text, page, order, and arbitrary metadata.",
+      "tags": [
+        "data-model",
+        "dataclass",
+        "indexing"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/services/index_store.py:ChunkRecord",
+      "type": "class",
+      "name": "ChunkRecord",
+      "filePath": "backend/services/index_store.py",
+      "lineRange": [
+        70,
+        78
+      ],
+      "summary": "Stored chunk row whose integer id is shared by SQLite and FAISS so either index can resolve the same passage.",
+      "tags": [
+        "data-model",
+        "dataclass",
+        "indexing"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/services/index_store.py:HybridIndexStore",
+      "type": "class",
+      "name": "HybridIndexStore",
+      "filePath": "backend/services/index_store.py",
+      "lineRange": [
+        81,
+        363
+      ],
+      "summary": "Owns the SQLite chunk store and a bounded cache of per-user FAISS indexes, exposing lexical search, dense search, and atomic ingest and delete.",
+      "tags": [
+        "service",
+        "hybrid-index",
+        "sqlite",
+        "faiss"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:backend/services/index_store.py:__init__",
+      "type": "function",
+      "name": "__init__",
+      "filePath": "backend/services/index_store.py",
+      "lineRange": [
+        82,
+        97
+      ],
+      "summary": "Opens rag.sqlite3 in WAL mode, installs the chunk and FTS5 schema, and prepares an LRU cache of loaded FAISS indexes.",
+      "tags": [
+        "initialization",
+        "sqlite",
+        "schema"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:backend/services/index_store.py:_load_index",
+      "type": "function",
+      "name": "_load_index",
+      "filePath": "backend/services/index_store.py",
+      "lineRange": [
+        104,
+        119
+      ],
+      "summary": "Loads a user's FAISS index from its hashed path, caches it, and evicts the least recently used index when the cache exceeds its cap.",
+      "tags": [
+        "faiss",
+        "cache",
+        "indexing"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/services/index_store.py:add_chunks",
+      "type": "function",
+      "name": "add_chunks",
+      "filePath": "backend/services/index_store.py",
+      "lineRange": [
+        147,
+        190
+      ],
+      "summary": "Inserts chunk rows and optional vectors in one transaction, rolling back SQLite and dropping the in-memory index if the embedding dimension does not match.",
+      "tags": [
+        "indexing",
+        "transaction",
+        "faiss"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:backend/services/index_store.py:delete_document",
+      "type": "function",
+      "name": "delete_document",
+      "filePath": "backend/services/index_store.py",
+      "lineRange": [
+        192,
+        211
+      ],
+      "summary": "Deletes one document's chunks for a user and removes the same ids from that user's FAISS index.",
+      "tags": [
+        "indexing",
+        "deletion",
+        "faiss"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:backend/services/index_store.py:dense_search",
+      "type": "function",
+      "name": "dense_search",
+      "filePath": "backend/services/index_store.py",
+      "lineRange": [
+        224,
+        234
+      ],
+      "summary": "Runs an inner-product search on the user's FAISS index and returns chunk id and score pairs, skipping a dimension mismatch.",
+      "tags": [
+        "vector-search",
+        "faiss",
+        "retrieval"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/services/index_store.py:cosines",
+      "type": "function",
+      "name": "cosines",
+      "filePath": "backend/services/index_store.py",
+      "lineRange": [
+        236,
+        248
+      ],
+      "summary": "Reconstructs stored vectors and returns the inner product of the query against each requested chunk id.",
+      "tags": [
+        "vector-search",
+        "faiss",
+        "scoring"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/services/index_store.py:lexical_search",
+      "type": "function",
+      "name": "lexical_search",
+      "filePath": "backend/services/index_store.py",
+      "lineRange": [
+        250,
+        265
+      ],
+      "summary": "Runs an FTS5 BM25 query scoped to one user and flips scores so higher values rank better.",
+      "tags": [
+        "full-text-search",
+        "bm25",
+        "retrieval"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/services/index_store.py:set_vectors",
+      "type": "function",
+      "name": "set_vectors",
+      "filePath": "backend/services/index_store.py",
+      "lineRange": [
+        320,
+        340
+      ],
+      "summary": "Attaches vectors to existing chunk ids, optionally rebuilding the user's FAISS index, and marks those rows embedded.",
+      "tags": [
+        "indexing",
+        "faiss",
+        "reindex"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:backend/services/prompt_builder.py",
+      "type": "file",
+      "name": "prompt_builder.py",
+      "filePath": "backend/services/prompt_builder.py",
+      "summary": "Assembles mode and specialist system prompts, numbered document and web context, and a token-budgeted chat history so every client gets the same prompt.",
+      "tags": [
+        "prompt-assembly",
+        "rag",
+        "citations",
+        "token-budget"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:backend/services/prompt_builder.py:select_specialist",
+      "type": "function",
+      "name": "select_specialist",
+      "filePath": "backend/services/prompt_builder.py",
+      "lineRange": [
+        186,
+        202
+      ],
+      "summary": "Chooses a specialist prompt key from chat mode, file intent, log-like text, code fences, and whether a repository is attached, without an extra model call.",
+      "tags": [
+        "routing",
+        "prompt-assembly",
+        "heuristic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/services/prompt_builder.py:BuiltPrompt",
+      "type": "class",
+      "name": "BuiltPrompt",
+      "filePath": "backend/services/prompt_builder.py",
+      "lineRange": [
+        206,
+        209
+      ],
+      "summary": "Holds the assembled chat messages, the citations that were included, and how many context characters were used.",
+      "tags": [
+        "data-model",
+        "dataclass",
+        "prompt-assembly"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/services/prompt_builder.py:PromptBuilder",
+      "type": "class",
+      "name": "PromptBuilder",
+      "filePath": "backend/services/prompt_builder.py",
+      "lineRange": [
+        212,
+        292
+      ],
+      "summary": "Builds the system message from quality, mode, and specialist prompts, then appends grounded context and trimmed history.",
+      "tags": [
+        "service",
+        "prompt-assembly",
+        "citations"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:backend/services/prompt_builder.py:build",
+      "type": "function",
+      "name": "build",
+      "filePath": "backend/services/prompt_builder.py",
+      "lineRange": [
+        216,
+        274
+      ],
+      "summary": "Packs retrieved passages and web results into numbered context blocks within the context budget and returns a BuiltPrompt with citations.",
+      "tags": [
+        "prompt-assembly",
+        "citations",
+        "token-budget"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:backend/services/prompt_builder.py:_trim_history",
+      "type": "function",
+      "name": "_trim_history",
+      "filePath": "backend/services/prompt_builder.py",
+      "lineRange": [
+        276,
+        292
+      ],
+      "summary": "Keeps the newest user and assistant messages that fit the history token budget and returns them in chronological order.",
+      "tags": [
+        "token-budget",
+        "history",
+        "prompt-assembly"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/services/retrieval_service.py",
+      "type": "file",
+      "name": "retrieval_service.py",
+      "filePath": "backend/services/retrieval_service.py",
+      "summary": "Fuses FAISS cosine hits with FTS5 BM25 through reciprocal rank fusion, reranks the candidates, and gates them by relevance, falling back to lexical search when embeddings or the reranker fail.",
+      "tags": [
+        "hybrid-search",
+        "reranking",
+        "rag",
+        "fusion"
+      ],
+      "complexity": "complex",
+      "languageNotes": "Dense and lexical searches run together via asyncio.gather. Relevance is the max of the cross-encoder score and a scaled cosine, with term coverage lifting lexical hits."
+    },
+    {
+      "id": "class:backend/services/retrieval_service.py:RetrievedItem",
+      "type": "class",
+      "name": "RetrievedItem",
+      "filePath": "backend/services/retrieval_service.py",
+      "lineRange": [
+        29,
+        35
+      ],
+      "summary": "One retrieved passage with its chunk id, source, page, text, relevance score, and metadata.",
+      "tags": [
+        "data-model",
+        "dataclass",
+        "retrieval"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/services/retrieval_service.py:RetrievalResult",
+      "type": "class",
+      "name": "RetrievalResult",
+      "filePath": "backend/services/retrieval_service.py",
+      "lineRange": [
+        39,
+        46
+      ],
+      "summary": "Search outcome listing items plus the retrieval mode, whether rerank or cache was used, an error string, and stage timings.",
+      "tags": [
+        "data-model",
+        "dataclass",
+        "retrieval"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/services/retrieval_service.py:RetrievalService",
+      "type": "class",
+      "name": "RetrievalService",
+      "filePath": "backend/services/retrieval_service.py",
+      "lineRange": [
+        49,
+        210
+      ],
+      "summary": "Coordinates the hybrid index, embedder, and reranker, caching query vectors and full results keyed by index version.",
+      "tags": [
+        "service",
+        "hybrid-search",
+        "reranking",
+        "cache"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:backend/services/retrieval_service.py:embed_query",
+      "type": "function",
+      "name": "embed_query",
+      "filePath": "backend/services/retrieval_service.py",
+      "lineRange": [
+        67,
+        81
+      ],
+      "summary": "Returns a cached query embedding, or None when the embedding backend is unavailable or the embed call fails.",
+      "tags": [
+        "embedding",
+        "cache",
+        "retrieval"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/services/retrieval_service.py:search",
+      "type": "function",
+      "name": "search",
+      "filePath": "backend/services/retrieval_service.py",
+      "lineRange": [
+        88,
+        112
+      ],
+      "summary": "Looks up a versioned result cache, runs the hybrid search under a timeout, and returns an empty or error result instead of failing the caller.",
+      "tags": [
+        "retrieval",
+        "cache",
+        "api-handler"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:backend/services/retrieval_service.py:_search",
+      "type": "function",
+      "name": "_search",
+      "filePath": "backend/services/retrieval_service.py",
+      "lineRange": [
+        114,
+        198
+      ],
+      "summary": "Fuses dense and lexical candidates, optionally reranks them, and keeps passages whose combined cosine, rerank, and term-coverage score clears the relevance gate.",
+      "tags": [
+        "hybrid-search",
+        "fusion",
+        "reranking"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:backend/services/retrieval_service.py:_dedupe",
+      "type": "function",
+      "name": "_dedupe",
+      "filePath": "backend/services/retrieval_service.py",
+      "lineRange": [
+        201,
+        210
+      ],
+      "summary": "Drops candidate chunks whose first 160 characters collapse to the same whitespace-normalized text.",
+      "tags": [
+        "deduplication",
+        "retrieval",
+        "utility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/utils/ranking.py",
+      "type": "file",
+      "name": "ranking.py",
+      "filePath": "backend/utils/ranking.py",
+      "summary": "Rank-fusion helper that merges weighted ranked id lists with reciprocal rank fusion.",
+      "tags": [
+        "ranking",
+        "fusion",
+        "utility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/utils/ranking.py:reciprocal_rank_fusion",
+      "type": "function",
+      "name": "reciprocal_rank_fusion",
+      "filePath": "backend/utils/ranking.py",
+      "lineRange": [
+        6,
+        12
+      ],
+      "summary": "Adds weight over k plus rank for each id across ranked lists and returns ids sorted by fused score.",
+      "tags": [
+        "ranking",
+        "fusion",
+        "utility"
+      ],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:backend/services/index_store.py",
+      "target": "file:backend/utils/text.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:backend/services/prompt_builder.py",
+      "target": "file:backend/core/config.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:backend/services/prompt_builder.py",
+      "target": "file:backend/models/api.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:backend/services/prompt_builder.py",
+      "target": "file:backend/services/retrieval_service.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:backend/services/prompt_builder.py",
+      "target": "file:backend/utils/text.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:backend/services/retrieval_service.py",
+      "target": "file:backend/core/config.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:backend/services/retrieval_service.py",
+      "target": "file:backend/services/embedding_service.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:backend/services/retrieval_service.py",
+      "target": "file:backend/services/index_store.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:backend/services/retrieval_service.py",
+      "target": "file:backend/services/rerank_service.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:backend/services/retrieval_service.py",
+      "target": "file:backend/utils/cache.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:backend/services/retrieval_service.py",
+      "target": "file:backend/utils/ranking.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:backend/services/retrieval_service.py",
+      "target": "file:backend/utils/text.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:backend/services/index_store.py",
+      "target": "class:backend/services/index_store.py:ChunkIn",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/services/index_store.py",
+      "target": "class:backend/services/index_store.py:ChunkRecord",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/services/index_store.py",
+      "target": "class:backend/services/index_store.py:HybridIndexStore",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/services/index_store.py",
+      "target": "function:backend/services/index_store.py:__init__",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/services/index_store.py",
+      "target": "function:backend/services/index_store.py:_load_index",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/services/index_store.py",
+      "target": "function:backend/services/index_store.py:add_chunks",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/services/index_store.py",
+      "target": "function:backend/services/index_store.py:delete_document",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/services/index_store.py",
+      "target": "function:backend/services/index_store.py:dense_search",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/services/index_store.py",
+      "target": "function:backend/services/index_store.py:cosines",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/services/index_store.py",
+      "target": "function:backend/services/index_store.py:lexical_search",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/services/index_store.py",
+      "target": "function:backend/services/index_store.py:set_vectors",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/services/index_store.py",
+      "target": "class:backend/services/index_store.py:ChunkIn",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/services/index_store.py",
+      "target": "class:backend/services/index_store.py:ChunkRecord",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/services/index_store.py",
+      "target": "class:backend/services/index_store.py:HybridIndexStore",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/services/prompt_builder.py",
+      "target": "function:backend/services/prompt_builder.py:select_specialist",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/services/prompt_builder.py",
+      "target": "class:backend/services/prompt_builder.py:BuiltPrompt",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/services/prompt_builder.py",
+      "target": "class:backend/services/prompt_builder.py:PromptBuilder",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/services/prompt_builder.py",
+      "target": "function:backend/services/prompt_builder.py:build",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/services/prompt_builder.py",
+      "target": "function:backend/services/prompt_builder.py:_trim_history",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/services/prompt_builder.py",
+      "target": "function:backend/services/prompt_builder.py:select_specialist",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/services/prompt_builder.py",
+      "target": "class:backend/services/prompt_builder.py:BuiltPrompt",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/services/prompt_builder.py",
+      "target": "class:backend/services/prompt_builder.py:PromptBuilder",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/services/retrieval_service.py",
+      "target": "class:backend/services/retrieval_service.py:RetrievedItem",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/services/retrieval_service.py",
+      "target": "class:backend/services/retrieval_service.py:RetrievalResult",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/services/retrieval_service.py",
+      "target": "class:backend/services/retrieval_service.py:RetrievalService",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/services/retrieval_service.py",
+      "target": "function:backend/services/retrieval_service.py:embed_query",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/services/retrieval_service.py",
+      "target": "function:backend/services/retrieval_service.py:search",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/services/retrieval_service.py",
+      "target": "function:backend/services/retrieval_service.py:_search",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/services/retrieval_service.py",
+      "target": "function:backend/services/retrieval_service.py:_dedupe",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/services/retrieval_service.py",
+      "target": "class:backend/services/retrieval_service.py:RetrievedItem",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/services/retrieval_service.py",
+      "target": "class:backend/services/retrieval_service.py:RetrievalResult",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/services/retrieval_service.py",
+      "target": "class:backend/services/retrieval_service.py:RetrievalService",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/utils/ranking.py",
+      "target": "function:backend/utils/ranking.py:reciprocal_rank_fusion",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/utils/ranking.py",
+      "target": "function:backend/utils/ranking.py:reciprocal_rank_fusion",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:backend/services/index_store.py:lexical_search",
+      "target": "function:backend/utils/text.py:build_fts_query",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:backend/services/prompt_builder.py:_trim_history",
+      "target": "function:backend/utils/text.py:estimate_tokens",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:backend/services/retrieval_service.py:embed_query",
+      "target": "function:backend/utils/text.py:normalize_query",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:backend/services/retrieval_service.py:embed_query",
+      "target": "class:backend/services/embedding_service.py:EmbeddingService",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:backend/services/retrieval_service.py:embed_query",
+      "target": "class:backend/utils/cache.py:TTLCache",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:backend/services/retrieval_service.py:search",
+      "target": "function:backend/utils/text.py:normalize_query",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:backend/services/retrieval_service.py:search",
+      "target": "class:backend/services/index_store.py:HybridIndexStore",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:backend/services/retrieval_service.py:search",
+      "target": "class:backend/utils/cache.py:TTLCache",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:backend/services/retrieval_service.py:_search",
+      "target": "function:backend/services/index_store.py:dense_search",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:backend/services/retrieval_service.py:_search",
+      "target": "function:backend/services/index_store.py:lexical_search",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:backend/services/retrieval_service.py:_search",
+      "target": "function:backend/services/index_store.py:cosines",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:backend/services/retrieval_service.py:_search",
+      "target": "class:backend/services/index_store.py:HybridIndexStore",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:backend/services/retrieval_service.py:_search",
+      "target": "function:backend/utils/ranking.py:reciprocal_rank_fusion",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:backend/services/retrieval_service.py:_search",
+      "target": "function:backend/utils/text.py:query_terms",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:backend/services/retrieval_service.py:_search",
+      "target": "function:backend/utils/text.py:term_coverage",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:backend/services/retrieval_service.py:_search",
+      "target": "class:backend/services/rerank_service.py:RerankService",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/services/index_store.py",
+      "target": "file:tests/test_retrieval.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:backend/services/prompt_builder.py",
+      "target": "file:tests/test_units.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:backend/services/retrieval_service.py",
+      "target": "file:tests/test_units.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:backend/utils/ranking.py",
+      "target": "file:tests/test_units.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    }
+  ]
+}

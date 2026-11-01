@@ -1,0 +1,220 @@
+[
+  {
+    "id": "layer:api",
+    "name": "API Layer",
+    "description": "FastAPI factory in main.py, HTTP routes, and the MCP server that stream chat, sessions, uploads, retrieval, and GitHub.",
+    "nodeIds": [
+      "file:backend/api/mcp_server.py",
+      "file:backend/api/routes.py",
+      "file:backend/main.py",
+      "endpoint:backend/api/routes.py:GET /ping",
+      "endpoint:backend/api/routes.py:GET /health",
+      "endpoint:backend/api/routes.py:GET /config",
+      "endpoint:backend/api/routes.py:GET /models",
+      "endpoint:backend/api/routes.py:POST /chat/stream",
+      "endpoint:backend/api/routes.py:POST /chat",
+      "endpoint:backend/api/routes.py:POST /generate",
+      "endpoint:backend/api/routes.py:GET /sessions",
+      "endpoint:backend/api/routes.py:POST /sessions",
+      "endpoint:backend/api/routes.py:GET /sessions/{session_id}",
+      "endpoint:backend/api/routes.py:PATCH /sessions/{session_id}",
+      "endpoint:backend/api/routes.py:DELETE /sessions/{session_id}",
+      "endpoint:backend/api/routes.py:POST /sessions/{session_id}/messages",
+      "endpoint:backend/api/routes.py:GET /messages/{message_id}/download",
+      "endpoint:backend/api/routes.py:POST /messages/{message_id}/feedback",
+      "endpoint:backend/api/routes.py:POST /upload",
+      "endpoint:backend/api/routes.py:GET /documents",
+      "endpoint:backend/api/routes.py:DELETE /documents/{doc_id}",
+      "endpoint:backend/api/routes.py:POST /github/connect",
+      "endpoint:backend/api/routes.py:GET /github/repos",
+      "endpoint:backend/api/routes.py:DELETE /github/repos/{repo_id}",
+      "endpoint:backend/api/routes.py:POST /github/oauth/device",
+      "endpoint:backend/api/routes.py:POST /github/oauth/poll",
+      "endpoint:backend/api/routes.py:POST /retrieve",
+      "endpoint:backend/api/routes.py:POST /search",
+      "file:backend/__init__.py",
+      "file:backend/api/__init__.py"
+    ]
+  },
+  {
+    "id": "layer:service",
+    "name": "Service Layer",
+    "description": "Chat streaming, hybrid BM25 and FAISS retrieval, Groq and Gemini failover, document ingestion, GitHub context, and session orchestration.",
+    "nodeIds": [
+      "file:backend/services/artifact.py",
+      "file:backend/services/chat_service.py",
+      "file:backend/services/search_service.py",
+      "file:backend/services/__init__.py",
+      "file:backend/services/embedding_service.py",
+      "file:backend/services/rerank_service.py",
+      "file:backend/services/llm_service.py",
+      "file:backend/services/document_service.py",
+      "file:backend/services/github_service.py",
+      "file:backend/services/session_service.py",
+      "file:backend/services/index_store.py",
+      "file:backend/services/prompt_builder.py",
+      "file:backend/services/retrieval_service.py",
+      "file:backend/services/parser.py"
+    ]
+  },
+  {
+    "id": "layer:client",
+    "name": "Client Layer",
+    "description": "Outbound adapters for LLM chat, embeddings, reranking, web search, and SSRF-guarded HTTP fetches.",
+    "nodeIds": [
+      "file:backend/client/search_client.py",
+      "file:backend/client/embedding_client.py",
+      "file:backend/client/http.py",
+      "file:backend/client/rerank_client.py",
+      "file:backend/client/llm_client.py",
+      "file:backend/client/web_client.py",
+      "file:backend/client/__init__.py"
+    ]
+  },
+  {
+    "id": "layer:core",
+    "name": "Core Layer",
+    "description": "Composition root, the sole environment reader, shared exceptions, and the SQLAlchemy engine and session factory.",
+    "nodeIds": [
+      "file:backend/core/container.py",
+      "file:backend/core/config.py",
+      "file:backend/core/exceptions.py",
+      "file:backend/core/database.py",
+      "file:backend/core/__init__.py"
+    ]
+  },
+  {
+    "id": "layer:data",
+    "name": "Data Layer",
+    "description": "Pydantic API schemas, SQLAlchemy tables for sessions, messages, documents, and GitHub, plus the on-disk data directory.",
+    "nodeIds": [
+      "file:backend/models/api.py",
+      "file:backend/models/db.py",
+      "table:backend/models/db.py:sessions",
+      "table:backend/models/db.py:messages",
+      "table:backend/models/db.py:documents",
+      "table:backend/models/db.py:github_credentials",
+      "table:backend/models/db.py:repo_contexts",
+      "file:backend/models/__init__.py",
+      "file:data/.gitkeep"
+    ]
+  },
+  {
+    "id": "layer:utility",
+    "name": "Utility Layer",
+    "description": "Shared text, ranking, SSE, cache, rate-limit, time, and URL-safety helpers used across the backend.",
+    "nodeIds": [
+      "file:backend/utils/cache.py",
+      "file:backend/utils/sse.py",
+      "file:backend/utils/numeric.py",
+      "file:backend/utils/rate_limiter.py",
+      "file:backend/utils/timeutil.py",
+      "file:backend/utils/ranking.py",
+      "file:backend/utils/streaming.py",
+      "file:backend/utils/text.py",
+      "file:backend/utils/net.py",
+      "file:backend/utils/__init__.py"
+    ]
+  },
+  {
+    "id": "layer:frontend",
+    "name": "Frontend",
+    "description": "Vanilla JavaScript chat SPA: shell, workspace components, theme, and stylesheets mounted by the FastAPI app.",
+    "nodeIds": [
+      "file:frontend/css/ai-viz.css",
+      "file:frontend/css/animations.css",
+      "file:frontend/css/components.css",
+      "file:frontend/css/intro.css",
+      "file:frontend/css/main.css",
+      "file:frontend/css/reference.css",
+      "file:frontend/css/syntax.css",
+      "file:frontend/css/workspace.css",
+      "file:frontend/__init__.py",
+      "file:frontend/index.html",
+      "file:frontend/js/api.js",
+      "file:frontend/js/app.js",
+      "file:frontend/js/chat.js",
+      "file:frontend/js/components/ai-viz.js",
+      "file:frontend/js/components/code-preview.js",
+      "file:frontend/js/components/dialog.js",
+      "file:frontend/js/components/documents.js",
+      "file:frontend/js/components/menu.js",
+      "file:frontend/js/components/model-select.js",
+      "file:frontend/js/components/motion.js",
+      "file:frontend/js/components/notifications.js",
+      "file:frontend/js/components/prefs.js",
+      "file:frontend/js/components/radiogroup.js",
+      "file:frontend/js/components/settings.js",
+      "file:frontend/js/components/workspaces.js",
+      "file:frontend/js/icons.js",
+      "file:frontend/js/intro.js",
+      "file:frontend/js/theme.js",
+      "file:frontend/js/ui.js",
+      "file:frontend/js/utils.js"
+    ]
+  },
+  {
+    "id": "layer:test",
+    "name": "Test Layer",
+    "description": "Pytest suite and headless browser harness that lock import boundaries, retrieval, providers, and the SPA.",
+    "nodeIds": [
+      "file:tests/test_api.py",
+      "file:tests/test_live.py",
+      "file:tests/test_frontend_shell.py",
+      "file:tests/test_parser_formats.py",
+      "file:tests/conftest.py",
+      "file:tests/test_artifacts.py",
+      "file:tests/test_llm.py",
+      "file:tests/test_retrieval.py",
+      "file:tests/test_github.py",
+      "file:tests/test_units.py",
+      "file:tests/browser_harness.py",
+      "file:tests/test_frontend_followup.py",
+      "file:tests/test_frontend_guards.py",
+      "file:tests/test_frontend_motion.py",
+      "file:tests/test_frontend_startup.py",
+      "file:tests/test_frontend_workspaces.py",
+      "file:tests/__init__.py",
+      "file:tests/test_architecture.py",
+      "file:tests/test_frontend_reference.py",
+      "file:tests/test_frontend_sanitizer.py"
+    ]
+  },
+  {
+    "id": "layer:documentation",
+    "name": "Documentation",
+    "description": "README, dependency lists, redesign specs, QA reports, and the vendored Lucide icon license.",
+    "nodeIds": [
+      "document:README.md",
+      "document:requirements-dev.txt",
+      "document:requirements.txt",
+      "document:skills.md",
+      "document:docs/redesign/PROJECT_BRIEF.md",
+      "document:docs/redesign/audit.md",
+      "document:docs/redesign/design-spec.md",
+      "document:docs/redesign/integration-notes.md",
+      "document:docs/redesign/integration-test-plan.md",
+      "document:docs/redesign/qa-report-04.md",
+      "document:docs/redesign/qa-report-05.md",
+      "document:docs/redesign/qa-report-06.md",
+      "document:docs/redesign/security-issue-authz.md",
+      "document:docs/redesign/stage4-backlog.md",
+      "document:docs/redesign/ui-ux-implementation-notes.md",
+      "document:docs/redesign/view-contract.md",
+      "document:docs/AI_ASSISTANT_PRO_MASTER_TASK.md",
+      "document:frontend/assets/LICENSE-lucide.txt"
+    ]
+  },
+  {
+    "id": "layer:config",
+    "name": "Configuration",
+    "description": "Environment sample, Pipenv manifest, pytest settings, the staged settings module, and the Procfile that starts uvicorn.",
+    "nodeIds": [
+      "config:.env.example",
+      "service:Procfile",
+      "config:pytest.ini",
+      "file:Pipfile",
+      "file:backend/config.py"
+    ]
+  }
+]

@@ -1,0 +1,4209 @@
+{
+  "schemaVersion": 1,
+  "algorithm": "louvain",
+  "totalFiles": 118,
+  "totalBatches": 12,
+  "exportsByPath": {
+    "Pipfile": [],
+    "backend/__init__.py": [],
+    "backend/api/__init__.py": [],
+    "backend/api/mcp_server.py": [
+      "_Runtime",
+      "search_documents",
+      "list_documents",
+      "web_search",
+      "connect_github_repo",
+      "list_github_repos",
+      "github_context",
+      "ask",
+      "main"
+    ],
+    "backend/api/routes.py": [
+      "_throttle",
+      "_throttle_download",
+      "_client_ip",
+      "_limit",
+      "_llm_http_error",
+      "_command",
+      "ping",
+      "health",
+      "public_config",
+      "list_models",
+      "chat_stream",
+      "chat_complete",
+      "generate",
+      "list_sessions",
+      "create_session",
+      "get_session",
+      "update_session",
+      "delete_session",
+      "save_message",
+      "_prepare_download",
+      "download_message",
+      "message_feedback",
+      "upload_document",
+      "list_documents",
+      "delete_document",
+      "_github_row",
+      "github_connect",
+      "github_repos",
+      "github_delete",
+      "github_device_start",
+      "github_device_poll",
+      "retrieve",
+      "web_search"
+    ],
+    "backend/client/__init__.py": [],
+    "backend/client/embedding_client.py": [
+      "EmbeddingClient",
+      "LocalEmbeddingClient",
+      "_HttpEmbeddingClient",
+      "GoogleEmbeddingClient",
+      "CohereEmbeddingClient",
+      "build_embedding_client"
+    ],
+    "backend/client/http.py": [
+      "build_http_client"
+    ],
+    "backend/client/llm_client.py": [
+      "OpenedStream",
+      "ProviderClient",
+      "build_provider_clients",
+      "wrap_clients",
+      "chunk_text",
+      "chunk_usage",
+      "close_stream",
+      "classify_exception"
+    ],
+    "backend/client/rerank_client.py": [
+      "RerankClient",
+      "LocalRerankClient",
+      "CohereRerankClient",
+      "build_rerank_client"
+    ],
+    "backend/client/search_client.py": [
+      "TavilyClient",
+      "SerperClient"
+    ],
+    "backend/client/web_client.py": [
+      "WebPageClient"
+    ],
+    "backend/config.py": [],
+    "backend/core/__init__.py": [],
+    "backend/core/config.py": [
+      "ModelSpec",
+      "ProviderConfig",
+      "Settings",
+      "get_settings",
+      "configure_logging"
+    ],
+    "backend/core/container.py": [
+      "ServiceContainer",
+      "get_container",
+      "get_chat_service",
+      "get_session_service",
+      "get_document_service",
+      "get_retrieval_service",
+      "get_search_service",
+      "get_llm_service",
+      "get_github_service"
+    ],
+    "backend/core/database.py": [
+      "Base",
+      "Database"
+    ],
+    "backend/core/exceptions.py": [
+      "AppError",
+      "DocumentParseError",
+      "FetchError",
+      "IngestError",
+      "SessionNotFound",
+      "EmbeddingUnavailable",
+      "LLMError"
+    ],
+    "backend/main.py": [
+      "RevalidatingStaticFiles",
+      "create_app"
+    ],
+    "backend/models/__init__.py": [],
+    "backend/models/api.py": [
+      "SessionCreate",
+      "SessionUpdate",
+      "CitationSchema",
+      "MessageSchema",
+      "SessionSchema",
+      "SessionSummary",
+      "MessageCreate",
+      "FeedbackRequest",
+      "ChatRequest",
+      "ChatResponse",
+      "UploadResponse",
+      "RetrieveRequest",
+      "RetrievedChunk",
+      "RetrieveResponse",
+      "SearchRequest",
+      "SearchResult",
+      "SearchResponse",
+      "DocumentSchema",
+      "ModelInfo",
+      "ChatMessage",
+      "GenerateRequest",
+      "GenerateResponse",
+      "UploadLimits",
+      "PublicConfig",
+      "GithubConnectRequest",
+      "GithubRepoSchema",
+      "GithubDeviceStart",
+      "GithubDevicePoll",
+      "HealthResponse"
+    ],
+    "backend/models/db.py": [
+      "_uuid",
+      "ChatSession",
+      "Message",
+      "Document",
+      "GithubCredential",
+      "RepoContext"
+    ],
+    "backend/services/__init__.py": [],
+    "backend/services/artifact.py": [
+      "ArtifactError",
+      "wants_file",
+      "is_restyle",
+      "style_note",
+      "is_bare_save",
+      "topic_title",
+      "should_author_document",
+      "document_source",
+      "document_from_markdown",
+      "preferred_format",
+      "fallback_title",
+      "artifact_messages",
+      "parse_model_document",
+      "validate_document",
+      "render_download",
+      "content_disposition",
+      "safe_filename",
+      "strip_markdown_inline",
+      "render_markdown",
+      "render_text",
+      "render_xlsx",
+      "render_docx",
+      "render_pdf",
+      "_block",
+      "_list_block",
+      "_table",
+      "_plain",
+      "_cell",
+      "_clean",
+      "_one_line",
+      "_md_cell",
+      "_pad",
+      "_pdf_text",
+      "_use_previous",
+      "_nice_title",
+      "_choose_title",
+      "_promote_sections",
+      "_caveat_blocks",
+      "_looks_like_code",
+      "_clip_title",
+      "_parse_markdown",
+      "_is_table_sep",
+      "_split_row",
+      "_fit_blocks",
+      "_clip_cell",
+      "_sheet_name",
+      "_unique_sheet",
+      "_heading_level",
+      "_heading_marks",
+      "_style_docx_heading",
+      "_style_docx_body",
+      "_shade_cell",
+      "_docx_cell",
+      "_add_runs",
+      "_pdf_table",
+      "log_ready"
+    ],
+    "backend/services/chat_service.py": [
+      "RouteDecision",
+      "QueryRouter",
+      "ChatCommand",
+      "_event",
+      "_error",
+      "ChatService"
+    ],
+    "backend/services/document_service.py": [
+      "IngestResult",
+      "DocumentService"
+    ],
+    "backend/services/embedding_service.py": [
+      "EmbeddingService"
+    ],
+    "backend/services/github_service.py": [
+      "GitHubError",
+      "GitHubService",
+      "parse_repo_url",
+      "_select_paths"
+    ],
+    "backend/services/index_store.py": [
+      "ChunkIn",
+      "ChunkRecord",
+      "HybridIndexStore"
+    ],
+    "backend/services/llm_service.py": [
+      "LLMResult",
+      "LLMStream",
+      "CircuitBreaker",
+      "LLMService"
+    ],
+    "backend/services/parser.py": [
+      "DocumentParser",
+      "_decode",
+      "_get_ocr",
+      "ocr_available",
+      "_limit_side",
+      "_ocr_array"
+    ],
+    "backend/services/prompt_builder.py": [
+      "select_specialist",
+      "BuiltPrompt",
+      "PromptBuilder"
+    ],
+    "backend/services/rerank_service.py": [
+      "RerankService"
+    ],
+    "backend/services/retrieval_service.py": [
+      "RetrievedItem",
+      "RetrievalResult",
+      "RetrievalService"
+    ],
+    "backend/services/search_service.py": [
+      "SearchOutcome",
+      "WebSearchService",
+      "_map_results"
+    ],
+    "backend/services/session_service.py": [
+      "SessionService"
+    ],
+    "backend/utils/__init__.py": [],
+    "backend/utils/cache.py": [
+      "TTLCache",
+      "CachedAnswer",
+      "_Entry",
+      "SemanticCache"
+    ],
+    "backend/utils/net.py": [
+      "UnsafeURLError",
+      "assert_public_url"
+    ],
+    "backend/utils/numeric.py": [
+      "l2_normalize",
+      "sigmoid"
+    ],
+    "backend/utils/ranking.py": [
+      "reciprocal_rank_fusion"
+    ],
+    "backend/utils/rate_limiter.py": [
+      "RateLimiter",
+      "QuotaGuard"
+    ],
+    "backend/utils/sse.py": [
+      "format_sse"
+    ],
+    "backend/utils/streaming.py": [
+      "ThinkFilter"
+    ],
+    "backend/utils/text.py": [
+      "estimate_tokens",
+      "normalize_query",
+      "query_terms",
+      "build_fts_query",
+      "term_coverage"
+    ],
+    "backend/utils/timeutil.py": [
+      "utcnow",
+      "parse_duration"
+    ],
+    "data/.gitkeep": [],
+    "frontend/__init__.py": [],
+    "frontend/js/api.js": [],
+    "frontend/js/app.js": [],
+    "frontend/js/chat.js": [],
+    "frontend/js/components/ai-viz.js": [],
+    "frontend/js/components/code-preview.js": [],
+    "frontend/js/components/dialog.js": [],
+    "frontend/js/components/documents.js": [],
+    "frontend/js/components/menu.js": [],
+    "frontend/js/components/model-select.js": [],
+    "frontend/js/components/motion.js": [],
+    "frontend/js/components/notifications.js": [],
+    "frontend/js/components/prefs.js": [],
+    "frontend/js/components/radiogroup.js": [],
+    "frontend/js/components/settings.js": [],
+    "frontend/js/components/workspaces.js": [],
+    "frontend/js/icons.js": [],
+    "frontend/js/intro.js": [],
+    "frontend/js/theme.js": [],
+    "frontend/js/ui.js": [],
+    "frontend/js/utils.js": [],
+    "tests/__init__.py": [],
+    "tests/browser_harness.py": [
+      "run_scenario"
+    ],
+    "tests/conftest.py": [
+      "_tokens",
+      "FakeEmbedder",
+      "FakeReranker",
+      "make_api_error",
+      "_chunk",
+      "_FakeStream",
+      "FakeProviderClient",
+      "settings",
+      "tavily_transport",
+      "fake_llm_client",
+      "build_container",
+      "client_factory",
+      "parse_sse"
+    ],
+    "tests/test_api.py": [
+      "new_session",
+      "chat",
+      "names",
+      "text_of",
+      "test_ping_health_models_and_spa",
+      "test_health_degraded_without_llm_keys",
+      "test_session_crud_and_cascade",
+      "test_session_title_auto_generated_and_ordering",
+      "test_upload_list_retrieve_delete_flow",
+      "test_upload_rejections",
+      "test_upload_requires_file_or_url_and_blocks_ssrf",
+      "test_upload_oversize_returns_413",
+      "test_upload_csv_and_markdown",
+      "test_user_id_validation",
+      "test_search_endpoint_ok_disabled_and_error",
+      "test_search_falls_back_to_serper_when_tavily_fails",
+      "test_search_uses_serper_when_tavily_is_unconfigured",
+      "test_chat_direct_route_streams_and_persists",
+      "test_chat_rag_route_uses_documents_and_returns_citations",
+      "test_chat_web_route_and_graceful_search_failure",
+      "test_chat_research_mode_always_searches_multi_query",
+      "test_chat_document_mode_without_documents_tells_the_model",
+      "test_chat_history_is_used_without_duplicating_current_turn",
+      "test_semantic_cache_hit_skips_llm",
+      "test_regenerate_replaces_last_answer",
+      "test_failover_is_reported_to_client",
+      "test_all_models_down_yields_error_event_not_500",
+      "test_mid_stream_error_keeps_partial_answer",
+      "test_chat_validation_and_errors",
+      "test_non_streaming_chat_and_legacy_generate",
+      "test_feedback_roundtrip",
+      "test_rate_limit_returns_429",
+      "test_client_disconnect_persists_partial_answer",
+      "test_migration_adds_columns_to_legacy_database",
+      "test_public_config_advertises_the_real_upload_limits",
+      "test_public_config_limit_follows_the_setting",
+      "test_frontend_files_must_be_revalidated_so_a_page_never_mixes_old_and_new_scripts"
+    ],
+    "tests/test_architecture.py": [
+      "_modules",
+      "_imports",
+      "_package",
+      "test_backend_root_only_contains_main",
+      "test_layer_direction",
+      "test_no_module_level_import_cycles",
+      "test_package_initialisers_do_not_import_siblings",
+      "test_environment_only_read_in_config",
+      "test_no_hardcoded_model_ids_outside_config",
+      "test_every_module_imports_in_a_clean_interpreter"
+    ],
+    "tests/test_artifacts.py": [
+      "new_session",
+      "chat",
+      "names",
+      "text_of",
+      "test_validator_strips_controls_and_drops_unknown_fields",
+      "test_validator_rejects_empty_and_over_cap_documents",
+      "test_when_a_document_is_and_is_not_authored",
+      "test_download_filename_uses_heading_with_underscores",
+      "test_five_formats_are_built_from_the_same_document",
+      "test_ordinary_chat_emits_no_artifact",
+      "test_awkward_answers_still_become_every_format",
+      "test_a_prose_answer_becomes_a_titled_sectioned_document",
+      "test_generate_pdf_saves_the_previous_answer",
+      "test_markdown_becomes_a_document_without_a_second_model_call",
+      "test_file_request_streams_the_answer_then_the_artifact",
+      "test_save_request_files_the_previous_answer_not_export_instructions",
+      "test_i_want_a_pdf_opens_a_file_even_when_the_model_refuses",
+      "test_every_mode_downloads_every_format",
+      "test_thin_answer_still_downloads_instead_of_failing",
+      "test_clarification_does_not_create_a_file",
+      "test_download_rate_limit_is_separate_from_chat",
+      "test_inline_markdown_is_stripped_in_non_markdown_formats"
+    ],
+    "tests/test_frontend_followup.py": [
+      "test_m3_card_aria_label_starts_with_the_visible_title",
+      "test_n3_show_error_does_not_announce_and_retry_is_announced_once",
+      "test_n4_sse_dispatch_only_calls_own_function_handlers",
+      "test_m1_resend_is_decided_in_the_controller_and_only_after_accept_sets_failed",
+      "test_m2_create_session_receives_the_abort_signal",
+      "test_n1_busy_notice_is_throttled_and_used_by_send_and_session_select",
+      "fu",
+      "test_stub_followup_nothing_reached_a_server",
+      "test_stub_m1_unedited_resend_uses_regenerate_and_keeps_one_user_bubble",
+      "test_stub_m1_failed_state_is_cleared_after_success_new_chat_session_switch_and_edit",
+      "test_stub_m1_http_level_failure_never_uses_regenerate",
+      "test_stub_m1_cooldown_blocks_early_resend_then_regenerates",
+      "test_stub_m1_retry_button_regenerates_and_no_duplicate_bubble",
+      "test_stub_m2_stop_while_session_creation_is_pending_keeps_the_draft",
+      "test_stub_m2_creation_finishing_after_stop_keeps_the_session_and_sends_nothing",
+      "test_stub_new_chat_while_session_creation_is_pending_sends_nothing",
+      "test_stub_n1_four_enters_mid_stream_give_one_toast_and_no_extra_requests",
+      "test_stub_n2_stop_before_first_token_restores_draft_and_leaves_no_empty_bubble",
+      "test_stub_n2_stop_after_first_token_keeps_partial_and_state_is_not_failed",
+      "test_stub_n3_error_is_announced_once_by_the_alert_box_only",
+      "test_stub_n4_sse_dispatch_ignores_inherited_and_special_event_names",
+      "test_stub_zero_event_close_is_not_persisted_and_unedited_send_is_a_normal_send",
+      "test_stub_error_without_meta_is_not_persisted_and_unedited_send_is_a_normal_send",
+      "test_stub_stop_before_any_event_restores_draft_drops_bubbles_and_resends_normally",
+      "test_stub_persisted_error_keeps_user_bubble_and_resend_regenerates_with_empty_message",
+      "test_stub_regenerate_stopped_before_first_token_restores_old_answer_in_place",
+      "test_stub_regenerate_restore_must_not_leak_into_a_different_chat",
+      "test_stub_regenerate_then_delete_current_session_leaves_an_empty_chat_and_only_a_stubbed_delete",
+      "test_stub_regenerate_then_new_chat_then_stop_after_tokens_leaks_nothing",
+      "test_stub_nothing_was_ever_sent_to_a_real_server",
+      "test_stub_retry_countdown_announces_itself_once_and_no_double_announcement",
+      "test_stub_double_send_double_stop_and_stop_done_race_are_clean",
+      "test_stub_sessions_post_payload_keeps_its_four_keys"
+    ],
+    "tests/test_frontend_guards.py": [
+      "_read",
+      "test_entrypoints_exist",
+      "test_view_files_do_not_call_backend",
+      "test_no_inline_handlers_or_styles_in_markup",
+      "test_no_new_external_origins",
+      "test_app_js_ids_exist_in_index",
+      "test_sprite_references_resolve",
+      "test_no_hex_colors_outside_token_files",
+      "test_reduced_motion_rule_present",
+      "test_no_right_sidebar_region",
+      "test_buttons_have_accessible_name",
+      "test_index_ids_are_unique",
+      "test_ui_ids_exist_in_index_or_are_created_dynamically",
+      "test_model_select_never_uses_html_injection",
+      "test_session_list_interpolations_are_escaped",
+      "test_file_accept_matches_controller_allow_list",
+      "test_welcome_cards_and_mode_dropdown_are_consistent",
+      "test_no_unverifiable_marketing_claims",
+      "test_shell_breakpoints_match_between_head_snippet_and_ui",
+      "test_sidebar_toggle_controls_existing_region",
+      "test_sidebar_is_hidden_from_tab_order_when_closed_drawer",
+      "test_coarse_pointer_targets_are_44px",
+      "test_model_select_keeps_native_select_as_source_of_truth",
+      "_css_rules",
+      "test_feature_card_try_line_is_never_hidden",
+      "test_feature_card_border_uses_control_token",
+      "_fn_body",
+      "test_sources_block_never_uses_html_injection",
+      "test_every_blank_target_has_noopener_noreferrer",
+      "test_chat_innerhtml_templates_interpolate_only_safe_values",
+      "test_renderer_and_chat_api_used_by_app_js_still_exists",
+      "test_ai_viz_is_css_only_and_decorative",
+      "test_ai_viz_reduced_motion_and_hidden_tab_rules",
+      "test_no_interval_timers_or_raf_loops_in_frontend",
+      "test_streaming_does_not_announce_per_token",
+      "test_stage3_ids_exist",
+      "test_sanitizer_policy_forbids_class_role_download_ping_in_utils",
+      "_fn_body",
+      "test_citation_label_falls_back_to_source_n_and_is_used_everywhere",
+      "test_citation_ids_resolved_once_for_stream_and_history_paths",
+      "test_coarse_pointer_citation_hit_area_rule_present_and_scoped",
+      "cite_result",
+      "_id_list",
+      "test_browser_citation_ids_consistent_unique_and_input_not_mutated",
+      "test_browser_blank_citations_get_accessible_source_n_names",
+      "test_browser_isolated_badge_reaches_44px_on_coarse_pointers",
+      "test_browser_multi_citation_sentence_badges_reach_44px_wide",
+      "_code",
+      "_app_fn",
+      "test_app_js_has_no_native_confirm_inline_color_interval_or_emoji",
+      "test_welcome_card_handler_never_sends",
+      "test_allowed_extensions_include_rst_and_match_accept_and_backend",
+      "test_request_payload_shapes_match_the_backend_contract",
+      "test_regenerate_and_retry_send_the_head_shape",
+      "test_composer_is_cleared_only_after_the_server_accepted",
+      "test_no_new_timer_or_listener_patterns_in_controller",
+      "stub_run",
+      "test_stub_nothing_reached_a_server",
+      "test_stub_welcome_cards_never_submit_and_fill_the_composer",
+      "test_stub_failures_before_accept_keep_the_draft_and_add_no_bubble",
+      "test_stub_stream_error_restores_draft_and_never_duplicates_the_user_bubble",
+      "test_stub_failed_regenerate_keeps_the_previous_answer",
+      "test_stub_upload_failure_retry_resends_the_same_file"
+    ],
+    "tests/test_frontend_motion.py": [
+      "_code",
+      "test_vendored_gsap_is_pinned_and_documented",
+      "test_gsap_has_no_network_or_dynamic_code_surface",
+      "test_gsap_is_loaded_lazily_from_the_same_origin_only",
+      "test_motion_is_view_only_and_animates_only_transform_and_opacity",
+      "test_motion_honours_reduced_motion_and_cleans_up",
+      "test_first_paint_guard_has_a_hard_failsafe_and_skips_reduced_motion",
+      "test_css_entrance_keyframes_that_motion_replaces_are_gone",
+      "test_vendor_code_is_exempt_from_the_first_party_origin_guard_only_by_directory",
+      "_run_browser",
+      "reduced",
+      "normal",
+      "test_browser_reduced_motion_never_loads_the_library_and_shows_everything",
+      "test_browser_normal_motion_ends_with_clean_visible_content_and_stays_interactive"
+    ],
+    "tests/test_frontend_reference.py": [
+      "_read",
+      "_theme_tokens",
+      "_lum",
+      "_contrast",
+      "test_reference_assets_exist_and_are_linked",
+      "test_reference_css_uses_tokens_only",
+      "test_every_component_and_view_js_is_view_only",
+      "test_reference_css_has_no_unguarded_motion",
+      "test_notification_hooks_exist_in_markup",
+      "test_soft_control_outline_meets_3_to_1",
+      "test_welcome_card_borders_are_documented_exemption_and_text_is_readable",
+      "test_no_unverifiable_privacy_claim_in_capability_strip"
+    ],
+    "tests/test_frontend_sanitizer.py": [
+      "_forbid_attr",
+      "_hook_body",
+      "test_forbid_attr_contains_required_attributes",
+      "test_language_hook_is_scoped_to_code_and_validated",
+      "test_hook_registered_only_around_sanitize_and_always_removed",
+      "test_markdown_goes_through_sanitizer_wrapper",
+      "test_artifact_preview_rebuilds_markdown_like_chat",
+      "test_buildPreviewDoc_is_exported",
+      "test_buildPreviewDoc_handles_all_three_branches",
+      "test_code_preview_js_exports_required_api",
+      "test_code_preview_js_checks_chatArea",
+      "test_code_workspace_note_updated",
+      "test_purify_config_keeps_http_only_and_forbids_active_tags",
+      "_chrome",
+      "browser_result",
+      "test_browser_attributes_and_classes_stripped",
+      "test_browser_language_hook_cannot_be_abused",
+      "test_browser_features_still_work",
+      "test_browser_buildPreviewDoc_html_fragment",
+      "test_browser_buildPreviewDoc_svg",
+      "test_browser_buildPreviewDoc_full_document",
+      "test_browser_run_button_scoping"
+    ],
+    "tests/test_frontend_shell.py": [
+      "_read",
+      "_sidebar",
+      "test_mode_dropdown_sits_in_the_composer_beside_web_search",
+      "test_sidebar_order_is_brand_new_chat_recent_and_user",
+      "test_trigger_is_a_menu_button_with_state_and_a_name",
+      "test_dropdown_entries_are_exactly_the_backend_modes_in_order",
+      "test_modes_are_not_rendered_as_permanent_rows_or_header_tabs",
+      "test_header_has_only_a_read_only_workspace_label",
+      "test_controller_owns_the_mode_and_the_view_only_reports_it",
+      "test_drawer_focuses_new_chat_first",
+      "test_rail_tooltip_for_new_chat_lives_on_the_wrapper_not_the_clipping_button",
+      "test_every_control_with_a_rail_tip_also_has_an_accessible_name"
+    ],
+    "tests/test_frontend_startup.py": [
+      "_fn",
+      "test_data_loading_starts_before_event_handlers_are_bound",
+      "test_startup_errors_are_reported_with_the_fix_not_swallowed",
+      "stale",
+      "test_stub_models_still_load_when_a_handler_fails_to_bind",
+      "test_stub_the_user_is_told_what_happened_and_how_to_fix_it"
+    ],
+    "tests/test_frontend_workspaces.py": [
+      "_strip_comments",
+      "test_three_workspace_panels_exist_and_each_has_a_labelled_heading",
+      "test_panel_controls_are_buttons_that_only_fill_the_composer",
+      "test_document_actions_are_explained_not_hidden_when_unavailable",
+      "test_research_locks_the_web_switch_because_the_server_always_searches",
+      "test_settings_tabs_and_panes_are_wired_with_aria",
+      "test_settings_only_offers_controls_with_a_real_effect",
+      "test_privacy_and_help_copy_makes_only_verifiable_statements",
+      "test_new_components_are_view_only_and_never_inject_html",
+      "test_new_components_are_loaded_before_ui_js_in_dependency_order",
+      "test_workspace_css_obeys_the_project_css_rules",
+      "test_text_is_rem_based_so_the_text_size_setting_scales_everything",
+      "test_code_workspace_is_language_agnostic_and_has_debug_logs",
+      "test_composer_github_item_and_resizable_preview_exist",
+      "test_preference_markup_matches_the_allowed_values",
+      "test_uploads_validate_on_the_client_and_guard_duplicates_without_trusting_it",
+      "test_config_is_a_read_only_get_and_its_failure_is_tolerated",
+      "test_history_and_documents_have_loading_and_error_states",
+      "ws",
+      "test_stub_run_reached_no_server_and_threw_nothing",
+      "test_stub_dropdown_is_the_only_mode_control_and_is_keyboard_operable",
+      "test_stub_each_mode_shows_only_its_own_panel",
+      "test_stub_panel_actions_only_fill_the_composer",
+      "test_stub_research_locks_the_web_switch_and_other_modes_unlock_it",
+      "test_stub_my_documents_panel_refreshes_and_returns_focus",
+      "test_stub_settings_controls_take_effect_and_reset",
+      "test_stub_uploads_validate_guard_duplicates_and_queue",
+      "test_stub_history_arrow_keys_move_between_chats"
+    ],
+    "tests/test_github.py": [
+      "github_transport",
+      "test_parse_repo_url_and_path_selection",
+      "test_connect_indexes_repo_and_hides_the_token",
+      "test_connect_rejects_unknown_and_non_github_urls",
+      "test_oauth_device_flow",
+      "test_oauth_pending_and_unconfigured",
+      "test_code_chat_gets_the_repo_brief",
+      "test_mcp_exposes_github_tools"
+    ],
+    "tests/test_live.py": [
+      "live_settings",
+      "live_container",
+      "corpus_loaded",
+      "test_every_registered_model_streams_or_reports_why",
+      "test_invalid_model_id_falls_back_without_error",
+      "test_retrieval_quality_hybrid_beats_single_signals",
+      "test_end_to_end_chat_latency_report",
+      "test_retrieval_latency_distribution",
+      "test_tavily_basic_vs_advanced_latency"
+    ],
+    "tests/test_llm.py": [
+      "make_llm",
+      "collect",
+      "test_happy_path_streams_and_reports",
+      "test_model_params_come_from_registry",
+      "test_failover_on_rate_limit_and_5xx_and_timeout",
+      "test_hang_hits_first_token_timeout_then_falls_back",
+      "test_empty_response_triggers_fallback",
+      "test_404_hard_disables_model_and_hides_it",
+      "test_all_models_failing_raises_normalised_error",
+      "test_no_provider_configured",
+      "test_mid_stream_failure_is_normalised",
+      "test_think_blocks_and_reasoning_deltas_never_reach_user",
+      "_single_model_stream",
+      "test_whitespace_chunk_after_think_close_then_answer",
+      "test_multiple_whitespace_only_chunks_before_the_answer",
+      "test_split_think_tags_followed_by_whitespace_chunk",
+      "test_leading_whitespace_only_chunk_without_think_tags",
+      "test_whitespace_inside_the_answer_is_preserved",
+      "test_normal_response_without_think_tags_is_unchanged",
+      "test_genuinely_empty_visible_output_still_fails_over",
+      "test_unclosed_think_block_is_still_surfaced_not_failed_over",
+      "test_gemma_gets_system_prompt_merged",
+      "test_quota_guard_skips_exhausted_model_proactively",
+      "test_quota_guard_last_resort_when_everything_is_throttled",
+      "test_headers_feed_quota_guard",
+      "test_discovery_marks_unavailable_ids_and_survives_errors",
+      "test_unknown_model_falls_back_to_default_chain",
+      "test_fast_model_chain_and_complete",
+      "test_classify_exception_codes"
+    ],
+    "tests/test_parser_formats.py": [
+      "_text",
+      "parser",
+      "_image",
+      "test_supported_extensions_cover_images_and_office_formats",
+      "test_unsupported_extension_still_rejected",
+      "test_log_files_are_parsed_as_text",
+      "test_pptx_slides_notes_and_tables",
+      "test_html_file_extracts_text_without_scripts",
+      "test_json_is_flattened_to_text",
+      "test_invalid_json_is_a_parse_error",
+      "test_rtf",
+      "test_odt",
+      "test_xls_legacy_excel",
+      "test_non_utf8_text_is_decoded_not_mojibake",
+      "test_utf16_text",
+      "test_image_text_is_extracted_by_ocr",
+      "test_image_without_text_is_a_clear_error",
+      "test_scanned_pdf_pages_fall_back_to_ocr",
+      "test_image_upload_reports_unavailable_ocr",
+      "test_embedding_load_failure_is_retried_after_cooldown",
+      "test_png_upload_is_indexed_and_retrievable",
+      "_text_pdf",
+      "test_text_pdf_uses_fast_pdfium_path_and_keeps_page_numbers",
+      "test_pdf_falls_back_to_pdfplumber_when_pdfium_fails",
+      "test_scanned_pdf_is_not_reparsed_by_other_text_parsers",
+      "test_garbage_pdf_is_a_parse_error",
+      "test_embeddings_keep_input_order_after_length_sorting",
+      "test_upload_logs_stage_timings"
+    ],
+    "tests/test_retrieval.py": [
+      "ingest",
+      "test_ingest_search_and_isolation",
+      "test_lexical_and_dense_both_contribute",
+      "test_irrelevant_query_returns_nothing",
+      "test_delete_document_removes_dense_and_lexical",
+      "test_delete_is_scoped_to_owner",
+      "test_reupload_replaces_previous_copy",
+      "test_cache_invalidated_by_index_change",
+      "test_user_id_cannot_escape_index_dir",
+      "test_embedder_failure_degrades_to_lexical_only",
+      "test_reranker_failure_falls_back_to_fused_order",
+      "test_reindex_after_embedding_model_change",
+      "test_lexical_only_chunks_get_embedded_on_recovery",
+      "test_ingest_rejects_bad_files",
+      "test_concurrent_ingest_and_queries_are_consistent",
+      "test_index_store_atomic_rollback_on_dim_mismatch"
+    ],
+    "tests/test_units.py": [
+      "Clock",
+      "test_settings_defaults_and_registry",
+      "test_settings_llm_models_override",
+      "test_settings_invalid_values_fail_fast",
+      "test_settings_missing_keys_only_warn",
+      "test_settings_masked_hides_keys",
+      "test_blank_env_values_are_ignored",
+      "test_ttl_cache_expiry_and_lru",
+      "test_semantic_cache_scope_threshold_and_ttl",
+      "test_semantic_cache_eviction_bound",
+      "test_rate_limiter_bucket_refill",
+      "test_parse_duration",
+      "test_quota_guard_rolling_window_and_headers",
+      "_feed",
+      "test_think_filter_variants",
+      "test_think_filter_unclosed_block_is_not_swallowed",
+      "test_build_fts_query_sanitises",
+      "test_term_coverage",
+      "test_reciprocal_rank_fusion",
+      "test_smalltalk",
+      "test_router_decisions",
+      "test_followup_detection",
+      "test_prompt_builder_context_and_budgets",
+      "test_prompt_builder_without_context_has_no_grounding_block",
+      "test_specialist_router_picks_task_prompts",
+      "test_parser_blocks_private_and_non_http",
+      "test_parser_text_csv_and_errors"
+    ]
+  },
+  "batches": [
+    {
+      "batchIndex": 1,
+      "files": [
+        {
+          "path": "backend/api/mcp_server.py",
+          "language": "python",
+          "sizeLines": 124,
+          "fileCategory": "code"
+        },
+        {
+          "path": "backend/api/routes.py",
+          "language": "python",
+          "sizeLines": 410,
+          "fileCategory": "code"
+        },
+        {
+          "path": "backend/client/search_client.py",
+          "language": "python",
+          "sizeLines": 88,
+          "fileCategory": "code"
+        },
+        {
+          "path": "backend/core/container.py",
+          "language": "python",
+          "sizeLines": 196,
+          "fileCategory": "code"
+        },
+        {
+          "path": "backend/main.py",
+          "language": "python",
+          "sizeLines": 119,
+          "fileCategory": "code"
+        },
+        {
+          "path": "backend/models/api.py",
+          "language": "python",
+          "sizeLines": 253,
+          "fileCategory": "code"
+        },
+        {
+          "path": "backend/services/artifact.py",
+          "language": "python",
+          "sizeLines": 1201,
+          "fileCategory": "code"
+        },
+        {
+          "path": "backend/services/chat_service.py",
+          "language": "python",
+          "sizeLines": 538,
+          "fileCategory": "code"
+        },
+        {
+          "path": "backend/services/search_service.py",
+          "language": "python",
+          "sizeLines": 133,
+          "fileCategory": "code"
+        },
+        {
+          "path": "backend/utils/cache.py",
+          "language": "python",
+          "sizeLines": 167,
+          "fileCategory": "code"
+        },
+        {
+          "path": "backend/utils/sse.py",
+          "language": "python",
+          "sizeLines": 12,
+          "fileCategory": "code"
+        },
+        {
+          "path": "tests/test_api.py",
+          "language": "python",
+          "sizeLines": 503,
+          "fileCategory": "code"
+        },
+        {
+          "path": "tests/test_live.py",
+          "language": "python",
+          "sizeLines": 224,
+          "fileCategory": "code"
+        }
+      ],
+      "batchImportData": {
+        "backend/api/mcp_server.py": [
+          "backend/core/config.py",
+          "backend/core/container.py",
+          "backend/models/api.py",
+          "backend/services/chat_service.py"
+        ],
+        "backend/api/routes.py": [
+          "backend/core/container.py",
+          "backend/core/exceptions.py",
+          "backend/models/api.py",
+          "backend/services/artifact.py",
+          "backend/services/chat_service.py",
+          "backend/services/document_service.py",
+          "backend/services/github_service.py",
+          "backend/services/llm_service.py",
+          "backend/services/parser.py",
+          "backend/services/retrieval_service.py",
+          "backend/services/search_service.py",
+          "backend/services/session_service.py",
+          "backend/utils/sse.py"
+        ],
+        "backend/client/search_client.py": [],
+        "backend/core/container.py": [
+          "backend/client/http.py",
+          "backend/client/search_client.py",
+          "backend/client/web_client.py",
+          "backend/core/config.py",
+          "backend/core/database.py",
+          "backend/services/chat_service.py",
+          "backend/services/document_service.py",
+          "backend/services/embedding_service.py",
+          "backend/services/github_service.py",
+          "backend/services/index_store.py",
+          "backend/services/llm_service.py",
+          "backend/services/parser.py",
+          "backend/services/prompt_builder.py",
+          "backend/services/rerank_service.py",
+          "backend/services/retrieval_service.py",
+          "backend/services/search_service.py",
+          "backend/services/session_service.py",
+          "backend/utils/cache.py",
+          "backend/utils/rate_limiter.py"
+        ],
+        "backend/main.py": [
+          "backend/api/routes.py",
+          "backend/core/config.py",
+          "backend/core/container.py"
+        ],
+        "backend/models/api.py": [],
+        "backend/services/artifact.py": [],
+        "backend/services/chat_service.py": [
+          "backend/core/config.py",
+          "backend/core/exceptions.py",
+          "backend/services/artifact.py",
+          "backend/services/llm_service.py",
+          "backend/services/prompt_builder.py",
+          "backend/services/retrieval_service.py",
+          "backend/services/search_service.py",
+          "backend/services/session_service.py",
+          "backend/utils/cache.py"
+        ],
+        "backend/services/search_service.py": [
+          "backend/client/search_client.py",
+          "backend/core/config.py",
+          "backend/models/api.py",
+          "backend/utils/cache.py",
+          "backend/utils/text.py"
+        ],
+        "backend/utils/cache.py": [],
+        "backend/utils/sse.py": [],
+        "tests/test_api.py": [
+          "backend/models/api.py",
+          "backend/services/chat_service.py",
+          "tests/conftest.py"
+        ],
+        "tests/test_live.py": [
+          "backend/core/config.py",
+          "backend/core/container.py",
+          "backend/models/api.py",
+          "backend/services/chat_service.py"
+        ]
+      },
+      "neighborMap": {
+        "backend/api/mcp_server.py": [
+          {
+            "path": "backend/core/config.py",
+            "batchIndex": 2,
+            "symbols": [
+              "ModelSpec",
+              "ProviderConfig",
+              "Settings",
+              "get_settings",
+              "configure_logging"
+            ]
+          }
+        ],
+        "backend/api/routes.py": [
+          {
+            "path": "backend/core/exceptions.py",
+            "batchIndex": 3,
+            "symbols": [
+              "AppError",
+              "DocumentParseError",
+              "FetchError",
+              "IngestError",
+              "SessionNotFound",
+              "EmbeddingUnavailable",
+              "LLMError"
+            ]
+          },
+          {
+            "path": "backend/services/document_service.py",
+            "batchIndex": 4,
+            "symbols": [
+              "IngestResult",
+              "DocumentService"
+            ]
+          },
+          {
+            "path": "backend/services/github_service.py",
+            "batchIndex": 4,
+            "symbols": [
+              "GitHubError",
+              "GitHubService",
+              "parse_repo_url",
+              "_select_paths"
+            ]
+          },
+          {
+            "path": "backend/services/llm_service.py",
+            "batchIndex": 3,
+            "symbols": [
+              "LLMResult",
+              "LLMStream",
+              "CircuitBreaker",
+              "LLMService"
+            ]
+          },
+          {
+            "path": "backend/services/parser.py",
+            "batchIndex": 7,
+            "symbols": [
+              "DocumentParser",
+              "_decode",
+              "_get_ocr",
+              "ocr_available",
+              "_limit_side",
+              "_ocr_array"
+            ]
+          },
+          {
+            "path": "backend/services/retrieval_service.py",
+            "batchIndex": 5,
+            "symbols": [
+              "RetrievedItem",
+              "RetrievalResult",
+              "RetrievalService"
+            ]
+          },
+          {
+            "path": "backend/services/session_service.py",
+            "batchIndex": 4,
+            "symbols": [
+              "SessionService"
+            ]
+          }
+        ],
+        "backend/core/container.py": [
+          {
+            "path": "backend/client/http.py",
+            "batchIndex": 2,
+            "symbols": [
+              "build_http_client"
+            ]
+          },
+          {
+            "path": "backend/client/web_client.py",
+            "batchIndex": 7,
+            "symbols": [
+              "WebPageClient"
+            ]
+          },
+          {
+            "path": "backend/core/config.py",
+            "batchIndex": 2,
+            "symbols": [
+              "ModelSpec",
+              "ProviderConfig",
+              "Settings",
+              "get_settings",
+              "configure_logging"
+            ]
+          },
+          {
+            "path": "backend/core/database.py",
+            "batchIndex": 4,
+            "symbols": [
+              "Base",
+              "Database"
+            ]
+          },
+          {
+            "path": "backend/services/document_service.py",
+            "batchIndex": 4,
+            "symbols": [
+              "IngestResult",
+              "DocumentService"
+            ]
+          },
+          {
+            "path": "backend/services/embedding_service.py",
+            "batchIndex": 2,
+            "symbols": [
+              "EmbeddingService"
+            ]
+          },
+          {
+            "path": "backend/services/github_service.py",
+            "batchIndex": 4,
+            "symbols": [
+              "GitHubError",
+              "GitHubService",
+              "parse_repo_url",
+              "_select_paths"
+            ]
+          },
+          {
+            "path": "backend/services/index_store.py",
+            "batchIndex": 5,
+            "symbols": [
+              "ChunkIn",
+              "ChunkRecord",
+              "HybridIndexStore"
+            ]
+          },
+          {
+            "path": "backend/services/llm_service.py",
+            "batchIndex": 3,
+            "symbols": [
+              "LLMResult",
+              "LLMStream",
+              "CircuitBreaker",
+              "LLMService"
+            ]
+          },
+          {
+            "path": "backend/services/parser.py",
+            "batchIndex": 7,
+            "symbols": [
+              "DocumentParser",
+              "_decode",
+              "_get_ocr",
+              "ocr_available",
+              "_limit_side",
+              "_ocr_array"
+            ]
+          },
+          {
+            "path": "backend/services/prompt_builder.py",
+            "batchIndex": 5,
+            "symbols": [
+              "select_specialist",
+              "BuiltPrompt",
+              "PromptBuilder"
+            ]
+          },
+          {
+            "path": "backend/services/rerank_service.py",
+            "batchIndex": 2,
+            "symbols": [
+              "RerankService"
+            ]
+          },
+          {
+            "path": "backend/services/retrieval_service.py",
+            "batchIndex": 5,
+            "symbols": [
+              "RetrievedItem",
+              "RetrievalResult",
+              "RetrievalService"
+            ]
+          },
+          {
+            "path": "backend/services/session_service.py",
+            "batchIndex": 4,
+            "symbols": [
+              "SessionService"
+            ]
+          },
+          {
+            "path": "backend/utils/rate_limiter.py",
+            "batchIndex": 3,
+            "symbols": [
+              "RateLimiter",
+              "QuotaGuard"
+            ]
+          },
+          {
+            "path": "tests/conftest.py",
+            "batchIndex": 3,
+            "symbols": [
+              "_tokens",
+              "FakeEmbedder",
+              "FakeReranker",
+              "make_api_error",
+              "_chunk",
+              "_FakeStream",
+              "FakeProviderClient",
+              "settings",
+              "tavily_transport",
+              "fake_llm_client",
+              "build_container",
+              "client_factory",
+              "parse_sse"
+            ]
+          }
+        ],
+        "backend/main.py": [
+          {
+            "path": "backend/core/config.py",
+            "batchIndex": 2,
+            "symbols": [
+              "ModelSpec",
+              "ProviderConfig",
+              "Settings",
+              "get_settings",
+              "configure_logging"
+            ]
+          },
+          {
+            "path": "tests/conftest.py",
+            "batchIndex": 3,
+            "symbols": [
+              "_tokens",
+              "FakeEmbedder",
+              "FakeReranker",
+              "make_api_error",
+              "_chunk",
+              "_FakeStream",
+              "FakeProviderClient",
+              "settings",
+              "tavily_transport",
+              "fake_llm_client",
+              "build_container",
+              "client_factory",
+              "parse_sse"
+            ]
+          }
+        ],
+        "backend/models/api.py": [
+          {
+            "path": "backend/services/prompt_builder.py",
+            "batchIndex": 5,
+            "symbols": [
+              "select_specialist",
+              "BuiltPrompt",
+              "PromptBuilder"
+            ]
+          },
+          {
+            "path": "backend/services/session_service.py",
+            "batchIndex": 4,
+            "symbols": [
+              "SessionService"
+            ]
+          }
+        ],
+        "backend/services/artifact.py": [
+          {
+            "path": "tests/test_artifacts.py",
+            "batchIndex": 3,
+            "symbols": [
+              "new_session",
+              "chat",
+              "names",
+              "text_of",
+              "test_validator_strips_controls_and_drops_unknown_fields",
+              "test_validator_rejects_empty_and_over_cap_documents",
+              "test_when_a_document_is_and_is_not_authored",
+              "test_download_filename_uses_heading_with_underscores",
+              "test_five_formats_are_built_from_the_same_document",
+              "test_ordinary_chat_emits_no_artifact",
+              "test_awkward_answers_still_become_every_format",
+              "test_a_prose_answer_becomes_a_titled_sectioned_document",
+              "test_generate_pdf_saves_the_previous_answer",
+              "test_markdown_becomes_a_document_without_a_second_model_call",
+              "test_file_request_streams_the_answer_then_the_artifact",
+              "test_save_request_files_the_previous_answer_not_export_instructions",
+              "test_i_want_a_pdf_opens_a_file_even_when_the_model_refuses",
+              "test_every_mode_downloads_every_format",
+              "test_thin_answer_still_downloads_instead_of_failing",
+              "test_clarification_does_not_create_a_file",
+              "test_download_rate_limit_is_separate_from_chat",
+              "test_inline_markdown_is_stripped_in_non_markdown_formats"
+            ]
+          }
+        ],
+        "backend/services/chat_service.py": [
+          {
+            "path": "backend/core/config.py",
+            "batchIndex": 2,
+            "symbols": [
+              "ModelSpec",
+              "ProviderConfig",
+              "Settings",
+              "get_settings",
+              "configure_logging"
+            ]
+          },
+          {
+            "path": "backend/core/exceptions.py",
+            "batchIndex": 3,
+            "symbols": [
+              "AppError",
+              "DocumentParseError",
+              "FetchError",
+              "IngestError",
+              "SessionNotFound",
+              "EmbeddingUnavailable",
+              "LLMError"
+            ]
+          },
+          {
+            "path": "backend/services/llm_service.py",
+            "batchIndex": 3,
+            "symbols": [
+              "LLMResult",
+              "LLMStream",
+              "CircuitBreaker",
+              "LLMService"
+            ]
+          },
+          {
+            "path": "backend/services/prompt_builder.py",
+            "batchIndex": 5,
+            "symbols": [
+              "select_specialist",
+              "BuiltPrompt",
+              "PromptBuilder"
+            ]
+          },
+          {
+            "path": "backend/services/retrieval_service.py",
+            "batchIndex": 5,
+            "symbols": [
+              "RetrievedItem",
+              "RetrievalResult",
+              "RetrievalService"
+            ]
+          },
+          {
+            "path": "backend/services/session_service.py",
+            "batchIndex": 4,
+            "symbols": [
+              "SessionService"
+            ]
+          },
+          {
+            "path": "tests/test_units.py",
+            "batchIndex": 5,
+            "symbols": [
+              "Clock",
+              "test_settings_defaults_and_registry",
+              "test_settings_llm_models_override",
+              "test_settings_invalid_values_fail_fast",
+              "test_settings_missing_keys_only_warn",
+              "test_settings_masked_hides_keys",
+              "test_blank_env_values_are_ignored",
+              "test_ttl_cache_expiry_and_lru",
+              "test_semantic_cache_scope_threshold_and_ttl",
+              "test_semantic_cache_eviction_bound",
+              "test_rate_limiter_bucket_refill",
+              "test_parse_duration",
+              "test_quota_guard_rolling_window_and_headers",
+              "_feed",
+              "test_think_filter_variants",
+              "test_think_filter_unclosed_block_is_not_swallowed",
+              "test_build_fts_query_sanitises",
+              "test_term_coverage",
+              "test_reciprocal_rank_fusion",
+              "test_smalltalk",
+              "test_router_decisions",
+              "test_followup_detection",
+              "test_prompt_builder_context_and_budgets",
+              "test_prompt_builder_without_context_has_no_grounding_block",
+              "test_specialist_router_picks_task_prompts",
+              "test_parser_blocks_private_and_non_http",
+              "test_parser_text_csv_and_errors"
+            ]
+          }
+        ],
+        "backend/services/search_service.py": [
+          {
+            "path": "backend/core/config.py",
+            "batchIndex": 2,
+            "symbols": [
+              "ModelSpec",
+              "ProviderConfig",
+              "Settings",
+              "get_settings",
+              "configure_logging"
+            ]
+          },
+          {
+            "path": "backend/utils/text.py",
+            "batchIndex": 5,
+            "symbols": [
+              "estimate_tokens",
+              "normalize_query",
+              "query_terms",
+              "build_fts_query",
+              "term_coverage"
+            ]
+          }
+        ],
+        "backend/utils/cache.py": [
+          {
+            "path": "backend/services/retrieval_service.py",
+            "batchIndex": 5,
+            "symbols": [
+              "RetrievedItem",
+              "RetrievalResult",
+              "RetrievalService"
+            ]
+          },
+          {
+            "path": "tests/test_units.py",
+            "batchIndex": 5,
+            "symbols": [
+              "Clock",
+              "test_settings_defaults_and_registry",
+              "test_settings_llm_models_override",
+              "test_settings_invalid_values_fail_fast",
+              "test_settings_missing_keys_only_warn",
+              "test_settings_masked_hides_keys",
+              "test_blank_env_values_are_ignored",
+              "test_ttl_cache_expiry_and_lru",
+              "test_semantic_cache_scope_threshold_and_ttl",
+              "test_semantic_cache_eviction_bound",
+              "test_rate_limiter_bucket_refill",
+              "test_parse_duration",
+              "test_quota_guard_rolling_window_and_headers",
+              "_feed",
+              "test_think_filter_variants",
+              "test_think_filter_unclosed_block_is_not_swallowed",
+              "test_build_fts_query_sanitises",
+              "test_term_coverage",
+              "test_reciprocal_rank_fusion",
+              "test_smalltalk",
+              "test_router_decisions",
+              "test_followup_detection",
+              "test_prompt_builder_context_and_budgets",
+              "test_prompt_builder_without_context_has_no_grounding_block",
+              "test_specialist_router_picks_task_prompts",
+              "test_parser_blocks_private_and_non_http",
+              "test_parser_text_csv_and_errors"
+            ]
+          }
+        ],
+        "tests/test_api.py": [
+          {
+            "path": "tests/conftest.py",
+            "batchIndex": 3,
+            "symbols": [
+              "_tokens",
+              "FakeEmbedder",
+              "FakeReranker",
+              "make_api_error",
+              "_chunk",
+              "_FakeStream",
+              "FakeProviderClient",
+              "settings",
+              "tavily_transport",
+              "fake_llm_client",
+              "build_container",
+              "client_factory",
+              "parse_sse"
+            ]
+          }
+        ],
+        "tests/test_live.py": [
+          {
+            "path": "backend/core/config.py",
+            "batchIndex": 2,
+            "symbols": [
+              "ModelSpec",
+              "ProviderConfig",
+              "Settings",
+              "get_settings",
+              "configure_logging"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "batchIndex": 2,
+      "files": [
+        {
+          "path": "backend/client/embedding_client.py",
+          "language": "python",
+          "sizeLines": 122,
+          "fileCategory": "code"
+        },
+        {
+          "path": "backend/client/http.py",
+          "language": "python",
+          "sizeLines": 15,
+          "fileCategory": "code"
+        },
+        {
+          "path": "backend/client/rerank_client.py",
+          "language": "python",
+          "sizeLines": 61,
+          "fileCategory": "code"
+        },
+        {
+          "path": "backend/core/config.py",
+          "language": "python",
+          "sizeLines": 307,
+          "fileCategory": "code"
+        },
+        {
+          "path": "backend/services/__init__.py",
+          "language": "python",
+          "sizeLines": 0,
+          "fileCategory": "code"
+        },
+        {
+          "path": "backend/services/embedding_service.py",
+          "language": "python",
+          "sizeLines": 111,
+          "fileCategory": "code"
+        },
+        {
+          "path": "backend/services/rerank_service.py",
+          "language": "python",
+          "sizeLines": 95,
+          "fileCategory": "code"
+        },
+        {
+          "path": "backend/utils/numeric.py",
+          "language": "python",
+          "sizeLines": 25,
+          "fileCategory": "code"
+        },
+        {
+          "path": "tests/test_frontend_shell.py",
+          "language": "python",
+          "sizeLines": 109,
+          "fileCategory": "code"
+        },
+        {
+          "path": "tests/test_parser_formats.py",
+          "language": "python",
+          "sizeLines": 298,
+          "fileCategory": "code"
+        }
+      ],
+      "batchImportData": {
+        "backend/client/embedding_client.py": [
+          "backend/core/config.py",
+          "backend/core/exceptions.py",
+          "backend/utils/numeric.py"
+        ],
+        "backend/client/http.py": [
+          "backend/core/config.py"
+        ],
+        "backend/client/rerank_client.py": [
+          "backend/core/config.py",
+          "backend/utils/numeric.py"
+        ],
+        "backend/core/config.py": [],
+        "backend/services/__init__.py": [],
+        "backend/services/embedding_service.py": [
+          "backend/client/embedding_client.py",
+          "backend/core/config.py",
+          "backend/core/exceptions.py"
+        ],
+        "backend/services/rerank_service.py": [
+          "backend/client/rerank_client.py",
+          "backend/core/config.py"
+        ],
+        "backend/utils/numeric.py": [],
+        "tests/test_frontend_shell.py": [
+          "backend/core/config.py"
+        ],
+        "tests/test_parser_formats.py": [
+          "backend/core/exceptions.py",
+          "backend/services/__init__.py",
+          "backend/services/embedding_service.py",
+          "backend/services/parser.py"
+        ]
+      },
+      "neighborMap": {
+        "backend/client/embedding_client.py": [
+          {
+            "path": "backend/core/exceptions.py",
+            "batchIndex": 3,
+            "symbols": [
+              "AppError",
+              "DocumentParseError",
+              "FetchError",
+              "IngestError",
+              "SessionNotFound",
+              "EmbeddingUnavailable",
+              "LLMError"
+            ]
+          }
+        ],
+        "backend/client/http.py": [
+          {
+            "path": "backend/core/container.py",
+            "batchIndex": 1,
+            "symbols": [
+              "ServiceContainer",
+              "get_container",
+              "get_chat_service",
+              "get_session_service",
+              "get_document_service",
+              "get_retrieval_service",
+              "get_search_service",
+              "get_llm_service",
+              "get_github_service"
+            ]
+          }
+        ],
+        "backend/core/config.py": [
+          {
+            "path": "backend/api/mcp_server.py",
+            "batchIndex": 1,
+            "symbols": [
+              "_Runtime",
+              "search_documents",
+              "list_documents",
+              "web_search",
+              "connect_github_repo",
+              "list_github_repos",
+              "github_context",
+              "ask",
+              "main"
+            ]
+          },
+          {
+            "path": "backend/client/llm_client.py",
+            "batchIndex": 3,
+            "symbols": [
+              "OpenedStream",
+              "ProviderClient",
+              "build_provider_clients",
+              "wrap_clients",
+              "chunk_text",
+              "chunk_usage",
+              "close_stream",
+              "classify_exception"
+            ]
+          },
+          {
+            "path": "backend/core/container.py",
+            "batchIndex": 1,
+            "symbols": [
+              "ServiceContainer",
+              "get_container",
+              "get_chat_service",
+              "get_session_service",
+              "get_document_service",
+              "get_retrieval_service",
+              "get_search_service",
+              "get_llm_service",
+              "get_github_service"
+            ]
+          },
+          {
+            "path": "backend/main.py",
+            "batchIndex": 1,
+            "symbols": [
+              "RevalidatingStaticFiles",
+              "create_app"
+            ]
+          },
+          {
+            "path": "backend/services/chat_service.py",
+            "batchIndex": 1,
+            "symbols": [
+              "RouteDecision",
+              "QueryRouter",
+              "ChatCommand",
+              "_event",
+              "_error",
+              "ChatService"
+            ]
+          },
+          {
+            "path": "backend/services/document_service.py",
+            "batchIndex": 4,
+            "symbols": [
+              "IngestResult",
+              "DocumentService"
+            ]
+          },
+          {
+            "path": "backend/services/github_service.py",
+            "batchIndex": 4,
+            "symbols": [
+              "GitHubError",
+              "GitHubService",
+              "parse_repo_url",
+              "_select_paths"
+            ]
+          },
+          {
+            "path": "backend/services/llm_service.py",
+            "batchIndex": 3,
+            "symbols": [
+              "LLMResult",
+              "LLMStream",
+              "CircuitBreaker",
+              "LLMService"
+            ]
+          },
+          {
+            "path": "backend/services/prompt_builder.py",
+            "batchIndex": 5,
+            "symbols": [
+              "select_specialist",
+              "BuiltPrompt",
+              "PromptBuilder"
+            ]
+          },
+          {
+            "path": "backend/services/retrieval_service.py",
+            "batchIndex": 5,
+            "symbols": [
+              "RetrievedItem",
+              "RetrievalResult",
+              "RetrievalService"
+            ]
+          },
+          {
+            "path": "backend/services/search_service.py",
+            "batchIndex": 1,
+            "symbols": [
+              "SearchOutcome",
+              "WebSearchService",
+              "_map_results"
+            ]
+          },
+          {
+            "path": "backend/services/session_service.py",
+            "batchIndex": 4,
+            "symbols": [
+              "SessionService"
+            ]
+          },
+          {
+            "path": "tests/conftest.py",
+            "batchIndex": 3,
+            "symbols": [
+              "_tokens",
+              "FakeEmbedder",
+              "FakeReranker",
+              "make_api_error",
+              "_chunk",
+              "_FakeStream",
+              "FakeProviderClient",
+              "settings",
+              "tavily_transport",
+              "fake_llm_client",
+              "build_container",
+              "client_factory",
+              "parse_sse"
+            ]
+          },
+          {
+            "path": "tests/test_live.py",
+            "batchIndex": 1,
+            "symbols": [
+              "live_settings",
+              "live_container",
+              "corpus_loaded",
+              "test_every_registered_model_streams_or_reports_why",
+              "test_invalid_model_id_falls_back_without_error",
+              "test_retrieval_quality_hybrid_beats_single_signals",
+              "test_end_to_end_chat_latency_report",
+              "test_retrieval_latency_distribution",
+              "test_tavily_basic_vs_advanced_latency"
+            ]
+          },
+          {
+            "path": "tests/test_units.py",
+            "batchIndex": 5,
+            "symbols": [
+              "Clock",
+              "test_settings_defaults_and_registry",
+              "test_settings_llm_models_override",
+              "test_settings_invalid_values_fail_fast",
+              "test_settings_missing_keys_only_warn",
+              "test_settings_masked_hides_keys",
+              "test_blank_env_values_are_ignored",
+              "test_ttl_cache_expiry_and_lru",
+              "test_semantic_cache_scope_threshold_and_ttl",
+              "test_semantic_cache_eviction_bound",
+              "test_rate_limiter_bucket_refill",
+              "test_parse_duration",
+              "test_quota_guard_rolling_window_and_headers",
+              "_feed",
+              "test_think_filter_variants",
+              "test_think_filter_unclosed_block_is_not_swallowed",
+              "test_build_fts_query_sanitises",
+              "test_term_coverage",
+              "test_reciprocal_rank_fusion",
+              "test_smalltalk",
+              "test_router_decisions",
+              "test_followup_detection",
+              "test_prompt_builder_context_and_budgets",
+              "test_prompt_builder_without_context_has_no_grounding_block",
+              "test_specialist_router_picks_task_prompts",
+              "test_parser_blocks_private_and_non_http",
+              "test_parser_text_csv_and_errors"
+            ]
+          }
+        ],
+        "backend/services/embedding_service.py": [
+          {
+            "path": "backend/core/exceptions.py",
+            "batchIndex": 3,
+            "symbols": [
+              "AppError",
+              "DocumentParseError",
+              "FetchError",
+              "IngestError",
+              "SessionNotFound",
+              "EmbeddingUnavailable",
+              "LLMError"
+            ]
+          },
+          {
+            "path": "backend/core/container.py",
+            "batchIndex": 1,
+            "symbols": [
+              "ServiceContainer",
+              "get_container",
+              "get_chat_service",
+              "get_session_service",
+              "get_document_service",
+              "get_retrieval_service",
+              "get_search_service",
+              "get_llm_service",
+              "get_github_service"
+            ]
+          },
+          {
+            "path": "backend/services/document_service.py",
+            "batchIndex": 4,
+            "symbols": [
+              "IngestResult",
+              "DocumentService"
+            ]
+          },
+          {
+            "path": "backend/services/retrieval_service.py",
+            "batchIndex": 5,
+            "symbols": [
+              "RetrievedItem",
+              "RetrievalResult",
+              "RetrievalService"
+            ]
+          }
+        ],
+        "backend/services/rerank_service.py": [
+          {
+            "path": "backend/core/container.py",
+            "batchIndex": 1,
+            "symbols": [
+              "ServiceContainer",
+              "get_container",
+              "get_chat_service",
+              "get_session_service",
+              "get_document_service",
+              "get_retrieval_service",
+              "get_search_service",
+              "get_llm_service",
+              "get_github_service"
+            ]
+          },
+          {
+            "path": "backend/services/retrieval_service.py",
+            "batchIndex": 5,
+            "symbols": [
+              "RetrievedItem",
+              "RetrievalResult",
+              "RetrievalService"
+            ]
+          }
+        ],
+        "tests/test_parser_formats.py": [
+          {
+            "path": "backend/core/exceptions.py",
+            "batchIndex": 3,
+            "symbols": [
+              "AppError",
+              "DocumentParseError",
+              "FetchError",
+              "IngestError",
+              "SessionNotFound",
+              "EmbeddingUnavailable",
+              "LLMError"
+            ]
+          },
+          {
+            "path": "backend/services/parser.py",
+            "batchIndex": 7,
+            "symbols": [
+              "DocumentParser",
+              "_decode",
+              "_get_ocr",
+              "ocr_available",
+              "_limit_side",
+              "_ocr_array"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "batchIndex": 3,
+      "files": [
+        {
+          "path": "backend/client/llm_client.py",
+          "language": "python",
+          "sizeLines": 134,
+          "fileCategory": "code"
+        },
+        {
+          "path": "backend/core/exceptions.py",
+          "language": "python",
+          "sizeLines": 76,
+          "fileCategory": "code"
+        },
+        {
+          "path": "backend/services/llm_service.py",
+          "language": "python",
+          "sizeLines": 399,
+          "fileCategory": "code"
+        },
+        {
+          "path": "backend/utils/rate_limiter.py",
+          "language": "python",
+          "sizeLines": 107,
+          "fileCategory": "code"
+        },
+        {
+          "path": "tests/conftest.py",
+          "language": "python",
+          "sizeLines": 339,
+          "fileCategory": "code"
+        },
+        {
+          "path": "tests/test_artifacts.py",
+          "language": "python",
+          "sizeLines": 450,
+          "fileCategory": "code"
+        },
+        {
+          "path": "tests/test_llm.py",
+          "language": "python",
+          "sizeLines": 263,
+          "fileCategory": "code"
+        },
+        {
+          "path": "tests/test_retrieval.py",
+          "language": "python",
+          "sizeLines": 178,
+          "fileCategory": "code"
+        }
+      ],
+      "batchImportData": {
+        "backend/client/llm_client.py": [
+          "backend/core/config.py",
+          "backend/core/exceptions.py",
+          "backend/utils/timeutil.py"
+        ],
+        "backend/core/exceptions.py": [],
+        "backend/services/llm_service.py": [
+          "backend/client/llm_client.py",
+          "backend/core/config.py",
+          "backend/core/exceptions.py",
+          "backend/utils/rate_limiter.py",
+          "backend/utils/streaming.py",
+          "backend/utils/text.py"
+        ],
+        "backend/utils/rate_limiter.py": [
+          "backend/utils/timeutil.py"
+        ],
+        "tests/conftest.py": [
+          "backend/core/config.py",
+          "backend/core/container.py",
+          "backend/main.py",
+          "backend/services/llm_service.py",
+          "backend/utils/rate_limiter.py"
+        ],
+        "tests/test_artifacts.py": [
+          "backend/services/artifact.py",
+          "backend/utils/rate_limiter.py",
+          "tests/conftest.py"
+        ],
+        "tests/test_llm.py": [
+          "backend/client/llm_client.py",
+          "backend/core/exceptions.py",
+          "backend/services/llm_service.py",
+          "backend/utils/rate_limiter.py",
+          "tests/conftest.py"
+        ],
+        "tests/test_retrieval.py": [
+          "backend/core/exceptions.py",
+          "backend/services/index_store.py",
+          "tests/conftest.py"
+        ]
+      },
+      "neighborMap": {
+        "backend/client/llm_client.py": [
+          {
+            "path": "backend/core/config.py",
+            "batchIndex": 2,
+            "symbols": [
+              "ModelSpec",
+              "ProviderConfig",
+              "Settings",
+              "get_settings",
+              "configure_logging"
+            ]
+          },
+          {
+            "path": "backend/utils/timeutil.py",
+            "batchIndex": 4,
+            "symbols": [
+              "utcnow",
+              "parse_duration"
+            ]
+          }
+        ],
+        "backend/core/exceptions.py": [
+          {
+            "path": "backend/api/routes.py",
+            "batchIndex": 1,
+            "symbols": [
+              "_throttle",
+              "_throttle_download",
+              "_client_ip",
+              "_limit",
+              "_llm_http_error",
+              "_command",
+              "ping",
+              "health",
+              "public_config",
+              "list_models",
+              "chat_stream",
+              "chat_complete",
+              "generate",
+              "list_sessions",
+              "create_session",
+              "get_session",
+              "update_session",
+              "delete_session",
+              "save_message",
+              "_prepare_download",
+              "download_message",
+              "message_feedback",
+              "upload_document",
+              "list_documents",
+              "delete_document",
+              "_github_row",
+              "github_connect",
+              "github_repos",
+              "github_delete",
+              "github_device_start",
+              "github_device_poll",
+              "retrieve",
+              "web_search"
+            ]
+          },
+          {
+            "path": "backend/client/embedding_client.py",
+            "batchIndex": 2,
+            "symbols": [
+              "EmbeddingClient",
+              "LocalEmbeddingClient",
+              "_HttpEmbeddingClient",
+              "GoogleEmbeddingClient",
+              "CohereEmbeddingClient",
+              "build_embedding_client"
+            ]
+          },
+          {
+            "path": "backend/client/web_client.py",
+            "batchIndex": 7,
+            "symbols": [
+              "WebPageClient"
+            ]
+          },
+          {
+            "path": "backend/services/chat_service.py",
+            "batchIndex": 1,
+            "symbols": [
+              "RouteDecision",
+              "QueryRouter",
+              "ChatCommand",
+              "_event",
+              "_error",
+              "ChatService"
+            ]
+          },
+          {
+            "path": "backend/services/document_service.py",
+            "batchIndex": 4,
+            "symbols": [
+              "IngestResult",
+              "DocumentService"
+            ]
+          },
+          {
+            "path": "backend/services/embedding_service.py",
+            "batchIndex": 2,
+            "symbols": [
+              "EmbeddingService"
+            ]
+          },
+          {
+            "path": "backend/services/github_service.py",
+            "batchIndex": 4,
+            "symbols": [
+              "GitHubError",
+              "GitHubService",
+              "parse_repo_url",
+              "_select_paths"
+            ]
+          },
+          {
+            "path": "backend/services/parser.py",
+            "batchIndex": 7,
+            "symbols": [
+              "DocumentParser",
+              "_decode",
+              "_get_ocr",
+              "ocr_available",
+              "_limit_side",
+              "_ocr_array"
+            ]
+          },
+          {
+            "path": "backend/services/session_service.py",
+            "batchIndex": 4,
+            "symbols": [
+              "SessionService"
+            ]
+          },
+          {
+            "path": "tests/test_parser_formats.py",
+            "batchIndex": 2,
+            "symbols": [
+              "_text",
+              "parser",
+              "_image",
+              "test_supported_extensions_cover_images_and_office_formats",
+              "test_unsupported_extension_still_rejected",
+              "test_log_files_are_parsed_as_text",
+              "test_pptx_slides_notes_and_tables",
+              "test_html_file_extracts_text_without_scripts",
+              "test_json_is_flattened_to_text",
+              "test_invalid_json_is_a_parse_error",
+              "test_rtf",
+              "test_odt",
+              "test_xls_legacy_excel",
+              "test_non_utf8_text_is_decoded_not_mojibake",
+              "test_utf16_text",
+              "test_image_text_is_extracted_by_ocr",
+              "test_image_without_text_is_a_clear_error",
+              "test_scanned_pdf_pages_fall_back_to_ocr",
+              "test_image_upload_reports_unavailable_ocr",
+              "test_embedding_load_failure_is_retried_after_cooldown",
+              "test_png_upload_is_indexed_and_retrievable",
+              "_text_pdf",
+              "test_text_pdf_uses_fast_pdfium_path_and_keeps_page_numbers",
+              "test_pdf_falls_back_to_pdfplumber_when_pdfium_fails",
+              "test_scanned_pdf_is_not_reparsed_by_other_text_parsers",
+              "test_garbage_pdf_is_a_parse_error",
+              "test_embeddings_keep_input_order_after_length_sorting",
+              "test_upload_logs_stage_timings"
+            ]
+          },
+          {
+            "path": "tests/test_units.py",
+            "batchIndex": 5,
+            "symbols": [
+              "Clock",
+              "test_settings_defaults_and_registry",
+              "test_settings_llm_models_override",
+              "test_settings_invalid_values_fail_fast",
+              "test_settings_missing_keys_only_warn",
+              "test_settings_masked_hides_keys",
+              "test_blank_env_values_are_ignored",
+              "test_ttl_cache_expiry_and_lru",
+              "test_semantic_cache_scope_threshold_and_ttl",
+              "test_semantic_cache_eviction_bound",
+              "test_rate_limiter_bucket_refill",
+              "test_parse_duration",
+              "test_quota_guard_rolling_window_and_headers",
+              "_feed",
+              "test_think_filter_variants",
+              "test_think_filter_unclosed_block_is_not_swallowed",
+              "test_build_fts_query_sanitises",
+              "test_term_coverage",
+              "test_reciprocal_rank_fusion",
+              "test_smalltalk",
+              "test_router_decisions",
+              "test_followup_detection",
+              "test_prompt_builder_context_and_budgets",
+              "test_prompt_builder_without_context_has_no_grounding_block",
+              "test_specialist_router_picks_task_prompts",
+              "test_parser_blocks_private_and_non_http",
+              "test_parser_text_csv_and_errors"
+            ]
+          }
+        ],
+        "backend/services/llm_service.py": [
+          {
+            "path": "backend/core/config.py",
+            "batchIndex": 2,
+            "symbols": [
+              "ModelSpec",
+              "ProviderConfig",
+              "Settings",
+              "get_settings",
+              "configure_logging"
+            ]
+          },
+          {
+            "path": "backend/utils/streaming.py",
+            "batchIndex": 5,
+            "symbols": [
+              "ThinkFilter"
+            ]
+          },
+          {
+            "path": "backend/utils/text.py",
+            "batchIndex": 5,
+            "symbols": [
+              "estimate_tokens",
+              "normalize_query",
+              "query_terms",
+              "build_fts_query",
+              "term_coverage"
+            ]
+          },
+          {
+            "path": "backend/api/routes.py",
+            "batchIndex": 1,
+            "symbols": [
+              "_throttle",
+              "_throttle_download",
+              "_client_ip",
+              "_limit",
+              "_llm_http_error",
+              "_command",
+              "ping",
+              "health",
+              "public_config",
+              "list_models",
+              "chat_stream",
+              "chat_complete",
+              "generate",
+              "list_sessions",
+              "create_session",
+              "get_session",
+              "update_session",
+              "delete_session",
+              "save_message",
+              "_prepare_download",
+              "download_message",
+              "message_feedback",
+              "upload_document",
+              "list_documents",
+              "delete_document",
+              "_github_row",
+              "github_connect",
+              "github_repos",
+              "github_delete",
+              "github_device_start",
+              "github_device_poll",
+              "retrieve",
+              "web_search"
+            ]
+          },
+          {
+            "path": "backend/core/container.py",
+            "batchIndex": 1,
+            "symbols": [
+              "ServiceContainer",
+              "get_container",
+              "get_chat_service",
+              "get_session_service",
+              "get_document_service",
+              "get_retrieval_service",
+              "get_search_service",
+              "get_llm_service",
+              "get_github_service"
+            ]
+          },
+          {
+            "path": "backend/services/chat_service.py",
+            "batchIndex": 1,
+            "symbols": [
+              "RouteDecision",
+              "QueryRouter",
+              "ChatCommand",
+              "_event",
+              "_error",
+              "ChatService"
+            ]
+          },
+          {
+            "path": "backend/services/github_service.py",
+            "batchIndex": 4,
+            "symbols": [
+              "GitHubError",
+              "GitHubService",
+              "parse_repo_url",
+              "_select_paths"
+            ]
+          }
+        ],
+        "backend/utils/rate_limiter.py": [
+          {
+            "path": "backend/utils/timeutil.py",
+            "batchIndex": 4,
+            "symbols": [
+              "utcnow",
+              "parse_duration"
+            ]
+          },
+          {
+            "path": "backend/core/container.py",
+            "batchIndex": 1,
+            "symbols": [
+              "ServiceContainer",
+              "get_container",
+              "get_chat_service",
+              "get_session_service",
+              "get_document_service",
+              "get_retrieval_service",
+              "get_search_service",
+              "get_llm_service",
+              "get_github_service"
+            ]
+          },
+          {
+            "path": "tests/test_units.py",
+            "batchIndex": 5,
+            "symbols": [
+              "Clock",
+              "test_settings_defaults_and_registry",
+              "test_settings_llm_models_override",
+              "test_settings_invalid_values_fail_fast",
+              "test_settings_missing_keys_only_warn",
+              "test_settings_masked_hides_keys",
+              "test_blank_env_values_are_ignored",
+              "test_ttl_cache_expiry_and_lru",
+              "test_semantic_cache_scope_threshold_and_ttl",
+              "test_semantic_cache_eviction_bound",
+              "test_rate_limiter_bucket_refill",
+              "test_parse_duration",
+              "test_quota_guard_rolling_window_and_headers",
+              "_feed",
+              "test_think_filter_variants",
+              "test_think_filter_unclosed_block_is_not_swallowed",
+              "test_build_fts_query_sanitises",
+              "test_term_coverage",
+              "test_reciprocal_rank_fusion",
+              "test_smalltalk",
+              "test_router_decisions",
+              "test_followup_detection",
+              "test_prompt_builder_context_and_budgets",
+              "test_prompt_builder_without_context_has_no_grounding_block",
+              "test_specialist_router_picks_task_prompts",
+              "test_parser_blocks_private_and_non_http",
+              "test_parser_text_csv_and_errors"
+            ]
+          }
+        ],
+        "tests/conftest.py": [
+          {
+            "path": "backend/core/config.py",
+            "batchIndex": 2,
+            "symbols": [
+              "ModelSpec",
+              "ProviderConfig",
+              "Settings",
+              "get_settings",
+              "configure_logging"
+            ]
+          },
+          {
+            "path": "backend/core/container.py",
+            "batchIndex": 1,
+            "symbols": [
+              "ServiceContainer",
+              "get_container",
+              "get_chat_service",
+              "get_session_service",
+              "get_document_service",
+              "get_retrieval_service",
+              "get_search_service",
+              "get_llm_service",
+              "get_github_service"
+            ]
+          },
+          {
+            "path": "backend/main.py",
+            "batchIndex": 1,
+            "symbols": [
+              "RevalidatingStaticFiles",
+              "create_app"
+            ]
+          },
+          {
+            "path": "tests/test_api.py",
+            "batchIndex": 1,
+            "symbols": [
+              "new_session",
+              "chat",
+              "names",
+              "text_of",
+              "test_ping_health_models_and_spa",
+              "test_health_degraded_without_llm_keys",
+              "test_session_crud_and_cascade",
+              "test_session_title_auto_generated_and_ordering",
+              "test_upload_list_retrieve_delete_flow",
+              "test_upload_rejections",
+              "test_upload_requires_file_or_url_and_blocks_ssrf",
+              "test_upload_oversize_returns_413",
+              "test_upload_csv_and_markdown",
+              "test_user_id_validation",
+              "test_search_endpoint_ok_disabled_and_error",
+              "test_search_falls_back_to_serper_when_tavily_fails",
+              "test_search_uses_serper_when_tavily_is_unconfigured",
+              "test_chat_direct_route_streams_and_persists",
+              "test_chat_rag_route_uses_documents_and_returns_citations",
+              "test_chat_web_route_and_graceful_search_failure",
+              "test_chat_research_mode_always_searches_multi_query",
+              "test_chat_document_mode_without_documents_tells_the_model",
+              "test_chat_history_is_used_without_duplicating_current_turn",
+              "test_semantic_cache_hit_skips_llm",
+              "test_regenerate_replaces_last_answer",
+              "test_failover_is_reported_to_client",
+              "test_all_models_down_yields_error_event_not_500",
+              "test_mid_stream_error_keeps_partial_answer",
+              "test_chat_validation_and_errors",
+              "test_non_streaming_chat_and_legacy_generate",
+              "test_feedback_roundtrip",
+              "test_rate_limit_returns_429",
+              "test_client_disconnect_persists_partial_answer",
+              "test_migration_adds_columns_to_legacy_database",
+              "test_public_config_advertises_the_real_upload_limits",
+              "test_public_config_limit_follows_the_setting",
+              "test_frontend_files_must_be_revalidated_so_a_page_never_mixes_old_and_new_scripts"
+            ]
+          },
+          {
+            "path": "tests/test_github.py",
+            "batchIndex": 4,
+            "symbols": [
+              "github_transport",
+              "test_parse_repo_url_and_path_selection",
+              "test_connect_indexes_repo_and_hides_the_token",
+              "test_connect_rejects_unknown_and_non_github_urls",
+              "test_oauth_device_flow",
+              "test_oauth_pending_and_unconfigured",
+              "test_code_chat_gets_the_repo_brief",
+              "test_mcp_exposes_github_tools"
+            ]
+          }
+        ],
+        "tests/test_artifacts.py": [
+          {
+            "path": "backend/services/artifact.py",
+            "batchIndex": 1,
+            "symbols": [
+              "ArtifactError",
+              "wants_file",
+              "is_restyle",
+              "style_note",
+              "is_bare_save",
+              "topic_title",
+              "should_author_document",
+              "document_source",
+              "document_from_markdown",
+              "preferred_format",
+              "fallback_title",
+              "artifact_messages",
+              "parse_model_document",
+              "validate_document",
+              "render_download",
+              "content_disposition",
+              "safe_filename",
+              "strip_markdown_inline",
+              "render_markdown",
+              "render_text",
+              "render_xlsx",
+              "render_docx",
+              "render_pdf",
+              "_block",
+              "_list_block",
+              "_table",
+              "_plain",
+              "_cell",
+              "_clean",
+              "_one_line",
+              "_md_cell",
+              "_pad",
+              "_pdf_text",
+              "_use_previous",
+              "_nice_title",
+              "_choose_title",
+              "_promote_sections",
+              "_caveat_blocks",
+              "_looks_like_code",
+              "_clip_title",
+              "_parse_markdown",
+              "_is_table_sep",
+              "_split_row",
+              "_fit_blocks",
+              "_clip_cell",
+              "_sheet_name",
+              "_unique_sheet",
+              "_heading_level",
+              "_heading_marks",
+              "_style_docx_heading",
+              "_style_docx_body",
+              "_shade_cell",
+              "_docx_cell",
+              "_add_runs",
+              "_pdf_table",
+              "log_ready"
+            ]
+          }
+        ],
+        "tests/test_retrieval.py": [
+          {
+            "path": "backend/services/index_store.py",
+            "batchIndex": 5,
+            "symbols": [
+              "ChunkIn",
+              "ChunkRecord",
+              "HybridIndexStore"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "batchIndex": 4,
+      "files": [
+        {
+          "path": "backend/core/database.py",
+          "language": "python",
+          "sizeLines": 91,
+          "fileCategory": "code"
+        },
+        {
+          "path": "backend/models/db.py",
+          "language": "python",
+          "sizeLines": 83,
+          "fileCategory": "code"
+        },
+        {
+          "path": "backend/services/document_service.py",
+          "language": "python",
+          "sizeLines": 247,
+          "fileCategory": "code"
+        },
+        {
+          "path": "backend/services/github_service.py",
+          "language": "python",
+          "sizeLines": 322,
+          "fileCategory": "code"
+        },
+        {
+          "path": "backend/services/session_service.py",
+          "language": "python",
+          "sizeLines": 156,
+          "fileCategory": "code"
+        },
+        {
+          "path": "backend/utils/timeutil.py",
+          "language": "python",
+          "sizeLines": 33,
+          "fileCategory": "code"
+        },
+        {
+          "path": "tests/test_github.py",
+          "language": "python",
+          "sizeLines": 153,
+          "fileCategory": "code"
+        }
+      ],
+      "batchImportData": {
+        "backend/core/database.py": [],
+        "backend/models/db.py": [
+          "backend/core/database.py",
+          "backend/utils/timeutil.py"
+        ],
+        "backend/services/document_service.py": [
+          "backend/core/config.py",
+          "backend/core/database.py",
+          "backend/core/exceptions.py",
+          "backend/models/db.py",
+          "backend/services/embedding_service.py",
+          "backend/services/index_store.py",
+          "backend/services/parser.py"
+        ],
+        "backend/services/github_service.py": [
+          "backend/core/config.py",
+          "backend/core/database.py",
+          "backend/core/exceptions.py",
+          "backend/models/db.py",
+          "backend/services/document_service.py",
+          "backend/services/llm_service.py",
+          "backend/utils/timeutil.py"
+        ],
+        "backend/services/session_service.py": [
+          "backend/core/config.py",
+          "backend/core/database.py",
+          "backend/core/exceptions.py",
+          "backend/models/api.py",
+          "backend/models/db.py",
+          "backend/utils/timeutil.py"
+        ],
+        "backend/utils/timeutil.py": [],
+        "tests/test_github.py": [
+          "backend/services/github_service.py",
+          "tests/conftest.py"
+        ]
+      },
+      "neighborMap": {
+        "backend/core/database.py": [
+          {
+            "path": "backend/core/container.py",
+            "batchIndex": 1,
+            "symbols": [
+              "ServiceContainer",
+              "get_container",
+              "get_chat_service",
+              "get_session_service",
+              "get_document_service",
+              "get_retrieval_service",
+              "get_search_service",
+              "get_llm_service",
+              "get_github_service"
+            ]
+          }
+        ],
+        "backend/services/document_service.py": [
+          {
+            "path": "backend/core/config.py",
+            "batchIndex": 2,
+            "symbols": [
+              "ModelSpec",
+              "ProviderConfig",
+              "Settings",
+              "get_settings",
+              "configure_logging"
+            ]
+          },
+          {
+            "path": "backend/core/exceptions.py",
+            "batchIndex": 3,
+            "symbols": [
+              "AppError",
+              "DocumentParseError",
+              "FetchError",
+              "IngestError",
+              "SessionNotFound",
+              "EmbeddingUnavailable",
+              "LLMError"
+            ]
+          },
+          {
+            "path": "backend/services/embedding_service.py",
+            "batchIndex": 2,
+            "symbols": [
+              "EmbeddingService"
+            ]
+          },
+          {
+            "path": "backend/services/index_store.py",
+            "batchIndex": 5,
+            "symbols": [
+              "ChunkIn",
+              "ChunkRecord",
+              "HybridIndexStore"
+            ]
+          },
+          {
+            "path": "backend/services/parser.py",
+            "batchIndex": 7,
+            "symbols": [
+              "DocumentParser",
+              "_decode",
+              "_get_ocr",
+              "ocr_available",
+              "_limit_side",
+              "_ocr_array"
+            ]
+          },
+          {
+            "path": "backend/api/routes.py",
+            "batchIndex": 1,
+            "symbols": [
+              "_throttle",
+              "_throttle_download",
+              "_client_ip",
+              "_limit",
+              "_llm_http_error",
+              "_command",
+              "ping",
+              "health",
+              "public_config",
+              "list_models",
+              "chat_stream",
+              "chat_complete",
+              "generate",
+              "list_sessions",
+              "create_session",
+              "get_session",
+              "update_session",
+              "delete_session",
+              "save_message",
+              "_prepare_download",
+              "download_message",
+              "message_feedback",
+              "upload_document",
+              "list_documents",
+              "delete_document",
+              "_github_row",
+              "github_connect",
+              "github_repos",
+              "github_delete",
+              "github_device_start",
+              "github_device_poll",
+              "retrieve",
+              "web_search"
+            ]
+          },
+          {
+            "path": "backend/core/container.py",
+            "batchIndex": 1,
+            "symbols": [
+              "ServiceContainer",
+              "get_container",
+              "get_chat_service",
+              "get_session_service",
+              "get_document_service",
+              "get_retrieval_service",
+              "get_search_service",
+              "get_llm_service",
+              "get_github_service"
+            ]
+          }
+        ],
+        "backend/services/github_service.py": [
+          {
+            "path": "backend/core/config.py",
+            "batchIndex": 2,
+            "symbols": [
+              "ModelSpec",
+              "ProviderConfig",
+              "Settings",
+              "get_settings",
+              "configure_logging"
+            ]
+          },
+          {
+            "path": "backend/core/exceptions.py",
+            "batchIndex": 3,
+            "symbols": [
+              "AppError",
+              "DocumentParseError",
+              "FetchError",
+              "IngestError",
+              "SessionNotFound",
+              "EmbeddingUnavailable",
+              "LLMError"
+            ]
+          },
+          {
+            "path": "backend/services/llm_service.py",
+            "batchIndex": 3,
+            "symbols": [
+              "LLMResult",
+              "LLMStream",
+              "CircuitBreaker",
+              "LLMService"
+            ]
+          },
+          {
+            "path": "backend/api/routes.py",
+            "batchIndex": 1,
+            "symbols": [
+              "_throttle",
+              "_throttle_download",
+              "_client_ip",
+              "_limit",
+              "_llm_http_error",
+              "_command",
+              "ping",
+              "health",
+              "public_config",
+              "list_models",
+              "chat_stream",
+              "chat_complete",
+              "generate",
+              "list_sessions",
+              "create_session",
+              "get_session",
+              "update_session",
+              "delete_session",
+              "save_message",
+              "_prepare_download",
+              "download_message",
+              "message_feedback",
+              "upload_document",
+              "list_documents",
+              "delete_document",
+              "_github_row",
+              "github_connect",
+              "github_repos",
+              "github_delete",
+              "github_device_start",
+              "github_device_poll",
+              "retrieve",
+              "web_search"
+            ]
+          },
+          {
+            "path": "backend/core/container.py",
+            "batchIndex": 1,
+            "symbols": [
+              "ServiceContainer",
+              "get_container",
+              "get_chat_service",
+              "get_session_service",
+              "get_document_service",
+              "get_retrieval_service",
+              "get_search_service",
+              "get_llm_service",
+              "get_github_service"
+            ]
+          }
+        ],
+        "backend/services/session_service.py": [
+          {
+            "path": "backend/core/config.py",
+            "batchIndex": 2,
+            "symbols": [
+              "ModelSpec",
+              "ProviderConfig",
+              "Settings",
+              "get_settings",
+              "configure_logging"
+            ]
+          },
+          {
+            "path": "backend/core/exceptions.py",
+            "batchIndex": 3,
+            "symbols": [
+              "AppError",
+              "DocumentParseError",
+              "FetchError",
+              "IngestError",
+              "SessionNotFound",
+              "EmbeddingUnavailable",
+              "LLMError"
+            ]
+          },
+          {
+            "path": "backend/models/api.py",
+            "batchIndex": 1,
+            "symbols": [
+              "SessionCreate",
+              "SessionUpdate",
+              "CitationSchema",
+              "MessageSchema",
+              "SessionSchema",
+              "SessionSummary",
+              "MessageCreate",
+              "FeedbackRequest",
+              "ChatRequest",
+              "ChatResponse",
+              "UploadResponse",
+              "RetrieveRequest",
+              "RetrievedChunk",
+              "RetrieveResponse",
+              "SearchRequest",
+              "SearchResult",
+              "SearchResponse",
+              "DocumentSchema",
+              "ModelInfo",
+              "ChatMessage",
+              "GenerateRequest",
+              "GenerateResponse",
+              "UploadLimits",
+              "PublicConfig",
+              "GithubConnectRequest",
+              "GithubRepoSchema",
+              "GithubDeviceStart",
+              "GithubDevicePoll",
+              "HealthResponse"
+            ]
+          },
+          {
+            "path": "backend/api/routes.py",
+            "batchIndex": 1,
+            "symbols": [
+              "_throttle",
+              "_throttle_download",
+              "_client_ip",
+              "_limit",
+              "_llm_http_error",
+              "_command",
+              "ping",
+              "health",
+              "public_config",
+              "list_models",
+              "chat_stream",
+              "chat_complete",
+              "generate",
+              "list_sessions",
+              "create_session",
+              "get_session",
+              "update_session",
+              "delete_session",
+              "save_message",
+              "_prepare_download",
+              "download_message",
+              "message_feedback",
+              "upload_document",
+              "list_documents",
+              "delete_document",
+              "_github_row",
+              "github_connect",
+              "github_repos",
+              "github_delete",
+              "github_device_start",
+              "github_device_poll",
+              "retrieve",
+              "web_search"
+            ]
+          },
+          {
+            "path": "backend/core/container.py",
+            "batchIndex": 1,
+            "symbols": [
+              "ServiceContainer",
+              "get_container",
+              "get_chat_service",
+              "get_session_service",
+              "get_document_service",
+              "get_retrieval_service",
+              "get_search_service",
+              "get_llm_service",
+              "get_github_service"
+            ]
+          },
+          {
+            "path": "backend/services/chat_service.py",
+            "batchIndex": 1,
+            "symbols": [
+              "RouteDecision",
+              "QueryRouter",
+              "ChatCommand",
+              "_event",
+              "_error",
+              "ChatService"
+            ]
+          }
+        ],
+        "backend/utils/timeutil.py": [
+          {
+            "path": "backend/client/llm_client.py",
+            "batchIndex": 3,
+            "symbols": [
+              "OpenedStream",
+              "ProviderClient",
+              "build_provider_clients",
+              "wrap_clients",
+              "chunk_text",
+              "chunk_usage",
+              "close_stream",
+              "classify_exception"
+            ]
+          },
+          {
+            "path": "backend/utils/rate_limiter.py",
+            "batchIndex": 3,
+            "symbols": [
+              "RateLimiter",
+              "QuotaGuard"
+            ]
+          },
+          {
+            "path": "tests/test_units.py",
+            "batchIndex": 5,
+            "symbols": [
+              "Clock",
+              "test_settings_defaults_and_registry",
+              "test_settings_llm_models_override",
+              "test_settings_invalid_values_fail_fast",
+              "test_settings_missing_keys_only_warn",
+              "test_settings_masked_hides_keys",
+              "test_blank_env_values_are_ignored",
+              "test_ttl_cache_expiry_and_lru",
+              "test_semantic_cache_scope_threshold_and_ttl",
+              "test_semantic_cache_eviction_bound",
+              "test_rate_limiter_bucket_refill",
+              "test_parse_duration",
+              "test_quota_guard_rolling_window_and_headers",
+              "_feed",
+              "test_think_filter_variants",
+              "test_think_filter_unclosed_block_is_not_swallowed",
+              "test_build_fts_query_sanitises",
+              "test_term_coverage",
+              "test_reciprocal_rank_fusion",
+              "test_smalltalk",
+              "test_router_decisions",
+              "test_followup_detection",
+              "test_prompt_builder_context_and_budgets",
+              "test_prompt_builder_without_context_has_no_grounding_block",
+              "test_specialist_router_picks_task_prompts",
+              "test_parser_blocks_private_and_non_http",
+              "test_parser_text_csv_and_errors"
+            ]
+          }
+        ],
+        "tests/test_github.py": [
+          {
+            "path": "tests/conftest.py",
+            "batchIndex": 3,
+            "symbols": [
+              "_tokens",
+              "FakeEmbedder",
+              "FakeReranker",
+              "make_api_error",
+              "_chunk",
+              "_FakeStream",
+              "FakeProviderClient",
+              "settings",
+              "tavily_transport",
+              "fake_llm_client",
+              "build_container",
+              "client_factory",
+              "parse_sse"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "batchIndex": 5,
+      "files": [
+        {
+          "path": "backend/services/index_store.py",
+          "language": "python",
+          "sizeLines": 363,
+          "fileCategory": "code"
+        },
+        {
+          "path": "backend/services/prompt_builder.py",
+          "language": "python",
+          "sizeLines": 292,
+          "fileCategory": "code"
+        },
+        {
+          "path": "backend/services/retrieval_service.py",
+          "language": "python",
+          "sizeLines": 210,
+          "fileCategory": "code"
+        },
+        {
+          "path": "backend/utils/ranking.py",
+          "language": "python",
+          "sizeLines": 12,
+          "fileCategory": "code"
+        },
+        {
+          "path": "backend/utils/streaming.py",
+          "language": "python",
+          "sizeLines": 76,
+          "fileCategory": "code"
+        },
+        {
+          "path": "backend/utils/text.py",
+          "language": "python",
+          "sizeLines": 54,
+          "fileCategory": "code"
+        },
+        {
+          "path": "tests/test_units.py",
+          "language": "python",
+          "sizeLines": 316,
+          "fileCategory": "code"
+        }
+      ],
+      "batchImportData": {
+        "backend/services/index_store.py": [
+          "backend/utils/text.py"
+        ],
+        "backend/services/prompt_builder.py": [
+          "backend/core/config.py",
+          "backend/models/api.py",
+          "backend/services/retrieval_service.py",
+          "backend/utils/text.py"
+        ],
+        "backend/services/retrieval_service.py": [
+          "backend/core/config.py",
+          "backend/services/embedding_service.py",
+          "backend/services/index_store.py",
+          "backend/services/rerank_service.py",
+          "backend/utils/cache.py",
+          "backend/utils/ranking.py",
+          "backend/utils/text.py"
+        ],
+        "backend/utils/ranking.py": [],
+        "backend/utils/streaming.py": [],
+        "backend/utils/text.py": [],
+        "tests/test_units.py": [
+          "backend/core/config.py",
+          "backend/core/exceptions.py",
+          "backend/services/chat_service.py",
+          "backend/services/parser.py",
+          "backend/services/prompt_builder.py",
+          "backend/services/retrieval_service.py",
+          "backend/utils/cache.py",
+          "backend/utils/ranking.py",
+          "backend/utils/rate_limiter.py",
+          "backend/utils/streaming.py",
+          "backend/utils/text.py",
+          "backend/utils/timeutil.py"
+        ]
+      },
+      "neighborMap": {
+        "backend/services/index_store.py": [
+          {
+            "path": "backend/core/container.py",
+            "batchIndex": 1,
+            "symbols": [
+              "ServiceContainer",
+              "get_container",
+              "get_chat_service",
+              "get_session_service",
+              "get_document_service",
+              "get_retrieval_service",
+              "get_search_service",
+              "get_llm_service",
+              "get_github_service"
+            ]
+          },
+          {
+            "path": "backend/services/document_service.py",
+            "batchIndex": 4,
+            "symbols": [
+              "IngestResult",
+              "DocumentService"
+            ]
+          },
+          {
+            "path": "tests/test_retrieval.py",
+            "batchIndex": 3,
+            "symbols": [
+              "ingest",
+              "test_ingest_search_and_isolation",
+              "test_lexical_and_dense_both_contribute",
+              "test_irrelevant_query_returns_nothing",
+              "test_delete_document_removes_dense_and_lexical",
+              "test_delete_is_scoped_to_owner",
+              "test_reupload_replaces_previous_copy",
+              "test_cache_invalidated_by_index_change",
+              "test_user_id_cannot_escape_index_dir",
+              "test_embedder_failure_degrades_to_lexical_only",
+              "test_reranker_failure_falls_back_to_fused_order",
+              "test_reindex_after_embedding_model_change",
+              "test_lexical_only_chunks_get_embedded_on_recovery",
+              "test_ingest_rejects_bad_files",
+              "test_concurrent_ingest_and_queries_are_consistent",
+              "test_index_store_atomic_rollback_on_dim_mismatch"
+            ]
+          }
+        ],
+        "backend/services/prompt_builder.py": [
+          {
+            "path": "backend/core/config.py",
+            "batchIndex": 2,
+            "symbols": [
+              "ModelSpec",
+              "ProviderConfig",
+              "Settings",
+              "get_settings",
+              "configure_logging"
+            ]
+          },
+          {
+            "path": "backend/models/api.py",
+            "batchIndex": 1,
+            "symbols": [
+              "SessionCreate",
+              "SessionUpdate",
+              "CitationSchema",
+              "MessageSchema",
+              "SessionSchema",
+              "SessionSummary",
+              "MessageCreate",
+              "FeedbackRequest",
+              "ChatRequest",
+              "ChatResponse",
+              "UploadResponse",
+              "RetrieveRequest",
+              "RetrievedChunk",
+              "RetrieveResponse",
+              "SearchRequest",
+              "SearchResult",
+              "SearchResponse",
+              "DocumentSchema",
+              "ModelInfo",
+              "ChatMessage",
+              "GenerateRequest",
+              "GenerateResponse",
+              "UploadLimits",
+              "PublicConfig",
+              "GithubConnectRequest",
+              "GithubRepoSchema",
+              "GithubDeviceStart",
+              "GithubDevicePoll",
+              "HealthResponse"
+            ]
+          },
+          {
+            "path": "backend/core/container.py",
+            "batchIndex": 1,
+            "symbols": [
+              "ServiceContainer",
+              "get_container",
+              "get_chat_service",
+              "get_session_service",
+              "get_document_service",
+              "get_retrieval_service",
+              "get_search_service",
+              "get_llm_service",
+              "get_github_service"
+            ]
+          },
+          {
+            "path": "backend/services/chat_service.py",
+            "batchIndex": 1,
+            "symbols": [
+              "RouteDecision",
+              "QueryRouter",
+              "ChatCommand",
+              "_event",
+              "_error",
+              "ChatService"
+            ]
+          }
+        ],
+        "backend/services/retrieval_service.py": [
+          {
+            "path": "backend/core/config.py",
+            "batchIndex": 2,
+            "symbols": [
+              "ModelSpec",
+              "ProviderConfig",
+              "Settings",
+              "get_settings",
+              "configure_logging"
+            ]
+          },
+          {
+            "path": "backend/services/embedding_service.py",
+            "batchIndex": 2,
+            "symbols": [
+              "EmbeddingService"
+            ]
+          },
+          {
+            "path": "backend/services/rerank_service.py",
+            "batchIndex": 2,
+            "symbols": [
+              "RerankService"
+            ]
+          },
+          {
+            "path": "backend/utils/cache.py",
+            "batchIndex": 1,
+            "symbols": [
+              "TTLCache",
+              "CachedAnswer",
+              "_Entry",
+              "SemanticCache"
+            ]
+          },
+          {
+            "path": "backend/api/routes.py",
+            "batchIndex": 1,
+            "symbols": [
+              "_throttle",
+              "_throttle_download",
+              "_client_ip",
+              "_limit",
+              "_llm_http_error",
+              "_command",
+              "ping",
+              "health",
+              "public_config",
+              "list_models",
+              "chat_stream",
+              "chat_complete",
+              "generate",
+              "list_sessions",
+              "create_session",
+              "get_session",
+              "update_session",
+              "delete_session",
+              "save_message",
+              "_prepare_download",
+              "download_message",
+              "message_feedback",
+              "upload_document",
+              "list_documents",
+              "delete_document",
+              "_github_row",
+              "github_connect",
+              "github_repos",
+              "github_delete",
+              "github_device_start",
+              "github_device_poll",
+              "retrieve",
+              "web_search"
+            ]
+          },
+          {
+            "path": "backend/core/container.py",
+            "batchIndex": 1,
+            "symbols": [
+              "ServiceContainer",
+              "get_container",
+              "get_chat_service",
+              "get_session_service",
+              "get_document_service",
+              "get_retrieval_service",
+              "get_search_service",
+              "get_llm_service",
+              "get_github_service"
+            ]
+          },
+          {
+            "path": "backend/services/chat_service.py",
+            "batchIndex": 1,
+            "symbols": [
+              "RouteDecision",
+              "QueryRouter",
+              "ChatCommand",
+              "_event",
+              "_error",
+              "ChatService"
+            ]
+          }
+        ],
+        "backend/utils/streaming.py": [
+          {
+            "path": "backend/services/llm_service.py",
+            "batchIndex": 3,
+            "symbols": [
+              "LLMResult",
+              "LLMStream",
+              "CircuitBreaker",
+              "LLMService"
+            ]
+          }
+        ],
+        "backend/utils/text.py": [
+          {
+            "path": "backend/services/llm_service.py",
+            "batchIndex": 3,
+            "symbols": [
+              "LLMResult",
+              "LLMStream",
+              "CircuitBreaker",
+              "LLMService"
+            ]
+          },
+          {
+            "path": "backend/services/search_service.py",
+            "batchIndex": 1,
+            "symbols": [
+              "SearchOutcome",
+              "WebSearchService",
+              "_map_results"
+            ]
+          }
+        ],
+        "tests/test_units.py": [
+          {
+            "path": "backend/core/config.py",
+            "batchIndex": 2,
+            "symbols": [
+              "ModelSpec",
+              "ProviderConfig",
+              "Settings",
+              "get_settings",
+              "configure_logging"
+            ]
+          },
+          {
+            "path": "backend/core/exceptions.py",
+            "batchIndex": 3,
+            "symbols": [
+              "AppError",
+              "DocumentParseError",
+              "FetchError",
+              "IngestError",
+              "SessionNotFound",
+              "EmbeddingUnavailable",
+              "LLMError"
+            ]
+          },
+          {
+            "path": "backend/services/chat_service.py",
+            "batchIndex": 1,
+            "symbols": [
+              "RouteDecision",
+              "QueryRouter",
+              "ChatCommand",
+              "_event",
+              "_error",
+              "ChatService"
+            ]
+          },
+          {
+            "path": "backend/services/parser.py",
+            "batchIndex": 7,
+            "symbols": [
+              "DocumentParser",
+              "_decode",
+              "_get_ocr",
+              "ocr_available",
+              "_limit_side",
+              "_ocr_array"
+            ]
+          },
+          {
+            "path": "backend/utils/cache.py",
+            "batchIndex": 1,
+            "symbols": [
+              "TTLCache",
+              "CachedAnswer",
+              "_Entry",
+              "SemanticCache"
+            ]
+          },
+          {
+            "path": "backend/utils/rate_limiter.py",
+            "batchIndex": 3,
+            "symbols": [
+              "RateLimiter",
+              "QuotaGuard"
+            ]
+          },
+          {
+            "path": "backend/utils/timeutil.py",
+            "batchIndex": 4,
+            "symbols": [
+              "utcnow",
+              "parse_duration"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "batchIndex": 6,
+      "files": [
+        {
+          "path": "tests/browser_harness.py",
+          "language": "python",
+          "sizeLines": 76,
+          "fileCategory": "code"
+        },
+        {
+          "path": "tests/test_frontend_followup.py",
+          "language": "python",
+          "sizeLines": 563,
+          "fileCategory": "code"
+        },
+        {
+          "path": "tests/test_frontend_guards.py",
+          "language": "python",
+          "sizeLines": 837,
+          "fileCategory": "code"
+        },
+        {
+          "path": "tests/test_frontend_motion.py",
+          "language": "python",
+          "sizeLines": 222,
+          "fileCategory": "code"
+        },
+        {
+          "path": "tests/test_frontend_startup.py",
+          "language": "python",
+          "sizeLines": 72,
+          "fileCategory": "code"
+        },
+        {
+          "path": "tests/test_frontend_workspaces.py",
+          "language": "python",
+          "sizeLines": 405,
+          "fileCategory": "code"
+        }
+      ],
+      "batchImportData": {
+        "tests/browser_harness.py": [
+          "tests/test_frontend_guards.py"
+        ],
+        "tests/test_frontend_followup.py": [
+          "tests/test_frontend_guards.py"
+        ],
+        "tests/test_frontend_guards.py": [],
+        "tests/test_frontend_motion.py": [
+          "tests/test_frontend_guards.py"
+        ],
+        "tests/test_frontend_startup.py": [
+          "tests/browser_harness.py",
+          "tests/test_frontend_guards.py"
+        ],
+        "tests/test_frontend_workspaces.py": [
+          "tests/test_frontend_guards.py"
+        ]
+      },
+      "neighborMap": {}
+    },
+    {
+      "batchIndex": 7,
+      "files": [
+        {
+          "path": "backend/client/web_client.py",
+          "language": "python",
+          "sizeLines": 53,
+          "fileCategory": "code"
+        },
+        {
+          "path": "backend/services/parser.py",
+          "language": "python",
+          "sizeLines": 525,
+          "fileCategory": "code"
+        },
+        {
+          "path": "backend/utils/net.py",
+          "language": "python",
+          "sizeLines": 28,
+          "fileCategory": "code"
+        }
+      ],
+      "batchImportData": {
+        "backend/client/web_client.py": [
+          "backend/core/exceptions.py",
+          "backend/utils/net.py"
+        ],
+        "backend/services/parser.py": [
+          "backend/client/web_client.py",
+          "backend/core/exceptions.py"
+        ],
+        "backend/utils/net.py": []
+      },
+      "neighborMap": {
+        "backend/client/web_client.py": [
+          {
+            "path": "backend/core/exceptions.py",
+            "batchIndex": 3,
+            "symbols": [
+              "AppError",
+              "DocumentParseError",
+              "FetchError",
+              "IngestError",
+              "SessionNotFound",
+              "EmbeddingUnavailable",
+              "LLMError"
+            ]
+          },
+          {
+            "path": "backend/core/container.py",
+            "batchIndex": 1,
+            "symbols": [
+              "ServiceContainer",
+              "get_container",
+              "get_chat_service",
+              "get_session_service",
+              "get_document_service",
+              "get_retrieval_service",
+              "get_search_service",
+              "get_llm_service",
+              "get_github_service"
+            ]
+          }
+        ],
+        "backend/services/parser.py": [
+          {
+            "path": "backend/core/exceptions.py",
+            "batchIndex": 3,
+            "symbols": [
+              "AppError",
+              "DocumentParseError",
+              "FetchError",
+              "IngestError",
+              "SessionNotFound",
+              "EmbeddingUnavailable",
+              "LLMError"
+            ]
+          },
+          {
+            "path": "backend/api/routes.py",
+            "batchIndex": 1,
+            "symbols": [
+              "_throttle",
+              "_throttle_download",
+              "_client_ip",
+              "_limit",
+              "_llm_http_error",
+              "_command",
+              "ping",
+              "health",
+              "public_config",
+              "list_models",
+              "chat_stream",
+              "chat_complete",
+              "generate",
+              "list_sessions",
+              "create_session",
+              "get_session",
+              "update_session",
+              "delete_session",
+              "save_message",
+              "_prepare_download",
+              "download_message",
+              "message_feedback",
+              "upload_document",
+              "list_documents",
+              "delete_document",
+              "_github_row",
+              "github_connect",
+              "github_repos",
+              "github_delete",
+              "github_device_start",
+              "github_device_poll",
+              "retrieve",
+              "web_search"
+            ]
+          },
+          {
+            "path": "backend/core/container.py",
+            "batchIndex": 1,
+            "symbols": [
+              "ServiceContainer",
+              "get_container",
+              "get_chat_service",
+              "get_session_service",
+              "get_document_service",
+              "get_retrieval_service",
+              "get_search_service",
+              "get_llm_service",
+              "get_github_service"
+            ]
+          },
+          {
+            "path": "backend/services/document_service.py",
+            "batchIndex": 4,
+            "symbols": [
+              "IngestResult",
+              "DocumentService"
+            ]
+          },
+          {
+            "path": "tests/test_parser_formats.py",
+            "batchIndex": 2,
+            "symbols": [
+              "_text",
+              "parser",
+              "_image",
+              "test_supported_extensions_cover_images_and_office_formats",
+              "test_unsupported_extension_still_rejected",
+              "test_log_files_are_parsed_as_text",
+              "test_pptx_slides_notes_and_tables",
+              "test_html_file_extracts_text_without_scripts",
+              "test_json_is_flattened_to_text",
+              "test_invalid_json_is_a_parse_error",
+              "test_rtf",
+              "test_odt",
+              "test_xls_legacy_excel",
+              "test_non_utf8_text_is_decoded_not_mojibake",
+              "test_utf16_text",
+              "test_image_text_is_extracted_by_ocr",
+              "test_image_without_text_is_a_clear_error",
+              "test_scanned_pdf_pages_fall_back_to_ocr",
+              "test_image_upload_reports_unavailable_ocr",
+              "test_embedding_load_failure_is_retried_after_cooldown",
+              "test_png_upload_is_indexed_and_retrievable",
+              "_text_pdf",
+              "test_text_pdf_uses_fast_pdfium_path_and_keeps_page_numbers",
+              "test_pdf_falls_back_to_pdfplumber_when_pdfium_fails",
+              "test_scanned_pdf_is_not_reparsed_by_other_text_parsers",
+              "test_garbage_pdf_is_a_parse_error",
+              "test_embeddings_keep_input_order_after_length_sorting",
+              "test_upload_logs_stage_timings"
+            ]
+          },
+          {
+            "path": "tests/test_units.py",
+            "batchIndex": 5,
+            "symbols": [
+              "Clock",
+              "test_settings_defaults_and_registry",
+              "test_settings_llm_models_override",
+              "test_settings_invalid_values_fail_fast",
+              "test_settings_missing_keys_only_warn",
+              "test_settings_masked_hides_keys",
+              "test_blank_env_values_are_ignored",
+              "test_ttl_cache_expiry_and_lru",
+              "test_semantic_cache_scope_threshold_and_ttl",
+              "test_semantic_cache_eviction_bound",
+              "test_rate_limiter_bucket_refill",
+              "test_parse_duration",
+              "test_quota_guard_rolling_window_and_headers",
+              "_feed",
+              "test_think_filter_variants",
+              "test_think_filter_unclosed_block_is_not_swallowed",
+              "test_build_fts_query_sanitises",
+              "test_term_coverage",
+              "test_reciprocal_rank_fusion",
+              "test_smalltalk",
+              "test_router_decisions",
+              "test_followup_detection",
+              "test_prompt_builder_context_and_budgets",
+              "test_prompt_builder_without_context_has_no_grounding_block",
+              "test_specialist_router_picks_task_prompts",
+              "test_parser_blocks_private_and_non_http",
+              "test_parser_text_csv_and_errors"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "batchIndex": 8,
+      "files": [
+        {
+          "path": ".env.example",
+          "language": "config",
+          "sizeLines": 70,
+          "fileCategory": "config"
+        },
+        {
+          "path": "Procfile",
+          "language": "procfile",
+          "sizeLines": 1,
+          "fileCategory": "infra"
+        },
+        {
+          "path": "README.md",
+          "language": "markdown",
+          "sizeLines": 205,
+          "fileCategory": "docs"
+        },
+        {
+          "path": "pytest.ini",
+          "language": "config",
+          "sizeLines": 9,
+          "fileCategory": "config"
+        },
+        {
+          "path": "requirements-dev.txt",
+          "language": "txt",
+          "sizeLines": 4,
+          "fileCategory": "docs"
+        },
+        {
+          "path": "requirements.txt",
+          "language": "txt",
+          "sizeLines": 42,
+          "fileCategory": "docs"
+        },
+        {
+          "path": "skills.md",
+          "language": "markdown",
+          "sizeLines": 128,
+          "fileCategory": "docs"
+        }
+      ],
+      "batchImportData": {
+        ".env.example": [],
+        "Procfile": [],
+        "README.md": [],
+        "pytest.ini": [],
+        "requirements-dev.txt": [],
+        "requirements.txt": [],
+        "skills.md": []
+      },
+      "neighborMap": {}
+    },
+    {
+      "batchIndex": 9,
+      "files": [
+        {
+          "path": "docs/redesign/PROJECT_BRIEF.md",
+          "language": "markdown",
+          "sizeLines": 159,
+          "fileCategory": "docs"
+        },
+        {
+          "path": "docs/redesign/audit.md",
+          "language": "markdown",
+          "sizeLines": 485,
+          "fileCategory": "docs"
+        },
+        {
+          "path": "docs/redesign/design-spec.md",
+          "language": "markdown",
+          "sizeLines": 790,
+          "fileCategory": "docs"
+        },
+        {
+          "path": "docs/redesign/integration-notes.md",
+          "language": "markdown",
+          "sizeLines": 76,
+          "fileCategory": "docs"
+        },
+        {
+          "path": "docs/redesign/integration-test-plan.md",
+          "language": "markdown",
+          "sizeLines": 364,
+          "fileCategory": "docs"
+        },
+        {
+          "path": "docs/redesign/qa-report-04.md",
+          "language": "markdown",
+          "sizeLines": 32,
+          "fileCategory": "docs"
+        },
+        {
+          "path": "docs/redesign/qa-report-05.md",
+          "language": "markdown",
+          "sizeLines": 57,
+          "fileCategory": "docs"
+        },
+        {
+          "path": "docs/redesign/qa-report-06.md",
+          "language": "markdown",
+          "sizeLines": 34,
+          "fileCategory": "docs"
+        },
+        {
+          "path": "docs/redesign/security-issue-authz.md",
+          "language": "markdown",
+          "sizeLines": 17,
+          "fileCategory": "docs"
+        },
+        {
+          "path": "docs/redesign/stage4-backlog.md",
+          "language": "markdown",
+          "sizeLines": 13,
+          "fileCategory": "docs"
+        },
+        {
+          "path": "docs/redesign/ui-ux-implementation-notes.md",
+          "language": "markdown",
+          "sizeLines": 54,
+          "fileCategory": "docs"
+        },
+        {
+          "path": "docs/redesign/view-contract.md",
+          "language": "markdown",
+          "sizeLines": 613,
+          "fileCategory": "docs"
+        }
+      ],
+      "batchImportData": {
+        "docs/redesign/PROJECT_BRIEF.md": [],
+        "docs/redesign/audit.md": [],
+        "docs/redesign/design-spec.md": [],
+        "docs/redesign/integration-notes.md": [],
+        "docs/redesign/integration-test-plan.md": [],
+        "docs/redesign/qa-report-04.md": [],
+        "docs/redesign/qa-report-05.md": [],
+        "docs/redesign/qa-report-06.md": [],
+        "docs/redesign/security-issue-authz.md": [],
+        "docs/redesign/stage4-backlog.md": [],
+        "docs/redesign/ui-ux-implementation-notes.md": [],
+        "docs/redesign/view-contract.md": []
+      },
+      "neighborMap": {}
+    },
+    {
+      "batchIndex": 10,
+      "files": [
+        {
+          "path": "frontend/css/ai-viz.css",
+          "language": "css",
+          "sizeLines": 302,
+          "fileCategory": "markup"
+        },
+        {
+          "path": "frontend/css/animations.css",
+          "language": "css",
+          "sizeLines": 309,
+          "fileCategory": "markup"
+        },
+        {
+          "path": "frontend/css/components.css",
+          "language": "css",
+          "sizeLines": 2214,
+          "fileCategory": "markup"
+        },
+        {
+          "path": "frontend/css/intro.css",
+          "language": "css",
+          "sizeLines": 486,
+          "fileCategory": "markup"
+        },
+        {
+          "path": "frontend/css/main.css",
+          "language": "css",
+          "sizeLines": 718,
+          "fileCategory": "markup"
+        },
+        {
+          "path": "frontend/css/reference.css",
+          "language": "css",
+          "sizeLines": 933,
+          "fileCategory": "markup"
+        },
+        {
+          "path": "frontend/css/syntax.css",
+          "language": "css",
+          "sizeLines": 54,
+          "fileCategory": "markup"
+        },
+        {
+          "path": "frontend/css/workspace.css",
+          "language": "css",
+          "sizeLines": 594,
+          "fileCategory": "markup"
+        }
+      ],
+      "batchImportData": {
+        "frontend/css/ai-viz.css": [],
+        "frontend/css/animations.css": [],
+        "frontend/css/components.css": [],
+        "frontend/css/intro.css": [],
+        "frontend/css/main.css": [],
+        "frontend/css/reference.css": [],
+        "frontend/css/syntax.css": [],
+        "frontend/css/workspace.css": []
+      },
+      "neighborMap": {}
+    },
+    {
+      "batchIndex": 11,
+      "files": [
+        {
+          "path": "Pipfile",
+          "language": "unknown",
+          "sizeLines": 11,
+          "fileCategory": "code"
+        },
+        {
+          "path": "backend/__init__.py",
+          "language": "python",
+          "sizeLines": 0,
+          "fileCategory": "code"
+        },
+        {
+          "path": "backend/api/__init__.py",
+          "language": "python",
+          "sizeLines": 1,
+          "fileCategory": "code"
+        },
+        {
+          "path": "backend/client/__init__.py",
+          "language": "python",
+          "sizeLines": 5,
+          "fileCategory": "code"
+        },
+        {
+          "path": "backend/config.py",
+          "language": "python",
+          "sizeLines": 93,
+          "fileCategory": "code"
+        },
+        {
+          "path": "backend/core/__init__.py",
+          "language": "python",
+          "sizeLines": 5,
+          "fileCategory": "code"
+        },
+        {
+          "path": "backend/models/__init__.py",
+          "language": "python",
+          "sizeLines": 0,
+          "fileCategory": "code"
+        },
+        {
+          "path": "backend/utils/__init__.py",
+          "language": "python",
+          "sizeLines": 1,
+          "fileCategory": "code"
+        },
+        {
+          "path": "data/.gitkeep",
+          "language": "unknown",
+          "sizeLines": 0,
+          "fileCategory": "code"
+        },
+        {
+          "path": "docs/AI_ASSISTANT_PRO_MASTER_TASK.md",
+          "language": "markdown",
+          "sizeLines": 719,
+          "fileCategory": "docs"
+        },
+        {
+          "path": "frontend/__init__.py",
+          "language": "python",
+          "sizeLines": 0,
+          "fileCategory": "code"
+        },
+        {
+          "path": "frontend/assets/LICENSE-lucide.txt",
+          "language": "txt",
+          "sizeLines": 47,
+          "fileCategory": "docs"
+        },
+        {
+          "path": "frontend/index.html",
+          "language": "html",
+          "sizeLines": 1022,
+          "fileCategory": "markup"
+        },
+        {
+          "path": "frontend/js/api.js",
+          "language": "javascript",
+          "sizeLines": 245,
+          "fileCategory": "code"
+        },
+        {
+          "path": "frontend/js/app.js",
+          "language": "javascript",
+          "sizeLines": 1017,
+          "fileCategory": "code"
+        },
+        {
+          "path": "frontend/js/chat.js",
+          "language": "javascript",
+          "sizeLines": 1157,
+          "fileCategory": "code"
+        },
+        {
+          "path": "frontend/js/components/ai-viz.js",
+          "language": "javascript",
+          "sizeLines": 116,
+          "fileCategory": "code"
+        },
+        {
+          "path": "frontend/js/components/code-preview.js",
+          "language": "javascript",
+          "sizeLines": 283,
+          "fileCategory": "code"
+        },
+        {
+          "path": "frontend/js/components/dialog.js",
+          "language": "javascript",
+          "sizeLines": 155,
+          "fileCategory": "code"
+        },
+        {
+          "path": "frontend/js/components/documents.js",
+          "language": "javascript",
+          "sizeLines": 269,
+          "fileCategory": "code"
+        },
+        {
+          "path": "frontend/js/components/menu.js",
+          "language": "javascript",
+          "sizeLines": 155,
+          "fileCategory": "code"
+        },
+        {
+          "path": "frontend/js/components/model-select.js",
+          "language": "javascript",
+          "sizeLines": 449,
+          "fileCategory": "code"
+        },
+        {
+          "path": "frontend/js/components/motion.js",
+          "language": "javascript",
+          "sizeLines": 205,
+          "fileCategory": "code"
+        },
+        {
+          "path": "frontend/js/components/notifications.js",
+          "language": "javascript",
+          "sizeLines": 180,
+          "fileCategory": "code"
+        },
+        {
+          "path": "frontend/js/components/prefs.js",
+          "language": "javascript",
+          "sizeLines": 69,
+          "fileCategory": "code"
+        }
+      ],
+      "batchImportData": {
+        "Pipfile": [],
+        "backend/__init__.py": [],
+        "backend/api/__init__.py": [],
+        "backend/client/__init__.py": [],
+        "backend/config.py": [],
+        "backend/core/__init__.py": [],
+        "backend/models/__init__.py": [],
+        "backend/utils/__init__.py": [],
+        "data/.gitkeep": [],
+        "docs/AI_ASSISTANT_PRO_MASTER_TASK.md": [],
+        "frontend/__init__.py": [],
+        "frontend/assets/LICENSE-lucide.txt": [],
+        "frontend/index.html": [],
+        "frontend/js/api.js": [],
+        "frontend/js/app.js": [],
+        "frontend/js/chat.js": [],
+        "frontend/js/components/ai-viz.js": [],
+        "frontend/js/components/code-preview.js": [],
+        "frontend/js/components/dialog.js": [],
+        "frontend/js/components/documents.js": [],
+        "frontend/js/components/menu.js": [],
+        "frontend/js/components/model-select.js": [],
+        "frontend/js/components/motion.js": [],
+        "frontend/js/components/notifications.js": [],
+        "frontend/js/components/prefs.js": []
+      },
+      "neighborMap": {}
+    },
+    {
+      "batchIndex": 12,
+      "files": [
+        {
+          "path": "frontend/js/components/radiogroup.js",
+          "language": "javascript",
+          "sizeLines": 64,
+          "fileCategory": "code"
+        },
+        {
+          "path": "frontend/js/components/settings.js",
+          "language": "javascript",
+          "sizeLines": 294,
+          "fileCategory": "code"
+        },
+        {
+          "path": "frontend/js/components/workspaces.js",
+          "language": "javascript",
+          "sizeLines": 159,
+          "fileCategory": "code"
+        },
+        {
+          "path": "frontend/js/icons.js",
+          "language": "javascript",
+          "sizeLines": 84,
+          "fileCategory": "code"
+        },
+        {
+          "path": "frontend/js/intro.js",
+          "language": "javascript",
+          "sizeLines": 104,
+          "fileCategory": "code"
+        },
+        {
+          "path": "frontend/js/theme.js",
+          "language": "javascript",
+          "sizeLines": 109,
+          "fileCategory": "code"
+        },
+        {
+          "path": "frontend/js/ui.js",
+          "language": "javascript",
+          "sizeLines": 1247,
+          "fileCategory": "code"
+        },
+        {
+          "path": "frontend/js/utils.js",
+          "language": "javascript",
+          "sizeLines": 502,
+          "fileCategory": "code"
+        },
+        {
+          "path": "tests/__init__.py",
+          "language": "python",
+          "sizeLines": 0,
+          "fileCategory": "code"
+        },
+        {
+          "path": "tests/test_architecture.py",
+          "language": "python",
+          "sizeLines": 129,
+          "fileCategory": "code"
+        },
+        {
+          "path": "tests/test_frontend_reference.py",
+          "language": "python",
+          "sizeLines": 109,
+          "fileCategory": "code"
+        },
+        {
+          "path": "tests/test_frontend_sanitizer.py",
+          "language": "python",
+          "sizeLines": 304,
+          "fileCategory": "code"
+        }
+      ],
+      "batchImportData": {
+        "frontend/js/components/radiogroup.js": [],
+        "frontend/js/components/settings.js": [],
+        "frontend/js/components/workspaces.js": [],
+        "frontend/js/icons.js": [],
+        "frontend/js/intro.js": [],
+        "frontend/js/theme.js": [],
+        "frontend/js/ui.js": [],
+        "frontend/js/utils.js": [],
+        "tests/__init__.py": [],
+        "tests/test_architecture.py": [],
+        "tests/test_frontend_reference.py": [],
+        "tests/test_frontend_sanitizer.py": []
+      },
+      "neighborMap": {}
+    }
+  ]
+}

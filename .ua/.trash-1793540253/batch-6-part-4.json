@@ -1,0 +1,1093 @@
+{
+  "nodes": [
+    {
+      "id": "file:tests/test_frontend_workspaces.py",
+      "type": "file",
+      "name": "test_frontend_workspaces.py",
+      "filePath": "tests/test_frontend_workspaces.py",
+      "summary": "Guards for the Documents, Research, and Code workspaces, settings, preferences, and uploads. Static checks stay offline; the browser scenario uses the shared fetch stub and refuses every non-GET.",
+      "tags": [
+        "test",
+        "workspace",
+        "accessibility",
+        "frontend"
+      ],
+      "complexity": "complex",
+      "languageNotes": "Browser cases skip when headless Chrome or the marked and DOMPurify CDN scripts are unavailable."
+    },
+    {
+      "id": "function:tests/test_frontend_workspaces.py:_strip_comments",
+      "type": "function",
+      "name": "_strip_comments",
+      "filePath": "tests/test_frontend_workspaces.py",
+      "lineRange": [
+        23,
+        24
+      ],
+      "summary": "Removes block and line comments from a source string before workspace scripts are scanned for network or HTML writes.",
+      "tags": [
+        "test",
+        "utility",
+        "source-parse"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_workspaces.py:test_three_workspace_panels_exist_and_each_has_a_labelled_heading",
+      "type": "function",
+      "name": "test_three_workspace_panels_exist_and_each_has_a_labelled_heading",
+      "filePath": "tests/test_frontend_workspaces.py",
+      "lineRange": [
+        29,
+        34
+      ],
+      "summary": "Checks that Documents, Research, and Code each have a labelled workspace section and that the General hero remains.",
+      "tags": [
+        "test",
+        "workspace",
+        "accessibility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_workspaces.py:test_panel_controls_are_buttons_that_only_fill_the_composer",
+      "type": "function",
+      "name": "test_panel_controls_are_buttons_that_only_fill_the_composer",
+      "filePath": "tests/test_frontend_workspaces.py",
+      "lineRange": [
+        37,
+        45
+      ],
+      "summary": "Checks that workspace prompt controls are type=button and that workspaces.js never sends, fetches, or touches API or State.",
+      "tags": [
+        "test",
+        "workspace",
+        "view-layer"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_workspaces.py:test_document_actions_are_explained_not_hidden_when_unavailable",
+      "type": "function",
+      "name": "test_document_actions_are_explained_not_hidden_when_unavailable",
+      "filePath": "tests/test_frontend_workspaces.py",
+      "lineRange": [
+        48,
+        52
+      ],
+      "summary": "Checks that document actions stay visible but aria-disabled, with the note \"Upload a document to enable these actions.\"",
+      "tags": [
+        "test",
+        "accessibility",
+        "documents"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_workspaces.py:test_research_locks_the_web_switch_because_the_server_always_searches",
+      "type": "function",
+      "name": "test_research_locks_the_web_switch_because_the_server_always_searches",
+      "filePath": "tests/test_frontend_workspaces.py",
+      "lineRange": [
+        55,
+        60
+      ],
+      "summary": "Checks that Research mode locks the web-search switch in both workspaces.js and app.js, matching the README note that the server always searches.",
+      "tags": [
+        "test",
+        "research",
+        "web-search"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_workspaces.py:test_settings_tabs_and_panes_are_wired_with_aria",
+      "type": "function",
+      "name": "test_settings_tabs_and_panes_are_wired_with_aria",
+      "filePath": "tests/test_frontend_workspaces.py",
+      "lineRange": [
+        63,
+        70
+      ],
+      "summary": "Checks that the seven settings tabs control matching tabpanels and that exactly one tab starts selected.",
+      "tags": [
+        "test",
+        "accessibility",
+        "settings"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_workspaces.py:test_settings_only_offers_controls_with_a_real_effect",
+      "type": "function",
+      "name": "test_settings_only_offers_controls_with_a_real_effect",
+      "filePath": "tests/test_frontend_workspaces.py",
+      "lineRange": [
+        73,
+        84
+      ],
+      "summary": "Checks that settings.js only wires theme, font, density, toasts, notifications, copy, and health, with no disabled or \"coming soon\" controls.",
+      "tags": [
+        "test",
+        "settings",
+        "preferences"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_workspaces.py:test_privacy_and_help_copy_makes_only_verifiable_statements",
+      "type": "function",
+      "name": "test_privacy_and_help_copy_makes_only_verifiable_statements",
+      "filePath": "tests/test_frontend_workspaces.py",
+      "lineRange": [
+        87,
+        92
+      ],
+      "summary": "Checks that settings copy names Groq or Google, Tavily, and the lack of accounts, and avoids privacy or encryption guarantees.",
+      "tags": [
+        "test",
+        "copy",
+        "settings"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_workspaces.py:test_new_components_are_view_only_and_never_inject_html",
+      "type": "function",
+      "name": "test_new_components_are_view_only_and_never_inject_html",
+      "filePath": "tests/test_frontend_workspaces.py",
+      "lineRange": [
+        96,
+        104
+      ],
+      "summary": "Checks that the new workspace components do not fetch, touch State, or inject HTML, and that only prefs.js writes localStorage under the pref. prefix.",
+      "tags": [
+        "test",
+        "security",
+        "view-layer"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_workspaces.py:test_new_components_are_loaded_before_ui_js_in_dependency_order",
+      "type": "function",
+      "name": "test_new_components_are_loaded_before_ui_js_in_dependency_order",
+      "filePath": "tests/test_frontend_workspaces.py",
+      "lineRange": [
+        107,
+        111
+      ],
+      "summary": "Checks that prefs, radiogroup, documents, workspaces, and settings scripts load before ui.js and app.js.",
+      "tags": [
+        "test",
+        "loading",
+        "dependencies"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_workspaces.py:test_workspace_css_obeys_the_project_css_rules",
+      "type": "function",
+      "name": "test_workspace_css_obeys_the_project_css_rules",
+      "filePath": "tests/test_frontend_workspaces.py",
+      "lineRange": [
+        114,
+        121
+      ],
+      "summary": "Checks that workspace.css loads after reference.css, uses no hex colors or keyframes, and transitions only paint and transform properties.",
+      "tags": [
+        "test",
+        "css",
+        "workspace"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_workspaces.py:test_text_is_rem_based_so_the_text_size_setting_scales_everything",
+      "type": "function",
+      "name": "test_text_is_rem_based_so_the_text_size_setting_scales_everything",
+      "filePath": "tests/test_frontend_workspaces.py",
+      "lineRange": [
+        124,
+        131
+      ],
+      "summary": "Checks that font-size and line-height stay off raw pixels except the root size and the hero orb, and that the large font hook exists.",
+      "tags": [
+        "test",
+        "css",
+        "typography"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_workspaces.py:test_code_workspace_is_language_agnostic_and_has_debug_logs",
+      "type": "function",
+      "name": "test_code_workspace_is_language_agnostic_and_has_debug_logs",
+      "filePath": "tests/test_frontend_workspaces.py",
+      "lineRange": [
+        134,
+        138
+      ],
+      "summary": "Checks that the code workspace has no language picker and offers a debug-logs template.",
+      "tags": [
+        "test",
+        "workspace",
+        "code"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_workspaces.py:test_composer_github_item_and_resizable_preview_exist",
+      "type": "function",
+      "name": "test_composer_github_item_and_resizable_preview_exist",
+      "filePath": "tests/test_frontend_workspaces.py",
+      "lineRange": [
+        141,
+        151
+      ],
+      "summary": "Checks that the GitHub connect dialog, the artifact resize handle, and Chat.prepareFilePreview are wired from ui.js, chat.js, and app.js.",
+      "tags": [
+        "test",
+        "composer",
+        "preview"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_workspaces.py:test_preference_markup_matches_the_allowed_values",
+      "type": "function",
+      "name": "test_preference_markup_matches_the_allowed_values",
+      "filePath": "tests/test_frontend_workspaces.py",
+      "lineRange": [
+        154,
+        164
+      ],
+      "summary": "Checks that font, density, and toast radio values in index.html match the values prefs.js allows, including the pref. storage keys.",
+      "tags": [
+        "test",
+        "preferences",
+        "markup"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_workspaces.py:test_uploads_validate_on_the_client_and_guard_duplicates_without_trusting_it",
+      "type": "function",
+      "name": "test_uploads_validate_on_the_client_and_guard_duplicates_without_trusting_it",
+      "filePath": "tests/test_frontend_workspaces.py",
+      "lineRange": [
+        167,
+        175
+      ],
+      "summary": "Checks that client uploads reject empty and oversized files, confirm duplicate names, and still document that the server validates again.",
+      "tags": [
+        "test",
+        "uploads",
+        "validation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_workspaces.py:test_config_is_a_read_only_get_and_its_failure_is_tolerated",
+      "type": "function",
+      "name": "test_config_is_a_read_only_get_and_its_failure_is_tolerated",
+      "filePath": "tests/test_frontend_workspaces.py",
+      "lineRange": [
+        178,
+        183
+      ],
+      "summary": "Checks that getConfig is a GET /config and that a failed config load is treated as an older backend rather than a startup failure.",
+      "tags": [
+        "test",
+        "config",
+        "api-client"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_workspaces.py:test_history_and_documents_have_loading_and_error_states",
+      "type": "function",
+      "name": "test_history_and_documents_have_loading_and_error_states",
+      "filePath": "tests/test_frontend_workspaces.py",
+      "lineRange": [
+        186,
+        191
+      ],
+      "summary": "Checks that session and document lists have loading and error states and that history rows move with ArrowUp and ArrowDown.",
+      "tags": [
+        "test",
+        "accessibility",
+        "history"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_workspaces.py:ws",
+      "type": "function",
+      "name": "ws",
+      "filePath": "tests/test_frontend_workspaces.py",
+      "lineRange": [
+        285,
+        341
+      ],
+      "summary": "Serves the frontend on a GET-only port with the shared fetch stub and runs the workspace scenario in headless Chrome.",
+      "tags": [
+        "test",
+        "fixture",
+        "headless-chrome",
+        "workspace"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:tests/test_frontend_workspaces.py:test_stub_run_reached_no_server_and_threw_nothing",
+      "type": "function",
+      "name": "test_stub_run_reached_no_server_and_threw_nothing",
+      "filePath": "tests/test_frontend_workspaces.py",
+      "lineRange": [
+        344,
+        345
+      ],
+      "summary": "Asserts the workspace browser run recorded no blocked non-GET requests and no page errors.",
+      "tags": [
+        "test",
+        "stub",
+        "isolation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_workspaces.py:test_stub_dropdown_is_the_only_mode_control_and_is_keyboard_operable",
+      "type": "function",
+      "name": "test_stub_dropdown_is_the_only_mode_control_and_is_keyboard_operable",
+      "filePath": "tests/test_frontend_workspaces.py",
+      "lineRange": [
+        348,
+        353
+      ],
+      "summary": "Asserts the mode menu is the only mode control, lists the four workspaces, and returns focus to the trigger on Escape.",
+      "tags": [
+        "test",
+        "accessibility",
+        "workspace"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_workspaces.py:test_stub_each_mode_shows_only_its_own_panel",
+      "type": "function",
+      "name": "test_stub_each_mode_shows_only_its_own_panel",
+      "filePath": "tests/test_frontend_workspaces.py",
+      "lineRange": [
+        356,
+        364
+      ],
+      "summary": "Asserts each mode shows only its panel, updates the label and placeholder, and does not rewrite storage when the current mode is chosen again.",
+      "tags": [
+        "test",
+        "workspace",
+        "browser"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_workspaces.py:test_stub_panel_actions_only_fill_the_composer",
+      "type": "function",
+      "name": "test_stub_panel_actions_only_fill_the_composer",
+      "filePath": "tests/test_frontend_workspaces.py",
+      "lineRange": [
+        367,
+        373
+      ],
+      "summary": "Asserts empty-document actions explain themselves, code templates fill a fence without naming Python, and research fills the selected topic.",
+      "tags": [
+        "test",
+        "workspace",
+        "composer"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_workspaces.py:test_stub_research_locks_the_web_switch_and_other_modes_unlock_it",
+      "type": "function",
+      "name": "test_stub_research_locks_the_web_switch_and_other_modes_unlock_it",
+      "filePath": "tests/test_frontend_workspaces.py",
+      "lineRange": [
+        376,
+        378
+      ],
+      "summary": "Asserts Research forces the web-search switch on with an explanation and that leaving Research unlocks it.",
+      "tags": [
+        "test",
+        "research",
+        "web-search"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_workspaces.py:test_stub_my_documents_panel_refreshes_and_returns_focus",
+      "type": "function",
+      "name": "test_stub_my_documents_panel_refreshes_and_returns_focus",
+      "filePath": "tests/test_frontend_workspaces.py",
+      "lineRange": [
+        381,
+        384
+      ],
+      "summary": "Asserts opening My Documents refreshes the list, focuses search, returns focus to the composer, and does not change the workspace.",
+      "tags": [
+        "test",
+        "documents",
+        "accessibility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_workspaces.py:test_stub_settings_controls_take_effect_and_reset",
+      "type": "function",
+      "name": "test_stub_settings_controls_take_effect_and_reset",
+      "filePath": "tests/test_frontend_workspaces.py",
+      "lineRange": [
+        387,
+        392
+      ],
+      "summary": "Asserts theme, font size, and density apply, reset clears them, and settings tab focus returns to the settings button.",
+      "tags": [
+        "test",
+        "settings",
+        "preferences"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_workspaces.py:test_stub_uploads_validate_guard_duplicates_and_queue",
+      "type": "function",
+      "name": "test_stub_uploads_validate_guard_duplicates_and_queue",
+      "filePath": "tests/test_frontend_workspaces.py",
+      "lineRange": [
+        395,
+        401
+      ],
+      "summary": "Asserts .exe and empty files are rejected, a duplicate upload needs confirmation, and two valid files post one after another.",
+      "tags": [
+        "test",
+        "uploads",
+        "validation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_workspaces.py:test_stub_history_arrow_keys_move_between_chats",
+      "type": "function",
+      "name": "test_stub_history_arrow_keys_move_between_chats",
+      "filePath": "tests/test_frontend_workspaces.py",
+      "lineRange": [
+        404,
+        405
+      ],
+      "summary": "Asserts ArrowDown and ArrowUp move focus between at least two chat rows.",
+      "tags": [
+        "test",
+        "accessibility",
+        "history"
+      ],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:tests/test_frontend_workspaces.py",
+      "target": "function:tests/test_frontend_workspaces.py:_strip_comments",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_workspaces.py",
+      "target": "function:tests/test_frontend_workspaces.py:_strip_comments",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_workspaces.py",
+      "target": "function:tests/test_frontend_workspaces.py:test_three_workspace_panels_exist_and_each_has_a_labelled_heading",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_workspaces.py",
+      "target": "function:tests/test_frontend_workspaces.py:test_three_workspace_panels_exist_and_each_has_a_labelled_heading",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_workspaces.py",
+      "target": "function:tests/test_frontend_workspaces.py:test_panel_controls_are_buttons_that_only_fill_the_composer",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_workspaces.py",
+      "target": "function:tests/test_frontend_workspaces.py:test_panel_controls_are_buttons_that_only_fill_the_composer",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_workspaces.py",
+      "target": "function:tests/test_frontend_workspaces.py:test_document_actions_are_explained_not_hidden_when_unavailable",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_workspaces.py",
+      "target": "function:tests/test_frontend_workspaces.py:test_document_actions_are_explained_not_hidden_when_unavailable",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_workspaces.py",
+      "target": "function:tests/test_frontend_workspaces.py:test_research_locks_the_web_switch_because_the_server_always_searches",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_workspaces.py",
+      "target": "function:tests/test_frontend_workspaces.py:test_research_locks_the_web_switch_because_the_server_always_searches",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_workspaces.py",
+      "target": "function:tests/test_frontend_workspaces.py:test_settings_tabs_and_panes_are_wired_with_aria",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_workspaces.py",
+      "target": "function:tests/test_frontend_workspaces.py:test_settings_tabs_and_panes_are_wired_with_aria",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_workspaces.py",
+      "target": "function:tests/test_frontend_workspaces.py:test_settings_only_offers_controls_with_a_real_effect",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_workspaces.py",
+      "target": "function:tests/test_frontend_workspaces.py:test_settings_only_offers_controls_with_a_real_effect",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_workspaces.py",
+      "target": "function:tests/test_frontend_workspaces.py:test_privacy_and_help_copy_makes_only_verifiable_statements",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_workspaces.py",
+      "target": "function:tests/test_frontend_workspaces.py:test_privacy_and_help_copy_makes_only_verifiable_statements",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_workspaces.py",
+      "target": "function:tests/test_frontend_workspaces.py:test_new_components_are_view_only_and_never_inject_html",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_workspaces.py",
+      "target": "function:tests/test_frontend_workspaces.py:test_new_components_are_view_only_and_never_inject_html",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_workspaces.py",
+      "target": "function:tests/test_frontend_workspaces.py:test_new_components_are_loaded_before_ui_js_in_dependency_order",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_workspaces.py",
+      "target": "function:tests/test_frontend_workspaces.py:test_new_components_are_loaded_before_ui_js_in_dependency_order",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_workspaces.py",
+      "target": "function:tests/test_frontend_workspaces.py:test_workspace_css_obeys_the_project_css_rules",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_workspaces.py",
+      "target": "function:tests/test_frontend_workspaces.py:test_workspace_css_obeys_the_project_css_rules",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_workspaces.py",
+      "target": "function:tests/test_frontend_workspaces.py:test_text_is_rem_based_so_the_text_size_setting_scales_everything",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_workspaces.py",
+      "target": "function:tests/test_frontend_workspaces.py:test_text_is_rem_based_so_the_text_size_setting_scales_everything",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_workspaces.py",
+      "target": "function:tests/test_frontend_workspaces.py:test_code_workspace_is_language_agnostic_and_has_debug_logs",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_workspaces.py",
+      "target": "function:tests/test_frontend_workspaces.py:test_code_workspace_is_language_agnostic_and_has_debug_logs",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_workspaces.py",
+      "target": "function:tests/test_frontend_workspaces.py:test_composer_github_item_and_resizable_preview_exist",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_workspaces.py",
+      "target": "function:tests/test_frontend_workspaces.py:test_composer_github_item_and_resizable_preview_exist",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_workspaces.py",
+      "target": "function:tests/test_frontend_workspaces.py:test_preference_markup_matches_the_allowed_values",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_workspaces.py",
+      "target": "function:tests/test_frontend_workspaces.py:test_preference_markup_matches_the_allowed_values",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_workspaces.py",
+      "target": "function:tests/test_frontend_workspaces.py:test_uploads_validate_on_the_client_and_guard_duplicates_without_trusting_it",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_workspaces.py",
+      "target": "function:tests/test_frontend_workspaces.py:test_uploads_validate_on_the_client_and_guard_duplicates_without_trusting_it",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_workspaces.py",
+      "target": "function:tests/test_frontend_workspaces.py:test_config_is_a_read_only_get_and_its_failure_is_tolerated",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_workspaces.py",
+      "target": "function:tests/test_frontend_workspaces.py:test_config_is_a_read_only_get_and_its_failure_is_tolerated",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_workspaces.py",
+      "target": "function:tests/test_frontend_workspaces.py:test_history_and_documents_have_loading_and_error_states",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_workspaces.py",
+      "target": "function:tests/test_frontend_workspaces.py:test_history_and_documents_have_loading_and_error_states",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_workspaces.py",
+      "target": "function:tests/test_frontend_workspaces.py:ws",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_workspaces.py",
+      "target": "function:tests/test_frontend_workspaces.py:ws",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_workspaces.py",
+      "target": "function:tests/test_frontend_workspaces.py:test_stub_run_reached_no_server_and_threw_nothing",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_workspaces.py",
+      "target": "function:tests/test_frontend_workspaces.py:test_stub_run_reached_no_server_and_threw_nothing",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_workspaces.py",
+      "target": "function:tests/test_frontend_workspaces.py:test_stub_dropdown_is_the_only_mode_control_and_is_keyboard_operable",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_workspaces.py",
+      "target": "function:tests/test_frontend_workspaces.py:test_stub_dropdown_is_the_only_mode_control_and_is_keyboard_operable",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_workspaces.py",
+      "target": "function:tests/test_frontend_workspaces.py:test_stub_each_mode_shows_only_its_own_panel",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_workspaces.py",
+      "target": "function:tests/test_frontend_workspaces.py:test_stub_each_mode_shows_only_its_own_panel",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_workspaces.py",
+      "target": "function:tests/test_frontend_workspaces.py:test_stub_panel_actions_only_fill_the_composer",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_workspaces.py",
+      "target": "function:tests/test_frontend_workspaces.py:test_stub_panel_actions_only_fill_the_composer",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_workspaces.py",
+      "target": "function:tests/test_frontend_workspaces.py:test_stub_research_locks_the_web_switch_and_other_modes_unlock_it",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_workspaces.py",
+      "target": "function:tests/test_frontend_workspaces.py:test_stub_research_locks_the_web_switch_and_other_modes_unlock_it",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_workspaces.py",
+      "target": "function:tests/test_frontend_workspaces.py:test_stub_my_documents_panel_refreshes_and_returns_focus",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_workspaces.py",
+      "target": "function:tests/test_frontend_workspaces.py:test_stub_my_documents_panel_refreshes_and_returns_focus",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_workspaces.py",
+      "target": "function:tests/test_frontend_workspaces.py:test_stub_settings_controls_take_effect_and_reset",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_workspaces.py",
+      "target": "function:tests/test_frontend_workspaces.py:test_stub_settings_controls_take_effect_and_reset",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_workspaces.py",
+      "target": "function:tests/test_frontend_workspaces.py:test_stub_uploads_validate_guard_duplicates_and_queue",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_workspaces.py",
+      "target": "function:tests/test_frontend_workspaces.py:test_stub_uploads_validate_guard_duplicates_and_queue",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_workspaces.py",
+      "target": "function:tests/test_frontend_workspaces.py:test_stub_history_arrow_keys_move_between_chats",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_workspaces.py",
+      "target": "function:tests/test_frontend_workspaces.py:test_stub_history_arrow_keys_move_between_chats",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_workspaces.py",
+      "target": "file:tests/test_frontend_guards.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:frontend/index.html",
+      "target": "file:tests/test_frontend_workspaces.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:frontend/js/app.js",
+      "target": "file:tests/test_frontend_workspaces.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:frontend/js/api.js",
+      "target": "file:tests/test_frontend_workspaces.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "file:tests/test_frontend_workspaces.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:frontend/js/chat.js",
+      "target": "file:tests/test_frontend_workspaces.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:frontend/js/components/workspaces.js",
+      "target": "file:tests/test_frontend_workspaces.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:frontend/js/components/settings.js",
+      "target": "file:tests/test_frontend_workspaces.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:frontend/js/components/prefs.js",
+      "target": "file:tests/test_frontend_workspaces.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:frontend/js/components/documents.js",
+      "target": "file:tests/test_frontend_workspaces.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:frontend/js/components/radiogroup.js",
+      "target": "file:tests/test_frontend_workspaces.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:frontend/css/workspace.css",
+      "target": "file:tests/test_frontend_workspaces.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:frontend/css/reference.css",
+      "target": "file:tests/test_frontend_workspaces.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:frontend/css/components.css",
+      "target": "file:tests/test_frontend_workspaces.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:frontend/css/main.css",
+      "target": "file:tests/test_frontend_workspaces.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:README.md",
+      "target": "file:tests/test_frontend_workspaces.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "function:tests/test_frontend_workspaces.py:test_panel_controls_are_buttons_that_only_fill_the_composer",
+      "target": "function:tests/test_frontend_guards.py:_read",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:tests/test_frontend_workspaces.py:test_document_actions_are_explained_not_hidden_when_unavailable",
+      "target": "function:tests/test_frontend_guards.py:_read",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:tests/test_frontend_workspaces.py:test_research_locks_the_web_switch_because_the_server_always_searches",
+      "target": "function:tests/test_frontend_guards.py:_read",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:tests/test_frontend_workspaces.py:test_settings_only_offers_controls_with_a_real_effect",
+      "target": "function:tests/test_frontend_guards.py:_read",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:tests/test_frontend_workspaces.py:test_new_components_are_view_only_and_never_inject_html",
+      "target": "function:tests/test_frontend_guards.py:_read",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:tests/test_frontend_workspaces.py:test_workspace_css_obeys_the_project_css_rules",
+      "target": "function:tests/test_frontend_guards.py:_read",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:tests/test_frontend_workspaces.py:test_text_is_rem_based_so_the_text_size_setting_scales_everything",
+      "target": "function:tests/test_frontend_guards.py:_read",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:tests/test_frontend_workspaces.py:test_code_workspace_is_language_agnostic_and_has_debug_logs",
+      "target": "function:tests/test_frontend_guards.py:_read",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:tests/test_frontend_workspaces.py:test_composer_github_item_and_resizable_preview_exist",
+      "target": "function:tests/test_frontend_guards.py:_read",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:tests/test_frontend_workspaces.py:test_preference_markup_matches_the_allowed_values",
+      "target": "function:tests/test_frontend_guards.py:_read",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:tests/test_frontend_workspaces.py:test_uploads_validate_on_the_client_and_guard_duplicates_without_trusting_it",
+      "target": "function:tests/test_frontend_guards.py:_read",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:tests/test_frontend_workspaces.py:test_config_is_a_read_only_get_and_its_failure_is_tolerated",
+      "target": "function:tests/test_frontend_guards.py:_read",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:tests/test_frontend_workspaces.py:test_history_and_documents_have_loading_and_error_states",
+      "target": "function:tests/test_frontend_guards.py:_read",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    }
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "issues": [],
+  "warnings": [
+    "Node 'config:.ua/config.json' has no edges (orphan)",
+    "Node 'file:Pipfile' has no edges (orphan)",
+    "Node 'file:backend/__init__.py' has no edges (orphan)",
+    "Node 'file:backend/models/__init__.py' has no edges (orphan)",
+    "Node 'file:backend/rag/__init__.py' has no edges (orphan)",
+    "Node 'file:backend/services/__init__.py' has no edges (orphan)",
+    "Node 'file:data/.gitkeep' has no edges (orphan)",
+    "Node 'file:frontend/__init__.py' has no edges (orphan)"
+  ],
+  "stats": {
+    "totalNodes": 155,
+    "totalEdges": 347,
+    "totalLayers": 8,
+    "tourSteps": 14,
+    "nodeTypes": {
+      "file": 32,
+      "class": 32,
+      "function": 71,
+      "endpoint": 14,
+      "config": 3,
+      "service": 1,
+      "document": 2
+    },
+    "edgeTypes": {
+      "contains": 117,
+      "exports": 95,
+      "imports": 18,
+      "calls": 75,
+      "depends_on": 17,
+      "inherits": 3,
+      "configures": 5,
+      "documents": 4,
+      "deploys": 1,
+      "related": 12
+    }
+  }
+}

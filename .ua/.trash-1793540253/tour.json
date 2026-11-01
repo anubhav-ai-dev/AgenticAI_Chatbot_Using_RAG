@@ -1,0 +1,150 @@
+[
+  {
+    "order": 1,
+    "title": "Project Overview",
+    "description": "Start with README.md, the getting-started and architecture guide for this low-latency agentic RAG chatbot. It introduces the chat lifecycle, the HTTP API, configuration, testing, and the optional MCP server, which is the map for the rest of the tour. The later steps follow that map through the FastAPI process, hybrid retrieval, model failover, and the browser that streams the answer.",
+    "nodeIds": [
+      "document:README.md"
+    ]
+  },
+  {
+    "order": 2,
+    "title": "Server Startup",
+    "description": "backend/main.py is the code entry the dependency walk starts from. It is a FastAPI application factory that configures CORS, mounts the single-page app, and owns container startup and shutdown. The Procfile starts one uvicorn worker on the platform-assigned port with backend.main:app, so a deployed process runs that same factory. Routes, settings, and the composition root are the first imports underneath it.",
+    "nodeIds": [
+      "file:backend/main.py",
+      "service:Procfile"
+    ],
+    "languageLesson": "A Procfile names process types for the host. Here the web process is one uvicorn worker pointed at the module path backend.main:app, which loads the FastAPI instance named app."
+  },
+  {
+    "order": 3,
+    "title": "Settings and Wiring",
+    "description": "Two modules directly under main.py decide what the process may know and how services are built. backend/core/config.py is the sole environment reader and the most imported backend module: Pydantic settings hold API keys, the free-tier model registry, RAG and rerank thresholds, and derived data paths. .env.example lists those keys and the defaults for models, embeddings, retrieval, search, history, and the HTTP server, and config.py is the module that reads them. backend/core/container.py constructs every service once, wires constructor dependencies, and exposes FastAPI Depends getters so the routes stay thin.",
+    "nodeIds": [
+      "file:backend/core/config.py",
+      "config:.env.example",
+      "file:backend/core/container.py"
+    ],
+    "languageLesson": "A Pydantic settings model loads and validates environment variables in one place. The rest of the app receives a Settings object, so service code does not read the process environment itself."
+  },
+  {
+    "order": 4,
+    "title": "Layer Import Rules",
+    "description": "tests/test_architecture.py is the rule that makes the import direction predictable before you read the services. Imports may only point at allowed lower layers, module-level imports must be acyclic, and environment reads and model ids must stay in core.config. The enforced stack runs from utilities up through core, client, services, and the API to main. That is why the walk from main.py spreads downward: routes and the container fan out into services, and services reach clients and helpers.",
+    "nodeIds": [
+      "file:tests/test_architecture.py"
+    ],
+    "languageLesson": "An architecture test imports the package graph and fails when a module reaches a forbidden layer. Keeping environment reads and model ids inside core.config means a new provider is a settings change rather than a string copied through the services."
+  },
+  {
+    "order": 5,
+    "title": "HTTP and MCP Doors",
+    "description": "backend/api/routes.py is the HTTP surface main.py mounts: thin handlers for chat streaming, sessions, uploads, GitHub, retrieval, and web search. POST /chat/stream is the route the browser uses, and it emits Server-Sent Events from the chat pipeline. POST /upload and POST /retrieve are the sibling doors for indexing a file or URL and for hybrid search with optional reranking. The optional stdio server in mcp_server.py exposes document search, web search, GitHub connect, and the same chat pipeline to MCP clients.",
+    "nodeIds": [
+      "file:backend/api/routes.py",
+      "endpoint:backend/api/routes.py:POST /chat/stream",
+      "endpoint:backend/api/routes.py:POST /upload",
+      "endpoint:backend/api/routes.py:POST /retrieve",
+      "file:backend/api/mcp_server.py"
+    ]
+  },
+  {
+    "order": 6,
+    "title": "Sessions and Schemas",
+    "description": "Those handlers accept and return the Pydantic schemas in backend/models/api.py, covering sessions, chat, uploads, retrieval, search, GitHub, and health. backend/models/db.py stores sessions, messages, documents, GitHub credentials, and repository briefs, and deleting a session cascades to its messages. backend/core/database.py owns the engine and session factory, creates tables, runs short transactions, and applies additive column migrations, while SessionService returns pydantic schemas so callers never hold ORM objects. security-issue-authz.md records an open gap: session read, rename, delete, and message feedback do not check ownership, because user_id is supplied by the client.",
+    "nodeIds": [
+      "file:backend/models/api.py",
+      "file:backend/models/db.py",
+      "file:backend/core/database.py",
+      "file:backend/services/session_service.py",
+      "document:docs/redesign/security-issue-authz.md"
+    ],
+    "languageLesson": "Additive column migrations add columns the new code needs and leave existing rows in place. SessionService returns Pydantic schemas so a route never keeps a SQLAlchemy instance after the short transaction commits."
+  },
+  {
+    "order": 7,
+    "title": "The Chat Turn",
+    "description": "ChatService is the pipeline behind POST /chat/stream: it routes a turn, checks the semantic cache, retrieves documents and runs web search in parallel, then streams a model answer with failover while the session layer persists the turn. PromptBuilder gives every client the same prompt, with mode and specialist system text, numbered document and web context, and a token-budgeted history. The cache holds a bounded TTL LRU plus a per-scope cosine cache of earlier answers, so a repeated question can skip the model. sse.py encodes each pipeline event as one Server-Sent Events frame, and streaming.py strips think-style reasoning blocks even when the tags arrive in different chunks.",
+    "nodeIds": [
+      "file:backend/services/chat_service.py",
+      "file:backend/services/prompt_builder.py",
+      "file:backend/utils/cache.py",
+      "file:backend/utils/sse.py",
+      "file:backend/utils/streaming.py"
+    ],
+    "languageLesson": "An SSE frame carries an event name and a JSON data payload, so the browser can distinguish a token from a citation or an error. The think-tag filter keeps state across chunks, because a start tag and its end tag can land in different pieces of the stream."
+  },
+  {
+    "order": 8,
+    "title": "Hybrid Retrieval",
+    "description": "When ChatService retrieves, RetrievalService fuses FAISS cosine hits with FTS5 BM25 through reciprocal rank fusion, reranks the candidates, and gates them by relevance, falling back to lexical search or the fused order when the embedder or reranker is down. IndexStore persists that hybrid index: chunk text lives in SQLite with FTS5, per-user FAISS indexes are keyed by a hash of the user id, and rows and vectors commit together. EmbeddingService and RerankService load their models lazily, share a failure cooldown, and publish status so retrieval can degrade the turn. ranking.py merges the weighted ranked id lists that the fusion step consumes.",
+    "nodeIds": [
+      "file:backend/services/retrieval_service.py",
+      "file:backend/services/index_store.py",
+      "file:backend/utils/ranking.py",
+      "file:backend/services/embedding_service.py",
+      "file:backend/services/rerank_service.py"
+    ]
+  },
+  {
+    "order": 9,
+    "title": "Documents and Repositories",
+    "description": "The hybrid index is filled by DocumentService, which parses a file, URL, or raw text, chunks it, embeds it, and writes both the index and a document row. Parser converts PDF, Office, CSV, Excel, HTML, JSON, images, and plain text into page records of text plus metadata. GitHubService connects a repository, indexes selected source files into the same store, and keeps a per-user token plus an LLM-written repository brief, using a personal access token or the OAuth device flow. URL downloads go through an SSRF-safe web client that re-checks every redirect and rejects oversized bodies, and net.py allows only http(s) URLs whose resolved addresses are public.",
+    "nodeIds": [
+      "file:backend/services/document_service.py",
+      "file:backend/services/parser.py",
+      "file:backend/services/github_service.py",
+      "file:backend/client/web_client.py",
+      "file:backend/utils/net.py"
+    ]
+  },
+  {
+    "order": 10,
+    "title": "Web Search Policy",
+    "description": "In parallel with retrieval, SearchService applies the web-search policy ChatService calls: a TTL cache, a hard deadline, Tavily with a Serper fallback, and parallel sub-queries in research mode. The Tavily and Serper clients are async HTTP wrappers, each with a pooled client and one retry on transient failures. Those calls share the httpx AsyncClient from http.py, which takes its connect timeout from Settings and keeps a connection pool that outbound LLM calls reuse. The hits return as the numbered web context PromptBuilder places beside the document context.",
+    "nodeIds": [
+      "file:backend/services/search_service.py",
+      "file:backend/client/search_client.py",
+      "file:backend/client/http.py"
+    ]
+  },
+  {
+    "order": 11,
+    "title": "Model Failover",
+    "description": "Once the prompt is assembled, LLMService selects a model chain, fails over before the first token, and wraps each provider with a circuit breaker and a quota guard. That policy is what lets a free-tier Groq or Gemini failure switch models before any answer text is streamed. llm_client.py is the OpenAI-compatible transport for Groq and Google chat models: it opens streamed completions, lists model ids, and maps SDK failures onto normalised LLMError codes. The rate limiter adds a per-user token bucket and a per-model rolling quota so an exhausted free-tier model is skipped before it returns 429, and exceptions.py keeps client-facing messages free of upstream provider text.",
+    "nodeIds": [
+      "file:backend/services/llm_service.py",
+      "file:backend/client/llm_client.py",
+      "file:backend/utils/rate_limiter.py",
+      "file:backend/core/exceptions.py"
+    ],
+    "languageLesson": "Failover runs before the first streamed token so the client receives one continuous answer. The circuit breaker stops calling a provider that is already failing, and the quota guard consults a local rolling window so the app can skip a model that would answer with HTTP 429."
+  },
+  {
+    "order": 12,
+    "title": "Browser Chat Shell",
+    "description": "The SPA mounted by main.py starts at frontend/index.html. An inline script sets theme, shell, and workspace before first paint, then the page loads local stylesheets and classic scripts, with app.js last. app.js owns browser state: it wires the composer, sessions, uploads, and GitHub controls, and it drives the single POST /chat/stream round trip through window.API and window.Chat. api.js wraps the JSON routes and opens the SSE channel plus artifact downloads, chat.js renders messages and citations without calling fetch, and utils.js sanitizes Markdown with DOMPurify before citation badges and highlight.js chrome are added.",
+    "nodeIds": [
+      "file:frontend/index.html",
+      "file:frontend/js/app.js",
+      "file:frontend/js/api.js",
+      "file:frontend/js/chat.js",
+      "file:frontend/js/utils.js"
+    ],
+    "languageLesson": "These are classic scripts that share behavior through window.API and window.Chat, loaded in order so app.js runs last. View code paints the DOM, and the controller plus api.js own the network. DOMPurify runs before citation and syntax-highlight markup is added, so streamed Markdown cannot inject HTML."
+  },
+  {
+    "order": 13,
+    "title": "Offline Test Harness",
+    "description": "pytest.ini collects tests from tests/, adds the project root to the path, and excludes live provider tests unless the live marker is selected, so a normal run stays offline. conftest.py supplies the fakes behind that run: a deterministic embedder and reranker, a scripted LLM provider, and a ServiceContainer factory that builds the FastAPI test client. test_api.py exercises every route, the SSE chat contract, uploads, search fallback, and rate limits. test_retrieval.py checks hybrid ingest and search, owner isolation, degraded embedder and reranker paths, and atomic index rollback, and test_llm.py covers failover, circuit-breaker trips, quota-guard skips, and think-block filtering.",
+    "nodeIds": [
+      "config:pytest.ini",
+      "file:tests/conftest.py",
+      "file:tests/test_api.py",
+      "file:tests/test_retrieval.py",
+      "file:tests/test_llm.py"
+    ],
+    "languageLesson": "A pytest marker such as live separates tests that need real provider keys from the offline suite. Leaving that marker deselected in pytest.ini keeps an ordinary pytest run on the fakes from conftest.py."
+  }
+]

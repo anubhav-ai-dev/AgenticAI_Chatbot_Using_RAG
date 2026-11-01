@@ -1,0 +1,555 @@
+{
+  "scriptCompleted": true,
+  "commonPrefix": "",
+  "directoryGroups": {
+    "backend": [
+      "endpoint:backend/main.py:DELETE-/sessions/{session_id}",
+      "endpoint:backend/main.py:GET-/",
+      "endpoint:backend/main.py:GET-/documents",
+      "endpoint:backend/main.py:GET-/health",
+      "endpoint:backend/main.py:GET-/models",
+      "endpoint:backend/main.py:GET-/ping",
+      "endpoint:backend/main.py:GET-/sessions",
+      "endpoint:backend/main.py:GET-/sessions/{session_id}",
+      "endpoint:backend/main.py:PATCH-/sessions/{session_id}",
+      "endpoint:backend/main.py:POST-/retrieve",
+      "endpoint:backend/main.py:POST-/search",
+      "endpoint:backend/main.py:POST-/sessions",
+      "endpoint:backend/main.py:POST-/sessions/{session_id}/messages",
+      "endpoint:backend/main.py:POST-/upload",
+      "file:backend/__init__.py",
+      "file:backend/agent.py",
+      "file:backend/client.py",
+      "file:backend/config.py",
+      "file:backend/database.py",
+      "file:backend/main.py",
+      "file:backend/models.py",
+      "file:backend/models/__init__.py",
+      "file:backend/models/api.py",
+      "file:backend/models/db.py",
+      "file:backend/rag/__init__.py",
+      "file:backend/rag/embeddings.py",
+      "file:backend/rag/retriever.py",
+      "file:backend/services/__init__.py",
+      "file:backend/services/parser.py",
+      "file:backend/services/search.py",
+      "file:backend/services/vector_store.py"
+    ],
+    "root": [
+      "config:.env.example",
+      "document:README.md",
+      "document:requirements.txt",
+      "file:Pipfile",
+      "service:Procfile"
+    ],
+    "frontend": [
+      "file:frontend/__init__.py",
+      "file:frontend/app.py",
+      "file:frontend/css/animations.css",
+      "file:frontend/css/components.css",
+      "file:frontend/css/main.css",
+      "file:frontend/index.html",
+      "file:frontend/js/api.js",
+      "file:frontend/js/app.js",
+      "file:frontend/js/chat.js",
+      "file:frontend/js/config.example.js",
+      "file:frontend/js/puter_client.js",
+      "file:frontend/js/ui.js",
+      "file:frontend/js/utils.js"
+    ],
+    ".devcontainer": [
+      "config:.devcontainer/devcontainer.json"
+    ],
+    ".ua": [
+      "config:.ua/config.json"
+    ],
+    "data": [
+      "file:data/.gitkeep"
+    ]
+  },
+  "nestedGroups": {
+    "backend/(root)": [
+      "endpoint:backend/main.py:DELETE-/sessions/{session_id}",
+      "endpoint:backend/main.py:GET-/",
+      "endpoint:backend/main.py:GET-/documents",
+      "endpoint:backend/main.py:GET-/health",
+      "endpoint:backend/main.py:GET-/models",
+      "endpoint:backend/main.py:GET-/ping",
+      "endpoint:backend/main.py:GET-/sessions",
+      "endpoint:backend/main.py:GET-/sessions/{session_id}",
+      "endpoint:backend/main.py:PATCH-/sessions/{session_id}",
+      "endpoint:backend/main.py:POST-/retrieve",
+      "endpoint:backend/main.py:POST-/search",
+      "endpoint:backend/main.py:POST-/sessions",
+      "endpoint:backend/main.py:POST-/sessions/{session_id}/messages",
+      "endpoint:backend/main.py:POST-/upload",
+      "file:backend/__init__.py",
+      "file:backend/agent.py",
+      "file:backend/client.py",
+      "file:backend/config.py",
+      "file:backend/database.py",
+      "file:backend/main.py",
+      "file:backend/models.py"
+    ],
+    "backend/rag": [
+      "file:backend/rag/__init__.py",
+      "file:backend/rag/embeddings.py",
+      "file:backend/rag/retriever.py"
+    ],
+    "backend/services": [
+      "file:backend/services/__init__.py",
+      "file:backend/services/parser.py",
+      "file:backend/services/search.py",
+      "file:backend/services/vector_store.py"
+    ],
+    "backend/models": [
+      "file:backend/models/__init__.py",
+      "file:backend/models/api.py",
+      "file:backend/models/db.py"
+    ],
+    "root": [
+      "config:.env.example",
+      "document:README.md",
+      "document:requirements.txt",
+      "file:Pipfile",
+      "service:Procfile"
+    ],
+    "frontend/css": [
+      "file:frontend/css/animations.css",
+      "file:frontend/css/components.css",
+      "file:frontend/css/main.css"
+    ],
+    ".devcontainer/(root)": [
+      "config:.devcontainer/devcontainer.json"
+    ],
+    ".ua/(root)": [
+      "config:.ua/config.json"
+    ],
+    "data/(root)": [
+      "file:data/.gitkeep"
+    ],
+    "frontend/(root)": [
+      "file:frontend/__init__.py",
+      "file:frontend/app.py",
+      "file:frontend/index.html"
+    ],
+    "frontend/js": [
+      "file:frontend/js/api.js",
+      "file:frontend/js/app.js",
+      "file:frontend/js/chat.js",
+      "file:frontend/js/config.example.js",
+      "file:frontend/js/puter_client.js",
+      "file:frontend/js/ui.js",
+      "file:frontend/js/utils.js"
+    ]
+  },
+  "nodeTypeGroups": {
+    "file": [
+      "file:Pipfile",
+      "file:backend/__init__.py",
+      "file:backend/agent.py",
+      "file:backend/client.py",
+      "file:backend/config.py",
+      "file:backend/database.py",
+      "file:backend/main.py",
+      "file:backend/models.py",
+      "file:backend/models/__init__.py",
+      "file:backend/models/api.py",
+      "file:backend/models/db.py",
+      "file:backend/rag/__init__.py",
+      "file:backend/rag/embeddings.py",
+      "file:backend/rag/retriever.py",
+      "file:backend/services/__init__.py",
+      "file:backend/services/parser.py",
+      "file:backend/services/search.py",
+      "file:backend/services/vector_store.py",
+      "file:data/.gitkeep",
+      "file:frontend/__init__.py",
+      "file:frontend/app.py",
+      "file:frontend/css/animations.css",
+      "file:frontend/css/components.css",
+      "file:frontend/css/main.css",
+      "file:frontend/index.html",
+      "file:frontend/js/api.js",
+      "file:frontend/js/app.js",
+      "file:frontend/js/chat.js",
+      "file:frontend/js/config.example.js",
+      "file:frontend/js/puter_client.js",
+      "file:frontend/js/ui.js",
+      "file:frontend/js/utils.js"
+    ],
+    "endpoint": [
+      "endpoint:backend/main.py:DELETE-/sessions/{session_id}",
+      "endpoint:backend/main.py:GET-/",
+      "endpoint:backend/main.py:GET-/documents",
+      "endpoint:backend/main.py:GET-/health",
+      "endpoint:backend/main.py:GET-/models",
+      "endpoint:backend/main.py:GET-/ping",
+      "endpoint:backend/main.py:GET-/sessions",
+      "endpoint:backend/main.py:GET-/sessions/{session_id}",
+      "endpoint:backend/main.py:PATCH-/sessions/{session_id}",
+      "endpoint:backend/main.py:POST-/retrieve",
+      "endpoint:backend/main.py:POST-/search",
+      "endpoint:backend/main.py:POST-/sessions",
+      "endpoint:backend/main.py:POST-/sessions/{session_id}/messages",
+      "endpoint:backend/main.py:POST-/upload"
+    ],
+    "config": [
+      "config:.devcontainer/devcontainer.json",
+      "config:.env.example",
+      "config:.ua/config.json"
+    ],
+    "service": [
+      "service:Procfile"
+    ],
+    "document": [
+      "document:README.md",
+      "document:requirements.txt"
+    ]
+  },
+  "crossCategoryEdges": [
+    {
+      "fromType": "file",
+      "toType": "file",
+      "edgeType": "imports",
+      "count": 18
+    },
+    {
+      "fromType": "file",
+      "toType": "file",
+      "edgeType": "depends_on",
+      "count": 16
+    },
+    {
+      "fromType": "file",
+      "toType": "endpoint",
+      "edgeType": "contains",
+      "count": 14
+    },
+    {
+      "fromType": "file",
+      "toType": "file",
+      "edgeType": "related",
+      "count": 11
+    },
+    {
+      "fromType": "config",
+      "toType": "file",
+      "edgeType": "configures",
+      "count": 4
+    },
+    {
+      "fromType": "document",
+      "toType": "file",
+      "edgeType": "documents",
+      "count": 4
+    },
+    {
+      "fromType": "config",
+      "toType": "document",
+      "edgeType": "configures",
+      "count": 1
+    },
+    {
+      "fromType": "document",
+      "toType": "file",
+      "edgeType": "related",
+      "count": 1
+    },
+    {
+      "fromType": "service",
+      "toType": "file",
+      "edgeType": "deploys",
+      "count": 1
+    }
+  ],
+  "nonCodeLinks": [
+    {
+      "source": "config:.env.example",
+      "target": "file:backend/config.py",
+      "edgeType": "configures",
+      "fromType": "config",
+      "toType": "file"
+    },
+    {
+      "source": "config:.env.example",
+      "target": "file:backend/main.py",
+      "edgeType": "configures",
+      "fromType": "config",
+      "toType": "file"
+    },
+    {
+      "source": "document:README.md",
+      "target": "file:backend/main.py",
+      "edgeType": "documents",
+      "fromType": "document",
+      "toType": "file"
+    },
+    {
+      "source": "document:README.md",
+      "target": "file:backend/agent.py",
+      "edgeType": "documents",
+      "fromType": "document",
+      "toType": "file"
+    },
+    {
+      "source": "document:README.md",
+      "target": "file:frontend/app.py",
+      "edgeType": "documents",
+      "fromType": "document",
+      "toType": "file"
+    },
+    {
+      "source": "document:README.md",
+      "target": "file:backend/config.py",
+      "edgeType": "documents",
+      "fromType": "document",
+      "toType": "file"
+    },
+    {
+      "source": "service:Procfile",
+      "target": "file:backend/main.py",
+      "edgeType": "deploys",
+      "fromType": "service",
+      "toType": "file"
+    },
+    {
+      "source": "document:requirements.txt",
+      "target": "file:backend/main.py",
+      "edgeType": "related",
+      "fromType": "document",
+      "toType": "file"
+    },
+    {
+      "source": "config:.devcontainer/devcontainer.json",
+      "target": "file:frontend/app.py",
+      "edgeType": "configures",
+      "fromType": "config",
+      "toType": "file"
+    },
+    {
+      "source": "config:.devcontainer/devcontainer.json",
+      "target": "file:backend/main.py",
+      "edgeType": "configures",
+      "fromType": "config",
+      "toType": "file"
+    },
+    {
+      "source": "config:.devcontainer/devcontainer.json",
+      "target": "document:README.md",
+      "edgeType": "configures",
+      "fromType": "config",
+      "toType": "document"
+    }
+  ],
+  "interGroupImports": [],
+  "intraGroupDensity": {
+    "backend": {
+      "internalEdges": 18,
+      "totalEdges": 18,
+      "density": 1
+    },
+    "root": {
+      "internalEdges": 0,
+      "totalEdges": 0,
+      "density": 0
+    },
+    "frontend": {
+      "internalEdges": 0,
+      "totalEdges": 0,
+      "density": 0
+    },
+    ".devcontainer": {
+      "internalEdges": 0,
+      "totalEdges": 0,
+      "density": 0
+    },
+    ".ua": {
+      "internalEdges": 0,
+      "totalEdges": 0,
+      "density": 0
+    },
+    "data": {
+      "internalEdges": 0,
+      "totalEdges": 0,
+      "density": 0
+    }
+  },
+  "patternMatches": {
+    "data": "data"
+  },
+  "filePatternMatches": {
+    "service:Procfile": "infrastructure",
+    "document:README.md": "documentation",
+    "document:requirements.txt": "config",
+    "config:.devcontainer/devcontainer.json": "infrastructure",
+    "file:Pipfile": "config",
+    "file:backend/__init__.py": "entry",
+    "file:backend/models/__init__.py": "entry",
+    "file:backend/rag/__init__.py": "entry",
+    "file:backend/services/__init__.py": "entry",
+    "file:frontend/__init__.py": "entry"
+  },
+  "deploymentTopology": {
+    "hasDockerfile": false,
+    "hasCompose": false,
+    "hasK8s": false,
+    "hasTerraform": false,
+    "hasCI": false,
+    "infraFiles": [
+      "Procfile",
+      ".devcontainer/devcontainer.json"
+    ]
+  },
+  "dataPipeline": {
+    "schemaFiles": [],
+    "migrationFiles": [],
+    "dataModelFiles": [
+      "backend/database.py",
+      "backend/models/api.py",
+      "backend/models/db.py",
+      "backend/models.py",
+      "backend/models/__init__.py"
+    ],
+    "apiHandlerFiles": [
+      "backend/main.py"
+    ]
+  },
+  "docCoverage": {
+    "groupsWithDocs": 3,
+    "totalGroups": 6,
+    "coverageRatio": 0.5,
+    "undocumentedGroups": [
+      ".devcontainer",
+      ".ua",
+      "data"
+    ]
+  },
+  "dependencyDirection": [],
+  "fileStats": {
+    "totalFileNodes": 52,
+    "filesPerGroup": {
+      ".devcontainer": 1,
+      ".ua": 1,
+      "backend": 31,
+      "data": 1,
+      "frontend": 13,
+      "root": 5
+    },
+    "nodeTypeCounts": {
+      "file": 32,
+      "endpoint": 14,
+      "config": 3,
+      "service": 1,
+      "document": 2
+    }
+  },
+  "fileFanIn": {
+    "file:backend/agent.py": 0,
+    "file:backend/client.py": 0,
+    "file:backend/config.py": 8,
+    "file:backend/rag/embeddings.py": 1,
+    "file:backend/rag/retriever.py": 1,
+    "file:backend/services/vector_store.py": 1,
+    "file:backend/database.py": 2,
+    "file:backend/main.py": 0,
+    "endpoint:backend/main.py:GET-/ping": 0,
+    "endpoint:backend/main.py:GET-/health": 0,
+    "endpoint:backend/main.py:GET-/models": 0,
+    "endpoint:backend/main.py:GET-/sessions": 0,
+    "endpoint:backend/main.py:POST-/sessions": 0,
+    "endpoint:backend/main.py:GET-/sessions/{session_id}": 0,
+    "endpoint:backend/main.py:PATCH-/sessions/{session_id}": 0,
+    "endpoint:backend/main.py:DELETE-/sessions/{session_id}": 0,
+    "endpoint:backend/main.py:POST-/sessions/{session_id}/messages": 0,
+    "endpoint:backend/main.py:POST-/upload": 0,
+    "endpoint:backend/main.py:GET-/documents": 0,
+    "endpoint:backend/main.py:POST-/retrieve": 0,
+    "endpoint:backend/main.py:POST-/search": 0,
+    "endpoint:backend/main.py:GET-/": 0,
+    "file:backend/models/api.py": 2,
+    "file:backend/models/db.py": 1,
+    "file:backend/services/parser.py": 1,
+    "file:backend/services/search.py": 1,
+    "config:.env.example": 0,
+    "service:Procfile": 0,
+    "document:README.md": 0,
+    "document:requirements.txt": 0,
+    "file:frontend/css/animations.css": 0,
+    "file:frontend/css/components.css": 0,
+    "file:frontend/css/main.css": 0,
+    "config:.devcontainer/devcontainer.json": 0,
+    "config:.ua/config.json": 0,
+    "file:Pipfile": 0,
+    "file:backend/__init__.py": 0,
+    "file:backend/models.py": 0,
+    "file:backend/models/__init__.py": 0,
+    "file:backend/rag/__init__.py": 0,
+    "file:backend/services/__init__.py": 0,
+    "file:data/.gitkeep": 0,
+    "file:frontend/__init__.py": 0,
+    "file:frontend/app.py": 0,
+    "file:frontend/index.html": 0,
+    "file:frontend/js/api.js": 0,
+    "file:frontend/js/app.js": 0,
+    "file:frontend/js/chat.js": 0,
+    "file:frontend/js/config.example.js": 0,
+    "file:frontend/js/puter_client.js": 0,
+    "file:frontend/js/ui.js": 0,
+    "file:frontend/js/utils.js": 0
+  },
+  "fileFanOut": {
+    "file:backend/agent.py": 1,
+    "file:backend/client.py": 1,
+    "file:backend/config.py": 0,
+    "file:backend/rag/embeddings.py": 1,
+    "file:backend/rag/retriever.py": 3,
+    "file:backend/services/vector_store.py": 1,
+    "file:backend/database.py": 1,
+    "file:backend/main.py": 7,
+    "endpoint:backend/main.py:GET-/ping": 0,
+    "endpoint:backend/main.py:GET-/health": 0,
+    "endpoint:backend/main.py:GET-/models": 0,
+    "endpoint:backend/main.py:GET-/sessions": 0,
+    "endpoint:backend/main.py:POST-/sessions": 0,
+    "endpoint:backend/main.py:GET-/sessions/{session_id}": 0,
+    "endpoint:backend/main.py:PATCH-/sessions/{session_id}": 0,
+    "endpoint:backend/main.py:DELETE-/sessions/{session_id}": 0,
+    "endpoint:backend/main.py:POST-/sessions/{session_id}/messages": 0,
+    "endpoint:backend/main.py:POST-/upload": 0,
+    "endpoint:backend/main.py:GET-/documents": 0,
+    "endpoint:backend/main.py:POST-/retrieve": 0,
+    "endpoint:backend/main.py:POST-/search": 0,
+    "endpoint:backend/main.py:GET-/": 0,
+    "file:backend/models/api.py": 0,
+    "file:backend/models/db.py": 1,
+    "file:backend/services/parser.py": 0,
+    "file:backend/services/search.py": 2,
+    "config:.env.example": 0,
+    "service:Procfile": 0,
+    "document:README.md": 0,
+    "document:requirements.txt": 0,
+    "file:frontend/css/animations.css": 0,
+    "file:frontend/css/components.css": 0,
+    "file:frontend/css/main.css": 0,
+    "config:.devcontainer/devcontainer.json": 0,
+    "config:.ua/config.json": 0,
+    "file:Pipfile": 0,
+    "file:backend/__init__.py": 0,
+    "file:backend/models.py": 0,
+    "file:backend/models/__init__.py": 0,
+    "file:backend/rag/__init__.py": 0,
+    "file:backend/services/__init__.py": 0,
+    "file:data/.gitkeep": 0,
+    "file:frontend/__init__.py": 0,
+    "file:frontend/app.py": 0,
+    "file:frontend/index.html": 0,
+    "file:frontend/js/api.js": 0,
+    "file:frontend/js/app.js": 0,
+    "file:frontend/js/chat.js": 0,
+    "file:frontend/js/config.example.js": 0,
+    "file:frontend/js/puter_client.js": 0,
+    "file:frontend/js/ui.js": 0,
+    "file:frontend/js/utils.js": 0
+  }
+}

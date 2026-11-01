@@ -1,0 +1,184 @@
+{
+  "nodes": [
+    {
+      "id": "document:docs/redesign/PROJECT_BRIEF.md",
+      "type": "document",
+      "name": "PROJECT_BRIEF.md",
+      "filePath": "docs/redesign/PROJECT_BRIEF.md",
+      "summary": "Shared brief for the AI Assistant Pro redesign: verified stack and serving facts, the DOM and API contracts the UI must keep, exclusive file ownership, and the view/controller seam every subagent follows.",
+      "tags": ["documentation", "redesign", "project-brief", "architecture", "ownership"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:docs/redesign/audit.md",
+      "type": "document",
+      "name": "audit.md",
+      "filePath": "docs/redesign/audit.md",
+      "summary": "Read-only Phase 1 audit of the vanilla frontend and FastAPI RAG backend, covering the DOM contract, persistence, SSE endpoints, feature gaps, security risks, and a staged implementation plan.",
+      "tags": ["documentation", "audit", "redesign", "api-contract", "architecture"],
+      "complexity": "complex"
+    },
+    {
+      "id": "document:docs/redesign/design-spec.md",
+      "type": "document",
+      "name": "design-spec.md",
+      "filePath": "docs/redesign/design-spec.md",
+      "summary": "Phase 1 design specification for the chat shell: color and type tokens, theme and responsive layout, component states and ARIA, screen specs, the AI visualization, and the icon plan implementers must follow.",
+      "tags": ["documentation", "design-system", "redesign", "accessibility", "ui-spec"],
+      "complexity": "complex"
+    },
+    {
+      "id": "document:docs/redesign/integration-notes.md",
+      "type": "document",
+      "name": "integration-notes.md",
+      "filePath": "docs/redesign/integration-notes.md",
+      "summary": "Controller-layer notes mapping each UI action in app.js and api.js to its endpoint and view calls, plus backend gaps, QA follow-ups, and the reference-fidelity deviations that were left in place.",
+      "tags": ["documentation", "integration", "controller", "redesign", "api-contract"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:docs/redesign/integration-test-plan.md",
+      "type": "document",
+      "name": "integration-test-plan.md",
+      "filePath": "docs/redesign/integration-test-plan.md",
+      "summary": "Unexecuted plan for testing the real backend in an isolated loopback environment, with a scripted fake LLM and a matrix covering streaming, cancellation, uploads, SSRF, sessions, and the authorization gap.",
+      "tags": ["documentation", "testing", "integration", "security", "backend"],
+      "complexity": "complex"
+    },
+    {
+      "id": "document:docs/redesign/qa-report-04.md",
+      "type": "document",
+      "name": "qa-report-04.md",
+      "filePath": "docs/redesign/qa-report-04.md",
+      "summary": "Stage 4 QA report that passes the controller and view seam with issues: welcome cards never send, streaming and focus behave, and axe finds no violations, while a toast can cover Stop.",
+      "tags": ["documentation", "qa", "testing", "accessibility", "redesign"],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/redesign/qa-report-05.md",
+      "type": "document",
+      "name": "qa-report-05.md",
+      "filePath": "docs/redesign/qa-report-05.md",
+      "summary": "Reference-design QA report that passes the restyled shell with issues, closing the toast overlap and flagging an unverifiable privacy claim, weak outline contrast, and a misleading Upload Files card.",
+      "tags": ["documentation", "qa", "accessibility", "visual-fidelity", "redesign"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:docs/redesign/qa-report-06.md",
+      "type": "document",
+      "name": "qa-report-06.md",
+      "filePath": "docs/redesign/qa-report-06.md",
+      "summary": "Re-verification report that closes every QA-05 finding, confirms the safer upload copy and file-chooser card, and re-runs the accessibility and regression suite with a clean pass.",
+      "tags": ["documentation", "qa", "regression", "accessibility", "redesign"],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/redesign/security-issue-authz.md",
+      "type": "document",
+      "name": "security-issue-authz.md",
+      "filePath": "docs/redesign/security-issue-authz.md",
+      "summary": "Recorded, unfixed finding that session read, rename, delete, and message feedback do not check ownership, so a guessed session id is enough because user_id is client-supplied and not authentication.",
+      "tags": ["documentation", "security", "authorization", "redesign", "backend"],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/redesign/stage4-backlog.md",
+      "type": "document",
+      "name": "stage4-backlog.md",
+      "filePath": "docs/redesign/stage4-backlog.md",
+      "summary": "Stage 4 controller backlog requiring welcome cards to switch mode and fill the composer without sending, plus carried QA items for focus, confirm dialogs, rename, model retry, and upload types.",
+      "tags": ["documentation", "backlog", "controller", "redesign", "testing"],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/redesign/ui-ux-implementation-notes.md",
+      "type": "document",
+      "name": "ui-ux-implementation-notes.md",
+      "filePath": "docs/redesign/ui-ux-implementation-notes.md",
+      "summary": "Implementation record of the workspace dropdown, workspaces, and Settings screen, stating where the written brief overrides the presentation board and which controls were omitted because the backend cannot back them.",
+      "tags": ["documentation", "ui-ux", "redesign", "settings", "motion"],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/redesign/view-contract.md",
+      "type": "document",
+      "name": "view-contract.md",
+      "filePath": "docs/redesign/view-contract.md",
+      "summary": "View/controller contract listing preserved DOM ids, exported view functions, callbacks, theme storage, and the stage-by-stage markup and script-order changes through the reference-design pass.",
+      "tags": ["documentation", "api-contract", "frontend", "redesign", "view-controller"],
+      "complexity": "complex"
+    }
+  ],
+  "edges": [
+    {
+      "source": "document:docs/redesign/PROJECT_BRIEF.md",
+      "target": "file:frontend/index.html",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/redesign/PROJECT_BRIEF.md",
+      "target": "file:backend/main.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/redesign/PROJECT_BRIEF.md",
+      "target": "file:backend/api/routes.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/redesign/audit.md",
+      "target": "file:frontend/index.html",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/redesign/audit.md",
+      "target": "file:backend/main.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/redesign/audit.md",
+      "target": "file:backend/api/routes.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/redesign/design-spec.md",
+      "target": "file:frontend/index.html",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/redesign/integration-test-plan.md",
+      "target": "file:backend/main.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/redesign/integration-test-plan.md",
+      "target": "file:backend/api/routes.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/redesign/view-contract.md",
+      "target": "file:frontend/index.html",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    }
+  ]
+}

@@ -1,0 +1,306 @@
+{
+  "nodes": [
+    {
+      "id": "file:frontend/js/components/workspaces.js",
+      "type": "file",
+      "name": "workspaces.js",
+      "filePath": "frontend/js/components/workspaces.js",
+      "summary": "Welcome-screen workspace panels for Documents, Research, and Code. Actions only fill the composer and focus it; nothing is sent from a panel.",
+      "tags": [
+        "component",
+        "view",
+        "composer",
+        "workspaces"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:frontend/js/components/workspaces.js:fill",
+      "type": "function",
+      "name": "fill",
+      "filePath": "frontend/js/components/workspaces.js",
+      "lineRange": [
+        36,
+        52
+      ],
+      "summary": "Writes prompt text into the composer, focuses it, and places the caret in a placeholder or code fence. Never sends.",
+      "tags": [
+        "composer",
+        "view",
+        "workspaces"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/components/workspaces.js:_onClick",
+      "type": "function",
+      "name": "_onClick",
+      "filePath": "frontend/js/components/workspaces.js",
+      "lineRange": [
+        54,
+        70
+      ],
+      "summary": "Handles welcome-card fill and template buttons, and explains why document actions are disabled when nothing is indexed.",
+      "tags": [
+        "event-handler",
+        "composer",
+        "workspaces"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/components/workspaces.js:_syncWebToggle",
+      "type": "function",
+      "name": "_syncWebToggle",
+      "filePath": "frontend/js/components/workspaces.js",
+      "lineRange": [
+        73,
+        88
+      ],
+      "summary": "Locks the web-search switch on in Research and restores the user's pressed state in other workspaces.",
+      "tags": [
+        "workspaces",
+        "view",
+        "accessibility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/components/workspaces.js:setActive",
+      "type": "function",
+      "name": "setActive",
+      "filePath": "frontend/js/components/workspaces.js",
+      "lineRange": [
+        90,
+        94
+      ],
+      "summary": "Sets the composer placeholder for the active workspace and syncs the web-search switch.",
+      "tags": [
+        "workspaces",
+        "composer",
+        "view"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/components/workspaces.js:setDocCount",
+      "type": "function",
+      "name": "setDocCount",
+      "filePath": "frontend/js/components/workspaces.js",
+      "lineRange": [
+        97,
+        108
+      ],
+      "summary": "Enables document actions when at least one document is indexed and explains why they are unavailable otherwise.",
+      "tags": [
+        "workspaces",
+        "documents",
+        "view"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/components/workspaces.js:setUploadBusy",
+      "type": "function",
+      "name": "setUploadBusy",
+      "filePath": "frontend/js/components/workspaces.js",
+      "lineRange": [
+        111,
+        117
+      ],
+      "summary": "Marks the document drop zone busy and shows the file name while an upload is in progress.",
+      "tags": [
+        "workspaces",
+        "upload",
+        "view"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/components/workspaces.js:setLimits",
+      "type": "function",
+      "name": "setLimits",
+      "filePath": "frontend/js/components/workspaces.js",
+      "lineRange": [
+        121,
+        127
+      ],
+      "summary": "Appends the per-file size limit to the drop-zone hint.",
+      "tags": [
+        "workspaces",
+        "upload",
+        "view"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/components/workspaces.js:_wireDropzone",
+      "type": "function",
+      "name": "_wireDropzone",
+      "filePath": "frontend/js/components/workspaces.js",
+      "lineRange": [
+        129,
+        142
+      ],
+      "summary": "Highlights the drop zone during a drag and routes a click to the composer's existing attach button.",
+      "tags": [
+        "workspaces",
+        "upload",
+        "event-handler"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/components/workspaces.js:init",
+      "type": "function",
+      "name": "init",
+      "filePath": "frontend/js/components/workspaces.js",
+      "lineRange": [
+        144,
+        156
+      ],
+      "summary": "Binds welcome-screen actions, the drop zone, add-URL, and manage-documents, then starts with document actions disabled.",
+      "tags": [
+        "workspaces",
+        "initialization",
+        "event-handler"
+      ],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:frontend/js/components/workspaces.js",
+      "target": "function:frontend/js/components/workspaces.js:fill",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/components/workspaces.js",
+      "target": "function:frontend/js/components/workspaces.js:fill",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/components/workspaces.js",
+      "target": "function:frontend/js/components/workspaces.js:_onClick",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/components/workspaces.js",
+      "target": "function:frontend/js/components/workspaces.js:_syncWebToggle",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/components/workspaces.js",
+      "target": "function:frontend/js/components/workspaces.js:setActive",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/components/workspaces.js",
+      "target": "function:frontend/js/components/workspaces.js:setActive",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/components/workspaces.js",
+      "target": "function:frontend/js/components/workspaces.js:setDocCount",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/components/workspaces.js",
+      "target": "function:frontend/js/components/workspaces.js:setDocCount",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/components/workspaces.js",
+      "target": "function:frontend/js/components/workspaces.js:setUploadBusy",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/components/workspaces.js",
+      "target": "function:frontend/js/components/workspaces.js:setUploadBusy",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/components/workspaces.js",
+      "target": "function:frontend/js/components/workspaces.js:setLimits",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/components/workspaces.js",
+      "target": "function:frontend/js/components/workspaces.js:setLimits",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/components/workspaces.js",
+      "target": "function:frontend/js/components/workspaces.js:_wireDropzone",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/components/workspaces.js",
+      "target": "function:frontend/js/components/workspaces.js:init",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/components/workspaces.js",
+      "target": "function:frontend/js/components/workspaces.js:init",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/components/workspaces.js",
+      "target": "file:frontend/js/ui.js",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "function:frontend/js/components/workspaces.js:_onClick",
+      "target": "function:frontend/js/ui.js:setLiveStatus",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:frontend/js/components/workspaces.js:_wireDropzone",
+      "target": "function:frontend/js/ui.js:setLiveStatus",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/components/workspaces.js",
+      "target": "file:tests/test_frontend_reference.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    }
+  ]
+}

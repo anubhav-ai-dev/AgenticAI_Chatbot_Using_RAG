@@ -1,0 +1,147 @@
+[
+  {
+    "order": 1,
+    "title": "Project Overview",
+    "description": "Start with README.md, the getting-started guide for this RAG chatbot. It covers the project layout, local setup, environment variables, the FastAPI endpoints, and the LangGraph path from router to agent. requirements.txt names the libraries behind that design: the FastAPI server, LangChain and LangGraph providers, FAISS retrieval, document parsing, and SQLAlchemy persistence. Together they tell you what the app does before you open a single module.",
+    "nodeIds": [
+      "document:README.md",
+      "document:requirements.txt"
+    ]
+  },
+  {
+    "order": 2,
+    "title": "Runtime Configuration",
+    "description": "The setup in the README lands in backend/config.py, the settings module imported by the API, database, retrieval, and search code. It loads environment variables and defines paths, API keys, model catalogs, RAG chunking and retrieval settings, and agent modes. .env.example is the template for that load: Groq, Tavily, Cohere, and optional LLM keys, plus the server host, CORS origins, and the SQLite database URL. Later steps read these values instead of choosing models or chunk sizes on their own.",
+    "nodeIds": [
+      "file:backend/config.py",
+      "config:.env.example"
+    ],
+    "languageLesson": "A settings module that reads environment variables once keeps secrets out of source control. The example env file documents every key the process expects, and the rest of the app imports the resulting constants."
+  },
+  {
+    "order": 3,
+    "title": "API Schemas",
+    "description": "Before the routes, the API schemas layer names every payload the server accepts and returns. backend/models/api.py defines Pydantic models for sessions, messages, document upload, RAG retrieval, web search, and health checks. backend/models.py is the earlier chat contract — chat requests and responses, history and clear-history payloads, a user-documents request, and a health payload — and lives beside the models package as its own module. The session-based schemas are the ones the FastAPI routes in the next steps use.",
+    "nodeIds": [
+      "file:backend/models/api.py",
+      "file:backend/models.py"
+    ],
+    "languageLesson": "Pydantic models are classes with typed fields. FastAPI uses them to validate JSON, document the API, and serialize responses, so this file is the contract between the browser and the server."
+  },
+  {
+    "order": 4,
+    "title": "Conversation Storage",
+    "description": "The data layer is what those session and message schemas are stored as. backend/database.py builds the SQLAlchemy engine and session factory, provides the FastAPI session dependency, and creates tables at startup, enabling SQLite multi-thread access when DATABASE_URL is a SQLite path from the settings module. backend/models/db.py maps chat sessions, messages, and indexed documents onto the sessions, messages, and documents tables. Route handlers in the next step borrow a session from this dependency whenever they list, insert, or delete a conversation.",
+    "nodeIds": [
+      "file:backend/database.py",
+      "file:backend/models/db.py"
+    ],
+    "languageLesson": "SQLAlchemy's declarative base turns a Python class into a table. A dependency function yields a session for one request and closes it afterward, so handlers share an engine without sharing a connection."
+  },
+  {
+    "order": 5,
+    "title": "FastAPI Application",
+    "description": "backend/main.py is the process entry point. The dependency walk starts here: the module imports config, the database, both model modules, the retriever, the parser, and web search, then builds the FastAPI app. A lifespan hook creates the database tables on startup, and CORS is taken from the settings module. GET /health returns database, Cohere, and Tavily status; GET /models returns the configured LLM list grouped by provider; GET / serves the static single-page app.",
+    "nodeIds": [
+      "file:backend/main.py",
+      "endpoint:backend/main.py:GET-/health",
+      "endpoint:backend/main.py:GET-/models",
+      "endpoint:backend/main.py:GET-/"
+    ],
+    "languageLesson": "A FastAPI lifespan context manager runs setup before the server accepts traffic and cleanup on shutdown. Each route function can declare a Pydantic response model so health and model payloads stay aligned with the schema module."
+  },
+  {
+    "order": 6,
+    "title": "Session and Answer Routes",
+    "description": "These five routes are the conversation loop the clients call. POST /sessions accepts SessionCreate and returns the new session; POST /sessions/{session_id}/messages accepts MessageCreate and stores the turn through the database dependency. POST /upload accepts a file or a URL and returns UploadResponse after indexing; POST /retrieve returns reranked FAISS chunks; POST /search returns a Tavily SearchResponse. Saving the message, fetching document evidence, and fetching web evidence are separate calls, which is how the browser assembles one grounded reply.",
+    "nodeIds": [
+      "endpoint:backend/main.py:POST-/sessions",
+      "endpoint:backend/main.py:POST-/sessions/{session_id}/messages",
+      "endpoint:backend/main.py:POST-/upload",
+      "endpoint:backend/main.py:POST-/retrieve",
+      "endpoint:backend/main.py:POST-/search"
+    ]
+  },
+  {
+    "order": 7,
+    "title": "Document Parsing",
+    "description": "POST /upload reaches backend/services/parser.py before anything is embedded. The parser turns PDF, DOCX, CSV, Excel, plain text, and web URLs into page dictionaries for indexing. One page shape lets the same upload route feed every format into the retrieval pipeline. This is the step between a file the user drops on the page and the chunks the vector index stores.",
+    "nodeIds": [
+      "file:backend/services/parser.py"
+    ]
+  },
+  {
+    "order": 8,
+    "title": "Retrieval Pipeline",
+    "description": "From main.py the import walk reaches the retriever, then the embedding adapter and the on-disk index. backend/rag/retriever.py chunks the parser's page dictionaries into FAISS records and retrieves them with a vector search followed by Cohere reranking, which is what POST /retrieve returns. backend/rag/embeddings.py prefers Cohere and falls back to Google Gemini embeddings when Cohere is unavailable. backend/services/vector_store.py persists one FAISS index per user, and data/.gitkeep keeps that data directory in version control when the runtime indexes are not committed.",
+    "nodeIds": [
+      "file:backend/rag/embeddings.py",
+      "file:backend/rag/retriever.py",
+      "file:backend/services/vector_store.py",
+      "file:data/.gitkeep"
+    ],
+    "languageLesson": "An adapter class hides which embedding provider is active. Callers ask for vectors; the adapter tries the preferred provider and substitutes the fallback, so chunking and search stay the same when a key is missing."
+  },
+  {
+    "order": 9,
+    "title": "Web Search",
+    "description": "Document RAG is one evidence path; live web search is the other. backend/services/search.py runs a Tavily query, merges several queries while deduplicating URLs, and can expand one question into a few focused sub-queries. It builds SearchResult and SearchResponse from the API schemas, the same types POST /search returns. The chat UI calls this when the selected mode needs sources outside the uploaded documents.",
+    "nodeIds": [
+      "file:backend/services/search.py"
+    ]
+  },
+  {
+    "order": 10,
+    "title": "LangGraph Router",
+    "description": "The README describes a LangGraph router-to-agent workflow, and backend/agent.py is where that workflow lives. The module routes each query to document RAG or a direct LLM/search path, keeps in-memory session history, and indexes PDF text in per-user FAISS stores, importing the shared config from the settings step. The HTTP routes reached from main.py call the parser, retriever, and search services on their own. Read the agent for the routing design the project documents; the SPA in the next step makes a similar choice by calling retrieve and search before it streams a completion.",
+    "nodeIds": [
+      "file:backend/agent.py"
+    ],
+    "languageLesson": "LangGraph models one turn as a state graph. Node functions read and update a shared state object, and conditional edges pick the next node — a document path or a direct model/search path — until the graph finishes."
+  },
+  {
+    "order": 11,
+    "title": "Static Chat SPA",
+    "description": "GET / returns frontend/index.html, the shell for chat, the sidebar, upload, and citations. It links the stylesheets and loads the browser scripts, ending with app.js. app.js keeps session and mode state and runs the send pipeline: persist the user message, retrieve RAG chunks, optionally search the web, then stream a Puter.js completion. api.js is the window.API client for those FastAPI calls, config.example.js shows the BACKEND_URL and Puter token placeholder that client reads, and puter_client.js builds mode-specific system prompts that inject the RAG excerpts and search results.",
+    "nodeIds": [
+      "file:frontend/index.html",
+      "file:frontend/js/app.js",
+      "file:frontend/js/api.js",
+      "file:frontend/js/config.example.js",
+      "file:frontend/js/puter_client.js"
+    ],
+    "languageLesson": "These are classic global scripts, not ES modules. Each file attaches an object to window, and index.html loads them in dependency order so later files can call earlier ones."
+  },
+  {
+    "order": 12,
+    "title": "Transcript and Theme",
+    "description": "Once the send pipeline has a reply, these files decide how the turn looks. chat.js builds user and assistant bubbles, streams tokens with thought steps and citation cards, and restores prior session history. It uses utils.js for markdown, citation badges, syntax highlighting, and timestamps, and ui.js for the citation modal, session and document lists, toasts, and the file drop overlay. main.css defines the dark-by-default tokens and the app shell; components.css styles messages, citations, and the input dock with those tokens.",
+    "nodeIds": [
+      "file:frontend/js/chat.js",
+      "file:frontend/js/ui.js",
+      "file:frontend/js/utils.js",
+      "file:frontend/css/main.css",
+      "file:frontend/css/components.css"
+    ],
+    "languageLesson": "CSS custom properties on the root selector act as design tokens. Component rules reference those variables, and a light-theme override reassigns the same names so the layout stays in one place."
+  },
+  {
+    "order": 13,
+    "title": "Streamlit and API Client",
+    "description": "frontend/app.py is the Streamlit UI for the same backend. It keeps session state, renders chat and document controls, and calls FastAPI at BACKEND_URL (default http://localhost:8000) for chat, history, PDF upload, and document listing. backend/client.py is the Python HTTP client that covers the routes you already traced: health, models, sessions, upload, retrieval, and web search. The Streamlit page is a full UI; the client class is how another Python process can call the same API.",
+    "nodeIds": [
+      "file:frontend/app.py",
+      "file:backend/client.py"
+    ]
+  },
+  {
+    "order": 14,
+    "title": "Container and Deploy",
+    "description": "With the request path clear, these two files show how the processes start. .devcontainer/devcontainer.json uses a Python 3.11 image, installs project requirements and Streamlit, forwards FastAPI on port 8000 and Streamlit on 8501, and starts frontend/app.py when the container attaches. The Procfile starts the FastAPI app with uvicorn and binds to the platform-assigned port for Render or Railway. One file reproduces the local loop; the other is the hosted command for the API entry point.",
+    "nodeIds": [
+      "config:.devcontainer/devcontainer.json",
+      "service:Procfile"
+    ],
+    "languageLesson": "A Dev Container spec pins the image, the install step, and the forwarded ports so every machine boots the same toolchain. A Procfile process type is one command the platform runs, and binding to the assigned PORT lets the host route traffic to uvicorn."
+  }
+]

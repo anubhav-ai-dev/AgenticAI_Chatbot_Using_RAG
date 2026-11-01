@@ -1,0 +1,392 @@
+{
+  "nodes": [
+    {
+      "id": "file:tests/test_frontend_reference.py",
+      "type": "file",
+      "name": "test_frontend_reference.py",
+      "filePath": "tests/test_frontend_reference.py",
+      "summary": "Static checks for the reference-design pass: token-only CSS, view-only frontend scripts, reduced-motion guards, and contrast of control outlines and welcome-card text.",
+      "tags": [
+        "test",
+        "accessibility",
+        "validation",
+        "css"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:tests/test_frontend_reference.py:_read",
+      "type": "function",
+      "name": "_read",
+      "filePath": "tests/test_frontend_reference.py",
+      "lineRange": [
+        14,
+        15
+      ],
+      "summary": "Reads a frontend-relative text file as UTF-8.",
+      "tags": [
+        "test",
+        "filesystem",
+        "utility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_reference.py:_theme_tokens",
+      "type": "function",
+      "name": "_theme_tokens",
+      "filePath": "tests/test_frontend_reference.py",
+      "lineRange": [
+        18,
+        24
+      ],
+      "summary": "Parses light or dark color tokens from the :root blocks in main.css.",
+      "tags": [
+        "test",
+        "theme",
+        "css"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_reference.py:_lum",
+      "type": "function",
+      "name": "_lum",
+      "filePath": "tests/test_frontend_reference.py",
+      "lineRange": [
+        27,
+        30
+      ],
+      "summary": "Converts a hex color to relative luminance for contrast checks.",
+      "tags": [
+        "test",
+        "accessibility",
+        "color"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_reference.py:_contrast",
+      "type": "function",
+      "name": "_contrast",
+      "filePath": "tests/test_frontend_reference.py",
+      "lineRange": [
+        33,
+        35
+      ],
+      "summary": "Returns the WCAG contrast ratio between two hex colors.",
+      "tags": [
+        "test",
+        "accessibility",
+        "color"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_reference.py:test_reference_assets_exist_and_are_linked",
+      "type": "function",
+      "name": "test_reference_assets_exist_and_are_linked",
+      "filePath": "tests/test_frontend_reference.py",
+      "lineRange": [
+        38,
+        44
+      ],
+      "summary": "Asserts reference.css and notifications.js exist and that reference.css loads after components.css.",
+      "tags": [
+        "test",
+        "css",
+        "assets"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_reference.py:test_reference_css_uses_tokens_only",
+      "type": "function",
+      "name": "test_reference_css_uses_tokens_only",
+      "filePath": "tests/test_frontend_reference.py",
+      "lineRange": [
+        47,
+        48
+      ],
+      "summary": "Asserts reference.css contains no raw hex colors.",
+      "tags": [
+        "test",
+        "css",
+        "design-tokens"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_reference.py:test_every_component_and_view_js_is_view_only",
+      "type": "function",
+      "name": "test_every_component_and_view_js_is_view_only",
+      "filePath": "tests/test_frontend_reference.py",
+      "lineRange": [
+        51,
+        59
+      ],
+      "summary": "Asserts view scripts do not fetch, touch storage, or build notification HTML with innerHTML.",
+      "tags": [
+        "test",
+        "view",
+        "security"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_reference.py:test_reference_css_has_no_unguarded_motion",
+      "type": "function",
+      "name": "test_reference_css_has_no_unguarded_motion",
+      "filePath": "tests/test_frontend_reference.py",
+      "lineRange": [
+        62,
+        70
+      ],
+      "summary": "Asserts new motion stays in the reduced-motion stylesheets and reference transitions are limited to paint-safe properties.",
+      "tags": [
+        "test",
+        "css",
+        "accessibility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_reference.py:test_notification_hooks_exist_in_markup",
+      "type": "function",
+      "name": "test_notification_hooks_exist_in_markup",
+      "filePath": "tests/test_frontend_reference.py",
+      "lineRange": [
+        73,
+        78
+      ],
+      "summary": "Asserts notification, search, recents, and composer hooks exist with accessible names in index.html.",
+      "tags": [
+        "test",
+        "accessibility",
+        "markup"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_reference.py:test_soft_control_outline_meets_3_to_1",
+      "type": "function",
+      "name": "test_soft_control_outline_meets_3_to_1",
+      "filePath": "tests/test_frontend_reference.py",
+      "lineRange": [
+        82,
+        85
+      ],
+      "summary": "Asserts --border-ui contrasts at least 3:1 with --surface in light and dark themes.",
+      "tags": [
+        "test",
+        "accessibility",
+        "contrast"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_reference.py:test_welcome_card_borders_are_documented_exemption_and_text_is_readable",
+      "type": "function",
+      "name": "test_welcome_card_borders_are_documented_exemption_and_text_is_readable",
+      "filePath": "tests/test_frontend_reference.py",
+      "lineRange": [
+        88,
+        102
+      ],
+      "summary": "Requires the welcome-card border exemption in the view contract and card text contrast of at least 4.5:1.",
+      "tags": [
+        "test",
+        "accessibility",
+        "contrast"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_reference.py:test_no_unverifiable_privacy_claim_in_capability_strip",
+      "type": "function",
+      "name": "test_no_unverifiable_privacy_claim_in_capability_strip",
+      "filePath": "tests/test_frontend_reference.py",
+      "lineRange": [
+        105,
+        109
+      ],
+      "summary": "Asserts the capability strip describes upload checks and does not claim unverifiable privacy.",
+      "tags": [
+        "test",
+        "content",
+        "validation"
+      ],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:tests/test_frontend_reference.py",
+      "target": "function:tests/test_frontend_reference.py:_read",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:tests/test_frontend_reference.py",
+      "target": "function:tests/test_frontend_reference.py:_read",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_reference.py",
+      "target": "function:tests/test_frontend_reference.py:_theme_tokens",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:tests/test_frontend_reference.py",
+      "target": "function:tests/test_frontend_reference.py:_theme_tokens",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_reference.py",
+      "target": "function:tests/test_frontend_reference.py:_lum",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:tests/test_frontend_reference.py",
+      "target": "function:tests/test_frontend_reference.py:_lum",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_reference.py",
+      "target": "function:tests/test_frontend_reference.py:_contrast",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:tests/test_frontend_reference.py",
+      "target": "function:tests/test_frontend_reference.py:_contrast",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_reference.py",
+      "target": "function:tests/test_frontend_reference.py:test_reference_assets_exist_and_are_linked",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:tests/test_frontend_reference.py",
+      "target": "function:tests/test_frontend_reference.py:test_reference_assets_exist_and_are_linked",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_reference.py",
+      "target": "function:tests/test_frontend_reference.py:test_reference_css_uses_tokens_only",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:tests/test_frontend_reference.py",
+      "target": "function:tests/test_frontend_reference.py:test_reference_css_uses_tokens_only",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_reference.py",
+      "target": "function:tests/test_frontend_reference.py:test_every_component_and_view_js_is_view_only",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:tests/test_frontend_reference.py",
+      "target": "function:tests/test_frontend_reference.py:test_every_component_and_view_js_is_view_only",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_reference.py",
+      "target": "function:tests/test_frontend_reference.py:test_reference_css_has_no_unguarded_motion",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:tests/test_frontend_reference.py",
+      "target": "function:tests/test_frontend_reference.py:test_reference_css_has_no_unguarded_motion",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_reference.py",
+      "target": "function:tests/test_frontend_reference.py:test_notification_hooks_exist_in_markup",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:tests/test_frontend_reference.py",
+      "target": "function:tests/test_frontend_reference.py:test_notification_hooks_exist_in_markup",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_reference.py",
+      "target": "function:tests/test_frontend_reference.py:test_soft_control_outline_meets_3_to_1",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:tests/test_frontend_reference.py",
+      "target": "function:tests/test_frontend_reference.py:test_soft_control_outline_meets_3_to_1",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_reference.py",
+      "target": "function:tests/test_frontend_reference.py:test_welcome_card_borders_are_documented_exemption_and_text_is_readable",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:tests/test_frontend_reference.py",
+      "target": "function:tests/test_frontend_reference.py:test_welcome_card_borders_are_documented_exemption_and_text_is_readable",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_reference.py",
+      "target": "function:tests/test_frontend_reference.py:test_no_unverifiable_privacy_claim_in_capability_strip",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:tests/test_frontend_reference.py",
+      "target": "function:tests/test_frontend_reference.py:test_no_unverifiable_privacy_claim_in_capability_strip",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    }
+  ]
+}

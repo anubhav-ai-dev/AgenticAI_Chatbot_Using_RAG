@@ -1,0 +1,1331 @@
+{
+  "nodes": [
+    {
+      "id": "config:.devcontainer/devcontainer.json",
+      "type": "config",
+      "name": "devcontainer.json",
+      "filePath": ".devcontainer/devcontainer.json",
+      "summary": "Dev Container spec for a Python 3.11 image that installs project requirements and Streamlit, forwards FastAPI on port 8000 and Streamlit on 8501, and starts the Streamlit UI with frontend/app.py when the container attaches.",
+      "tags": ["configuration", "infrastructure", "development", "devcontainer"],
+      "complexity": "simple",
+      "languageNotes": "JSON with comments (JSONC). postAttachCommand launches Streamlit; forwardPorts exposes the FastAPI and Streamlit ports."
+    },
+    {
+      "id": "config:.ua/config.json",
+      "type": "config",
+      "name": "config.json",
+      "filePath": ".ua/config.json",
+      "summary": "Understand Anything output-language configuration. It sets outputLanguage to en so generated graph text is written in English.",
+      "tags": ["configuration", "understand-anything", "localization"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:Pipfile",
+      "type": "file",
+      "name": "Pipfile",
+      "filePath": "Pipfile",
+      "summary": "Pipenv dependency manifest that pins Python 3.13 and leaves both the packages and dev-packages sections empty, so it does not currently declare installable project dependencies.",
+      "tags": ["dependency-manifest", "python", "configuration"],
+      "complexity": "simple",
+      "languageNotes": "Pipenv TOML-like syntax. The PyPI source is the only populated section."
+    },
+    {
+      "id": "file:backend/__init__.py",
+      "type": "file",
+      "name": "__init__.py",
+      "filePath": "backend/__init__.py",
+      "summary": "Empty package marker that makes backend importable as a Python package. It does not re-export the FastAPI app or other submodules.",
+      "tags": ["package-marker", "python", "backend"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/models.py",
+      "type": "file",
+      "name": "models.py",
+      "filePath": "backend/models.py",
+      "summary": "Legacy Pydantic models for an earlier chat API: chat requests and responses, history and clear-history payloads, a user-documents request, and a health payload. It is a sibling of the backend.models package and is not re-exported by backend/models/__init__.py.",
+      "tags": ["data-model", "pydantic", "legacy", "api-schema"],
+      "complexity": "simple",
+      "languageNotes": "Public Pydantic BaseModel classes. HealthResponse is also defined, with a different shape, in backend/models/api.py."
+    },
+    {
+      "id": "class:backend/models.py:ChatRequest",
+      "type": "class",
+      "name": "ChatRequest",
+      "filePath": "backend/models.py",
+      "lineRange": [9, 17],
+      "summary": "Request body for a chat turn: model name and provider, system prompt, messages, search flag, optional user and session ids, and a similarity threshold between 0 and 1.",
+      "tags": ["data-model", "pydantic", "request"],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/models.py:ChatResponse",
+      "type": "class",
+      "name": "ChatResponse",
+      "filePath": "backend/models.py",
+      "lineRange": [20, 23],
+      "summary": "Chat reply payload containing the assistant response text plus the session id and user id.",
+      "tags": ["data-model", "pydantic", "response"],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/models.py:ChatHistoryRequest",
+      "type": "class",
+      "name": "ChatHistoryRequest",
+      "filePath": "backend/models.py",
+      "lineRange": [26, 27],
+      "summary": "Request body that identifies a session whose chat history should be loaded.",
+      "tags": ["data-model", "pydantic", "request"],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/models.py:ClearHistoryRequest",
+      "type": "class",
+      "name": "ClearHistoryRequest",
+      "filePath": "backend/models.py",
+      "lineRange": [30, 31],
+      "summary": "Request body that identifies a session whose stored chat history should be cleared.",
+      "tags": ["data-model", "pydantic", "request"],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/models.py:UserDocumentsRequest",
+      "type": "class",
+      "name": "UserDocumentsRequest",
+      "filePath": "backend/models.py",
+      "lineRange": [34, 35],
+      "summary": "Request body that identifies a user whose indexed documents should be listed.",
+      "tags": ["data-model", "pydantic", "request"],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/models.py:HealthResponse",
+      "type": "class",
+      "name": "HealthResponse",
+      "filePath": "backend/models.py",
+      "lineRange": [38, 40],
+      "summary": "Legacy health payload with a status string and a message. A separate HealthResponse class lives in backend/models/api.py.",
+      "tags": ["data-model", "pydantic", "health"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/models/__init__.py",
+      "type": "file",
+      "name": "__init__.py",
+      "filePath": "backend/models/__init__.py",
+      "summary": "Empty package marker for backend.models. It does not re-export api.py, db.py, or the legacy backend/models.py module.",
+      "tags": ["package-marker", "python", "data-model"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/rag/__init__.py",
+      "type": "file",
+      "name": "__init__.py",
+      "filePath": "backend/rag/__init__.py",
+      "summary": "Empty package marker for the backend RAG package. Retrieval and embedding modules live beside it and are not re-exported here.",
+      "tags": ["package-marker", "python", "rag"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/services/__init__.py",
+      "type": "file",
+      "name": "__init__.py",
+      "filePath": "backend/services/__init__.py",
+      "summary": "Empty package marker for backend services such as document parsing, the vector store, and web search. It does not re-export those modules.",
+      "tags": ["package-marker", "python", "service"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:data/.gitkeep",
+      "type": "file",
+      "name": ".gitkeep",
+      "filePath": "data/.gitkeep",
+      "summary": "Empty placeholder that keeps the data directory under version control when no runtime documents or indexes are committed.",
+      "tags": ["placeholder", "data", "gitkeep"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:frontend/__init__.py",
+      "type": "file",
+      "name": "__init__.py",
+      "filePath": "frontend/__init__.py",
+      "summary": "Empty package marker for the frontend directory. The Streamlit entry point is frontend/app.py, which this file does not import.",
+      "tags": ["package-marker", "python", "frontend"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:frontend/app.py",
+      "type": "file",
+      "name": "app.py",
+      "filePath": "frontend/app.py",
+      "summary": "Streamlit UI for the RAG chatbot. It keeps session state, renders chat and document controls, and calls the FastAPI backend over HTTP at BACKEND_URL (default http://localhost:8000) for chat, history, PDF upload, and document listing.",
+      "tags": ["entry-point", "streamlit", "frontend", "api-client"],
+      "complexity": "complex",
+      "languageNotes": "Most of the page is module-level Streamlit script. Backend access goes through requests, and the connection error tells the operator to run uvicorn backend.main:app. It does not import backend.config."
+    },
+    {
+      "id": "function:frontend/app.py:_init_state",
+      "type": "function",
+      "name": "_init_state",
+      "filePath": "frontend/app.py",
+      "lineRange": [37, 48],
+      "summary": "Seeds Streamlit session state with a new session id, the default user, and empty chat, document, and response fields when those keys are missing.",
+      "tags": ["streamlit", "session-state", "initialization"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/app.py:_api",
+      "type": "function",
+      "name": "_api",
+      "filePath": "frontend/app.py",
+      "lineRange": [233, 246],
+      "summary": "Sends an HTTP request to the FastAPI backend and surfaces Streamlit errors when the server is unreachable or the call fails. Callers use it for /chat, /chat-history, /clear-history, /upload-pdf, and /user-documents.",
+      "tags": ["api-client", "http", "streamlit"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:frontend/index.html",
+      "type": "file",
+      "name": "index.html",
+      "filePath": "frontend/index.html",
+      "summary": "Static shell for the AI Assistant Pro single-page app. It lays out the chat, sidebar, upload, and citation UI, links the three local stylesheets, and loads the browser scripts ending with frontend/js/app.js.",
+      "tags": ["markup", "entry-point", "spa", "frontend"],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:frontend/js/api.js",
+      "type": "file",
+      "name": "api.js",
+      "filePath": "frontend/js/api.js",
+      "summary": "Browser REST client exposed as window.API. It calls the FastAPI backend for sessions, messages, document upload and listing, RAG retrieve, web search, and health, using window.CONFIG.BACKEND_URL when set.",
+      "tags": ["api-client", "spa", "http", "frontend"],
+      "complexity": "moderate",
+      "languageNotes": "IIFE assigned to window.API. Nested functions were not emitted by the structure extractor; significant ones are recorded from source."
+    },
+    {
+      "id": "function:frontend/js/api.js:request",
+      "type": "function",
+      "name": "request",
+      "filePath": "frontend/js/api.js",
+      "lineRange": [10, 45],
+      "summary": "Shared fetch wrapper that prefixes the backend base URL, sends JSON or FormData, and throws with the API error detail when the response is not ok.",
+      "tags": ["http", "api-client", "utility"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:frontend/js/api.js:retrieve",
+      "type": "function",
+      "name": "retrieve",
+      "filePath": "frontend/js/api.js",
+      "lineRange": [107, 117],
+      "summary": "POSTs a query, user id, top-k, and similarity threshold to the backend /retrieve endpoint and returns matching document chunks.",
+      "tags": ["rag", "api-client", "http"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:frontend/js/app.js",
+      "type": "file",
+      "name": "app.js",
+      "filePath": "frontend/js/app.js",
+      "summary": "SPA orchestrator that wires the chat UI, keeps session and mode state, and runs the send pipeline: persist the user message, retrieve RAG chunks, optionally search the web, then stream a Puter.js completion.",
+      "tags": ["entry-point", "spa", "event-handler", "orchestrator"],
+      "complexity": "complex",
+      "languageNotes": "Private IIFE. It talks to sibling modules through the window.API, window.Chat, window.UI, and window.PuterClient globals rather than ES module imports."
+    },
+    {
+      "id": "function:frontend/js/app.js:init",
+      "type": "function",
+      "name": "init",
+      "filePath": "frontend/js/app.js",
+      "lineRange": [23, 38],
+      "summary": "Bootstraps theme, model, and mode from local storage, binds DOM events, and loads the user's sessions and documents in parallel.",
+      "tags": ["initialization", "spa", "event-handler"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/app.js:_bindEvents",
+      "type": "function",
+      "name": "_bindEvents",
+      "filePath": "frontend/js/app.js",
+      "lineRange": [41, 141],
+      "summary": "Attaches listeners for send, mode and model changes, new chat, theme, sidebar, file and URL upload, search toggle, citation modal, session search, and starter prompts.",
+      "tags": ["event-handler", "spa", "ui"],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:frontend/js/app.js:_onSend",
+      "type": "function",
+      "name": "_onSend",
+      "filePath": "frontend/js/app.js",
+      "lineRange": [144, 296],
+      "summary": "Runs one chat turn: ensures a session, renders and saves the user message, retrieves document chunks and optional web results, streams the model reply, then saves the assistant message.",
+      "tags": ["orchestrator", "chat", "rag", "streaming"],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:frontend/js/app.js:_selectSession",
+      "type": "function",
+      "name": "_selectSession",
+      "filePath": "frontend/js/app.js",
+      "lineRange": [317, 332],
+      "summary": "Loads a saved session from the backend, restores its messages, mode, and model, and refreshes the session list highlight.",
+      "tags": ["session", "chat", "api-client"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/app.js:_deleteSession",
+      "type": "function",
+      "name": "_deleteSession",
+      "filePath": "frontend/js/app.js",
+      "lineRange": [334, 346],
+      "summary": "Deletes a chat session after confirmation, clears the transcript when it was active, and reloads the session list.",
+      "tags": ["session", "api-client", "event-handler"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/app.js:_handleFileUpload",
+      "type": "function",
+      "name": "_handleFileUpload",
+      "filePath": "frontend/js/app.js",
+      "lineRange": [357, 375],
+      "summary": "Validates a dropped or chosen document, uploads it through the backend, and refreshes the indexed document list.",
+      "tags": ["upload", "documents", "api-client"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/app.js:_onUrlSubmit",
+      "type": "function",
+      "name": "_onUrlSubmit",
+      "filePath": "frontend/js/app.js",
+      "lineRange": [377, 395],
+      "summary": "Validates a web URL from the ingest modal, asks the backend to index it, and refreshes the document list.",
+      "tags": ["upload", "documents", "api-client"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:frontend/js/chat.js",
+      "type": "file",
+      "name": "chat.js",
+      "filePath": "frontend/js/chat.js",
+      "summary": "Chat transcript renderer exposed as window.Chat. It builds user and assistant bubbles, streams tokens with thought steps and citation cards, and restores prior session history.",
+      "tags": ["component", "chat", "spa", "rendering"],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:frontend/js/chat.js:appendUserMessage",
+      "type": "function",
+      "name": "appendUserMessage",
+      "filePath": "frontend/js/chat.js",
+      "lineRange": [15, 35],
+      "summary": "Appends a user message bubble with an avatar initial and timestamp, then scrolls the chat area to the bottom.",
+      "tags": ["chat", "rendering", "ui"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/chat.js:startAssistantMessage",
+      "type": "function",
+      "name": "startAssistantMessage",
+      "filePath": "frontend/js/chat.js",
+      "lineRange": [41, 171],
+      "summary": "Inserts an assistant bubble and returns controllers to add thought steps, stream markdown tokens, finalize citations, and show errors.",
+      "tags": ["chat", "streaming", "rendering", "citations"],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:frontend/js/chat.js:showThinking",
+      "type": "function",
+      "name": "showThinking",
+      "filePath": "frontend/js/chat.js",
+      "lineRange": [185, 205],
+      "summary": "Shows a temporary skeleton placeholder in the chat area while a reply is being prepared.",
+      "tags": ["chat", "ui", "rendering"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/chat.js:renderHistory",
+      "type": "function",
+      "name": "renderHistory",
+      "filePath": "frontend/js/chat.js",
+      "lineRange": [213, 266],
+      "summary": "Clears the chat area and redraws a saved session, rendering user text and assistant markdown with citation cards and syntax highlighting.",
+      "tags": ["chat", "history", "rendering"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:frontend/js/config.example.js",
+      "type": "file",
+      "name": "config.example.js",
+      "filePath": "frontend/js/config.example.js",
+      "summary": "Sample window.CONFIG for the static SPA. BACKEND_URL is the Python API origin consumed by api.js; PUTER_TOKEN is a placeholder for Puter.js model access. The page loads /js/config.js, not this example.",
+      "tags": ["configuration", "spa", "example"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:frontend/js/puter_client.js",
+      "type": "file",
+      "name": "puter_client.js",
+      "filePath": "frontend/js/puter_client.js",
+      "summary": "window.PuterClient wrapper around puter.ai.chat. It streams or returns a full completion and builds mode-specific system prompts that inject RAG excerpts and web search results.",
+      "tags": ["api-client", "llm", "streaming", "spa"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:frontend/js/puter_client.js:streamChat",
+      "type": "function",
+      "name": "streamChat",
+      "filePath": "frontend/js/puter_client.js",
+      "lineRange": [28, 62],
+      "summary": "Streams a Puter.js chat completion, forwarding each text token to onToken and reporting completion or failure through callbacks.",
+      "tags": ["streaming", "llm", "api-client"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:frontend/js/puter_client.js:chat",
+      "type": "function",
+      "name": "chat",
+      "filePath": "frontend/js/puter_client.js",
+      "lineRange": [67, 90],
+      "summary": "Requests a non-streaming Puter.js completion and returns the full response text.",
+      "tags": ["llm", "api-client"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/puter_client.js:buildSystemPrompt",
+      "type": "function",
+      "name": "buildSystemPrompt",
+      "filePath": "frontend/js/puter_client.js",
+      "lineRange": [100, 138],
+      "summary": "Builds the system prompt for general, document, research, or code mode and appends numbered RAG chunks and web search snippets for citation.",
+      "tags": ["prompt", "rag", "llm"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:frontend/js/ui.js",
+      "type": "file",
+      "name": "ui.js",
+      "filePath": "frontend/js/ui.js",
+      "summary": "window.UI helpers for theme, sidebar, session and document lists, toasts, citation and URL modals, and the file drop overlay used by the static chat page.",
+      "tags": ["ui", "component", "spa", "frontend"],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:frontend/js/ui.js:setTheme",
+      "type": "function",
+      "name": "setTheme",
+      "filePath": "frontend/js/ui.js",
+      "lineRange": [15, 28],
+      "summary": "Applies the light or dark theme on the document element, stores it, and swaps the highlight.js stylesheet to match.",
+      "tags": ["theme", "ui"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/ui.js:renderSessionList",
+      "type": "function",
+      "name": "renderSessionList",
+      "filePath": "frontend/js/ui.js",
+      "lineRange": [65, 130],
+      "summary": "Renders chat sessions grouped by date and wires click handlers so the app can open or delete a session.",
+      "tags": ["session", "rendering", "ui"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:frontend/js/ui.js:renderDocList",
+      "type": "function",
+      "name": "renderDocList",
+      "filePath": "frontend/js/ui.js",
+      "lineRange": [134, 155],
+      "summary": "Renders the sidebar list of indexed documents with a type icon and a shortened filename.",
+      "tags": ["documents", "rendering", "ui"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/ui.js:showUploadToast",
+      "type": "function",
+      "name": "showUploadToast",
+      "filePath": "frontend/js/ui.js",
+      "lineRange": [159, 173],
+      "summary": "Shows the upload progress toast and restarts its progress-bar animation for the file or URL being indexed.",
+      "tags": ["upload", "ui", "toast"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/ui.js:showToast",
+      "type": "function",
+      "name": "showToast",
+      "filePath": "frontend/js/ui.js",
+      "lineRange": [180, 195],
+      "summary": "Shows a short-lived info, success, or error toast and removes it after a few seconds.",
+      "tags": ["ui", "toast"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/ui.js:showCitationModal",
+      "type": "function",
+      "name": "showCitationModal",
+      "filePath": "frontend/js/ui.js",
+      "lineRange": [199, 210],
+      "summary": "Opens the citation modal and fills it with the source label, optional page, and snippet for a retrieved chunk.",
+      "tags": ["citations", "ui", "modal"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/ui.js:initDropzone",
+      "type": "function",
+      "name": "initDropzone",
+      "filePath": "frontend/js/ui.js",
+      "lineRange": [235, 263],
+      "summary": "Listens for document drag-and-drop, toggles the drop overlay, and passes the first dropped file to the upload handler.",
+      "tags": ["upload", "event-handler", "ui"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:frontend/js/utils.js",
+      "type": "file",
+      "name": "utils.js",
+      "filePath": "frontend/js/utils.js",
+      "summary": "window.Utils helpers for markdown rendering with citation badges, syntax highlighting and copy buttons, HTML escaping, timestamps, date groups, and ids.",
+      "tags": ["utility", "markdown", "spa", "frontend"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:frontend/js/utils.js:renderMarkdown",
+      "type": "function",
+      "name": "renderMarkdown",
+      "filePath": "frontend/js/utils.js",
+      "lineRange": [16, 29],
+      "summary": "Parses markdown with marked and turns bracketed numbers such as [1] into clickable citation badges.",
+      "tags": ["markdown", "citations", "utility"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/utils.js:highlightCode",
+      "type": "function",
+      "name": "highlightCode",
+      "filePath": "frontend/js/utils.js",
+      "lineRange": [31, 68],
+      "summary": "Highlights code blocks with highlight.js and wraps each one with a language label and a copy button.",
+      "tags": ["syntax-highlighting", "utility", "ui"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:frontend/js/utils.js:copyText",
+      "type": "function",
+      "name": "copyText",
+      "filePath": "frontend/js/utils.js",
+      "lineRange": [70, 81],
+      "summary": "Copies text to the clipboard with the async Clipboard API, falling back to a temporary textarea and execCommand.",
+      "tags": ["utility", "clipboard"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/utils.js:formatDateGroup",
+      "type": "function",
+      "name": "formatDateGroup",
+      "filePath": "frontend/js/utils.js",
+      "lineRange": [97, 108],
+      "summary": "Buckets an ISO timestamp into Today, Yesterday, Previous 7 Days, Previous 30 Days, or Earlier for the session list.",
+      "tags": ["utility", "date", "formatting"],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:backend/models.py",
+      "target": "class:backend/models.py:ChatRequest",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/models.py",
+      "target": "class:backend/models.py:ChatResponse",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/models.py",
+      "target": "class:backend/models.py:ChatHistoryRequest",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/models.py",
+      "target": "class:backend/models.py:ClearHistoryRequest",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/models.py",
+      "target": "class:backend/models.py:UserDocumentsRequest",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/models.py",
+      "target": "class:backend/models.py:HealthResponse",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/models.py",
+      "target": "class:backend/models.py:ChatRequest",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/models.py",
+      "target": "class:backend/models.py:ChatResponse",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/models.py",
+      "target": "class:backend/models.py:ChatHistoryRequest",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/models.py",
+      "target": "class:backend/models.py:ClearHistoryRequest",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/models.py",
+      "target": "class:backend/models.py:UserDocumentsRequest",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/models.py",
+      "target": "class:backend/models.py:HealthResponse",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/models.py",
+      "target": "file:backend/models/api.py",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:frontend/app.py",
+      "target": "function:frontend/app.py:_init_state",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:frontend/app.py",
+      "target": "function:frontend/app.py:_api",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:frontend/app.py",
+      "target": "function:frontend/app.py:_init_state",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/app.py",
+      "target": "function:frontend/app.py:_api",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/app.py",
+      "target": "file:backend/main.py",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "function:frontend/app.py:_api",
+      "target": "file:backend/main.py",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:frontend/index.html",
+      "target": "file:frontend/js/utils.js",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:frontend/index.html",
+      "target": "file:frontend/js/api.js",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:frontend/index.html",
+      "target": "file:frontend/js/puter_client.js",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:frontend/index.html",
+      "target": "file:frontend/js/chat.js",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:frontend/index.html",
+      "target": "file:frontend/js/ui.js",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:frontend/index.html",
+      "target": "file:frontend/js/app.js",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:frontend/index.html",
+      "target": "file:frontend/css/main.css",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:frontend/index.html",
+      "target": "file:frontend/css/animations.css",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:frontend/index.html",
+      "target": "file:frontend/css/components.css",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:frontend/js/api.js",
+      "target": "function:frontend/js/api.js:request",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:frontend/js/api.js",
+      "target": "function:frontend/js/api.js:retrieve",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:frontend/js/api.js",
+      "target": "function:frontend/js/api.js:retrieve",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/api.js",
+      "target": "file:backend/main.py",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:frontend/js/api.js",
+      "target": "file:frontend/js/config.example.js",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "function:frontend/js/api.js:retrieve",
+      "target": "function:frontend/js/api.js:request",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/app.js",
+      "target": "function:frontend/js/app.js:init",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:frontend/js/app.js",
+      "target": "function:frontend/js/app.js:_bindEvents",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:frontend/js/app.js",
+      "target": "function:frontend/js/app.js:_onSend",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:frontend/js/app.js",
+      "target": "function:frontend/js/app.js:_selectSession",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:frontend/js/app.js",
+      "target": "function:frontend/js/app.js:_deleteSession",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:frontend/js/app.js",
+      "target": "function:frontend/js/app.js:_handleFileUpload",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:frontend/js/app.js",
+      "target": "function:frontend/js/app.js:_onUrlSubmit",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:frontend/js/app.js",
+      "target": "file:frontend/js/api.js",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:frontend/js/app.js",
+      "target": "file:frontend/js/chat.js",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:frontend/js/app.js",
+      "target": "file:frontend/js/ui.js",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:frontend/js/app.js",
+      "target": "file:frontend/js/puter_client.js",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "function:frontend/js/app.js:init",
+      "target": "function:frontend/js/app.js:_bindEvents",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:frontend/js/app.js:_bindEvents",
+      "target": "function:frontend/js/app.js:_onSend",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:frontend/js/app.js:_bindEvents",
+      "target": "function:frontend/js/app.js:_handleFileUpload",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:frontend/js/app.js:_bindEvents",
+      "target": "function:frontend/js/app.js:_onUrlSubmit",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:frontend/js/app.js:_bindEvents",
+      "target": "function:frontend/js/ui.js:showToast",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:frontend/js/app.js:_bindEvents",
+      "target": "function:frontend/js/ui.js:renderSessionList",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:frontend/js/app.js:_bindEvents",
+      "target": "function:frontend/js/ui.js:initDropzone",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:frontend/js/app.js:_onSend",
+      "target": "function:frontend/js/chat.js:appendUserMessage",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:frontend/js/app.js:_onSend",
+      "target": "function:frontend/js/chat.js:startAssistantMessage",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:frontend/js/app.js:_onSend",
+      "target": "function:frontend/js/api.js:retrieve",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:frontend/js/app.js:_onSend",
+      "target": "function:frontend/js/puter_client.js:buildSystemPrompt",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:frontend/js/app.js:_onSend",
+      "target": "function:frontend/js/puter_client.js:streamChat",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:frontend/js/app.js:_selectSession",
+      "target": "function:frontend/js/chat.js:renderHistory",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:frontend/js/app.js:_selectSession",
+      "target": "function:frontend/js/ui.js:renderSessionList",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:frontend/js/app.js:_selectSession",
+      "target": "function:frontend/js/ui.js:showToast",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:frontend/js/app.js:_deleteSession",
+      "target": "function:frontend/js/ui.js:showToast",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:frontend/js/app.js:_handleFileUpload",
+      "target": "function:frontend/js/ui.js:showUploadToast",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:frontend/js/app.js:_handleFileUpload",
+      "target": "function:frontend/js/ui.js:showToast",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:frontend/js/app.js:_onUrlSubmit",
+      "target": "function:frontend/js/ui.js:showUploadToast",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:frontend/js/app.js:_onUrlSubmit",
+      "target": "function:frontend/js/ui.js:showToast",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/chat.js",
+      "target": "function:frontend/js/chat.js:appendUserMessage",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:frontend/js/chat.js",
+      "target": "function:frontend/js/chat.js:startAssistantMessage",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:frontend/js/chat.js",
+      "target": "function:frontend/js/chat.js:showThinking",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:frontend/js/chat.js",
+      "target": "function:frontend/js/chat.js:renderHistory",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:frontend/js/chat.js",
+      "target": "function:frontend/js/chat.js:appendUserMessage",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/chat.js",
+      "target": "function:frontend/js/chat.js:startAssistantMessage",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/chat.js",
+      "target": "function:frontend/js/chat.js:showThinking",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/chat.js",
+      "target": "function:frontend/js/chat.js:renderHistory",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/chat.js",
+      "target": "file:frontend/js/utils.js",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:frontend/js/chat.js",
+      "target": "file:frontend/js/ui.js",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "function:frontend/js/chat.js:startAssistantMessage",
+      "target": "function:frontend/js/utils.js:renderMarkdown",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:frontend/js/chat.js:startAssistantMessage",
+      "target": "function:frontend/js/utils.js:highlightCode",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:frontend/js/chat.js:startAssistantMessage",
+      "target": "function:frontend/js/ui.js:showCitationModal",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:frontend/js/chat.js:renderHistory",
+      "target": "function:frontend/js/utils.js:renderMarkdown",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:frontend/js/chat.js:renderHistory",
+      "target": "function:frontend/js/utils.js:highlightCode",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/puter_client.js",
+      "target": "function:frontend/js/puter_client.js:streamChat",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:frontend/js/puter_client.js",
+      "target": "function:frontend/js/puter_client.js:chat",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:frontend/js/puter_client.js",
+      "target": "function:frontend/js/puter_client.js:buildSystemPrompt",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:frontend/js/puter_client.js",
+      "target": "function:frontend/js/puter_client.js:streamChat",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/puter_client.js",
+      "target": "function:frontend/js/puter_client.js:chat",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/puter_client.js",
+      "target": "function:frontend/js/puter_client.js:buildSystemPrompt",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "function:frontend/js/ui.js:setTheme",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "function:frontend/js/ui.js:renderSessionList",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "function:frontend/js/ui.js:renderDocList",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "function:frontend/js/ui.js:showUploadToast",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "function:frontend/js/ui.js:showToast",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "function:frontend/js/ui.js:showCitationModal",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "function:frontend/js/ui.js:initDropzone",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "function:frontend/js/ui.js:setTheme",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "function:frontend/js/ui.js:renderSessionList",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "function:frontend/js/ui.js:renderDocList",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "function:frontend/js/ui.js:showUploadToast",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "function:frontend/js/ui.js:showToast",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "function:frontend/js/ui.js:showCitationModal",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "function:frontend/js/ui.js:initDropzone",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "file:frontend/js/utils.js",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "function:frontend/js/ui.js:renderSessionList",
+      "target": "function:frontend/js/utils.js:formatDateGroup",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/utils.js",
+      "target": "function:frontend/js/utils.js:renderMarkdown",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:frontend/js/utils.js",
+      "target": "function:frontend/js/utils.js:highlightCode",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:frontend/js/utils.js",
+      "target": "function:frontend/js/utils.js:copyText",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:frontend/js/utils.js",
+      "target": "function:frontend/js/utils.js:formatDateGroup",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:frontend/js/utils.js",
+      "target": "function:frontend/js/utils.js:renderMarkdown",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/utils.js",
+      "target": "function:frontend/js/utils.js:highlightCode",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/utils.js",
+      "target": "function:frontend/js/utils.js:copyText",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/utils.js",
+      "target": "function:frontend/js/utils.js:formatDateGroup",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:frontend/js/utils.js:highlightCode",
+      "target": "function:frontend/js/utils.js:copyText",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "config:.devcontainer/devcontainer.json",
+      "target": "file:frontend/app.py",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:.devcontainer/devcontainer.json",
+      "target": "file:backend/main.py",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:.devcontainer/devcontainer.json",
+      "target": "document:README.md",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    }
+  ]
+}

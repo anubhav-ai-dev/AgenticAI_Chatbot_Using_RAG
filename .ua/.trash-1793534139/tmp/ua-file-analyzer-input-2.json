@@ -1,0 +1,19 @@
+{
+  "projectRoot": "F:\\Personal Projects\\AgenticAI_Chatbot_Using_RAG",
+  "batchFiles": [
+    {"path": "backend/database.py", "language": "python", "sizeLines": 36, "fileCategory": "code"},
+    {"path": "backend/main.py", "language": "python", "sizeLines": 362, "fileCategory": "code"},
+    {"path": "backend/models/api.py", "language": "python", "sizeLines": 146, "fileCategory": "code"},
+    {"path": "backend/models/db.py", "language": "python", "sizeLines": 58, "fileCategory": "code"},
+    {"path": "backend/services/parser.py", "language": "python", "sizeLines": 336, "fileCategory": "code"},
+    {"path": "backend/services/search.py", "language": "python", "sizeLines": 77, "fileCategory": "code"}
+  ],
+  "batchImportData": {
+    "backend/database.py": ["backend/config.py"],
+    "backend/main.py": ["backend/config.py", "backend/database.py", "backend/models/api.py", "backend/models/db.py", "backend/rag/retriever.py", "backend/services/parser.py", "backend/services/search.py"],
+    "backend/models/api.py": [],
+    "backend/models/db.py": ["backend/database.py"],
+    "backend/services/parser.py": [],
+    "backend/services/search.py": ["backend/config.py", "backend/models/api.py"]
+  }
+}

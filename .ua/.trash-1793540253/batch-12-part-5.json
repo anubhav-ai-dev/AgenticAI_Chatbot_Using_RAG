@@ -1,0 +1,96 @@
+{
+  "nodes": [
+    {
+      "id": "file:frontend/js/intro.js",
+      "type": "file",
+      "name": "intro.js",
+      "filePath": "frontend/js/intro.js",
+      "summary": "Introduction page that reveals the chatbot shell, toggles the mobile nav, and switches theme through the shared Theme store. It makes no network calls.",
+      "tags": [
+        "entry-point",
+        "view",
+        "theme",
+        "navigation"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:frontend/js/intro.js:showApp",
+      "type": "function",
+      "name": "showApp",
+      "filePath": "frontend/js/intro.js",
+      "lineRange": [
+        38,
+        47
+      ],
+      "summary": "Switches the page to the chatbot, clears the intro inert state, and can focus the composer.",
+      "tags": [
+        "view",
+        "navigation",
+        "entry-point"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/intro.js:boot",
+      "type": "function",
+      "name": "boot",
+      "filePath": "frontend/js/intro.js",
+      "lineRange": [
+        55,
+        100
+      ],
+      "summary": "Syncs the intro theme button, wires menu, start, Escape, and hash routing between the intro and the app.",
+      "tags": [
+        "initialization",
+        "event-handler",
+        "theme"
+      ],
+      "complexity": "moderate"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:frontend/js/intro.js",
+      "target": "function:frontend/js/intro.js:showApp",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/intro.js",
+      "target": "function:frontend/js/intro.js:boot",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/intro.js",
+      "target": "file:frontend/js/theme.js",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "function:frontend/js/intro.js:boot",
+      "target": "function:frontend/js/theme.js:onChange",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:frontend/js/intro.js:boot",
+      "target": "function:frontend/js/theme.js:set",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:frontend/js/intro.js:boot",
+      "target": "function:frontend/js/theme.js:resolved",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    }
+  ]
+}

@@ -1,0 +1,282 @@
+{
+  "nodes": [
+    {
+      "id": "file:frontend/css/ai-viz.css",
+      "type": "file",
+      "name": "ai-viz.css",
+      "filePath": "frontend/css/ai-viz.css",
+      "summary": "Styles the assistant avatar SVG and the welcome hero scene, switching idle, processing, responding, and error looks from data-state. Continuous motion is limited to transform and opacity, and it stops under reduced motion or while the tab is hidden.",
+      "tags": ["stylesheet", "animation", "svg", "component", "accessibility"],
+      "complexity": "complex",
+      "languageNotes": "State is encoded on svg[data-state]. Local keyframes cover the avatar and hero; the shared spin keyframe comes from animations.css, and colors and durations come from main.css tokens."
+    },
+    {
+      "id": "file:frontend/css/animations.css",
+      "type": "file",
+      "name": "animations.css",
+      "filePath": "frontend/css/animations.css",
+      "summary": "Defines the shared @keyframes, motion utility classes, skeleton and progress treatments, and the dashboard and intro motion pack. A reduced-motion block at the end turns continuous animation off for the rest of the UI.",
+      "tags": ["stylesheet", "animation", "keyframes", "accessibility", "utility"],
+      "complexity": "complex",
+      "languageNotes": "Only transform and opacity animate continuously. Entrance animations use backwards fill so a resting transform does not block hover lifts, and prefers-reduced-motion clears those animations."
+    },
+    {
+      "id": "file:frontend/css/components.css",
+      "type": "file",
+      "name": "components.css",
+      "filePath": "frontend/css/components.css",
+      "summary": "Styles the chat UI component set—buttons, inputs, session list, messages, citations, code blocks, composer, dialogs, menus, welcome screen, and sidebar controls—using design tokens from main.css.",
+      "tags": ["stylesheet", "component", "chat", "ui", "design-system"],
+      "complexity": "complex",
+      "languageNotes": "Component rules consume custom properties only. Hover styles are gated with @media (hover: hover), and several entrances call keyframes defined in animations.css."
+    },
+    {
+      "id": "file:frontend/css/intro.css",
+      "type": "file",
+      "name": "intro.css",
+      "filePath": "frontend/css/intro.css",
+      "summary": "Styles the AI Assistant Pro introduction page, scoped to .intro and html[data-view], including the sticky header, hero copy, product preview, and feature grid, with tablet and mobile breakpoints.",
+      "tags": ["stylesheet", "landing-page", "layout", "responsive", "marketing"],
+      "complexity": "complex",
+      "languageNotes": "html[data-view] swaps the intro overlay and the app shell. Layout uses a two-column grid that stacks on smaller viewports; colors and type come from main.css tokens."
+    },
+    {
+      "id": "file:frontend/css/main.css",
+      "type": "file",
+      "name": "main.css",
+      "filePath": "frontend/css/main.css",
+      "summary": "Design-token source of truth for spacing, type, motion, z-index, and light and dark color schemes, plus reset, layout grid, typography, scrollbar, focus ring, and skip-link primitives.",
+      "tags": ["stylesheet", "design-tokens", "theme", "layout", "accessibility"],
+      "complexity": "complex",
+      "languageNotes": "Theme-independent scales live on :root; light and dark palettes switch with [data-theme]. Other stylesheets are expected to use these custom properties instead of raw colors."
+    },
+    {
+      "id": "file:frontend/css/reference.css",
+      "type": "file",
+      "name": "reference.css",
+      "filePath": "frontend/css/reference.css",
+      "summary": "Restyles the shell, welcome hero, feature cards, capability strip, and composer to the AI Assistant Pro dashboard, and adds the brand header, workspace tabs, theme switch, documents card, and ambient aurora.",
+      "tags": ["stylesheet", "dashboard", "theme", "layout", "responsive"],
+      "complexity": "complex",
+      "languageNotes": "Loaded after components.css. Desktop and tablet widths use container queries on .main; the mobile header uses a max-width viewport query. Keyframes stay in animations.css and ai-viz.css."
+    },
+    {
+      "id": "file:frontend/css/syntax.css",
+      "type": "file",
+      "name": "syntax.css",
+      "filePath": "frontend/css/syntax.css",
+      "summary": "Maps highlight.js token classes to --syn-* color tokens so light and dark themes share one syntax stylesheet, with no CDN theme swap and no flash when data-theme changes.",
+      "tags": ["stylesheet", "syntax-highlighting", "theme", "code"],
+      "complexity": "simple",
+      "languageNotes": "A single .hljs rule set reads syntax colors from main.css custom properties, replacing a theme stylesheet that would otherwise be swapped at runtime."
+    },
+    {
+      "id": "file:frontend/css/workspace.css",
+      "type": "file",
+      "name": "workspace.css",
+      "filePath": "frontend/css/workspace.css",
+      "summary": "Styles the Documents, Research, and Code workspace panels, the My Documents side panel, the Settings dialog, and the text-size and density preferences. Panels are shown from html[data-workspace].",
+      "tags": ["stylesheet", "workspace", "settings", "documents", "dialog"],
+      "complexity": "complex",
+      "languageNotes": "Loaded after reference.css. It defines no @keyframes; entrances call animations.css, and transitions stay on transform, opacity, and color so the global reduced-motion rule still applies."
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:frontend/css/ai-viz.css",
+      "target": "file:frontend/index.html",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:frontend/css/animations.css",
+      "target": "file:frontend/index.html",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:frontend/css/components.css",
+      "target": "file:frontend/index.html",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:frontend/css/intro.css",
+      "target": "file:frontend/index.html",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:frontend/css/main.css",
+      "target": "file:frontend/index.html",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:frontend/css/reference.css",
+      "target": "file:frontend/index.html",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:frontend/css/syntax.css",
+      "target": "file:frontend/index.html",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:frontend/css/workspace.css",
+      "target": "file:frontend/index.html",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:frontend/css/ai-viz.css",
+      "target": "file:frontend/css/main.css",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:frontend/css/ai-viz.css",
+      "target": "file:frontend/css/animations.css",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:frontend/css/animations.css",
+      "target": "file:frontend/css/main.css",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:frontend/css/animations.css",
+      "target": "file:frontend/css/intro.css",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:frontend/css/animations.css",
+      "target": "file:frontend/css/reference.css",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:frontend/css/components.css",
+      "target": "file:frontend/css/main.css",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:frontend/css/components.css",
+      "target": "file:frontend/css/animations.css",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:frontend/css/intro.css",
+      "target": "file:frontend/css/main.css",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:frontend/css/main.css",
+      "target": "file:frontend/css/animations.css",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:frontend/css/main.css",
+      "target": "file:frontend/css/components.css",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:frontend/css/reference.css",
+      "target": "file:frontend/css/main.css",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:frontend/css/reference.css",
+      "target": "file:frontend/css/animations.css",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:frontend/css/reference.css",
+      "target": "file:frontend/css/components.css",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:frontend/css/reference.css",
+      "target": "file:frontend/css/ai-viz.css",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:frontend/css/syntax.css",
+      "target": "file:frontend/css/main.css",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:frontend/css/syntax.css",
+      "target": "file:frontend/css/components.css",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:frontend/css/workspace.css",
+      "target": "file:frontend/css/main.css",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:frontend/css/workspace.css",
+      "target": "file:frontend/css/animations.css",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:frontend/css/workspace.css",
+      "target": "file:frontend/css/reference.css",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:frontend/css/workspace.css",
+      "target": "file:frontend/css/components.css",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    }
+  ]
+}

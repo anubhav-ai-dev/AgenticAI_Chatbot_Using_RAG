@@ -1,0 +1,260 @@
+{
+  "scriptCompleted": true,
+  "contentDigest": "8f1f9be5d13651d7a33be8a9f5b31e7d9266a9f352001ab179a5042699d70270",
+  "files": [
+    {
+      "path": ".devcontainer/devcontainer.json",
+      "language": "json",
+      "sizeLines": 38,
+      "fileCategory": "config"
+    },
+    {
+      "path": ".env.example",
+      "language": "config",
+      "sizeLines": 22,
+      "fileCategory": "config"
+    },
+    {
+      "path": ".ua/config.json",
+      "language": "json",
+      "sizeLines": 3,
+      "fileCategory": "config"
+    },
+    {
+      "path": "Pipfile",
+      "language": "unknown",
+      "sizeLines": 11,
+      "fileCategory": "code"
+    },
+    {
+      "path": "Procfile",
+      "language": "procfile",
+      "sizeLines": 1,
+      "fileCategory": "infra"
+    },
+    {
+      "path": "README.md",
+      "language": "markdown",
+      "sizeLines": 194,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "backend/__init__.py",
+      "language": "python",
+      "sizeLines": 0,
+      "fileCategory": "code"
+    },
+    {
+      "path": "backend/agent.py",
+      "language": "python",
+      "sizeLines": 470,
+      "fileCategory": "code"
+    },
+    {
+      "path": "backend/client.py",
+      "language": "python",
+      "sizeLines": 84,
+      "fileCategory": "code"
+    },
+    {
+      "path": "backend/config.py",
+      "language": "python",
+      "sizeLines": 93,
+      "fileCategory": "code"
+    },
+    {
+      "path": "backend/database.py",
+      "language": "python",
+      "sizeLines": 36,
+      "fileCategory": "code"
+    },
+    {
+      "path": "backend/main.py",
+      "language": "python",
+      "sizeLines": 362,
+      "fileCategory": "code"
+    },
+    {
+      "path": "backend/models.py",
+      "language": "python",
+      "sizeLines": 40,
+      "fileCategory": "code"
+    },
+    {
+      "path": "backend/models/__init__.py",
+      "language": "python",
+      "sizeLines": 0,
+      "fileCategory": "code"
+    },
+    {
+      "path": "backend/models/api.py",
+      "language": "python",
+      "sizeLines": 146,
+      "fileCategory": "code"
+    },
+    {
+      "path": "backend/models/db.py",
+      "language": "python",
+      "sizeLines": 58,
+      "fileCategory": "code"
+    },
+    {
+      "path": "backend/rag/__init__.py",
+      "language": "python",
+      "sizeLines": 0,
+      "fileCategory": "code"
+    },
+    {
+      "path": "backend/rag/embeddings.py",
+      "language": "python",
+      "sizeLines": 74,
+      "fileCategory": "code"
+    },
+    {
+      "path": "backend/rag/retriever.py",
+      "language": "python",
+      "sizeLines": 101,
+      "fileCategory": "code"
+    },
+    {
+      "path": "backend/services/__init__.py",
+      "language": "python",
+      "sizeLines": 0,
+      "fileCategory": "code"
+    },
+    {
+      "path": "backend/services/parser.py",
+      "language": "python",
+      "sizeLines": 336,
+      "fileCategory": "code"
+    },
+    {
+      "path": "backend/services/search.py",
+      "language": "python",
+      "sizeLines": 77,
+      "fileCategory": "code"
+    },
+    {
+      "path": "backend/services/vector_store.py",
+      "language": "python",
+      "sizeLines": 90,
+      "fileCategory": "code"
+    },
+    {
+      "path": "data/.gitkeep",
+      "language": "unknown",
+      "sizeLines": 0,
+      "fileCategory": "code"
+    },
+    {
+      "path": "frontend/__init__.py",
+      "language": "python",
+      "sizeLines": 0,
+      "fileCategory": "code"
+    },
+    {
+      "path": "frontend/app.py",
+      "language": "python",
+      "sizeLines": 469,
+      "fileCategory": "code"
+    },
+    {
+      "path": "frontend/css/animations.css",
+      "language": "css",
+      "sizeLines": 177,
+      "fileCategory": "markup"
+    },
+    {
+      "path": "frontend/css/components.css",
+      "language": "css",
+      "sizeLines": 793,
+      "fileCategory": "markup"
+    },
+    {
+      "path": "frontend/css/main.css",
+      "language": "css",
+      "sizeLines": 282,
+      "fileCategory": "markup"
+    },
+    {
+      "path": "frontend/index.html",
+      "language": "html",
+      "sizeLines": 293,
+      "fileCategory": "markup"
+    },
+    {
+      "path": "frontend/js/api.js",
+      "language": "javascript",
+      "sizeLines": 148,
+      "fileCategory": "code"
+    },
+    {
+      "path": "frontend/js/app.js",
+      "language": "javascript",
+      "sizeLines": 426,
+      "fileCategory": "code"
+    },
+    {
+      "path": "frontend/js/chat.js",
+      "language": "javascript",
+      "sizeLines": 302,
+      "fileCategory": "code"
+    },
+    {
+      "path": "frontend/js/config.example.js",
+      "language": "javascript",
+      "sizeLines": 11,
+      "fileCategory": "code"
+    },
+    {
+      "path": "frontend/js/puter_client.js",
+      "language": "javascript",
+      "sizeLines": 141,
+      "fileCategory": "code"
+    },
+    {
+      "path": "frontend/js/ui.js",
+      "language": "javascript",
+      "sizeLines": 302,
+      "fileCategory": "code"
+    },
+    {
+      "path": "frontend/js/utils.js",
+      "language": "javascript",
+      "sizeLines": 126,
+      "fileCategory": "code"
+    },
+    {
+      "path": "requirements.txt",
+      "language": "txt",
+      "sizeLines": 27,
+      "fileCategory": "docs"
+    }
+  ],
+  "totalFiles": 38,
+  "filteredByIgnore": 0,
+  "estimatedComplexity": "moderate",
+  "failures": [],
+  "stats": {
+    "filesScanned": 38,
+    "byCategory": {
+      "config": 3,
+      "code": 28,
+      "infra": 1,
+      "docs": 2,
+      "markup": 4
+    },
+    "byLanguage": {
+      "json": 2,
+      "config": 1,
+      "unknown": 2,
+      "procfile": 1,
+      "markdown": 1,
+      "python": 19,
+      "css": 3,
+      "html": 1,
+      "javascript": 7,
+      "txt": 1
+    }
+  }
+}

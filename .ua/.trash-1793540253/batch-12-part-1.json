@@ -1,0 +1,120 @@
+{
+  "nodes": [
+    {
+      "id": "file:frontend/js/components/radiogroup.js",
+      "type": "file",
+      "name": "radiogroup.js",
+      "filePath": "frontend/js/components/radiogroup.js",
+      "summary": "ARIA radio-group helper that moves selection with clicks and arrow keys while keeping all state in DOM attributes.",
+      "tags": [
+        "component",
+        "accessibility",
+        "event-handler",
+        "view"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:frontend/js/components/radiogroup.js:set",
+      "type": "function",
+      "name": "set",
+      "filePath": "frontend/js/components/radiogroup.js",
+      "lineRange": [
+        16,
+        23
+      ],
+      "summary": "Reflects a radio value on aria-checked and tabindex without notifying the change handler.",
+      "tags": [
+        "accessibility",
+        "view",
+        "dom"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/components/radiogroup.js:get",
+      "type": "function",
+      "name": "get",
+      "filePath": "frontend/js/components/radiogroup.js",
+      "lineRange": [
+        25,
+        28
+      ],
+      "summary": "Returns the data-value of the radio that is currently aria-checked, or null.",
+      "tags": [
+        "accessibility",
+        "view",
+        "dom"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/components/radiogroup.js:wire",
+      "type": "function",
+      "name": "wire",
+      "filePath": "frontend/js/components/radiogroup.js",
+      "lineRange": [
+        30,
+        61
+      ],
+      "summary": "Binds click and arrow, Home, and End keys so the group selects a radio and reports user changes only.",
+      "tags": [
+        "accessibility",
+        "event-handler",
+        "keyboard"
+      ],
+      "complexity": "moderate"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:frontend/js/components/radiogroup.js",
+      "target": "function:frontend/js/components/radiogroup.js:set",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/components/radiogroup.js",
+      "target": "function:frontend/js/components/radiogroup.js:set",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/components/radiogroup.js",
+      "target": "function:frontend/js/components/radiogroup.js:get",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/components/radiogroup.js",
+      "target": "function:frontend/js/components/radiogroup.js:get",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/components/radiogroup.js",
+      "target": "function:frontend/js/components/radiogroup.js:wire",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/components/radiogroup.js",
+      "target": "function:frontend/js/components/radiogroup.js:wire",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/components/radiogroup.js",
+      "target": "file:tests/test_frontend_reference.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    }
+  ]
+}

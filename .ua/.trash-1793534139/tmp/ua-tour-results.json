@@ -1,0 +1,731 @@
+{
+  "scriptCompleted": true,
+  "entryPointCandidates": [
+    {
+      "id": "document:README.md",
+      "score": 5,
+      "name": "README.md",
+      "summary": "Getting-started guide for the RAG chatbot covering project layout, local setup, environment variables, FastAPI endpoints, and the LangGraph router-to-agent workflow."
+    },
+    {
+      "id": "file:backend/main.py",
+      "score": 5,
+      "name": "main.py",
+      "summary": "FastAPI application that exposes session, message, document, RAG retrieval, and web-search routes and serves the static single-page app. A lifespan hook creates database tables on startup, and CORS is configured from backend settings."
+    },
+    {
+      "id": "file:frontend/app.py",
+      "score": 4,
+      "name": "app.py",
+      "summary": "Streamlit UI for the RAG chatbot. It keeps session state, renders chat and document controls, and calls the FastAPI backend over HTTP at BACKEND_URL (default http://localhost:8000) for chat, history, PDF upload, and document listing."
+    },
+    {
+      "id": "file:frontend/js/app.js",
+      "score": 4,
+      "name": "app.js",
+      "summary": "SPA orchestrator that wires the chat UI, keeps session and mode state, and runs the send pipeline: persist the user message, retrieve RAG chunks, optionally search the web, then stream a Puter.js completion."
+    },
+    {
+      "id": "file:backend/__init__.py",
+      "score": 2,
+      "name": "__init__.py",
+      "summary": "Empty package marker that makes backend importable as a Python package. It does not re-export the FastAPI app or other submodules."
+    }
+  ],
+  "fanInRanking": [
+    {
+      "id": "file:backend/config.py",
+      "fanIn": 10,
+      "name": "config.py"
+    },
+    {
+      "id": "file:backend/main.py",
+      "fanIn": 8,
+      "name": "main.py"
+    },
+    {
+      "id": "file:backend/models/api.py",
+      "fanIn": 3,
+      "name": "api.py"
+    },
+    {
+      "id": "file:frontend/css/main.css",
+      "fanIn": 3,
+      "name": "main.css"
+    },
+    {
+      "id": "file:frontend/index.html",
+      "fanIn": 3,
+      "name": "index.html"
+    },
+    {
+      "id": "file:frontend/js/ui.js",
+      "fanIn": 3,
+      "name": "ui.js"
+    },
+    {
+      "id": "file:frontend/js/utils.js",
+      "fanIn": 3,
+      "name": "utils.js"
+    },
+    {
+      "id": "file:backend/database.py",
+      "fanIn": 2,
+      "name": "database.py"
+    },
+    {
+      "id": "file:backend/models/db.py",
+      "fanIn": 2,
+      "name": "db.py"
+    },
+    {
+      "id": "file:frontend/app.py",
+      "fanIn": 2,
+      "name": "app.py"
+    },
+    {
+      "id": "file:frontend/css/components.css",
+      "fanIn": 2,
+      "name": "components.css"
+    },
+    {
+      "id": "file:frontend/js/api.js",
+      "fanIn": 2,
+      "name": "api.js"
+    },
+    {
+      "id": "file:frontend/js/chat.js",
+      "fanIn": 2,
+      "name": "chat.js"
+    },
+    {
+      "id": "file:frontend/js/puter_client.js",
+      "fanIn": 2,
+      "name": "puter_client.js"
+    },
+    {
+      "id": "document:README.md",
+      "fanIn": 1,
+      "name": "README.md"
+    },
+    {
+      "id": "endpoint:backend/main.py:DELETE-/sessions/{session_id}",
+      "fanIn": 1,
+      "name": "DELETE /sessions/{session_id}"
+    },
+    {
+      "id": "endpoint:backend/main.py:GET-/",
+      "fanIn": 1,
+      "name": "GET /"
+    },
+    {
+      "id": "endpoint:backend/main.py:GET-/documents",
+      "fanIn": 1,
+      "name": "GET /documents"
+    },
+    {
+      "id": "endpoint:backend/main.py:GET-/health",
+      "fanIn": 1,
+      "name": "GET /health"
+    },
+    {
+      "id": "endpoint:backend/main.py:GET-/models",
+      "fanIn": 1,
+      "name": "GET /models"
+    }
+  ],
+  "fanOutRanking": [
+    {
+      "id": "file:backend/main.py",
+      "fanOut": 36,
+      "name": "main.py"
+    },
+    {
+      "id": "file:backend/models/api.py",
+      "fanOut": 16,
+      "name": "api.py"
+    },
+    {
+      "id": "file:backend/agent.py",
+      "fanOut": 14,
+      "name": "agent.py"
+    },
+    {
+      "id": "file:frontend/js/app.js",
+      "fanOut": 11,
+      "name": "app.js"
+    },
+    {
+      "id": "file:backend/services/parser.py",
+      "fanOut": 9,
+      "name": "parser.py"
+    },
+    {
+      "id": "file:frontend/index.html",
+      "fanOut": 9,
+      "name": "index.html"
+    },
+    {
+      "id": "file:frontend/js/ui.js",
+      "fanOut": 8,
+      "name": "ui.js"
+    },
+    {
+      "id": "file:backend/models.py",
+      "fanOut": 7,
+      "name": "models.py"
+    },
+    {
+      "id": "file:frontend/js/chat.js",
+      "fanOut": 6,
+      "name": "chat.js"
+    },
+    {
+      "id": "file:backend/database.py",
+      "fanOut": 5,
+      "name": "database.py"
+    },
+    {
+      "id": "file:backend/models/db.py",
+      "fanOut": 5,
+      "name": "db.py"
+    },
+    {
+      "id": "file:backend/rag/retriever.py",
+      "fanOut": 5,
+      "name": "retriever.py"
+    },
+    {
+      "id": "file:backend/services/search.py",
+      "fanOut": 5,
+      "name": "search.py"
+    },
+    {
+      "id": "document:README.md",
+      "fanOut": 4,
+      "name": "README.md"
+    },
+    {
+      "id": "file:frontend/js/api.js",
+      "fanOut": 4,
+      "name": "api.js"
+    },
+    {
+      "id": "file:frontend/js/utils.js",
+      "fanOut": 4,
+      "name": "utils.js"
+    },
+    {
+      "id": "config:.devcontainer/devcontainer.json",
+      "fanOut": 3,
+      "name": "devcontainer.json"
+    },
+    {
+      "id": "file:frontend/app.py",
+      "fanOut": 3,
+      "name": "app.py"
+    },
+    {
+      "id": "file:frontend/css/animations.css",
+      "fanOut": 3,
+      "name": "animations.css"
+    },
+    {
+      "id": "file:frontend/js/puter_client.js",
+      "fanOut": 3,
+      "name": "puter_client.js"
+    }
+  ],
+  "bfsTraversal": {
+    "startNode": "file:backend/main.py",
+    "order": [
+      "file:backend/main.py",
+      "file:backend/config.py",
+      "file:backend/database.py",
+      "file:backend/models/api.py",
+      "file:backend/models/db.py",
+      "file:backend/rag/retriever.py",
+      "file:backend/services/parser.py",
+      "file:backend/services/search.py",
+      "file:backend/rag/embeddings.py",
+      "file:backend/services/vector_store.py"
+    ],
+    "depthMap": {
+      "file:backend/main.py": 0,
+      "file:backend/config.py": 1,
+      "file:backend/database.py": 1,
+      "file:backend/models/api.py": 1,
+      "file:backend/models/db.py": 1,
+      "file:backend/rag/retriever.py": 1,
+      "file:backend/services/parser.py": 1,
+      "file:backend/services/search.py": 1,
+      "file:backend/rag/embeddings.py": 2,
+      "file:backend/services/vector_store.py": 2
+    },
+    "byDepth": {
+      "0": [
+        "file:backend/main.py"
+      ],
+      "1": [
+        "file:backend/config.py",
+        "file:backend/database.py",
+        "file:backend/models/api.py",
+        "file:backend/models/db.py",
+        "file:backend/rag/retriever.py",
+        "file:backend/services/parser.py",
+        "file:backend/services/search.py"
+      ],
+      "2": [
+        "file:backend/rag/embeddings.py",
+        "file:backend/services/vector_store.py"
+      ]
+    }
+  },
+  "nonCodeFiles": {
+    "documentation": [
+      {
+        "id": "document:README.md",
+        "name": "README.md",
+        "type": "document",
+        "summary": "Getting-started guide for the RAG chatbot covering project layout, local setup, environment variables, FastAPI endpoints, and the LangGraph router-to-agent workflow."
+      },
+      {
+        "id": "document:requirements.txt",
+        "name": "requirements.txt",
+        "type": "document",
+        "summary": "Python package list for the FastAPI server, LangChain and LangGraph providers, FAISS retrieval, PDF and document parsing, and SQLAlchemy persistence."
+      }
+    ],
+    "infrastructure": [
+      {
+        "id": "service:Procfile",
+        "name": "Procfile",
+        "type": "service",
+        "summary": "Render and Railway process declaration that starts the FastAPI app with uvicorn, binding to the platform-assigned port."
+      }
+    ],
+    "data": [
+      {
+        "id": "endpoint:backend/main.py:GET-/ping",
+        "name": "GET /ping",
+        "type": "endpoint",
+        "summary": "Keepalive route handled by ping for free-tier uptime monitors."
+      },
+      {
+        "id": "endpoint:backend/main.py:GET-/health",
+        "name": "GET /health",
+        "type": "endpoint",
+        "summary": "Health route handled by health_check. Returns HealthResponse with database, Cohere, and Tavily status."
+      },
+      {
+        "id": "endpoint:backend/main.py:GET-/models",
+        "name": "GET /models",
+        "type": "endpoint",
+        "summary": "Model catalog route handled by get_models. Returns the configured LLM list grouped by provider."
+      },
+      {
+        "id": "endpoint:backend/main.py:GET-/sessions",
+        "name": "GET /sessions",
+        "type": "endpoint",
+        "summary": "Session list route handled by list_sessions. Returns SessionSummary rows for a user_id query parameter."
+      },
+      {
+        "id": "endpoint:backend/main.py:POST-/sessions",
+        "name": "POST /sessions",
+        "type": "endpoint",
+        "summary": "Session creation route handled by create_session. Accepts SessionCreate and returns the new SessionSchema with HTTP 201."
+      },
+      {
+        "id": "endpoint:backend/main.py:GET-/sessions/{session_id}",
+        "name": "GET /sessions/{session_id}",
+        "type": "endpoint",
+        "summary": "Session detail route handled by get_session. Returns one session plus its full message history."
+      },
+      {
+        "id": "endpoint:backend/main.py:PATCH-/sessions/{session_id}",
+        "name": "PATCH /sessions/{session_id}",
+        "type": "endpoint",
+        "summary": "Session update route handled by update_session. Accepts SessionUpdate for title, model, and mode."
+      },
+      {
+        "id": "endpoint:backend/main.py:DELETE-/sessions/{session_id}",
+        "name": "DELETE /sessions/{session_id}",
+        "type": "endpoint",
+        "summary": "Session deletion route handled by delete_session. Responds with HTTP 204 after removing the session and its messages."
+      },
+      {
+        "id": "endpoint:backend/main.py:POST-/sessions/{session_id}/messages",
+        "name": "POST /sessions/{session_id}/messages",
+        "type": "endpoint",
+        "summary": "Message append route handled by save_message. Accepts MessageCreate and returns the stored MessageSchema with HTTP 201."
+      },
+      {
+        "id": "endpoint:backend/main.py:POST-/upload",
+        "name": "POST /upload",
+        "type": "endpoint",
+        "summary": "Document ingestion route handled by upload_document. Accepts a file upload or a URL and returns UploadResponse after indexing."
+      },
+      {
+        "id": "endpoint:backend/main.py:GET-/documents",
+        "name": "GET /documents",
+        "type": "endpoint",
+        "summary": "Indexed-document list route handled by list_documents. Returns DocumentSchema rows for a user."
+      },
+      {
+        "id": "endpoint:backend/main.py:POST-/retrieve",
+        "name": "POST /retrieve",
+        "type": "endpoint",
+        "summary": "Hybrid RAG route handled by retrieve_endpoint. Accepts RetrieveRequest and returns RetrieveResponse chunks from FAISS plus Cohere reranking."
+      },
+      {
+        "id": "endpoint:backend/main.py:POST-/search",
+        "name": "POST /search",
+        "type": "endpoint",
+        "summary": "Web search route handled by search_endpoint. Accepts SearchRequest and returns a Tavily SearchResponse."
+      },
+      {
+        "id": "endpoint:backend/main.py:GET-/",
+        "name": "GET /",
+        "type": "endpoint",
+        "summary": "SPA entry route handled by serve_spa. Returns the frontend index.html file."
+      }
+    ],
+    "config": [
+      {
+        "id": "config:.env.example",
+        "name": ".env.example",
+        "type": "config",
+        "summary": "Environment template listing Groq, Tavily, Cohere, and optional LLM API keys plus server host, CORS origins, and the SQLite database URL loaded at startup."
+      },
+      {
+        "id": "config:.devcontainer/devcontainer.json",
+        "name": "devcontainer.json",
+        "type": "config",
+        "summary": "Dev Container spec for a Python 3.11 image that installs project requirements and Streamlit, forwards FastAPI on port 8000 and Streamlit on 8501, and starts the Streamlit UI with frontend/app.py when the container attaches."
+      },
+      {
+        "id": "config:.ua/config.json",
+        "name": "config.json",
+        "type": "config",
+        "summary": "Understand Anything output-language configuration. It sets outputLanguage to en so generated graph text is written in English."
+      }
+    ]
+  },
+  "clusters": [],
+  "layers": {
+    "count": 8,
+    "list": [
+      {
+        "id": "layer:ui",
+        "name": "Frontend",
+        "description": "Static chat SPA and Streamlit client that render sessions, citations, and uploads and call the FastAPI backend for retrieval, search, and model replies."
+      },
+      {
+        "id": "layer:api",
+        "name": "API Layer",
+        "description": "FastAPI application that exposes session, document, RAG retrieval, web-search, and health routes, plus the Python HTTP client for those endpoints."
+      },
+      {
+        "id": "layer:types",
+        "name": "API Schemas",
+        "description": "Pydantic request and response models for sessions, messages, document upload, RAG retrieval, web search, and health checks, including the legacy chat schemas."
+      },
+      {
+        "id": "layer:service",
+        "name": "Service Layer",
+        "description": "LangGraph chat agent and the retrieval pipeline that parse documents, embed and rerank chunks with Cohere, persist per-user FAISS indexes, and query Tavily."
+      },
+      {
+        "id": "layer:data",
+        "name": "Data Layer",
+        "description": "SQLAlchemy engine, session dependency, and ORM models for chat sessions, messages, and indexed documents, plus the placeholder for on-disk runtime data."
+      },
+      {
+        "id": "layer:config",
+        "name": "Configuration",
+        "description": "Runtime settings for paths, model catalogs, RAG chunking, and API keys, with the environment template, Pipenv manifest, and graph language setting."
+      },
+      {
+        "id": "layer:infrastructure",
+        "name": "Infrastructure",
+        "description": "Uvicorn process declaration for Render or Railway and the Dev Container that installs dependencies and starts FastAPI and Streamlit."
+      },
+      {
+        "id": "layer:documentation",
+        "name": "Documentation",
+        "description": "Getting-started guide covering layout, setup, FastAPI endpoints, and the LangGraph router workflow, together with the Python package list."
+      }
+    ]
+  },
+  "nodeSummaryIndex": {
+    "file:backend/agent.py": {
+      "name": "agent.py",
+      "type": "file",
+      "summary": "Implements the LangGraph chat agent that routes each query to RAG or a direct LLM/search path, keeps in-memory session history, and indexes PDF text in per-user FAISS stores."
+    },
+    "file:backend/client.py": {
+      "name": "client.py",
+      "type": "file",
+      "summary": "Python HTTP client for the FastAPI backend, covering health checks, model listing, chat sessions, document upload, retrieval, and web search."
+    },
+    "file:backend/config.py": {
+      "name": "config.py",
+      "type": "file",
+      "summary": "Central runtime configuration that loads environment variables and defines paths, API keys, model catalogs, RAG chunking and retrieval settings, and agent modes."
+    },
+    "file:backend/rag/embeddings.py": {
+      "name": "embeddings.py",
+      "type": "file",
+      "summary": "Provides a shared embeddings adapter that prefers Cohere and falls back to Google Gemini embeddings when Cohere is unavailable or fails."
+    },
+    "file:backend/rag/retriever.py": {
+      "name": "retriever.py",
+      "type": "file",
+      "summary": "Chunks uploaded document pages into FAISS records and retrieves them with an initial vector search followed by Cohere reranking."
+    },
+    "file:backend/services/vector_store.py": {
+      "name": "vector_store.py",
+      "type": "file",
+      "summary": "Persists one FAISS index per user on disk and exposes load, document upsert, and unique source-filename listing."
+    },
+    "file:backend/database.py": {
+      "name": "database.py",
+      "type": "file",
+      "summary": "SQLAlchemy engine, session factory, and declarative Base for the chatbot backend. Provides the FastAPI session dependency and creates tables at startup, enabling SQLite multi-thread access when DATABASE_URL is a SQLite path."
+    },
+    "file:backend/main.py": {
+      "name": "main.py",
+      "type": "file",
+      "summary": "FastAPI application that exposes session, message, document, RAG retrieval, and web-search routes and serves the static single-page app. A lifespan hook creates database tables on startup, and CORS is configured from backend settings."
+    },
+    "endpoint:backend/main.py:GET-/ping": {
+      "name": "GET /ping",
+      "type": "endpoint",
+      "summary": "Keepalive route handled by ping for free-tier uptime monitors."
+    },
+    "endpoint:backend/main.py:GET-/health": {
+      "name": "GET /health",
+      "type": "endpoint",
+      "summary": "Health route handled by health_check. Returns HealthResponse with database, Cohere, and Tavily status."
+    },
+    "endpoint:backend/main.py:GET-/models": {
+      "name": "GET /models",
+      "type": "endpoint",
+      "summary": "Model catalog route handled by get_models. Returns the configured LLM list grouped by provider."
+    },
+    "endpoint:backend/main.py:GET-/sessions": {
+      "name": "GET /sessions",
+      "type": "endpoint",
+      "summary": "Session list route handled by list_sessions. Returns SessionSummary rows for a user_id query parameter."
+    },
+    "endpoint:backend/main.py:POST-/sessions": {
+      "name": "POST /sessions",
+      "type": "endpoint",
+      "summary": "Session creation route handled by create_session. Accepts SessionCreate and returns the new SessionSchema with HTTP 201."
+    },
+    "endpoint:backend/main.py:GET-/sessions/{session_id}": {
+      "name": "GET /sessions/{session_id}",
+      "type": "endpoint",
+      "summary": "Session detail route handled by get_session. Returns one session plus its full message history."
+    },
+    "endpoint:backend/main.py:PATCH-/sessions/{session_id}": {
+      "name": "PATCH /sessions/{session_id}",
+      "type": "endpoint",
+      "summary": "Session update route handled by update_session. Accepts SessionUpdate for title, model, and mode."
+    },
+    "endpoint:backend/main.py:DELETE-/sessions/{session_id}": {
+      "name": "DELETE /sessions/{session_id}",
+      "type": "endpoint",
+      "summary": "Session deletion route handled by delete_session. Responds with HTTP 204 after removing the session and its messages."
+    },
+    "endpoint:backend/main.py:POST-/sessions/{session_id}/messages": {
+      "name": "POST /sessions/{session_id}/messages",
+      "type": "endpoint",
+      "summary": "Message append route handled by save_message. Accepts MessageCreate and returns the stored MessageSchema with HTTP 201."
+    },
+    "endpoint:backend/main.py:POST-/upload": {
+      "name": "POST /upload",
+      "type": "endpoint",
+      "summary": "Document ingestion route handled by upload_document. Accepts a file upload or a URL and returns UploadResponse after indexing."
+    },
+    "endpoint:backend/main.py:GET-/documents": {
+      "name": "GET /documents",
+      "type": "endpoint",
+      "summary": "Indexed-document list route handled by list_documents. Returns DocumentSchema rows for a user."
+    },
+    "endpoint:backend/main.py:POST-/retrieve": {
+      "name": "POST /retrieve",
+      "type": "endpoint",
+      "summary": "Hybrid RAG route handled by retrieve_endpoint. Accepts RetrieveRequest and returns RetrieveResponse chunks from FAISS plus Cohere reranking."
+    },
+    "endpoint:backend/main.py:POST-/search": {
+      "name": "POST /search",
+      "type": "endpoint",
+      "summary": "Web search route handled by search_endpoint. Accepts SearchRequest and returns a Tavily SearchResponse."
+    },
+    "endpoint:backend/main.py:GET-/": {
+      "name": "GET /",
+      "type": "endpoint",
+      "summary": "SPA entry route handled by serve_spa. Returns the frontend index.html file."
+    },
+    "file:backend/models/api.py": {
+      "name": "api.py",
+      "type": "file",
+      "summary": "Pydantic request and response schemas for sessions, messages, document upload, RAG retrieval, web search, and health checks."
+    },
+    "file:backend/models/db.py": {
+      "name": "db.py",
+      "type": "file",
+      "summary": "SQLAlchemy ORM models for chat sessions, messages, and indexed documents, stored in the sessions, messages, and documents tables."
+    },
+    "file:backend/services/parser.py": {
+      "name": "parser.py",
+      "type": "file",
+      "summary": "Multi-format document parser that turns PDF, DOCX, CSV, Excel, plain text, and web URLs into page dictionaries for indexing."
+    },
+    "file:backend/services/search.py": {
+      "name": "search.py",
+      "type": "file",
+      "summary": "Tavily web search service that runs a single query, merges several queries with URL deduplication, and expands a question into a few focused sub-queries."
+    },
+    "config:.env.example": {
+      "name": ".env.example",
+      "type": "config",
+      "summary": "Environment template listing Groq, Tavily, Cohere, and optional LLM API keys plus server host, CORS origins, and the SQLite database URL loaded at startup."
+    },
+    "service:Procfile": {
+      "name": "Procfile",
+      "type": "service",
+      "summary": "Render and Railway process declaration that starts the FastAPI app with uvicorn, binding to the platform-assigned port."
+    },
+    "document:README.md": {
+      "name": "README.md",
+      "type": "document",
+      "summary": "Getting-started guide for the RAG chatbot covering project layout, local setup, environment variables, FastAPI endpoints, and the LangGraph router-to-agent workflow."
+    },
+    "document:requirements.txt": {
+      "name": "requirements.txt",
+      "type": "document",
+      "summary": "Python package list for the FastAPI server, LangChain and LangGraph providers, FAISS retrieval, PDF and document parsing, and SQLAlchemy persistence."
+    },
+    "file:frontend/css/animations.css": {
+      "name": "animations.css",
+      "type": "file",
+      "summary": "Motion stylesheet for the static chatbot SPA: keyframe animations and utility classes for fades, slides, skeletons, the streaming cursor, spinners, and progress fills. Honors prefers-reduced-motion and is linked from frontend/index.html, reusing color and radius tokens from main.css."
+    },
+    "file:frontend/css/components.css": {
+      "name": "components.css",
+      "type": "file",
+      "summary": "Component stylesheet for the chatbot UI, covering buttons, inputs, session items, messages, thought steps, citations, code blocks, the input dock, modals, the welcome screen, and upload controls. Loaded by frontend/index.html and styled with design tokens from main.css plus motion classes from animations.css."
+    },
+    "file:frontend/css/main.css": {
+      "name": "main.css",
+      "type": "file",
+      "summary": "Foundation stylesheet that defines the dark-by-default design tokens, light-theme overrides, app-shell layout (sidebar, top bar, chat area, input dock), typography, and the mobile breakpoint. Linked first from frontend/index.html so animations.css and components.css can reuse its custom properties."
+    },
+    "config:.devcontainer/devcontainer.json": {
+      "name": "devcontainer.json",
+      "type": "config",
+      "summary": "Dev Container spec for a Python 3.11 image that installs project requirements and Streamlit, forwards FastAPI on port 8000 and Streamlit on 8501, and starts the Streamlit UI with frontend/app.py when the container attaches."
+    },
+    "config:.ua/config.json": {
+      "name": "config.json",
+      "type": "config",
+      "summary": "Understand Anything output-language configuration. It sets outputLanguage to en so generated graph text is written in English."
+    },
+    "file:Pipfile": {
+      "name": "Pipfile",
+      "type": "file",
+      "summary": "Pipenv dependency manifest that pins Python 3.13 and leaves both the packages and dev-packages sections empty, so it does not currently declare installable project dependencies."
+    },
+    "file:backend/__init__.py": {
+      "name": "__init__.py",
+      "type": "file",
+      "summary": "Empty package marker that makes backend importable as a Python package. It does not re-export the FastAPI app or other submodules."
+    },
+    "file:backend/models.py": {
+      "name": "models.py",
+      "type": "file",
+      "summary": "Legacy Pydantic models for an earlier chat API: chat requests and responses, history and clear-history payloads, a user-documents request, and a health payload. It is a sibling of the backend.models package and is not re-exported by backend/models/__init__.py."
+    },
+    "file:backend/models/__init__.py": {
+      "name": "__init__.py",
+      "type": "file",
+      "summary": "Empty package marker for backend.models. It does not re-export api.py, db.py, or the legacy backend/models.py module."
+    },
+    "file:backend/rag/__init__.py": {
+      "name": "__init__.py",
+      "type": "file",
+      "summary": "Empty package marker for the backend RAG package. Retrieval and embedding modules live beside it and are not re-exported here."
+    },
+    "file:backend/services/__init__.py": {
+      "name": "__init__.py",
+      "type": "file",
+      "summary": "Empty package marker for backend services such as document parsing, the vector store, and web search. It does not re-export those modules."
+    },
+    "file:data/.gitkeep": {
+      "name": ".gitkeep",
+      "type": "file",
+      "summary": "Empty placeholder that keeps the data directory under version control when no runtime documents or indexes are committed."
+    },
+    "file:frontend/__init__.py": {
+      "name": "__init__.py",
+      "type": "file",
+      "summary": "Empty package marker for the frontend directory. The Streamlit entry point is frontend/app.py, which this file does not import."
+    },
+    "file:frontend/app.py": {
+      "name": "app.py",
+      "type": "file",
+      "summary": "Streamlit UI for the RAG chatbot. It keeps session state, renders chat and document controls, and calls the FastAPI backend over HTTP at BACKEND_URL (default http://localhost:8000) for chat, history, PDF upload, and document listing."
+    },
+    "file:frontend/index.html": {
+      "name": "index.html",
+      "type": "file",
+      "summary": "Static shell for the AI Assistant Pro single-page app. It lays out the chat, sidebar, upload, and citation UI, links the three local stylesheets, and loads the browser scripts ending with frontend/js/app.js."
+    },
+    "file:frontend/js/api.js": {
+      "name": "api.js",
+      "type": "file",
+      "summary": "Browser REST client exposed as window.API. It calls the FastAPI backend for sessions, messages, document upload and listing, RAG retrieve, web search, and health, using window.CONFIG.BACKEND_URL when set."
+    },
+    "file:frontend/js/app.js": {
+      "name": "app.js",
+      "type": "file",
+      "summary": "SPA orchestrator that wires the chat UI, keeps session and mode state, and runs the send pipeline: persist the user message, retrieve RAG chunks, optionally search the web, then stream a Puter.js completion."
+    },
+    "file:frontend/js/chat.js": {
+      "name": "chat.js",
+      "type": "file",
+      "summary": "Chat transcript renderer exposed as window.Chat. It builds user and assistant bubbles, streams tokens with thought steps and citation cards, and restores prior session history."
+    },
+    "file:frontend/js/config.example.js": {
+      "name": "config.example.js",
+      "type": "file",
+      "summary": "Sample window.CONFIG for the static SPA. BACKEND_URL is the Python API origin consumed by api.js; PUTER_TOKEN is a placeholder for Puter.js model access. The page loads /js/config.js, not this example."
+    },
+    "file:frontend/js/puter_client.js": {
+      "name": "puter_client.js",
+      "type": "file",
+      "summary": "window.PuterClient wrapper around puter.ai.chat. It streams or returns a full completion and builds mode-specific system prompts that inject RAG excerpts and web search results."
+    },
+    "file:frontend/js/ui.js": {
+      "name": "ui.js",
+      "type": "file",
+      "summary": "window.UI helpers for theme, sidebar, session and document lists, toasts, citation and URL modals, and the file drop overlay used by the static chat page."
+    },
+    "file:frontend/js/utils.js": {
+      "name": "utils.js",
+      "type": "file",
+      "summary": "window.Utils helpers for markdown rendering with citation badges, syntax highlighting and copy buttons, HTML escaping, timestamps, date groups, and ids."
+    }
+  },
+  "totalNodes": 52,
+  "totalEdges": 347,
+  "scoringNotes": {
+    "fanOutCutoff": 9,
+    "fanInCutoff": 0,
+    "topFanOutCount": 6,
+    "bottomFanInCount": 13,
+    "highFanOutConsidered": 6
+  }
+}

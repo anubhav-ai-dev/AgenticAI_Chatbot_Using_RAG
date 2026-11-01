@@ -1,0 +1,1498 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 6,
+  "filesSkipped": [],
+  "filesUnreadable": [],
+  "analysisOutcomes": {
+    "structure": {
+      "succeeded": 6,
+      "failed": 0
+    },
+    "callGraph": {
+      "succeeded": 6,
+      "failed": 0,
+      "skipped": 0
+    }
+  },
+  "results": [
+    {
+      "path": "backend/agent.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 470,
+      "nonEmptyLines": 382,
+      "functions": [
+        {
+          "name": "router_node",
+          "startLine": 238,
+          "endLine": 259,
+          "params": [
+            "state"
+          ]
+        },
+        {
+          "name": "rag_node",
+          "startLine": 262,
+          "endLine": 299,
+          "params": [
+            "state"
+          ]
+        },
+        {
+          "name": "_build_agent_node",
+          "startLine": 302,
+          "endLine": 327,
+          "params": [
+            "llm",
+            "tools",
+            "use_search"
+          ]
+        },
+        {
+          "name": "_build_graph",
+          "startLine": 330,
+          "endLine": 344,
+          "params": [
+            "llm",
+            "tools",
+            "use_search"
+          ]
+        },
+        {
+          "name": "get_response",
+          "startLine": 349,
+          "endLine": 411,
+          "params": [
+            "llm_id",
+            "query",
+            "allow_search",
+            "system_prompt",
+            "provider",
+            "user_id",
+            "session_id",
+            "similarity_threshold"
+          ]
+        },
+        {
+          "name": "process_pdf",
+          "startLine": 414,
+          "endLine": 420,
+          "params": [
+            "user_id",
+            "pdf_path",
+            "filename"
+          ]
+        },
+        {
+          "name": "_extract_pdf_pages",
+          "startLine": 423,
+          "endLine": 456,
+          "params": [
+            "pdf_path"
+          ]
+        },
+        {
+          "name": "get_chat_history",
+          "startLine": 461,
+          "endLine": 462,
+          "params": [
+            "session_id"
+          ]
+        },
+        {
+          "name": "clear_chat_history",
+          "startLine": 465,
+          "endLine": 466,
+          "params": [
+            "session_id"
+          ]
+        },
+        {
+          "name": "get_user_documents",
+          "startLine": 469,
+          "endLine": 470,
+          "params": [
+            "user_id"
+          ]
+        }
+      ],
+      "classes": [
+        {
+          "name": "AgentState",
+          "startLine": 51,
+          "endLine": 57,
+          "methods": [],
+          "properties": [
+            "messages",
+            "user_id",
+            "session_id",
+            "use_rag",
+            "similarity_threshold",
+            "retrieved_docs"
+          ]
+        },
+        {
+          "name": "MemoryManager",
+          "startLine": 62,
+          "endLine": 77,
+          "methods": [
+            "__init__",
+            "get_history",
+            "append",
+            "clear"
+          ],
+          "properties": []
+        },
+        {
+          "name": "RAGManager",
+          "startLine": 82,
+          "endLine": 227,
+          "methods": [
+            "__init__",
+            "process_pdf",
+            "similarity_score",
+            "retrieve",
+            "list_user_documents",
+            "has_documents"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "AgentState",
+          "line": 51,
+          "isDefault": false
+        },
+        {
+          "name": "MemoryManager",
+          "line": 62,
+          "isDefault": false
+        },
+        {
+          "name": "RAGManager",
+          "line": 82,
+          "isDefault": false
+        },
+        {
+          "name": "router_node",
+          "line": 238,
+          "isDefault": false
+        },
+        {
+          "name": "rag_node",
+          "line": 262,
+          "isDefault": false
+        },
+        {
+          "name": "_build_agent_node",
+          "line": 302,
+          "isDefault": false
+        },
+        {
+          "name": "_build_graph",
+          "line": 330,
+          "isDefault": false
+        },
+        {
+          "name": "get_response",
+          "line": 349,
+          "isDefault": false
+        },
+        {
+          "name": "process_pdf",
+          "line": 414,
+          "isDefault": false
+        },
+        {
+          "name": "_extract_pdf_pages",
+          "line": 423,
+          "isDefault": false
+        },
+        {
+          "name": "get_chat_history",
+          "line": 461,
+          "isDefault": false
+        },
+        {
+          "name": "clear_chat_history",
+          "line": 465,
+          "isDefault": false
+        },
+        {
+          "name": "get_user_documents",
+          "line": 469,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "get_history",
+          "callee": "self._sessions.get",
+          "lineNumber": 69
+        },
+        {
+          "caller": "append",
+          "callee": "self._sessions.setdefault(session_id, []).append",
+          "lineNumber": 72
+        },
+        {
+          "caller": "append",
+          "callee": "self._sessions.setdefault",
+          "lineNumber": 72
+        },
+        {
+          "caller": "append",
+          "callee": "datetime.now().isoformat",
+          "lineNumber": 73
+        },
+        {
+          "caller": "append",
+          "callee": "datetime.now",
+          "lineNumber": 73
+        },
+        {
+          "caller": "clear",
+          "callee": "self._sessions.pop",
+          "lineNumber": 77
+        },
+        {
+          "caller": "__init__",
+          "callee": "RecursiveCharacterTextSplitter",
+          "lineNumber": 91
+        },
+        {
+          "caller": "__init__",
+          "callee": "cohere.Client",
+          "lineNumber": 100
+        },
+        {
+          "caller": "__init__",
+          "callee": "CohereEmbeddings",
+          "lineNumber": 101
+        },
+        {
+          "caller": "__init__",
+          "callee": "print",
+          "lineNumber": 106
+        },
+        {
+          "caller": "__init__",
+          "callee": "print",
+          "lineNumber": 108
+        },
+        {
+          "caller": "__init__",
+          "callee": "print",
+          "lineNumber": 110
+        },
+        {
+          "caller": "process_pdf",
+          "callee": "print",
+          "lineNumber": 117
+        },
+        {
+          "caller": "process_pdf",
+          "callee": "page.get",
+          "lineNumber": 123
+        },
+        {
+          "caller": "process_pdf",
+          "callee": "len",
+          "lineNumber": 124
+        },
+        {
+          "caller": "process_pdf",
+          "callee": "text.strip",
+          "lineNumber": 124
+        },
+        {
+          "caller": "process_pdf",
+          "callee": "enumerate",
+          "lineNumber": 126
+        },
+        {
+          "caller": "process_pdf",
+          "callee": "self._text_splitter.split_text",
+          "lineNumber": 126
+        },
+        {
+          "caller": "process_pdf",
+          "callee": "len",
+          "lineNumber": 127
+        },
+        {
+          "caller": "process_pdf",
+          "callee": "chunk.strip",
+          "lineNumber": 127
+        },
+        {
+          "caller": "process_pdf",
+          "callee": "documents.append",
+          "lineNumber": 129
+        },
+        {
+          "caller": "process_pdf",
+          "callee": "Document",
+          "lineNumber": 130
+        },
+        {
+          "caller": "process_pdf",
+          "callee": "chunk.strip",
+          "lineNumber": 131
+        },
+        {
+          "caller": "process_pdf",
+          "callee": "datetime.now().isoformat",
+          "lineNumber": 137
+        },
+        {
+          "caller": "process_pdf",
+          "callee": "datetime.now",
+          "lineNumber": 137
+        },
+        {
+          "caller": "process_pdf",
+          "callee": "len",
+          "lineNumber": 138
+        },
+        {
+          "caller": "process_pdf",
+          "callee": "print",
+          "lineNumber": 144
+        },
+        {
+          "caller": "process_pdf",
+          "callee": "self._vector_stores[user_id].add_documents",
+          "lineNumber": 149
+        },
+        {
+          "caller": "process_pdf",
+          "callee": "FAISS.from_documents",
+          "lineNumber": 151
+        },
+        {
+          "caller": "process_pdf",
+          "callee": "print",
+          "lineNumber": 152
+        },
+        {
+          "caller": "process_pdf",
+          "callee": "len",
+          "lineNumber": 152
+        },
+        {
+          "caller": "process_pdf",
+          "callee": "print",
+          "lineNumber": 155
+        },
+        {
+          "caller": "process_pdf",
+          "callee": "traceback.print_exc",
+          "lineNumber": 156
+        },
+        {
+          "caller": "similarity_score",
+          "callee": "self._vector_stores[user_id].similarity_search_with_score",
+          "lineNumber": 164
+        },
+        {
+          "caller": "similarity_score",
+          "callee": "float",
+          "lineNumber": 167
+        },
+        {
+          "caller": "similarity_score",
+          "callee": "print",
+          "lineNumber": 169
+        },
+        {
+          "caller": "retrieve",
+          "callee": "min",
+          "lineNumber": 177
+        },
+        {
+          "caller": "retrieve",
+          "callee": "self._vector_stores[user_id].similarity_search_with_score",
+          "lineNumber": 179
+        },
+        {
+          "caller": "retrieve",
+          "callee": "print",
+          "lineNumber": 181
+        },
+        {
+          "caller": "retrieve",
+          "callee": "self._cohere_client.rerank",
+          "lineNumber": 192
+        },
+        {
+          "caller": "retrieve",
+          "callee": "reranked.append",
+          "lineNumber": 203
+        },
+        {
+          "caller": "retrieve",
+          "callee": "print",
+          "lineNumber": 204
+        },
+        {
+          "caller": "retrieve",
+          "callee": "len",
+          "lineNumber": 204
+        },
+        {
+          "caller": "retrieve",
+          "callee": "print",
+          "lineNumber": 207
+        },
+        {
+          "caller": "retrieve",
+          "callee": "float",
+          "lineNumber": 211
+        },
+        {
+          "caller": "list_user_documents",
+          "callee": "self._vector_stores[user_id].similarity_search",
+          "lineNumber": 220
+        },
+        {
+          "caller": "list_user_documents",
+          "callee": "list",
+          "lineNumber": 221
+        },
+        {
+          "caller": "list_user_documents",
+          "callee": "d.metadata.get",
+          "lineNumber": 221
+        },
+        {
+          "caller": "list_user_documents",
+          "callee": "print",
+          "lineNumber": 223
+        },
+        {
+          "caller": "router_node",
+          "callee": "state.get",
+          "lineNumber": 241
+        },
+        {
+          "caller": "router_node",
+          "callee": "state.get",
+          "lineNumber": 242
+        },
+        {
+          "caller": "router_node",
+          "callee": "print",
+          "lineNumber": 244
+        },
+        {
+          "caller": "router_node",
+          "callee": "rag_manager.has_documents",
+          "lineNumber": 246
+        },
+        {
+          "caller": "router_node",
+          "callee": "rag_manager.similarity_score",
+          "lineNumber": 247
+        },
+        {
+          "caller": "router_node",
+          "callee": "print",
+          "lineNumber": 248
+        },
+        {
+          "caller": "router_node",
+          "callee": "rag_manager.retrieve",
+          "lineNumber": 250
+        },
+        {
+          "caller": "router_node",
+          "callee": "print",
+          "lineNumber": 253
+        },
+        {
+          "caller": "router_node",
+          "callee": "len",
+          "lineNumber": 253
+        },
+        {
+          "caller": "router_node",
+          "callee": "print",
+          "lineNumber": 258
+        },
+        {
+          "caller": "rag_node",
+          "callee": "state.get",
+          "lineNumber": 264
+        },
+        {
+          "caller": "rag_node",
+          "callee": "enumerate",
+          "lineNumber": 269
+        },
+        {
+          "caller": "rag_node",
+          "callee": "doc.metadata.get",
+          "lineNumber": 270
+        },
+        {
+          "caller": "rag_node",
+          "callee": "doc.metadata.get",
+          "lineNumber": 271
+        },
+        {
+          "caller": "rag_node",
+          "callee": "doc.metadata.get",
+          "lineNumber": 272
+        },
+        {
+          "caller": "rag_node",
+          "callee": "context_parts.append",
+          "lineNumber": 273
+        },
+        {
+          "caller": "rag_node",
+          "callee": "(\"=\" * 80 + \"\\n\\n\").join",
+          "lineNumber": 278
+        },
+        {
+          "caller": "rag_node",
+          "callee": "HumanMessage",
+          "lineNumber": 297
+        },
+        {
+          "caller": "rag_node",
+          "callee": "print",
+          "lineNumber": 298
+        },
+        {
+          "caller": "rag_node",
+          "callee": "len",
+          "lineNumber": 298
+        },
+        {
+          "caller": "rag_node",
+          "callee": "len",
+          "lineNumber": 298
+        },
+        {
+          "caller": "agent_node",
+          "callee": "state.get",
+          "lineNumber": 308
+        },
+        {
+          "caller": "agent_node",
+          "callee": "print",
+          "lineNumber": 309
+        },
+        {
+          "caller": "agent_node",
+          "callee": "llm.invoke",
+          "lineNumber": 310
+        },
+        {
+          "caller": "agent_node",
+          "callee": "print",
+          "lineNumber": 315
+        },
+        {
+          "caller": "agent_node",
+          "callee": "create_react_agent",
+          "lineNumber": 317
+        },
+        {
+          "caller": "agent_node",
+          "callee": "react_agent.invoke",
+          "lineNumber": 318
+        },
+        {
+          "caller": "agent_node",
+          "callee": "print",
+          "lineNumber": 321
+        },
+        {
+          "caller": "agent_node",
+          "callee": "print",
+          "lineNumber": 323
+        },
+        {
+          "caller": "agent_node",
+          "callee": "llm.invoke",
+          "lineNumber": 324
+        },
+        {
+          "caller": "_build_graph",
+          "callee": "StateGraph",
+          "lineNumber": 332
+        },
+        {
+          "caller": "_build_graph",
+          "callee": "workflow.add_node",
+          "lineNumber": 333
+        },
+        {
+          "caller": "_build_graph",
+          "callee": "workflow.add_node",
+          "lineNumber": 334
+        },
+        {
+          "caller": "_build_graph",
+          "callee": "workflow.add_node",
+          "lineNumber": 335
+        },
+        {
+          "caller": "_build_graph",
+          "callee": "_build_agent_node",
+          "lineNumber": 335
+        },
+        {
+          "caller": "_build_graph",
+          "callee": "workflow.set_entry_point",
+          "lineNumber": 336
+        },
+        {
+          "caller": "_build_graph",
+          "callee": "workflow.add_conditional_edges",
+          "lineNumber": 337
+        },
+        {
+          "caller": "_build_graph",
+          "callee": "s.get",
+          "lineNumber": 339
+        },
+        {
+          "caller": "_build_graph",
+          "callee": "workflow.add_edge",
+          "lineNumber": 342
+        },
+        {
+          "caller": "_build_graph",
+          "callee": "workflow.add_edge",
+          "lineNumber": 343
+        },
+        {
+          "caller": "_build_graph",
+          "callee": "workflow.compile",
+          "lineNumber": 344
+        },
+        {
+          "caller": "get_response",
+          "callee": "ChatGroq",
+          "lineNumber": 363
+        },
+        {
+          "caller": "get_response",
+          "callee": "ChatOpenAI",
+          "lineNumber": 365
+        },
+        {
+          "caller": "get_response",
+          "callee": "ValueError",
+          "lineNumber": 367
+        },
+        {
+          "caller": "get_response",
+          "callee": "TavilySearch",
+          "lineNumber": 374
+        },
+        {
+          "caller": "get_response",
+          "callee": "print",
+          "lineNumber": 376
+        },
+        {
+          "caller": "get_response",
+          "callee": "memory_manager.get_history",
+          "lineNumber": 379
+        },
+        {
+          "caller": "get_response",
+          "callee": "SystemMessage",
+          "lineNumber": 380
+        },
+        {
+          "caller": "get_response",
+          "callee": "messages.append",
+          "lineNumber": 383
+        },
+        {
+          "caller": "get_response",
+          "callee": "HumanMessage",
+          "lineNumber": 383
+        },
+        {
+          "caller": "get_response",
+          "callee": "messages.append",
+          "lineNumber": 385
+        },
+        {
+          "caller": "get_response",
+          "callee": "AIMessage",
+          "lineNumber": 385
+        },
+        {
+          "caller": "get_response",
+          "callee": "messages.extend",
+          "lineNumber": 386
+        },
+        {
+          "caller": "get_response",
+          "callee": "HumanMessage",
+          "lineNumber": 386
+        },
+        {
+          "caller": "get_response",
+          "callee": "_build_graph",
+          "lineNumber": 389
+        },
+        {
+          "caller": "get_response",
+          "callee": "print",
+          "lineNumber": 399
+        },
+        {
+          "caller": "get_response",
+          "callee": "graph.invoke",
+          "lineNumber": 400
+        },
+        {
+          "caller": "get_response",
+          "callee": "result.get",
+          "lineNumber": 402
+        },
+        {
+          "caller": "get_response",
+          "callee": "isinstance",
+          "lineNumber": 402
+        },
+        {
+          "caller": "get_response",
+          "callee": "print",
+          "lineNumber": 404
+        },
+        {
+          "caller": "get_response",
+          "callee": "len",
+          "lineNumber": 404
+        },
+        {
+          "caller": "get_response",
+          "callee": "memory_manager.append",
+          "lineNumber": 408
+        },
+        {
+          "caller": "get_response",
+          "callee": "memory_manager.append",
+          "lineNumber": 409
+        },
+        {
+          "caller": "process_pdf",
+          "callee": "_extract_pdf_pages",
+          "lineNumber": 416
+        },
+        {
+          "caller": "process_pdf",
+          "callee": "print",
+          "lineNumber": 418
+        },
+        {
+          "caller": "process_pdf",
+          "callee": "rag_manager.process_pdf",
+          "lineNumber": 420
+        },
+        {
+          "caller": "_extract_pdf_pages",
+          "callee": "pdfplumber.open",
+          "lineNumber": 429
+        },
+        {
+          "caller": "_extract_pdf_pages",
+          "callee": "enumerate",
+          "lineNumber": 430
+        },
+        {
+          "caller": "_extract_pdf_pages",
+          "callee": "page.extract_text",
+          "lineNumber": 431
+        },
+        {
+          "caller": "_extract_pdf_pages",
+          "callee": "len",
+          "lineNumber": 432
+        },
+        {
+          "caller": "_extract_pdf_pages",
+          "callee": "text.strip",
+          "lineNumber": 432
+        },
+        {
+          "caller": "_extract_pdf_pages",
+          "callee": "pages.append",
+          "lineNumber": 433
+        },
+        {
+          "caller": "_extract_pdf_pages",
+          "callee": "text.strip",
+          "lineNumber": 433
+        },
+        {
+          "caller": "_extract_pdf_pages",
+          "callee": "print",
+          "lineNumber": 434
+        },
+        {
+          "caller": "_extract_pdf_pages",
+          "callee": "len",
+          "lineNumber": 434
+        },
+        {
+          "caller": "_extract_pdf_pages",
+          "callee": "print",
+          "lineNumber": 439
+        },
+        {
+          "caller": "_extract_pdf_pages",
+          "callee": "open",
+          "lineNumber": 445
+        },
+        {
+          "caller": "_extract_pdf_pages",
+          "callee": "PyPDF2.PdfReader",
+          "lineNumber": 446
+        },
+        {
+          "caller": "_extract_pdf_pages",
+          "callee": "enumerate",
+          "lineNumber": 447
+        },
+        {
+          "caller": "_extract_pdf_pages",
+          "callee": "page.extract_text",
+          "lineNumber": 448
+        },
+        {
+          "caller": "_extract_pdf_pages",
+          "callee": "len",
+          "lineNumber": 449
+        },
+        {
+          "caller": "_extract_pdf_pages",
+          "callee": "text.strip",
+          "lineNumber": 449
+        },
+        {
+          "caller": "_extract_pdf_pages",
+          "callee": "pages.append",
+          "lineNumber": 450
+        },
+        {
+          "caller": "_extract_pdf_pages",
+          "callee": "text.strip",
+          "lineNumber": 450
+        },
+        {
+          "caller": "_extract_pdf_pages",
+          "callee": "print",
+          "lineNumber": 451
+        },
+        {
+          "caller": "_extract_pdf_pages",
+          "callee": "len",
+          "lineNumber": 451
+        },
+        {
+          "caller": "_extract_pdf_pages",
+          "callee": "print",
+          "lineNumber": 454
+        },
+        {
+          "caller": "get_chat_history",
+          "callee": "memory_manager.get_history",
+          "lineNumber": 462
+        },
+        {
+          "caller": "clear_chat_history",
+          "callee": "memory_manager.clear",
+          "lineNumber": 466
+        },
+        {
+          "caller": "get_user_documents",
+          "callee": "rag_manager.list_user_documents",
+          "lineNumber": 470
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 13,
+        "functionCount": 10,
+        "classCount": 3
+      }
+    },
+    {
+      "path": "backend/client.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 84,
+      "nonEmptyLines": 62,
+      "classes": [
+        {
+          "name": "BackendClient",
+          "startLine": 14,
+          "endLine": 80,
+          "methods": [
+            "__init__",
+            "_get",
+            "_post",
+            "health",
+            "get_models",
+            "list_sessions",
+            "create_session",
+            "get_session",
+            "update_session",
+            "save_message",
+            "upload_file",
+            "upload_url",
+            "retrieve",
+            "search",
+            "list_documents"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "BackendClient",
+          "line": 14,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "__init__",
+          "callee": "os.getenv(\"BACKEND_URL\", \"http://localhost:8000\").rstrip",
+          "lineNumber": 18
+        },
+        {
+          "caller": "__init__",
+          "callee": "os.getenv",
+          "lineNumber": 18
+        },
+        {
+          "caller": "_get",
+          "callee": "requests.get",
+          "lineNumber": 21
+        },
+        {
+          "caller": "_post",
+          "callee": "requests.post",
+          "lineNumber": 24
+        },
+        {
+          "caller": "health",
+          "callee": "self._get(\"/health\").json",
+          "lineNumber": 27
+        },
+        {
+          "caller": "health",
+          "callee": "self._get",
+          "lineNumber": 27
+        },
+        {
+          "caller": "get_models",
+          "callee": "self._get(\"/models\").json",
+          "lineNumber": 30
+        },
+        {
+          "caller": "get_models",
+          "callee": "self._get",
+          "lineNumber": 30
+        },
+        {
+          "caller": "list_sessions",
+          "callee": "self._get(\"/sessions\", params={\"user_id\": user_id}).json",
+          "lineNumber": 33
+        },
+        {
+          "caller": "list_sessions",
+          "callee": "self._get",
+          "lineNumber": 33
+        },
+        {
+          "caller": "create_session",
+          "callee": "self._post(\r\n            \"/sessions\",\r\n            json={\"user_id\": user_id, \"title\": title, \"model\": model, \"mode\": mode},\r\n        ).json",
+          "lineNumber": 36
+        },
+        {
+          "caller": "create_session",
+          "callee": "self._post",
+          "lineNumber": 36
+        },
+        {
+          "caller": "get_session",
+          "callee": "self._get(f\"/sessions/{session_id}\").json",
+          "lineNumber": 42
+        },
+        {
+          "caller": "get_session",
+          "callee": "self._get",
+          "lineNumber": 42
+        },
+        {
+          "caller": "update_session",
+          "callee": "self._patch(f\"/sessions/{session_id}\", json=updates).json",
+          "lineNumber": 45
+        },
+        {
+          "caller": "update_session",
+          "callee": "self._patch",
+          "lineNumber": 45
+        },
+        {
+          "caller": "save_message",
+          "callee": "self._post(\r\n            f\"/sessions/{session_id}/messages\",\r\n            json={\"role\": role, \"content\": content, \"citations\": citations or []},\r\n        ).json",
+          "lineNumber": 48
+        },
+        {
+          "caller": "save_message",
+          "callee": "self._post",
+          "lineNumber": 48
+        },
+        {
+          "caller": "upload_file",
+          "callee": "open",
+          "lineNumber": 54
+        },
+        {
+          "caller": "upload_file",
+          "callee": "self._post(\r\n                \"/upload\",\r\n                files={\"file\": (filename or os.path.basename(file_path), fh, \"application/octet-stream\")},\r\n                data={\"user_id\": user_id},\r\n            ).json",
+          "lineNumber": 55
+        },
+        {
+          "caller": "upload_file",
+          "callee": "self._post",
+          "lineNumber": 55
+        },
+        {
+          "caller": "upload_file",
+          "callee": "os.path.basename",
+          "lineNumber": 57
+        },
+        {
+          "caller": "upload_url",
+          "callee": "self._post(\r\n            \"/upload\",\r\n            data={\"url\": url, \"user_id\": user_id},\r\n        ).json",
+          "lineNumber": 62
+        },
+        {
+          "caller": "upload_url",
+          "callee": "self._post",
+          "lineNumber": 62
+        },
+        {
+          "caller": "retrieve",
+          "callee": "self._post(\r\n            \"/retrieve\",\r\n            json={\"query\": query, \"user_id\": user_id, \"top_k\": top_k, \"threshold\": threshold},\r\n        ).json",
+          "lineNumber": 68
+        },
+        {
+          "caller": "retrieve",
+          "callee": "self._post",
+          "lineNumber": 68
+        },
+        {
+          "caller": "search",
+          "callee": "self._post(\r\n            \"/search\",\r\n            json={\"query\": query, \"max_results\": max_results},\r\n        ).json",
+          "lineNumber": 74
+        },
+        {
+          "caller": "search",
+          "callee": "self._post",
+          "lineNumber": 74
+        },
+        {
+          "caller": "list_documents",
+          "callee": "self._get(\"/documents\", params={\"user_id\": user_id}).json",
+          "lineNumber": 80
+        },
+        {
+          "caller": "list_documents",
+          "callee": "self._get",
+          "lineNumber": 80
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "backend/config.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 93,
+      "nonEmptyLines": 75,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "backend/rag/embeddings.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 74,
+      "nonEmptyLines": 57,
+      "classes": [
+        {
+          "name": "HybridEmbeddings",
+          "startLine": 19,
+          "endLine": 70,
+          "methods": [
+            "__init__",
+            "embed_documents",
+            "embed_query"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "HybridEmbeddings",
+          "line": 19,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "__init__",
+          "callee": "CohereEmbeddings",
+          "lineNumber": 31
+        },
+        {
+          "caller": "__init__",
+          "callee": "print",
+          "lineNumber": 36
+        },
+        {
+          "caller": "__init__",
+          "callee": "GoogleGenerativeAIEmbeddings",
+          "lineNumber": 41
+        },
+        {
+          "caller": "__init__",
+          "callee": "print",
+          "lineNumber": 46
+        },
+        {
+          "caller": "embed_documents",
+          "callee": "self.cohere.embed_documents",
+          "lineNumber": 51
+        },
+        {
+          "caller": "embed_documents",
+          "callee": "print",
+          "lineNumber": 53
+        },
+        {
+          "caller": "embed_documents",
+          "callee": "self.google.embed_documents",
+          "lineNumber": 56
+        },
+        {
+          "caller": "embed_documents",
+          "callee": "RuntimeError",
+          "lineNumber": 58
+        },
+        {
+          "caller": "embed_query",
+          "callee": "self.cohere.embed_query",
+          "lineNumber": 63
+        },
+        {
+          "caller": "embed_query",
+          "callee": "print",
+          "lineNumber": 65
+        },
+        {
+          "caller": "embed_query",
+          "callee": "self.google.embed_query",
+          "lineNumber": 68
+        },
+        {
+          "caller": "embed_query",
+          "callee": "RuntimeError",
+          "lineNumber": 70
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "backend/rag/retriever.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 101,
+      "nonEmptyLines": 82,
+      "functions": [
+        {
+          "name": "process_and_index",
+          "startLine": 25,
+          "endLine": 58,
+          "params": [
+            "user_id",
+            "pages",
+            "filename"
+          ]
+        },
+        {
+          "name": "retrieve_documents",
+          "startLine": 61,
+          "endLine": 101,
+          "params": [
+            "user_id",
+            "query",
+            "top_k"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "process_and_index",
+          "line": 25,
+          "isDefault": false
+        },
+        {
+          "name": "retrieve_documents",
+          "line": 61,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "process_and_index",
+          "callee": "RecursiveCharacterTextSplitter",
+          "lineNumber": 30
+        },
+        {
+          "caller": "process_and_index",
+          "callee": "page.get",
+          "lineNumber": 37
+        },
+        {
+          "caller": "process_and_index",
+          "callee": "page.get",
+          "lineNumber": 40
+        },
+        {
+          "caller": "process_and_index",
+          "callee": "enumerate",
+          "lineNumber": 42
+        },
+        {
+          "caller": "process_and_index",
+          "callee": "splitter.split_text",
+          "lineNumber": 42
+        },
+        {
+          "caller": "process_and_index",
+          "callee": "docs.append",
+          "lineNumber": 43
+        },
+        {
+          "caller": "process_and_index",
+          "callee": "Document",
+          "lineNumber": 44
+        },
+        {
+          "caller": "process_and_index",
+          "callee": "chunk.strip",
+          "lineNumber": 45
+        },
+        {
+          "caller": "process_and_index",
+          "callee": "store_manager.upsert_documents",
+          "lineNumber": 58
+        },
+        {
+          "caller": "retrieve_documents",
+          "callee": "store_manager.get_store",
+          "lineNumber": 63
+        },
+        {
+          "caller": "retrieve_documents",
+          "callee": "store.similarity_search_with_score",
+          "lineNumber": 69
+        },
+        {
+          "caller": "retrieve_documents",
+          "callee": "print",
+          "lineNumber": 71
+        },
+        {
+          "caller": "retrieve_documents",
+          "callee": "_cohere_client.rerank",
+          "lineNumber": 82
+        },
+        {
+          "caller": "retrieve_documents",
+          "callee": "reranked.append",
+          "lineNumber": 93
+        },
+        {
+          "caller": "retrieve_documents",
+          "callee": "print",
+          "lineNumber": 96
+        },
+        {
+          "caller": "retrieve_documents",
+          "callee": "float",
+          "lineNumber": 100
+        }
+      ],
+      "metrics": {
+        "importCount": 3,
+        "exportCount": 2,
+        "functionCount": 2,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "backend/services/vector_store.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 90,
+      "nonEmptyLines": 70,
+      "classes": [
+        {
+          "name": "VectorStoreManager",
+          "startLine": 16,
+          "endLine": 87,
+          "methods": [
+            "__init__",
+            "get_store",
+            "upsert_documents",
+            "list_sources"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "VectorStoreManager",
+          "line": 16,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "get_store",
+          "callee": "index_path.exists",
+          "lineNumber": 32
+        },
+        {
+          "caller": "get_store",
+          "callee": "FAISS.load_local",
+          "lineNumber": 36
+        },
+        {
+          "caller": "get_store",
+          "callee": "str",
+          "lineNumber": 37
+        },
+        {
+          "caller": "get_store",
+          "callee": "print",
+          "lineNumber": 44
+        },
+        {
+          "caller": "upsert_documents",
+          "callee": "self.get_store",
+          "lineNumber": 52
+        },
+        {
+          "caller": "upsert_documents",
+          "callee": "store.add_documents",
+          "lineNumber": 57
+        },
+        {
+          "caller": "upsert_documents",
+          "callee": "FAISS.from_documents",
+          "lineNumber": 59
+        },
+        {
+          "caller": "upsert_documents",
+          "callee": "store.save_local",
+          "lineNumber": 62
+        },
+        {
+          "caller": "upsert_documents",
+          "callee": "str",
+          "lineNumber": 62
+        },
+        {
+          "caller": "upsert_documents",
+          "callee": "print",
+          "lineNumber": 65
+        },
+        {
+          "caller": "upsert_documents",
+          "callee": "len",
+          "lineNumber": 65
+        },
+        {
+          "caller": "upsert_documents",
+          "callee": "print",
+          "lineNumber": 68
+        },
+        {
+          "caller": "list_sources",
+          "callee": "self.get_store",
+          "lineNumber": 73
+        },
+        {
+          "caller": "list_sources",
+          "callee": "set",
+          "lineNumber": 80
+        },
+        {
+          "caller": "list_sources",
+          "callee": "mapping.values",
+          "lineNumber": 81
+        },
+        {
+          "caller": "list_sources",
+          "callee": "doc.metadata.get",
+          "lineNumber": 82
+        },
+        {
+          "caller": "list_sources",
+          "callee": "sources.add",
+          "lineNumber": 83
+        },
+        {
+          "caller": "list_sources",
+          "callee": "list",
+          "lineNumber": 84
+        },
+        {
+          "caller": "list_sources",
+          "callee": "print",
+          "lineNumber": 86
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    }
+  ]
+}

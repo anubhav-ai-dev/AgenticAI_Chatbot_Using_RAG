@@ -1,0 +1,635 @@
+{
+  "nodes": [
+    {
+      "id": "file:backend/agent.py",
+      "type": "file",
+      "name": "agent.py",
+      "filePath": "backend/agent.py",
+      "summary": "Implements the LangGraph chat agent that routes each query to RAG or a direct LLM/search path, keeps in-memory session history, and indexes PDF text in per-user FAISS stores.",
+      "tags": ["langgraph", "rag", "agent", "conversation-memory", "pdf-processing"],
+      "complexity": "complex",
+      "languageNotes": "LangGraph StateGraph with a conditional router: document-similar queries pass through a RAG prompt node before the LLM, and non-RAG queries may use a Tavily ReAct agent."
+    },
+    {
+      "id": "class:backend/agent.py:AgentState",
+      "type": "class",
+      "name": "AgentState",
+      "filePath": "backend/agent.py",
+      "lineRange": [51, 57],
+      "summary": "LangGraph state schema carrying the message list, user and session ids, the RAG decision, similarity threshold, and retrieved documents.",
+      "tags": ["state", "langgraph", "type-definition"],
+      "complexity": "simple",
+      "languageNotes": "TypedDict whose messages channel uses LangGraph's add_messages reducer."
+    },
+    {
+      "id": "class:backend/agent.py:MemoryManager",
+      "type": "class",
+      "name": "MemoryManager",
+      "filePath": "backend/agent.py",
+      "lineRange": [62, 77],
+      "summary": "In-memory store of per-session chat turns that timestamps each appended message and can return or clear a session's history.",
+      "tags": ["memory", "session", "conversation-history"],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/agent.py:RAGManager",
+      "type": "class",
+      "name": "RAGManager",
+      "filePath": "backend/agent.py",
+      "lineRange": [82, 227],
+      "summary": "Manages per-user in-memory FAISS indexes with Cohere embeddings, including PDF chunking, similarity scoring, reranked retrieval, and document listing.",
+      "tags": ["rag", "faiss", "retrieval", "embeddings"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:backend/agent.py:router_node",
+      "type": "function",
+      "name": "router_node",
+      "filePath": "backend/agent.py",
+      "lineRange": [238, 259],
+      "summary": "Compares the latest user query with the user's indexed documents and, when similarity exceeds the threshold, loads reranked excerpts and selects the RAG path.",
+      "tags": ["routing", "rag", "langgraph", "decision"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/agent.py:rag_node",
+      "type": "function",
+      "name": "rag_node",
+      "filePath": "backend/agent.py",
+      "lineRange": [262, 299],
+      "summary": "Rewrites the latest user message into a citation-constrained prompt that includes numbered excerpts, source names, page numbers, and relevance scores.",
+      "tags": ["rag", "prompt", "citations", "langgraph"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/agent.py:_build_agent_node",
+      "type": "function",
+      "name": "_build_agent_node",
+      "filePath": "backend/agent.py",
+      "lineRange": [302, 327],
+      "summary": "Returns a graph node bound to a chat model that answers from retrieved context, or uses a Tavily ReAct agent when search is enabled.",
+      "tags": ["langgraph", "llm", "search", "factory"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/agent.py:_build_graph",
+      "type": "function",
+      "name": "_build_graph",
+      "filePath": "backend/agent.py",
+      "lineRange": [330, 344],
+      "summary": "Compiles a LangGraph that starts at the router, branches to the RAG node or the agent, and always finishes after the agent node.",
+      "tags": ["langgraph", "graph", "orchestration", "factory"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/agent.py:get_response",
+      "type": "function",
+      "name": "get_response",
+      "filePath": "backend/agent.py",
+      "lineRange": [349, 411],
+      "summary": "Builds a Groq or OpenAI chat model, optionally attaches Tavily search, replays session history, and runs the compiled graph to return the assistant text.",
+      "tags": ["api", "agent", "llm", "orchestration"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:backend/agent.py:process_pdf",
+      "type": "function",
+      "name": "process_pdf",
+      "filePath": "backend/agent.py",
+      "lineRange": [414, 420],
+      "summary": "Extracts page text from a PDF path and indexes the resulting chunks in the user's FAISS store.",
+      "tags": ["pdf", "indexing", "rag"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/agent.py:_extract_pdf_pages",
+      "type": "function",
+      "name": "_extract_pdf_pages",
+      "filePath": "backend/agent.py",
+      "lineRange": [423, 456],
+      "summary": "Reads a PDF with pdfplumber and falls back to PyPDF2, returning page-number and text pairs for pages that contain enough text.",
+      "tags": ["pdf", "extraction", "parsing"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/agent.py:get_chat_history",
+      "type": "function",
+      "name": "get_chat_history",
+      "filePath": "backend/agent.py",
+      "lineRange": [461, 462],
+      "summary": "Returns the in-memory message list stored for a chat session.",
+      "tags": ["memory", "session", "api"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/agent.py:clear_chat_history",
+      "type": "function",
+      "name": "clear_chat_history",
+      "filePath": "backend/agent.py",
+      "lineRange": [465, 466],
+      "summary": "Drops the in-memory message history for a chat session.",
+      "tags": ["memory", "session", "api"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/agent.py:get_user_documents",
+      "type": "function",
+      "name": "get_user_documents",
+      "filePath": "backend/agent.py",
+      "lineRange": [469, 470],
+      "summary": "Returns the unique source filenames currently indexed for a user.",
+      "tags": ["documents", "rag", "api"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/client.py",
+      "type": "file",
+      "name": "client.py",
+      "filePath": "backend/client.py",
+      "summary": "Python HTTP client for the FastAPI backend, covering health checks, model listing, chat sessions, document upload, retrieval, and web search.",
+      "tags": ["api-client", "http", "service", "sessions"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:backend/client.py:BackendClient",
+      "type": "class",
+      "name": "BackendClient",
+      "filePath": "backend/client.py",
+      "lineRange": [14, 80],
+      "summary": "Requests wrapper that calls backend routes for health, models, sessions, messages, file and URL uploads, retrieval, search, and document listing.",
+      "tags": ["api-client", "http", "sessions", "documents"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:backend/config.py",
+      "type": "file",
+      "name": "config.py",
+      "filePath": "backend/config.py",
+      "summary": "Central runtime configuration that loads environment variables and defines paths, API keys, model catalogs, RAG chunking and retrieval settings, and agent modes.",
+      "tags": ["configuration", "constants", "environment", "llm-models"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:backend/rag/embeddings.py",
+      "type": "file",
+      "name": "embeddings.py",
+      "filePath": "backend/rag/embeddings.py",
+      "summary": "Provides a shared embeddings adapter that prefers Cohere and falls back to Google Gemini embeddings when Cohere is unavailable or fails.",
+      "tags": ["embeddings", "rag", "cohere", "fallback"],
+      "complexity": "moderate",
+      "languageNotes": "Subclasses LangChain Embeddings and tries Cohere embed-english-v3.0 before Google text-embedding-004 for both documents and queries."
+    },
+    {
+      "id": "class:backend/rag/embeddings.py:HybridEmbeddings",
+      "type": "class",
+      "name": "HybridEmbeddings",
+      "filePath": "backend/rag/embeddings.py",
+      "lineRange": [19, 70],
+      "summary": "LangChain embeddings implementation that embeds documents and queries with Cohere first and Google Gemini embeddings second.",
+      "tags": ["embeddings", "fallback", "langchain", "cohere"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:backend/rag/retriever.py",
+      "type": "file",
+      "name": "retriever.py",
+      "filePath": "backend/rag/retriever.py",
+      "summary": "Chunks uploaded document pages into FAISS records and retrieves them with an initial vector search followed by Cohere reranking.",
+      "tags": ["rag", "retrieval", "reranking", "faiss"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:backend/rag/retriever.py:process_and_index",
+      "type": "function",
+      "name": "process_and_index",
+      "filePath": "backend/rag/retriever.py",
+      "lineRange": [25, 58],
+      "summary": "Splits page text into overlapping chunks tagged with source, page, and user metadata, then upserts them into the user's FAISS index.",
+      "tags": ["indexing", "chunking", "faiss", "rag"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/rag/retriever.py:retrieve_documents",
+      "type": "function",
+      "name": "retrieve_documents",
+      "filePath": "backend/rag/retriever.py",
+      "lineRange": [61, 101],
+      "summary": "Loads a user's FAISS index, recalls an initial candidate set, and reranks those passages with Cohere or falls back to distance-based scores.",
+      "tags": ["retrieval", "reranking", "faiss", "rag"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:backend/services/vector_store.py",
+      "type": "file",
+      "name": "vector_store.py",
+      "filePath": "backend/services/vector_store.py",
+      "summary": "Persists one FAISS index per user on disk and exposes load, document upsert, and unique source-filename listing.",
+      "tags": ["faiss", "vector-store", "persistence", "rag"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:backend/services/vector_store.py:VectorStoreManager",
+      "type": "class",
+      "name": "VectorStoreManager",
+      "filePath": "backend/services/vector_store.py",
+      "lineRange": [16, 87],
+      "summary": "Loads and saves a FAISS index per user id, adding documents to an existing index or creating one, and lists the unique source filenames stored in it.",
+      "tags": ["faiss", "persistence", "vector-store", "indexing"],
+      "complexity": "moderate"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:backend/agent.py",
+      "target": "class:backend/agent.py:AgentState",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/agent.py",
+      "target": "class:backend/agent.py:MemoryManager",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/agent.py",
+      "target": "class:backend/agent.py:RAGManager",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/agent.py",
+      "target": "function:backend/agent.py:router_node",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/agent.py",
+      "target": "function:backend/agent.py:rag_node",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/agent.py",
+      "target": "function:backend/agent.py:_build_agent_node",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/agent.py",
+      "target": "function:backend/agent.py:_build_graph",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/agent.py",
+      "target": "function:backend/agent.py:get_response",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/agent.py",
+      "target": "function:backend/agent.py:process_pdf",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/agent.py",
+      "target": "function:backend/agent.py:_extract_pdf_pages",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/agent.py",
+      "target": "function:backend/agent.py:get_chat_history",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/agent.py",
+      "target": "function:backend/agent.py:clear_chat_history",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/agent.py",
+      "target": "function:backend/agent.py:get_user_documents",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/agent.py",
+      "target": "class:backend/agent.py:AgentState",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/agent.py",
+      "target": "class:backend/agent.py:MemoryManager",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/agent.py",
+      "target": "class:backend/agent.py:RAGManager",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/agent.py",
+      "target": "function:backend/agent.py:router_node",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/agent.py",
+      "target": "function:backend/agent.py:rag_node",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/agent.py",
+      "target": "function:backend/agent.py:_build_agent_node",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/agent.py",
+      "target": "function:backend/agent.py:_build_graph",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/agent.py",
+      "target": "function:backend/agent.py:get_response",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/agent.py",
+      "target": "function:backend/agent.py:process_pdf",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/agent.py",
+      "target": "function:backend/agent.py:_extract_pdf_pages",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/agent.py",
+      "target": "function:backend/agent.py:get_chat_history",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/agent.py",
+      "target": "function:backend/agent.py:clear_chat_history",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/agent.py",
+      "target": "function:backend/agent.py:get_user_documents",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/agent.py",
+      "target": "file:backend/config.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "function:backend/agent.py:_build_graph",
+      "target": "function:backend/agent.py:router_node",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:backend/agent.py:_build_graph",
+      "target": "function:backend/agent.py:rag_node",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:backend/agent.py:_build_graph",
+      "target": "function:backend/agent.py:_build_agent_node",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:backend/agent.py:get_response",
+      "target": "function:backend/agent.py:_build_graph",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:backend/agent.py:get_response",
+      "target": "class:backend/agent.py:MemoryManager",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:backend/agent.py:router_node",
+      "target": "class:backend/agent.py:RAGManager",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:backend/agent.py:process_pdf",
+      "target": "function:backend/agent.py:_extract_pdf_pages",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:backend/agent.py:process_pdf",
+      "target": "class:backend/agent.py:RAGManager",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:backend/agent.py:get_chat_history",
+      "target": "class:backend/agent.py:MemoryManager",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:backend/agent.py:clear_chat_history",
+      "target": "class:backend/agent.py:MemoryManager",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:backend/agent.py:get_user_documents",
+      "target": "class:backend/agent.py:RAGManager",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/client.py",
+      "target": "class:backend/client.py:BackendClient",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/client.py",
+      "target": "class:backend/client.py:BackendClient",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/client.py",
+      "target": "file:backend/config.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:backend/rag/embeddings.py",
+      "target": "class:backend/rag/embeddings.py:HybridEmbeddings",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/rag/embeddings.py",
+      "target": "class:backend/rag/embeddings.py:HybridEmbeddings",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/rag/embeddings.py",
+      "target": "file:backend/config.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:backend/rag/retriever.py",
+      "target": "function:backend/rag/retriever.py:process_and_index",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/rag/retriever.py",
+      "target": "function:backend/rag/retriever.py:retrieve_documents",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/rag/retriever.py",
+      "target": "function:backend/rag/retriever.py:process_and_index",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/rag/retriever.py",
+      "target": "function:backend/rag/retriever.py:retrieve_documents",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/rag/retriever.py",
+      "target": "file:backend/config.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:backend/rag/retriever.py",
+      "target": "file:backend/rag/embeddings.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:backend/rag/retriever.py",
+      "target": "file:backend/services/vector_store.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "function:backend/rag/retriever.py:process_and_index",
+      "target": "class:backend/services/vector_store.py:VectorStoreManager",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:backend/rag/retriever.py:retrieve_documents",
+      "target": "class:backend/services/vector_store.py:VectorStoreManager",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/services/vector_store.py",
+      "target": "class:backend/services/vector_store.py:VectorStoreManager",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/services/vector_store.py",
+      "target": "class:backend/services/vector_store.py:VectorStoreManager",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/services/vector_store.py",
+      "target": "file:backend/config.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    }
+  ]
+}

@@ -1,0 +1,55 @@
+{
+  "issues": [],
+  "warnings": [
+    "Node 'config:pytest.ini' has no edges (orphan)",
+    "Node 'document:docs/redesign/integration-notes.md' has no edges (orphan)",
+    "Node 'document:docs/redesign/qa-report-04.md' has no edges (orphan)",
+    "Node 'document:docs/redesign/qa-report-05.md' has no edges (orphan)",
+    "Node 'document:docs/redesign/qa-report-06.md' has no edges (orphan)",
+    "Node 'document:docs/redesign/security-issue-authz.md' has no edges (orphan)",
+    "Node 'document:docs/redesign/stage4-backlog.md' has no edges (orphan)",
+    "Node 'document:docs/redesign/ui-ux-implementation-notes.md' has no edges (orphan)",
+    "Node 'file:Pipfile' has no edges (orphan)",
+    "Node 'file:backend/__init__.py' has no edges (orphan)",
+    "Node 'file:backend/api/__init__.py' has no edges (orphan)",
+    "Node 'file:backend/client/__init__.py' has no edges (orphan)",
+    "Node 'file:backend/config.py' has no edges (orphan)",
+    "Node 'file:backend/core/__init__.py' has no edges (orphan)",
+    "Node 'file:backend/models/__init__.py' has no edges (orphan)",
+    "Node 'file:backend/utils/__init__.py' has no edges (orphan)",
+    "Node 'file:data/.gitkeep' has no edges (orphan)",
+    "Node 'document:docs/AI_ASSISTANT_PRO_MASTER_TASK.md' has no edges (orphan)",
+    "Node 'file:frontend/__init__.py' has no edges (orphan)",
+    "Node 'file:tests/__init__.py' has no edges (orphan)"
+  ],
+  "stats": {
+    "totalNodes": 983,
+    "totalEdges": 2300,
+    "totalLayers": 10,
+    "tourSteps": 13,
+    "nodeTypes": {
+      "file": 97,
+      "class": 101,
+      "function": 734,
+      "endpoint": 25,
+      "table": 5,
+      "config": 2,
+      "service": 1,
+      "document": 18
+    },
+    "edgeTypes": {
+      "contains": 865,
+      "exports": 649,
+      "imports": 160,
+      "calls": 410,
+      "tested_by": 96,
+      "inherits": 14,
+      "implements": 5,
+      "depends_on": 51,
+      "configures": 1,
+      "documents": 19,
+      "deploys": 1,
+      "related": 29
+    }
+  }
+}

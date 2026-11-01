@@ -1,0 +1,769 @@
+{
+  "nodes": [
+    {
+      "id": "file:tests/test_frontend_motion.py",
+      "type": "file",
+      "name": "test_frontend_motion.py",
+      "filePath": "tests/test_frontend_motion.py",
+      "summary": "Guards the GSAP motion layer: the library is vendored and hash-pinned, loaded lazily from the same origin, and skipped entirely under reduced motion. Browser cases confirm content stays visible and interactive.",
+      "tags": [
+        "test",
+        "motion",
+        "accessibility",
+        "frontend"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "The vendored build is checked by SHA-256 against GSAP 3.15.0 and is loaded only from /js/vendor/gsap.min.js."
+    },
+    {
+      "id": "function:tests/test_frontend_motion.py:_code",
+      "type": "function",
+      "name": "_code",
+      "filePath": "tests/test_frontend_motion.py",
+      "lineRange": [
+        23,
+        24
+      ],
+      "summary": "Loads a frontend file through the guards reader and strips comments so motion assertions see executable code only.",
+      "tags": [
+        "test",
+        "utility",
+        "source-parse"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_motion.py:test_vendored_gsap_is_pinned_and_documented",
+      "type": "function",
+      "name": "test_vendored_gsap_is_pinned_and_documented",
+      "filePath": "tests/test_frontend_motion.py",
+      "lineRange": [
+        29,
+        35
+      ],
+      "summary": "Checks that the vendor directory contains only gsap.min.js and its notice, and that the file hash and version match the pinned GSAP 3.15.0 build.",
+      "tags": [
+        "test",
+        "vendor",
+        "integrity"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_motion.py:test_gsap_has_no_network_or_dynamic_code_surface",
+      "type": "function",
+      "name": "test_gsap_has_no_network_or_dynamic_code_surface",
+      "filePath": "tests/test_frontend_motion.py",
+      "lineRange": [
+        38,
+        41
+      ],
+      "summary": "Checks that the vendored GSAP build contains no fetch, XHR, eval, new Function, sendBeacon, WebSocket, or document.write.",
+      "tags": [
+        "test",
+        "security",
+        "vendor"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_motion.py:test_gsap_is_loaded_lazily_from_the_same_origin_only",
+      "type": "function",
+      "name": "test_gsap_is_loaded_lazily_from_the_same_origin_only",
+      "filePath": "tests/test_frontend_motion.py",
+      "lineRange": [
+        44,
+        49
+      ],
+      "summary": "Checks that motion.js loads /js/vendor/gsap.min.js asynchronously from the same origin and is included before ui.js.",
+      "tags": [
+        "test",
+        "motion",
+        "loading"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_motion.py:test_motion_is_view_only_and_animates_only_transform_and_opacity",
+      "type": "function",
+      "name": "test_motion_is_view_only_and_animates_only_transform_and_opacity",
+      "filePath": "tests/test_frontend_motion.py",
+      "lineRange": [
+        52,
+        59
+      ],
+      "summary": "Checks that motion.js does not touch the network or app state and that GSAP tweens avoid layout properties and clear inline styles.",
+      "tags": [
+        "test",
+        "motion",
+        "view-layer"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_motion.py:test_motion_honours_reduced_motion_and_cleans_up",
+      "type": "function",
+      "name": "test_motion_honours_reduced_motion_and_cleans_up",
+      "filePath": "tests/test_frontend_motion.py",
+      "lineRange": [
+        62,
+        70
+      ],
+      "summary": "Checks that reduced motion returns before GSAP is loaded and that tweens live in a context reverted on pagehide.",
+      "tags": [
+        "test",
+        "accessibility",
+        "motion"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_motion.py:test_first_paint_guard_has_a_hard_failsafe_and_skips_reduced_motion",
+      "type": "function",
+      "name": "test_first_paint_guard_has_a_hard_failsafe_and_skips_reduced_motion",
+      "filePath": "tests/test_frontend_motion.py",
+      "lineRange": [
+        73,
+        79
+      ],
+      "summary": "Checks that the index.html head adds motion-pending, removes it after 2.5 seconds, and that workspace.css hides that class with opacity 0.",
+      "tags": [
+        "test",
+        "motion",
+        "first-paint"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_motion.py:test_css_entrance_keyframes_that_motion_replaces_are_gone",
+      "type": "function",
+      "name": "test_css_entrance_keyframes_that_motion_replaces_are_gone",
+      "filePath": "tests/test_frontend_motion.py",
+      "lineRange": [
+        82,
+        87
+      ],
+      "summary": "Checks that the old welcome and composer CSS entrance animations are gone so GSAP is the only entrance.",
+      "tags": [
+        "test",
+        "css",
+        "motion"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_motion.py:test_vendor_code_is_exempt_from_the_first_party_origin_guard_only_by_directory",
+      "type": "function",
+      "name": "test_vendor_code_is_exempt_from_the_first_party_origin_guard_only_by_directory",
+      "filePath": "tests/test_frontend_motion.py",
+      "lineRange": [
+        90,
+        92
+      ],
+      "summary": "Checks that the external-origin guard skips files only by a vendor directory path.",
+      "tags": [
+        "test",
+        "security",
+        "vendor"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_motion.py:_run_browser",
+      "type": "function",
+      "name": "_run_browser",
+      "filePath": "tests/test_frontend_motion.py",
+      "lineRange": [
+        133,
+        189
+      ],
+      "summary": "Serves the frontend on a GET-only port with the shared fetch stub and runs the motion scenario in headless Chrome, with optional browser flags.",
+      "tags": [
+        "test",
+        "fixture",
+        "headless-chrome",
+        "motion"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:tests/test_frontend_motion.py:reduced",
+      "type": "function",
+      "name": "reduced",
+      "filePath": "tests/test_frontend_motion.py",
+      "lineRange": [
+        193,
+        194
+      ],
+      "summary": "Browser fixture that reruns the motion scenario with Chrome forced into prefers-reduced-motion.",
+      "tags": [
+        "test",
+        "fixture",
+        "accessibility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_motion.py:normal",
+      "type": "function",
+      "name": "normal",
+      "filePath": "tests/test_frontend_motion.py",
+      "lineRange": [
+        198,
+        199
+      ],
+      "summary": "Browser fixture that reruns the motion scenario with default motion preferences.",
+      "tags": [
+        "test",
+        "fixture",
+        "motion"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_motion.py:test_browser_reduced_motion_never_loads_the_library_and_shows_everything",
+      "type": "function",
+      "name": "test_browser_reduced_motion_never_loads_the_library_and_shows_everything",
+      "filePath": "tests/test_frontend_motion.py",
+      "lineRange": [
+        202,
+        208
+      ],
+      "summary": "Asserts reduced motion never defines window.gsap, leaves title, composer, and cards fully visible, and still lets the mode menu switch to Documents.",
+      "tags": [
+        "test",
+        "accessibility",
+        "motion"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_motion.py:test_browser_normal_motion_ends_with_clean_visible_content_and_stays_interactive",
+      "type": "function",
+      "name": "test_browser_normal_motion_ends_with_clean_visible_content_and_stays_interactive",
+      "filePath": "tests/test_frontend_motion.py",
+      "lineRange": [
+        211,
+        222
+      ],
+      "summary": "Asserts normal motion loads GSAP, finishes with no leftover inline styles, and stays interactive across rapid workspace switches.",
+      "tags": [
+        "test",
+        "motion",
+        "browser"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:tests/test_frontend_startup.py",
+      "type": "file",
+      "name": "test_frontend_startup.py",
+      "filePath": "tests/test_frontend_startup.py",
+      "summary": "Regression tests that a startup failure must not leave the model list stuck on \"Loading models…\". Data loading starts before event binding, and a stale ui.js still surfaces a reload hint.",
+      "tags": [
+        "test",
+        "startup",
+        "regression",
+        "frontend"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "The browser case deletes UI.onModeChange before init to reproduce a new app.js running beside a cached ui.js."
+    },
+    {
+      "id": "function:tests/test_frontend_startup.py:_fn",
+      "type": "function",
+      "name": "_fn",
+      "filePath": "tests/test_frontend_startup.py",
+      "lineRange": [
+        17,
+        19
+      ],
+      "summary": "Returns a slice of app.js starting at the named function so startup assertions can read init and _startupFailed.",
+      "tags": [
+        "test",
+        "utility",
+        "source-parse"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_startup.py:test_data_loading_starts_before_event_handlers_are_bound",
+      "type": "function",
+      "name": "test_data_loading_starts_before_event_handlers_are_bound",
+      "filePath": "tests/test_frontend_startup.py",
+      "lineRange": [
+        22,
+        27
+      ],
+      "summary": "Checks that init starts model, session, document, and config loads before _bindEvents and awaits them afterward.",
+      "tags": [
+        "test",
+        "startup",
+        "controller"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_startup.py:test_startup_errors_are_reported_with_the_fix_not_swallowed",
+      "type": "function",
+      "name": "test_startup_errors_are_reported_with_the_fix_not_swallowed",
+      "filePath": "tests/test_frontend_startup.py",
+      "lineRange": [
+        30,
+        33
+      ],
+      "summary": "Checks that init failures go to _startupFailed, which logs the error and toasts a Ctrl+Shift+R reload hint.",
+      "tags": [
+        "test",
+        "startup",
+        "error-handling"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_startup.py:stale",
+      "type": "function",
+      "name": "stale",
+      "filePath": "tests/test_frontend_startup.py",
+      "lineRange": [
+        57,
+        58
+      ],
+      "summary": "Runs a headless scenario that deletes UI.onModeChange before init, simulating a stale cached ui.js beside a new app.js.",
+      "tags": [
+        "test",
+        "fixture",
+        "startup"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_startup.py:test_stub_models_still_load_when_a_handler_fails_to_bind",
+      "type": "function",
+      "name": "test_stub_models_still_load_when_a_handler_fails_to_bind",
+      "filePath": "tests/test_frontend_startup.py",
+      "lineRange": [
+        61,
+        66
+      ],
+      "summary": "Asserts models and the session list still load when event binding throws, and the model chip does not stay on \"Loading models…\".",
+      "tags": [
+        "test",
+        "startup",
+        "regression"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_startup.py:test_stub_the_user_is_told_what_happened_and_how_to_fix_it",
+      "type": "function",
+      "name": "test_stub_the_user_is_told_what_happened_and_how_to_fix_it",
+      "filePath": "tests/test_frontend_startup.py",
+      "lineRange": [
+        69,
+        72
+      ],
+      "summary": "Asserts the startup toast names the failure, mentions onModeChange and Ctrl+Shift+R, and that the error is not an unhandled rejection.",
+      "tags": [
+        "test",
+        "startup",
+        "error-handling"
+      ],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:tests/test_frontend_motion.py",
+      "target": "function:tests/test_frontend_motion.py:_code",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_motion.py",
+      "target": "function:tests/test_frontend_motion.py:_code",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_motion.py",
+      "target": "function:tests/test_frontend_motion.py:test_vendored_gsap_is_pinned_and_documented",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_motion.py",
+      "target": "function:tests/test_frontend_motion.py:test_vendored_gsap_is_pinned_and_documented",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_motion.py",
+      "target": "function:tests/test_frontend_motion.py:test_gsap_has_no_network_or_dynamic_code_surface",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_motion.py",
+      "target": "function:tests/test_frontend_motion.py:test_gsap_has_no_network_or_dynamic_code_surface",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_motion.py",
+      "target": "function:tests/test_frontend_motion.py:test_gsap_is_loaded_lazily_from_the_same_origin_only",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_motion.py",
+      "target": "function:tests/test_frontend_motion.py:test_gsap_is_loaded_lazily_from_the_same_origin_only",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_motion.py",
+      "target": "function:tests/test_frontend_motion.py:test_motion_is_view_only_and_animates_only_transform_and_opacity",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_motion.py",
+      "target": "function:tests/test_frontend_motion.py:test_motion_is_view_only_and_animates_only_transform_and_opacity",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_motion.py",
+      "target": "function:tests/test_frontend_motion.py:test_motion_honours_reduced_motion_and_cleans_up",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_motion.py",
+      "target": "function:tests/test_frontend_motion.py:test_motion_honours_reduced_motion_and_cleans_up",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_motion.py",
+      "target": "function:tests/test_frontend_motion.py:test_first_paint_guard_has_a_hard_failsafe_and_skips_reduced_motion",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_motion.py",
+      "target": "function:tests/test_frontend_motion.py:test_first_paint_guard_has_a_hard_failsafe_and_skips_reduced_motion",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_motion.py",
+      "target": "function:tests/test_frontend_motion.py:test_css_entrance_keyframes_that_motion_replaces_are_gone",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_motion.py",
+      "target": "function:tests/test_frontend_motion.py:test_css_entrance_keyframes_that_motion_replaces_are_gone",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_motion.py",
+      "target": "function:tests/test_frontend_motion.py:test_vendor_code_is_exempt_from_the_first_party_origin_guard_only_by_directory",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_motion.py",
+      "target": "function:tests/test_frontend_motion.py:test_vendor_code_is_exempt_from_the_first_party_origin_guard_only_by_directory",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_motion.py",
+      "target": "function:tests/test_frontend_motion.py:_run_browser",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_motion.py",
+      "target": "function:tests/test_frontend_motion.py:_run_browser",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_motion.py",
+      "target": "function:tests/test_frontend_motion.py:reduced",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_motion.py",
+      "target": "function:tests/test_frontend_motion.py:reduced",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_motion.py",
+      "target": "function:tests/test_frontend_motion.py:normal",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_motion.py",
+      "target": "function:tests/test_frontend_motion.py:normal",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_motion.py",
+      "target": "function:tests/test_frontend_motion.py:test_browser_reduced_motion_never_loads_the_library_and_shows_everything",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_motion.py",
+      "target": "function:tests/test_frontend_motion.py:test_browser_reduced_motion_never_loads_the_library_and_shows_everything",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_motion.py",
+      "target": "function:tests/test_frontend_motion.py:test_browser_normal_motion_ends_with_clean_visible_content_and_stays_interactive",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_motion.py",
+      "target": "function:tests/test_frontend_motion.py:test_browser_normal_motion_ends_with_clean_visible_content_and_stays_interactive",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_motion.py",
+      "target": "file:tests/test_frontend_guards.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:frontend/index.html",
+      "target": "file:tests/test_frontend_motion.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:frontend/js/components/motion.js",
+      "target": "file:tests/test_frontend_motion.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:frontend/css/workspace.css",
+      "target": "file:tests/test_frontend_motion.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:frontend/css/animations.css",
+      "target": "file:tests/test_frontend_motion.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:frontend/css/components.css",
+      "target": "file:tests/test_frontend_motion.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "function:tests/test_frontend_motion.py:_code",
+      "target": "function:tests/test_frontend_guards.py:_read",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:tests/test_frontend_motion.py:test_vendored_gsap_is_pinned_and_documented",
+      "target": "function:tests/test_frontend_guards.py:_read",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:tests/test_frontend_motion.py:test_first_paint_guard_has_a_hard_failsafe_and_skips_reduced_motion",
+      "target": "function:tests/test_frontend_guards.py:_read",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:tests/test_frontend_motion.py:test_css_entrance_keyframes_that_motion_replaces_are_gone",
+      "target": "function:tests/test_frontend_guards.py:_read",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_startup.py",
+      "target": "function:tests/test_frontend_startup.py:_fn",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_startup.py",
+      "target": "function:tests/test_frontend_startup.py:_fn",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_startup.py",
+      "target": "function:tests/test_frontend_startup.py:test_data_loading_starts_before_event_handlers_are_bound",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_startup.py",
+      "target": "function:tests/test_frontend_startup.py:test_data_loading_starts_before_event_handlers_are_bound",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_startup.py",
+      "target": "function:tests/test_frontend_startup.py:test_startup_errors_are_reported_with_the_fix_not_swallowed",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_startup.py",
+      "target": "function:tests/test_frontend_startup.py:test_startup_errors_are_reported_with_the_fix_not_swallowed",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_startup.py",
+      "target": "function:tests/test_frontend_startup.py:stale",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_startup.py",
+      "target": "function:tests/test_frontend_startup.py:stale",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_startup.py",
+      "target": "function:tests/test_frontend_startup.py:test_stub_models_still_load_when_a_handler_fails_to_bind",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_startup.py",
+      "target": "function:tests/test_frontend_startup.py:test_stub_models_still_load_when_a_handler_fails_to_bind",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_startup.py",
+      "target": "function:tests/test_frontend_startup.py:test_stub_the_user_is_told_what_happened_and_how_to_fix_it",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_frontend_startup.py",
+      "target": "function:tests/test_frontend_startup.py:test_stub_the_user_is_told_what_happened_and_how_to_fix_it",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_startup.py",
+      "target": "file:tests/browser_harness.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/test_frontend_startup.py",
+      "target": "file:tests/test_frontend_guards.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:frontend/index.html",
+      "target": "file:tests/test_frontend_startup.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:frontend/js/app.js",
+      "target": "file:tests/test_frontend_startup.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:frontend/js/ui.js",
+      "target": "file:tests/test_frontend_startup.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "function:tests/test_frontend_startup.py:stale",
+      "target": "function:tests/browser_harness.py:run_scenario",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    }
+  ]
+}

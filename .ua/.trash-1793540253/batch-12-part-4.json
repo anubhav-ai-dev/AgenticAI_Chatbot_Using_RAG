@@ -1,0 +1,151 @@
+{
+  "nodes": [
+    {
+      "id": "file:frontend/js/icons.js",
+      "type": "file",
+      "name": "icons.js",
+      "filePath": "frontend/js/icons.js",
+      "summary": "Sprite-icon helper over the inline SVG symbols in index.html. Unknown names, including legacy emoji from the app, fall back to escaped text.",
+      "tags": [
+        "utility",
+        "svg",
+        "accessibility",
+        "icons"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:frontend/js/icons.js:resolve",
+      "type": "function",
+      "name": "resolve",
+      "filePath": "frontend/js/icons.js",
+      "lineRange": [
+        38,
+        47
+      ],
+      "summary": "Maps an icon name or legacy emoji to a sprite id that is present in the document, or returns null.",
+      "tags": [
+        "icons",
+        "utility",
+        "svg"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/icons.js:has",
+      "type": "function",
+      "name": "has",
+      "filePath": "frontend/js/icons.js",
+      "lineRange": [
+        49,
+        49
+      ],
+      "summary": "Reports whether a name resolves to an icon currently in the sprite.",
+      "tags": [
+        "icons",
+        "utility",
+        "svg"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/icons.js:html",
+      "type": "function",
+      "name": "html",
+      "filePath": "frontend/js/icons.js",
+      "lineRange": [
+        62,
+        66
+      ],
+      "summary": "Returns decorative SVG markup for a known icon, or escaped text when the name is unknown.",
+      "tags": [
+        "icons",
+        "svg",
+        "accessibility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:frontend/js/icons.js:el",
+      "type": "function",
+      "name": "el",
+      "filePath": "frontend/js/icons.js",
+      "lineRange": [
+        69,
+        81
+      ],
+      "summary": "Returns an SVG element for a known icon, or a text node for an unknown name.",
+      "tags": [
+        "icons",
+        "svg",
+        "dom"
+      ],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:frontend/js/icons.js",
+      "target": "function:frontend/js/icons.js:resolve",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/icons.js",
+      "target": "function:frontend/js/icons.js:has",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/icons.js",
+      "target": "function:frontend/js/icons.js:has",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/icons.js",
+      "target": "function:frontend/js/icons.js:html",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/icons.js",
+      "target": "function:frontend/js/icons.js:html",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/icons.js",
+      "target": "function:frontend/js/icons.js:el",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:frontend/js/icons.js",
+      "target": "function:frontend/js/icons.js:el",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:frontend/js/icons.js",
+      "target": "file:tests/test_frontend_reference.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:frontend/js/icons.js",
+      "target": "file:tests/test_frontend_sanitizer.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    }
+  ]
+}

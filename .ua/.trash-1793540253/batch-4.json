@@ -1,0 +1,2270 @@
+{
+  "nodes": [
+    {
+      "id": "file:backend/core/database.py",
+      "type": "file",
+      "name": "database.py",
+      "filePath": "backend/core/database.py",
+      "summary": "Owns the SQLAlchemy engine and session factory for chat persistence. Defines the declarative Base and a Database wrapper that creates tables, runs short transactions, and applies additive column migrations.",
+      "tags": [
+        "database",
+        "sqlalchemy",
+        "session-management",
+        "persistence"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "SQLite connections enable foreign keys, WAL, and a busy timeout; other engines use pool_pre_ping. init() lazily imports the ORM models so tables register before create_all."
+    },
+    {
+      "id": "file:backend/models/db.py",
+      "type": "file",
+      "name": "db.py",
+      "filePath": "backend/models/db.py",
+      "summary": "SQLAlchemy ORM models for chat sessions, messages, uploaded documents, GitHub credentials, and connected repository briefs.",
+      "tags": [
+        "data-model",
+        "sqlalchemy",
+        "orm",
+        "persistence"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Message rows cascade-delete with their session. Primary keys are UUID strings, and timestamps default to a naive UTC value."
+    },
+    {
+      "id": "file:backend/services/document_service.py",
+      "type": "file",
+      "name": "document_service.py",
+      "filePath": "backend/services/document_service.py",
+      "summary": "Ingests files, URLs, and raw text by parsing, chunking, embedding, and writing a hybrid search index plus a document row. Also lists and deletes documents and re-embeds chunks when the embedding model changes.",
+      "tags": [
+        "service",
+        "ingestion",
+        "embedding",
+        "rag"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:backend/services/github_service.py",
+      "type": "file",
+      "name": "github_service.py",
+      "filePath": "backend/services/github_service.py",
+      "summary": "Connects a GitHub repository, indexes selected source files into the RAG store, and keeps a per-user token plus an LLM-written repository brief. Supports personal access tokens and the OAuth device flow.",
+      "tags": [
+        "service",
+        "github",
+        "oauth",
+        "rag"
+      ],
+      "complexity": "complex",
+      "languageNotes": "Device-flow OAuth posts to github.com/login. File bodies are fetched from api.github.com and decoded from base64."
+    },
+    {
+      "id": "file:backend/services/session_service.py",
+      "type": "file",
+      "name": "session_service.py",
+      "filePath": "backend/services/session_service.py",
+      "summary": "Creates, lists, updates, and deletes chat sessions and messages in short database transactions, returning pydantic schemas so callers never hold ORM objects.",
+      "tags": [
+        "service",
+        "persistence",
+        "chat",
+        "session"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:backend/utils/timeutil.py",
+      "type": "file",
+      "name": "timeutil.py",
+      "filePath": "backend/utils/timeutil.py",
+      "summary": "Provides a naive UTC timestamp for database defaults and parses duration strings such as 2.28s, 1m26.4s, and 120ms into seconds.",
+      "tags": [
+        "utility",
+        "datetime",
+        "parsing"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:tests/test_github.py",
+      "type": "file",
+      "name": "test_github.py",
+      "filePath": "tests/test_github.py",
+      "summary": "Tests GitHub URL parsing, source-path selection, repository connect and delete, OAuth device flow, code-mode chat that receives the repo brief, and MCP GitHub tool exposure.",
+      "tags": [
+        "test",
+        "github",
+        "oauth",
+        "integration"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:backend/core/database.py:Base",
+      "type": "class",
+      "name": "Base",
+      "filePath": "backend/core/database.py",
+      "lineRange": [
+        21,
+        22
+      ],
+      "summary": "Declarative SQLAlchemy base that ORM models inherit so their tables register on one metadata object.",
+      "tags": [
+        "data-model",
+        "sqlalchemy",
+        "orm"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/core/database.py:Database",
+      "type": "class",
+      "name": "Database",
+      "filePath": "backend/core/database.py",
+      "lineRange": [
+        25,
+        91
+      ],
+      "summary": "Creates the SQLAlchemy engine and session factory, initializes tables, migrates new nullable columns, and checks connectivity.",
+      "tags": [
+        "database",
+        "sqlalchemy",
+        "session-management"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:backend/models/db.py:ChatSession",
+      "type": "class",
+      "name": "ChatSession",
+      "filePath": "backend/models/db.py",
+      "lineRange": [
+        20,
+        35
+      ],
+      "summary": "ORM model for a chat session, storing user, title, model, and mode, with messages that cascade-delete.",
+      "tags": [
+        "data-model",
+        "sqlalchemy",
+        "chat"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/models/db.py:Message",
+      "type": "class",
+      "name": "Message",
+      "filePath": "backend/models/db.py",
+      "lineRange": [
+        38,
+        50
+      ],
+      "summary": "ORM model for one chat turn, including role, content, citations, feedback, and JSON metadata, keyed to a session.",
+      "tags": [
+        "data-model",
+        "sqlalchemy",
+        "chat"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/models/db.py:Document",
+      "type": "class",
+      "name": "Document",
+      "filePath": "backend/models/db.py",
+      "lineRange": [
+        53,
+        61
+      ],
+      "summary": "ORM model for an ingested file or URL, recording user, filename, file type, chunk count, and index time.",
+      "tags": [
+        "data-model",
+        "sqlalchemy",
+        "document"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/models/db.py:GithubCredential",
+      "type": "class",
+      "name": "GithubCredential",
+      "filePath": "backend/models/db.py",
+      "lineRange": [
+        64,
+        70
+      ],
+      "summary": "Per-user GitHub token row, distinguished as a personal access token or an OAuth token, and never returned to clients.",
+      "tags": [
+        "data-model",
+        "sqlalchemy",
+        "github",
+        "security"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/models/db.py:RepoContext",
+      "type": "class",
+      "name": "RepoContext",
+      "filePath": "backend/models/db.py",
+      "lineRange": [
+        73,
+        83
+      ],
+      "summary": "ORM model for a connected repository brief, including owner, name, branch, summary text, and indexed file count.",
+      "tags": [
+        "data-model",
+        "sqlalchemy",
+        "github"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/services/document_service.py:IngestResult",
+      "type": "class",
+      "name": "IngestResult",
+      "filePath": "backend/services/document_service.py",
+      "lineRange": [
+        35,
+        40
+      ],
+      "summary": "Dataclass returned after ingestion, carrying the document id, filename, file type, chunk count, and whether indexing was hybrid or lexical.",
+      "tags": [
+        "data-model",
+        "ingestion",
+        "dto"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/services/document_service.py:DocumentService",
+      "type": "class",
+      "name": "DocumentService",
+      "filePath": "backend/services/document_service.py",
+      "lineRange": [
+        43,
+        247
+      ],
+      "summary": "Parses uploads, URLs, and text into chunks, embeds them when possible, writes the hybrid index and a document row, and reindexes after an embedding-model change.",
+      "tags": [
+        "service",
+        "ingestion",
+        "embedding",
+        "rag"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "class:backend/services/github_service.py:GitHubError",
+      "type": "class",
+      "name": "GitHubError",
+      "filePath": "backend/services/github_service.py",
+      "lineRange": [
+        55,
+        56
+      ],
+      "summary": "User-facing ingest error raised when a GitHub URL, token, or API response cannot be completed.",
+      "tags": [
+        "error-handling",
+        "github",
+        "validation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:backend/services/github_service.py:GitHubService",
+      "type": "class",
+      "name": "GitHubService",
+      "filePath": "backend/services/github_service.py",
+      "lineRange": [
+        59,
+        293
+      ],
+      "summary": "Fetches a repository tree, indexes selected source files, stores the user's token, and writes or returns a repository brief for the coding assistant.",
+      "tags": [
+        "service",
+        "github",
+        "oauth",
+        "rag"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "class:backend/services/session_service.py:SessionService",
+      "type": "class",
+      "name": "SessionService",
+      "filePath": "backend/services/session_service.py",
+      "lineRange": [
+        31,
+        156
+      ],
+      "summary": "Persists chat sessions and messages, auto-titles new chats from the first user message, and records assistant feedback.",
+      "tags": [
+        "service",
+        "persistence",
+        "chat",
+        "session"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:backend/core/database.py:__init__",
+      "type": "function",
+      "name": "__init__",
+      "filePath": "backend/core/database.py",
+      "lineRange": [
+        26,
+        40
+      ],
+      "summary": "Builds the SQLAlchemy engine for the given URL and attaches SQLite pragmas plus a non-expiring session factory.",
+      "tags": [
+        "database",
+        "sqlalchemy",
+        "initialization"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/core/database.py:session",
+      "type": "function",
+      "name": "session",
+      "filePath": "backend/core/database.py",
+      "lineRange": [
+        52,
+        62
+      ],
+      "summary": "Opens a short-lived SQLAlchemy session that commits on success, rolls back on error, and always closes.",
+      "tags": [
+        "database",
+        "session-management",
+        "transaction"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/core/database.py:_ensure_columns",
+      "type": "function",
+      "name": "_ensure_columns",
+      "filePath": "backend/core/database.py",
+      "lineRange": [
+        71,
+        84
+      ],
+      "summary": "Adds nullable columns that exist on the ORM metadata but are missing from an already created table.",
+      "tags": [
+        "database",
+        "migration",
+        "sqlalchemy"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/models/db.py:_uuid",
+      "type": "function",
+      "name": "_uuid",
+      "filePath": "backend/models/db.py",
+      "lineRange": [
+        16,
+        17
+      ],
+      "summary": "Returns a new UUID string used as the default primary key for session, message, document, and repo rows.",
+      "tags": [
+        "utility",
+        "identifier",
+        "database"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/services/document_service.py:__init__",
+      "type": "function",
+      "name": "__init__",
+      "filePath": "backend/services/document_service.py",
+      "lineRange": [
+        44,
+        55
+      ],
+      "summary": "Stores the database, parser, embedder, and index, and configures the recursive text splitter from settings.",
+      "tags": [
+        "service",
+        "initialization",
+        "ingestion"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/services/document_service.py:ingest_file",
+      "type": "function",
+      "name": "ingest_file",
+      "filePath": "backend/services/document_service.py",
+      "lineRange": [
+        59,
+        85
+      ],
+      "summary": "Validates an upload, parses it off the event loop, and hands the extracted pages to the shared indexing path.",
+      "tags": [
+        "ingestion",
+        "upload",
+        "parsing"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:backend/services/document_service.py:_chunk",
+      "type": "function",
+      "name": "_chunk",
+      "filePath": "backend/services/document_service.py",
+      "lineRange": [
+        100,
+        113
+      ],
+      "summary": "Splits page text into overlapping chunks and wraps each piece as a ChunkIn with page and order metadata.",
+      "tags": [
+        "ingestion",
+        "chunking",
+        "rag"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/services/document_service.py:_index_pages",
+      "type": "function",
+      "name": "_index_pages",
+      "filePath": "backend/services/document_service.py",
+      "lineRange": [
+        115,
+        156
+      ],
+      "summary": "Chunks pages, embeds them, writes the hybrid index, records the document, and replaces any earlier upload with the same filename.",
+      "tags": [
+        "ingestion",
+        "embedding",
+        "indexing"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:backend/services/document_service.py:_embed",
+      "type": "function",
+      "name": "_embed",
+      "filePath": "backend/services/document_service.py",
+      "lineRange": [
+        158,
+        168
+      ],
+      "summary": "Embeds chunk texts after warming the model, falling back to lexical-only indexing when embeddings fail.",
+      "tags": [
+        "embedding",
+        "rag",
+        "fallback"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/services/document_service.py:_record_document",
+      "type": "function",
+      "name": "_record_document",
+      "filePath": "backend/services/document_service.py",
+      "lineRange": [
+        170,
+        181
+      ],
+      "summary": "Inserts the document row and deletes earlier rows for the same user and filename, returning those replaced ids.",
+      "tags": [
+        "persistence",
+        "document",
+        "database"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/services/document_service.py:delete_document",
+      "type": "function",
+      "name": "delete_document",
+      "filePath": "backend/services/document_service.py",
+      "lineRange": [
+        190,
+        203
+      ],
+      "summary": "Deletes a user's document row and, when the row existed, removes its chunks from the search index.",
+      "tags": [
+        "document",
+        "deletion",
+        "indexing"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/services/document_service.py:reindex",
+      "type": "function",
+      "name": "reindex",
+      "filePath": "backend/services/document_service.py",
+      "lineRange": [
+        213,
+        233
+      ],
+      "summary": "Re-embeds unembedded chunks for every user, and all chunks when the stored embedding model no longer matches.",
+      "tags": [
+        "embedding",
+        "reindex",
+        "rag"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:backend/services/document_service.py:reindex_if_needed",
+      "type": "function",
+      "name": "reindex_if_needed",
+      "filePath": "backend/services/document_service.py",
+      "lineRange": [
+        235,
+        247
+      ],
+      "summary": "Startup hook that reindexes when the embedding model changed or lexical-only chunks remain, and skips quietly on failure.",
+      "tags": [
+        "embedding",
+        "reindex",
+        "startup"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/services/github_service.py:delete_repo",
+      "type": "function",
+      "name": "delete_repo",
+      "filePath": "backend/services/github_service.py",
+      "lineRange": [
+        91,
+        111
+      ],
+      "summary": "Deletes a connected repository row and removes the GitHub documents that were indexed under that owner and repo.",
+      "tags": [
+        "github",
+        "deletion",
+        "document"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:backend/services/github_service.py:connect",
+      "type": "function",
+      "name": "connect",
+      "filePath": "backend/services/github_service.py",
+      "lineRange": [
+        113,
+        144
+      ],
+      "summary": "Parses a repository URL, fetches the default-branch tree, indexes selected files, and stores an LLM brief plus file count.",
+      "tags": [
+        "github",
+        "ingestion",
+        "rag"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:backend/services/github_service.py:start_device_flow",
+      "type": "function",
+      "name": "start_device_flow",
+      "filePath": "backend/services/github_service.py",
+      "lineRange": [
+        146,
+        166
+      ],
+      "summary": "Starts GitHub's OAuth device flow and returns the user code, verification URL, and device code.",
+      "tags": [
+        "github",
+        "oauth",
+        "authentication"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/services/github_service.py:poll_device_flow",
+      "type": "function",
+      "name": "poll_device_flow",
+      "filePath": "backend/services/github_service.py",
+      "lineRange": [
+        168,
+        197
+      ],
+      "summary": "Polls GitHub for the device-flow access token and stores it as an OAuth credential when sign-in completes.",
+      "tags": [
+        "github",
+        "oauth",
+        "authentication"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:backend/services/github_service.py:_brief",
+      "type": "function",
+      "name": "_brief",
+      "filePath": "backend/services/github_service.py",
+      "lineRange": [
+        199,
+        224
+      ],
+      "summary": "Asks the LLM for a coding-assistant summary of the indexed tree and samples, or returns a layout fallback.",
+      "tags": [
+        "github",
+        "llm",
+        "summarization"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:backend/services/github_service.py:_file_text",
+      "type": "function",
+      "name": "_file_text",
+      "filePath": "backend/services/github_service.py",
+      "lineRange": [
+        226,
+        236
+      ],
+      "summary": "Fetches one repository file from the GitHub contents API and decodes base64 bodies to text.",
+      "tags": [
+        "github",
+        "http-client",
+        "decoding"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/services/github_service.py:_get",
+      "type": "function",
+      "name": "_get",
+      "filePath": "backend/services/github_service.py",
+      "lineRange": [
+        238,
+        257
+      ],
+      "summary": "GETs the GitHub REST API with an optional bearer token and maps HTTP failures to GitHubError.",
+      "tags": [
+        "github",
+        "http-client",
+        "error-handling"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/services/github_service.py:_upsert_context",
+      "type": "function",
+      "name": "_upsert_context",
+      "filePath": "backend/services/github_service.py",
+      "lineRange": [
+        274,
+        293
+      ],
+      "summary": "Inserts or updates the user's repository brief, branch, and indexed file count, then detaches the row.",
+      "tags": [
+        "github",
+        "persistence",
+        "database"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:backend/services/github_service.py:parse_repo_url",
+      "type": "function",
+      "name": "parse_repo_url",
+      "filePath": "backend/services/github_service.py",
+      "lineRange": [
+        296,
+        302
+      ],
+      "summary": "Extracts owner and repository name from an HTTPS or SSH GitHub URL and rejects anything else.",
+      "tags": [
+        "github",
+        "parsing",
+        "validation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/services/github_service.py:_select_paths",
+      "type": "function",
+      "name": "_select_paths",
+      "filePath": "backend/services/github_service.py",
+      "lineRange": [
+        305,
+        322
+      ],
+      "summary": "Chooses source and manifest paths from a Git tree, skipping vendored directories, binaries, and oversized files.",
+      "tags": [
+        "github",
+        "filtering",
+        "ingestion"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/services/session_service.py:update_session",
+      "type": "function",
+      "name": "update_session",
+      "filePath": "backend/services/session_service.py",
+      "lineRange": [
+        69,
+        81
+      ],
+      "summary": "Updates a session title, model, or mode and returns the reloaded session schema, or raises when the id is missing.",
+      "tags": [
+        "session",
+        "persistence",
+        "update"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/services/session_service.py:add_message",
+      "type": "function",
+      "name": "add_message",
+      "filePath": "backend/services/session_service.py",
+      "lineRange": [
+        92,
+        111
+      ],
+      "summary": "Appends a message, bumps the session timestamp, and titles a new chat from the first few words of a user message.",
+      "tags": [
+        "chat",
+        "persistence",
+        "message"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:backend/services/session_service.py:history",
+      "type": "function",
+      "name": "history",
+      "filePath": "backend/services/session_service.py",
+      "lineRange": [
+        113,
+        123
+      ],
+      "summary": "Returns the most recent user and assistant messages for a session, oldest first, optionally dropping the latest user turn.",
+      "tags": [
+        "chat",
+        "history",
+        "persistence"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/services/session_service.py:pop_last_exchange",
+      "type": "function",
+      "name": "pop_last_exchange",
+      "filePath": "backend/services/session_service.py",
+      "lineRange": [
+        125,
+        135
+      ],
+      "summary": "Deletes the trailing assistant reply so a turn can be regenerated, and returns the last user text.",
+      "tags": [
+        "chat",
+        "regenerate",
+        "persistence"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/services/session_service.py:get_owned_message",
+      "type": "function",
+      "name": "get_owned_message",
+      "filePath": "backend/services/session_service.py",
+      "lineRange": [
+        137,
+        146
+      ],
+      "summary": "Loads an assistant message only when it belongs to the given user, for rebuilding a download.",
+      "tags": [
+        "chat",
+        "authorization",
+        "message"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/utils/timeutil.py:utcnow",
+      "type": "function",
+      "name": "utcnow",
+      "filePath": "backend/utils/timeutil.py",
+      "lineRange": [
+        13,
+        15
+      ],
+      "summary": "Returns the current UTC time with tzinfo removed so new rows match timestamps stored before timezone support.",
+      "tags": [
+        "utility",
+        "datetime",
+        "database"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:backend/utils/timeutil.py:parse_duration",
+      "type": "function",
+      "name": "parse_duration",
+      "filePath": "backend/utils/timeutil.py",
+      "lineRange": [
+        18,
+        33
+      ],
+      "summary": "Parses a bare number of seconds or a combined hours, minutes, seconds, and milliseconds string into a float.",
+      "tags": [
+        "utility",
+        "parsing",
+        "datetime"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_github.py:github_transport",
+      "type": "function",
+      "name": "github_transport",
+      "filePath": "tests/test_github.py",
+      "lineRange": [
+        18,
+        56
+      ],
+      "summary": "Mock HTTP transport that fakes GitHub device-flow, repository, tree, and base64 file responses for the tests.",
+      "tags": [
+        "test",
+        "github",
+        "http-mock"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:tests/test_github.py:test_parse_repo_url_and_path_selection",
+      "type": "function",
+      "name": "test_parse_repo_url_and_path_selection",
+      "filePath": "tests/test_github.py",
+      "lineRange": [
+        59,
+        74
+      ],
+      "summary": "Checks owner/repo parsing, rejection of non-GitHub URLs, and that path selection keeps source files while dropping vendored and binary paths.",
+      "tags": [
+        "test",
+        "github",
+        "parsing"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_github.py:test_connect_indexes_repo_and_hides_the_token",
+      "type": "function",
+      "name": "test_connect_indexes_repo_and_hides_the_token",
+      "filePath": "tests/test_github.py",
+      "lineRange": [
+        77,
+        98
+      ],
+      "summary": "Connects a sample repository, asserts indexed GitHub documents, and checks that the token is absent from API responses before delete.",
+      "tags": [
+        "test",
+        "github",
+        "security"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:tests/test_github.py:test_connect_rejects_unknown_and_non_github_urls",
+      "type": "function",
+      "name": "test_connect_rejects_unknown_and_non_github_urls",
+      "filePath": "tests/test_github.py",
+      "lineRange": [
+        101,
+        105
+      ],
+      "summary": "Expects HTTP 400 for a non-GitHub URL and HTTP 404 when the repository is missing.",
+      "tags": [
+        "test",
+        "github",
+        "validation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_github.py:test_oauth_device_flow",
+      "type": "function",
+      "name": "test_oauth_device_flow",
+      "filePath": "tests/test_github.py",
+      "lineRange": [
+        108,
+        117
+      ],
+      "summary": "Starts the device flow with a configured client id and polls until the mocked token exchange reports connected.",
+      "tags": [
+        "test",
+        "oauth",
+        "github"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_github.py:test_oauth_pending_and_unconfigured",
+      "type": "function",
+      "name": "test_oauth_pending_and_unconfigured",
+      "filePath": "tests/test_github.py",
+      "lineRange": [
+        120,
+        127
+      ],
+      "summary": "Expects HTTP 501 when OAuth is unconfigured and a pending status while GitHub has not issued a token yet.",
+      "tags": [
+        "test",
+        "oauth",
+        "github"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_github.py:test_code_chat_gets_the_repo_brief",
+      "type": "function",
+      "name": "test_code_chat_gets_the_repo_brief",
+      "filePath": "tests/test_github.py",
+      "lineRange": [
+        130,
+        145
+      ],
+      "summary": "Connects a repository, streams a code-mode chat, and checks that the system prompt includes the repository brief and source path.",
+      "tags": [
+        "test",
+        "github",
+        "chat"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:tests/test_github.py:test_mcp_exposes_github_tools",
+      "type": "function",
+      "name": "test_mcp_exposes_github_tools",
+      "filePath": "tests/test_github.py",
+      "lineRange": [
+        148,
+        153
+      ],
+      "summary": "Asserts the MCP server exposes callable wrappers for connecting a repo, listing repos, reading context, and searching documents.",
+      "tags": [
+        "test",
+        "mcp",
+        "github"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "table:backend/models/db.py:sessions",
+      "type": "table",
+      "name": "sessions",
+      "filePath": "backend/models/db.py",
+      "lineRange": [
+        20,
+        35
+      ],
+      "summary": "Chat sessions keyed by user, with title, model, mode, and created/updated timestamps. Deleting a session cascades to its messages.",
+      "tags": [
+        "database",
+        "chat",
+        "sqlalchemy"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "table:backend/models/db.py:messages",
+      "type": "table",
+      "name": "messages",
+      "filePath": "backend/models/db.py",
+      "lineRange": [
+        38,
+        50
+      ],
+      "summary": "Chat turns belonging to a session, storing role, content, citations, thumbs feedback, and JSON metadata.",
+      "tags": [
+        "database",
+        "chat",
+        "sqlalchemy"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "table:backend/models/db.py:documents",
+      "type": "table",
+      "name": "documents",
+      "filePath": "backend/models/db.py",
+      "lineRange": [
+        53,
+        61
+      ],
+      "summary": "Ingested uploads, URLs, and GitHub files per user, with file type, chunk count, and index time.",
+      "tags": [
+        "database",
+        "document",
+        "sqlalchemy"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "table:backend/models/db.py:github_credentials",
+      "type": "table",
+      "name": "github_credentials",
+      "filePath": "backend/models/db.py",
+      "lineRange": [
+        64,
+        70
+      ],
+      "summary": "One GitHub token per user, marked as a personal access token or an OAuth token, with an updated timestamp.",
+      "tags": [
+        "database",
+        "github",
+        "security"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "table:backend/models/db.py:repo_contexts",
+      "type": "table",
+      "name": "repo_contexts",
+      "filePath": "backend/models/db.py",
+      "lineRange": [
+        73,
+        83
+      ],
+      "summary": "Connected repositories for a user, including owner, name, branch, generated brief, and indexed file count.",
+      "tags": [
+        "database",
+        "github",
+        "sqlalchemy"
+      ],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:backend/core/database.py",
+      "target": "class:backend/core/database.py:Base",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/core/database.py",
+      "target": "class:backend/core/database.py:Base",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/core/database.py",
+      "target": "class:backend/core/database.py:Database",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/core/database.py",
+      "target": "class:backend/core/database.py:Database",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/models/db.py",
+      "target": "class:backend/models/db.py:ChatSession",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/models/db.py",
+      "target": "class:backend/models/db.py:ChatSession",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/models/db.py",
+      "target": "class:backend/models/db.py:Message",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/models/db.py",
+      "target": "class:backend/models/db.py:Message",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/models/db.py",
+      "target": "class:backend/models/db.py:Document",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/models/db.py",
+      "target": "class:backend/models/db.py:Document",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/models/db.py",
+      "target": "class:backend/models/db.py:GithubCredential",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/models/db.py",
+      "target": "class:backend/models/db.py:GithubCredential",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/models/db.py",
+      "target": "class:backend/models/db.py:RepoContext",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/models/db.py",
+      "target": "class:backend/models/db.py:RepoContext",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/services/document_service.py",
+      "target": "class:backend/services/document_service.py:IngestResult",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/services/document_service.py",
+      "target": "class:backend/services/document_service.py:IngestResult",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/services/document_service.py",
+      "target": "class:backend/services/document_service.py:DocumentService",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/services/document_service.py",
+      "target": "class:backend/services/document_service.py:DocumentService",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/services/github_service.py",
+      "target": "class:backend/services/github_service.py:GitHubError",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/services/github_service.py",
+      "target": "class:backend/services/github_service.py:GitHubError",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/services/github_service.py",
+      "target": "class:backend/services/github_service.py:GitHubService",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/services/github_service.py",
+      "target": "class:backend/services/github_service.py:GitHubService",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/services/session_service.py",
+      "target": "class:backend/services/session_service.py:SessionService",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/services/session_service.py",
+      "target": "class:backend/services/session_service.py:SessionService",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/core/database.py",
+      "target": "function:backend/core/database.py:__init__",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/core/database.py",
+      "target": "function:backend/core/database.py:session",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/core/database.py",
+      "target": "function:backend/core/database.py:_ensure_columns",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/models/db.py",
+      "target": "function:backend/models/db.py:_uuid",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/models/db.py",
+      "target": "function:backend/models/db.py:_uuid",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/services/document_service.py",
+      "target": "function:backend/services/document_service.py:__init__",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/services/document_service.py",
+      "target": "function:backend/services/document_service.py:ingest_file",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/services/document_service.py",
+      "target": "function:backend/services/document_service.py:_chunk",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/services/document_service.py",
+      "target": "function:backend/services/document_service.py:_index_pages",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/services/document_service.py",
+      "target": "function:backend/services/document_service.py:_embed",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/services/document_service.py",
+      "target": "function:backend/services/document_service.py:_record_document",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/services/document_service.py",
+      "target": "function:backend/services/document_service.py:delete_document",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/services/document_service.py",
+      "target": "function:backend/services/document_service.py:reindex",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/services/document_service.py",
+      "target": "function:backend/services/document_service.py:reindex_if_needed",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/services/github_service.py",
+      "target": "function:backend/services/github_service.py:delete_repo",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/services/github_service.py",
+      "target": "function:backend/services/github_service.py:connect",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/services/github_service.py",
+      "target": "function:backend/services/github_service.py:start_device_flow",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/services/github_service.py",
+      "target": "function:backend/services/github_service.py:poll_device_flow",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/services/github_service.py",
+      "target": "function:backend/services/github_service.py:_brief",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/services/github_service.py",
+      "target": "function:backend/services/github_service.py:_file_text",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/services/github_service.py",
+      "target": "function:backend/services/github_service.py:_get",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/services/github_service.py",
+      "target": "function:backend/services/github_service.py:_upsert_context",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/services/github_service.py",
+      "target": "function:backend/services/github_service.py:parse_repo_url",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/services/github_service.py",
+      "target": "function:backend/services/github_service.py:parse_repo_url",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/services/github_service.py",
+      "target": "function:backend/services/github_service.py:_select_paths",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/services/github_service.py",
+      "target": "function:backend/services/github_service.py:_select_paths",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/services/session_service.py",
+      "target": "function:backend/services/session_service.py:update_session",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/services/session_service.py",
+      "target": "function:backend/services/session_service.py:add_message",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/services/session_service.py",
+      "target": "function:backend/services/session_service.py:history",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/services/session_service.py",
+      "target": "function:backend/services/session_service.py:pop_last_exchange",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/services/session_service.py",
+      "target": "function:backend/services/session_service.py:get_owned_message",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/utils/timeutil.py",
+      "target": "function:backend/utils/timeutil.py:utcnow",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/utils/timeutil.py",
+      "target": "function:backend/utils/timeutil.py:utcnow",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/utils/timeutil.py",
+      "target": "function:backend/utils/timeutil.py:parse_duration",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/utils/timeutil.py",
+      "target": "function:backend/utils/timeutil.py:parse_duration",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_github.py",
+      "target": "function:tests/test_github.py:github_transport",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_github.py",
+      "target": "function:tests/test_github.py:github_transport",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_github.py",
+      "target": "function:tests/test_github.py:test_parse_repo_url_and_path_selection",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_github.py",
+      "target": "function:tests/test_github.py:test_parse_repo_url_and_path_selection",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_github.py",
+      "target": "function:tests/test_github.py:test_connect_indexes_repo_and_hides_the_token",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_github.py",
+      "target": "function:tests/test_github.py:test_connect_indexes_repo_and_hides_the_token",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_github.py",
+      "target": "function:tests/test_github.py:test_connect_rejects_unknown_and_non_github_urls",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_github.py",
+      "target": "function:tests/test_github.py:test_connect_rejects_unknown_and_non_github_urls",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_github.py",
+      "target": "function:tests/test_github.py:test_oauth_device_flow",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_github.py",
+      "target": "function:tests/test_github.py:test_oauth_device_flow",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_github.py",
+      "target": "function:tests/test_github.py:test_oauth_pending_and_unconfigured",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_github.py",
+      "target": "function:tests/test_github.py:test_oauth_pending_and_unconfigured",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_github.py",
+      "target": "function:tests/test_github.py:test_code_chat_gets_the_repo_brief",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_github.py",
+      "target": "function:tests/test_github.py:test_code_chat_gets_the_repo_brief",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_github.py",
+      "target": "function:tests/test_github.py:test_mcp_exposes_github_tools",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:tests/test_github.py",
+      "target": "function:tests/test_github.py:test_mcp_exposes_github_tools",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:backend/models/db.py",
+      "target": "table:backend/models/db.py:sessions",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/models/db.py",
+      "target": "table:backend/models/db.py:messages",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/models/db.py",
+      "target": "table:backend/models/db.py:documents",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/models/db.py",
+      "target": "table:backend/models/db.py:github_credentials",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/models/db.py",
+      "target": "table:backend/models/db.py:repo_contexts",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:backend/models/db.py",
+      "target": "file:backend/core/database.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:backend/models/db.py",
+      "target": "file:backend/utils/timeutil.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:backend/services/document_service.py",
+      "target": "file:backend/core/config.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:backend/services/document_service.py",
+      "target": "file:backend/core/database.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:backend/services/document_service.py",
+      "target": "file:backend/core/exceptions.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:backend/services/document_service.py",
+      "target": "file:backend/models/db.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:backend/services/document_service.py",
+      "target": "file:backend/services/embedding_service.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:backend/services/document_service.py",
+      "target": "file:backend/services/index_store.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:backend/services/document_service.py",
+      "target": "file:backend/services/parser.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:backend/services/github_service.py",
+      "target": "file:backend/core/config.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:backend/services/github_service.py",
+      "target": "file:backend/core/database.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:backend/services/github_service.py",
+      "target": "file:backend/core/exceptions.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:backend/services/github_service.py",
+      "target": "file:backend/models/db.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:backend/services/github_service.py",
+      "target": "file:backend/services/document_service.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:backend/services/github_service.py",
+      "target": "file:backend/services/llm_service.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:backend/services/github_service.py",
+      "target": "file:backend/utils/timeutil.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:backend/services/session_service.py",
+      "target": "file:backend/core/config.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:backend/services/session_service.py",
+      "target": "file:backend/core/database.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:backend/services/session_service.py",
+      "target": "file:backend/core/exceptions.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:backend/services/session_service.py",
+      "target": "file:backend/models/api.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:backend/services/session_service.py",
+      "target": "file:backend/models/db.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:backend/services/session_service.py",
+      "target": "file:backend/utils/timeutil.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/test_github.py",
+      "target": "file:backend/services/github_service.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/test_github.py",
+      "target": "file:tests/conftest.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "class:backend/models/db.py:ChatSession",
+      "target": "class:backend/core/database.py:Base",
+      "type": "inherits",
+      "direction": "forward",
+      "weight": 0.9
+    },
+    {
+      "source": "class:backend/models/db.py:Message",
+      "target": "class:backend/core/database.py:Base",
+      "type": "inherits",
+      "direction": "forward",
+      "weight": 0.9
+    },
+    {
+      "source": "class:backend/models/db.py:Document",
+      "target": "class:backend/core/database.py:Base",
+      "type": "inherits",
+      "direction": "forward",
+      "weight": 0.9
+    },
+    {
+      "source": "class:backend/models/db.py:GithubCredential",
+      "target": "class:backend/core/database.py:Base",
+      "type": "inherits",
+      "direction": "forward",
+      "weight": 0.9
+    },
+    {
+      "source": "class:backend/models/db.py:RepoContext",
+      "target": "class:backend/core/database.py:Base",
+      "type": "inherits",
+      "direction": "forward",
+      "weight": 0.9
+    },
+    {
+      "source": "class:backend/services/github_service.py:GitHubError",
+      "target": "class:backend/core/exceptions.py:IngestError",
+      "type": "inherits",
+      "direction": "forward",
+      "weight": 0.9
+    },
+    {
+      "source": "file:backend/core/database.py",
+      "target": "file:backend/models/db.py",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:backend/services/github_service.py",
+      "target": "file:tests/test_github.py",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "function:backend/services/document_service.py:ingest_file",
+      "target": "function:backend/services/document_service.py:_index_pages",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:backend/services/document_service.py:ingest_file",
+      "target": "class:backend/core/exceptions.py:IngestError",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:backend/services/document_service.py:ingest_file",
+      "target": "class:backend/services/parser.py:DocumentParser",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:backend/services/document_service.py:_chunk",
+      "target": "class:backend/services/index_store.py:ChunkIn",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:backend/services/document_service.py:_index_pages",
+      "target": "function:backend/services/document_service.py:_chunk",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:backend/services/document_service.py:_index_pages",
+      "target": "function:backend/services/document_service.py:_embed",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:backend/services/document_service.py:_index_pages",
+      "target": "function:backend/services/document_service.py:_record_document",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:backend/services/document_service.py:_index_pages",
+      "target": "class:backend/core/exceptions.py:IngestError",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:backend/services/document_service.py:_index_pages",
+      "target": "class:backend/services/index_store.py:HybridIndexStore",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:backend/services/document_service.py:_index_pages",
+      "target": "class:backend/services/document_service.py:IngestResult",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:backend/services/document_service.py:_embed",
+      "target": "class:backend/services/embedding_service.py:EmbeddingService",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:backend/services/document_service.py:_record_document",
+      "target": "function:backend/core/database.py:session",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:backend/services/document_service.py:delete_document",
+      "target": "class:backend/services/index_store.py:HybridIndexStore",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:backend/services/document_service.py:reindex",
+      "target": "class:backend/services/embedding_service.py:EmbeddingService",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:backend/services/document_service.py:reindex",
+      "target": "class:backend/services/index_store.py:HybridIndexStore",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:backend/services/document_service.py:reindex_if_needed",
+      "target": "function:backend/services/document_service.py:reindex",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:backend/services/document_service.py:reindex_if_needed",
+      "target": "class:backend/services/embedding_service.py:EmbeddingService",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:backend/services/github_service.py:connect",
+      "target": "function:backend/services/github_service.py:parse_repo_url",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:backend/services/github_service.py:connect",
+      "target": "function:backend/services/github_service.py:_select_paths",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:backend/services/github_service.py:connect",
+      "target": "function:backend/services/github_service.py:_file_text",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:backend/services/github_service.py:connect",
+      "target": "function:backend/services/github_service.py:_get",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:backend/services/github_service.py:connect",
+      "target": "function:backend/services/github_service.py:_brief",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:backend/services/github_service.py:connect",
+      "target": "function:backend/services/github_service.py:_upsert_context",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:backend/services/github_service.py:connect",
+      "target": "class:backend/services/github_service.py:GitHubError",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:backend/services/github_service.py:connect",
+      "target": "class:backend/services/document_service.py:DocumentService",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:backend/services/github_service.py:delete_repo",
+      "target": "function:backend/services/document_service.py:delete_document",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:backend/services/github_service.py:delete_repo",
+      "target": "class:backend/services/document_service.py:DocumentService",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:backend/services/github_service.py:_file_text",
+      "target": "function:backend/services/github_service.py:_get",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:backend/services/github_service.py:_file_text",
+      "target": "class:backend/services/github_service.py:GitHubError",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:backend/services/github_service.py:_get",
+      "target": "class:backend/services/github_service.py:GitHubError",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:backend/services/github_service.py:_brief",
+      "target": "class:backend/services/llm_service.py:LLMService",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:backend/services/github_service.py:parse_repo_url",
+      "target": "class:backend/services/github_service.py:GitHubError",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:backend/services/github_service.py:start_device_flow",
+      "target": "class:backend/services/github_service.py:GitHubError",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:backend/services/github_service.py:poll_device_flow",
+      "target": "class:backend/services/github_service.py:GitHubError",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:backend/services/github_service.py:_upsert_context",
+      "target": "function:backend/utils/timeutil.py:utcnow",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:backend/services/github_service.py:_upsert_context",
+      "target": "function:backend/core/database.py:session",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:backend/services/session_service.py:update_session",
+      "target": "class:backend/core/exceptions.py:SessionNotFound",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:backend/services/session_service.py:update_session",
+      "target": "function:backend/core/database.py:session",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:backend/services/session_service.py:add_message",
+      "target": "class:backend/core/exceptions.py:SessionNotFound",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:backend/services/session_service.py:add_message",
+      "target": "function:backend/utils/timeutil.py:utcnow",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:backend/services/session_service.py:add_message",
+      "target": "class:backend/models/api.py:MessageSchema",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:backend/services/session_service.py:add_message",
+      "target": "class:backend/models/api.py:CitationSchema",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:backend/services/session_service.py:add_message",
+      "target": "function:backend/core/database.py:session",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:backend/services/session_service.py:history",
+      "target": "function:backend/core/database.py:session",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:backend/services/session_service.py:pop_last_exchange",
+      "target": "function:backend/core/database.py:session",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:backend/services/session_service.py:get_owned_message",
+      "target": "function:backend/core/database.py:session",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:backend/services/session_service.py:get_owned_message",
+      "target": "class:backend/models/api.py:MessageSchema",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:tests/test_github.py:test_parse_repo_url_and_path_selection",
+      "target": "function:backend/services/github_service.py:parse_repo_url",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:tests/test_github.py:test_parse_repo_url_and_path_selection",
+      "target": "function:backend/services/github_service.py:_select_paths",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:tests/test_github.py:test_parse_repo_url_and_path_selection",
+      "target": "class:backend/services/github_service.py:GitHubError",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:tests/test_github.py:test_connect_indexes_repo_and_hides_the_token",
+      "target": "function:tests/test_github.py:github_transport",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:tests/test_github.py:test_connect_indexes_repo_and_hides_the_token",
+      "target": "class:tests/conftest.py:FakeProviderClient",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:tests/test_github.py:test_connect_indexes_repo_and_hides_the_token",
+      "target": "function:tests/conftest.py:client_factory",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:tests/test_github.py:test_connect_rejects_unknown_and_non_github_urls",
+      "target": "function:tests/test_github.py:github_transport",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:tests/test_github.py:test_connect_rejects_unknown_and_non_github_urls",
+      "target": "function:tests/conftest.py:client_factory",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:tests/test_github.py:test_oauth_device_flow",
+      "target": "function:tests/test_github.py:github_transport",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:tests/test_github.py:test_oauth_device_flow",
+      "target": "function:tests/conftest.py:client_factory",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:tests/test_github.py:test_oauth_pending_and_unconfigured",
+      "target": "function:tests/test_github.py:github_transport",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:tests/test_github.py:test_oauth_pending_and_unconfigured",
+      "target": "function:tests/conftest.py:client_factory",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:tests/test_github.py:test_code_chat_gets_the_repo_brief",
+      "target": "function:tests/test_github.py:github_transport",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:tests/test_github.py:test_code_chat_gets_the_repo_brief",
+      "target": "class:tests/conftest.py:FakeProviderClient",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:tests/test_github.py:test_code_chat_gets_the_repo_brief",
+      "target": "function:tests/conftest.py:parse_sse",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:tests/test_github.py:test_code_chat_gets_the_repo_brief",
+      "target": "function:tests/conftest.py:client_factory",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    }
+  ]
+}

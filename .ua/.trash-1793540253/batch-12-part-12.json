@@ -1,0 +1,702 @@
+{
+  "nodes": [
+    {
+      "id": "file:tests/test_frontend_sanitizer.py",
+      "type": "file",
+      "name": "test_frontend_sanitizer.py",
+      "filePath": "tests/test_frontend_sanitizer.py",
+      "summary": "Regression guards for the Markdown sanitizer in utils.js. Static source checks always run; a headless Chrome harness exercises DOMPurify when a browser and CDN libraries are available.",
+      "tags": [
+        "test",
+        "sanitization",
+        "security",
+        "markdown"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:tests/test_frontend_sanitizer.py:_forbid_attr",
+      "type": "function",
+      "name": "_forbid_attr",
+      "filePath": "tests/test_frontend_sanitizer.py",
+      "lineRange": [
+        22,
+        25
+      ],
+      "summary": "Parses the FORBID_ATTR list from utils.js.",
+      "tags": [
+        "test",
+        "sanitization",
+        "parsing"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_sanitizer.py:_hook_body",
+      "type": "function",
+      "name": "_hook_body",
+      "filePath": "tests/test_frontend_sanitizer.py",
+      "lineRange": [
+        28,
+        31
+      ],
+      "summary": "Extracts the keepLanguageClass function body from utils.js.",
+      "tags": [
+        "test",
+        "sanitization",
+        "parsing"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_sanitizer.py:test_forbid_attr_contains_required_attributes",
+      "type": "function",
+      "name": "test_forbid_attr_contains_required_attributes",
+      "filePath": "tests/test_frontend_sanitizer.py",
+      "lineRange": [
+        34,
+        36
+      ],
+      "summary": "Asserts dangerous and layout attributes, including class, style, and srcset, are forbidden.",
+      "tags": [
+        "test",
+        "sanitization",
+        "security"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_sanitizer.py:test_language_hook_is_scoped_to_code_and_validated",
+      "type": "function",
+      "name": "test_language_hook_is_scoped_to_code_and_validated",
+      "filePath": "tests/test_frontend_sanitizer.py",
+      "lineRange": [
+        39,
+        46
+      ],
+      "summary": "Asserts the sanitize hook keeps only an anchored language-* class on CODE elements.",
+      "tags": [
+        "test",
+        "sanitization",
+        "security"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_sanitizer.py:test_hook_registered_only_around_sanitize_and_always_removed",
+      "type": "function",
+      "name": "test_hook_registered_only_around_sanitize_and_always_removed",
+      "filePath": "tests/test_frontend_sanitizer.py",
+      "lineRange": [
+        49,
+        57
+      ],
+      "summary": "Asserts the language hook is added only around DOMPurify.sanitize and removed in a finally block.",
+      "tags": [
+        "test",
+        "sanitization",
+        "security"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_sanitizer.py:test_markdown_goes_through_sanitizer_wrapper",
+      "type": "function",
+      "name": "test_markdown_goes_through_sanitizer_wrapper",
+      "filePath": "tests/test_frontend_sanitizer.py",
+      "lineRange": [
+        60,
+        62
+      ],
+      "summary": "Asserts marked.parse output is passed through sanitizeMarkdownHtml and not returned raw.",
+      "tags": [
+        "test",
+        "markdown",
+        "sanitization"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_sanitizer.py:test_artifact_preview_rebuilds_markdown_like_chat",
+      "type": "function",
+      "name": "test_artifact_preview_rebuilds_markdown_like_chat",
+      "filePath": "tests/test_frontend_sanitizer.py",
+      "lineRange": [
+        65,
+        69
+      ],
+      "summary": "Asserts artifact HTML is rebuilt through the same Markdown sanitizer, with text and spreadsheet branches.",
+      "tags": [
+        "test",
+        "artifacts",
+        "sanitization"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_sanitizer.py:test_buildPreviewDoc_is_exported",
+      "type": "function",
+      "name": "test_buildPreviewDoc_is_exported",
+      "filePath": "tests/test_frontend_sanitizer.py",
+      "lineRange": [
+        72,
+        76
+      ],
+      "summary": "Asserts buildPreviewDoc is returned from the utils IIFE.",
+      "tags": [
+        "test",
+        "preview",
+        "exports"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_sanitizer.py:test_buildPreviewDoc_handles_all_three_branches",
+      "type": "function",
+      "name": "test_buildPreviewDoc_handles_all_three_branches",
+      "filePath": "tests/test_frontend_sanitizer.py",
+      "lineRange": [
+        79,
+        89
+      ],
+      "summary": "Asserts the preview builder has full-document, SVG, and CSP branches and the expected filenames.",
+      "tags": [
+        "test",
+        "preview",
+        "security"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_sanitizer.py:test_code_preview_js_exports_required_api",
+      "type": "function",
+      "name": "test_code_preview_js_exports_required_api",
+      "filePath": "tests/test_frontend_sanitizer.py",
+      "lineRange": [
+        92,
+        99
+      ],
+      "summary": "Asserts code-preview.js exposes decorate, sync, open, and close and allowlists html and svg.",
+      "tags": [
+        "test",
+        "preview",
+        "exports"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_sanitizer.py:test_code_preview_js_checks_chatArea",
+      "type": "function",
+      "name": "test_code_preview_js_checks_chatArea",
+      "filePath": "tests/test_frontend_sanitizer.py",
+      "lineRange": [
+        102,
+        108
+      ],
+      "summary": "Asserts decorate bails out unless the wrapper is inside #chatArea.",
+      "tags": [
+        "test",
+        "preview",
+        "security"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_sanitizer.py:test_code_workspace_note_updated",
+      "type": "function",
+      "name": "test_code_workspace_note_updated",
+      "filePath": "tests/test_frontend_sanitizer.py",
+      "lineRange": [
+        111,
+        114
+      ],
+      "summary": "Asserts the Code workspace copy mentions Run and no longer says code is never run.",
+      "tags": [
+        "test",
+        "content",
+        "preview"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_sanitizer.py:test_purify_config_keeps_http_only_and_forbids_active_tags",
+      "type": "function",
+      "name": "test_purify_config_keeps_http_only_and_forbids_active_tags",
+      "filePath": "tests/test_frontend_sanitizer.py",
+      "lineRange": [
+        117,
+        121
+      ],
+      "summary": "Asserts the purifier allows only http(s) URIs and forbids active tags such as script, iframe, and form.",
+      "tags": [
+        "test",
+        "sanitization",
+        "security"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_sanitizer.py:_chrome",
+      "type": "function",
+      "name": "_chrome",
+      "filePath": "tests/test_frontend_sanitizer.py",
+      "lineRange": [
+        125,
+        130
+      ],
+      "summary": "Returns a headless Chrome or Chromium binary from PATH, if one is installed.",
+      "tags": [
+        "test",
+        "browser",
+        "utility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_sanitizer.py:browser_result",
+      "type": "function",
+      "name": "browser_result",
+      "filePath": "tests/test_frontend_sanitizer.py",
+      "lineRange": [
+        225,
+        249
+      ],
+      "summary": "Runs the sanitizer harness in headless Chrome and returns the JSON result, skipping when Chrome or the CDN libraries are missing.",
+      "tags": [
+        "test",
+        "browser",
+        "sanitization"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:tests/test_frontend_sanitizer.py:test_browser_attributes_and_classes_stripped",
+      "type": "function",
+      "name": "test_browser_attributes_and_classes_stripped",
+      "filePath": "tests/test_frontend_sanitizer.py",
+      "lineRange": [
+        252,
+        258
+      ],
+      "summary": "Asserts the live sanitizer strips classes, roles, and data attributes while keeping safe links.",
+      "tags": [
+        "test",
+        "browser",
+        "sanitization"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_sanitizer.py:test_browser_language_hook_cannot_be_abused",
+      "type": "function",
+      "name": "test_browser_language_hook_cannot_be_abused",
+      "filePath": "tests/test_frontend_sanitizer.py",
+      "lineRange": [
+        261,
+        266
+      ],
+      "summary": "Asserts a hostile class cannot survive the language hook and that the hook is not left registered.",
+      "tags": [
+        "test",
+        "browser",
+        "security"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_sanitizer.py:test_browser_features_still_work",
+      "type": "function",
+      "name": "test_browser_features_still_work",
+      "filePath": "tests/test_frontend_sanitizer.py",
+      "lineRange": [
+        269,
+        275
+      ],
+      "summary": "Asserts highlighting, citation badges, safe link targets, and the copy button still survive sanitizing.",
+      "tags": [
+        "test",
+        "browser",
+        "markdown"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_sanitizer.py:test_browser_buildPreviewDoc_html_fragment",
+      "type": "function",
+      "name": "test_browser_buildPreviewDoc_html_fragment",
+      "filePath": "tests/test_frontend_sanitizer.py",
+      "lineRange": [
+        278,
+        284
+      ],
+      "summary": "Asserts an HTML fragment preview is wrapped as a document named preview.html with a CSP meta tag.",
+      "tags": [
+        "test",
+        "browser",
+        "preview"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_sanitizer.py:test_browser_buildPreviewDoc_svg",
+      "type": "function",
+      "name": "test_browser_buildPreviewDoc_svg",
+      "filePath": "tests/test_frontend_sanitizer.py",
+      "lineRange": [
+        287,
+        290
+      ],
+      "summary": "Asserts an SVG preview uses preview.svg and includes the centring stylesheet.",
+      "tags": [
+        "test",
+        "browser",
+        "preview"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_sanitizer.py:test_browser_buildPreviewDoc_full_document",
+      "type": "function",
+      "name": "test_browser_buildPreviewDoc_full_document",
+      "filePath": "tests/test_frontend_sanitizer.py",
+      "lineRange": [
+        293,
+        296
+      ],
+      "summary": "Asserts a full HTML document keeps its title and receives a CSP injection in the existing head.",
+      "tags": [
+        "test",
+        "browser",
+        "preview"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_frontend_sanitizer.py:test_browser_run_button_scoping",
+      "type": "function",
+      "name": "test_browser_run_button_scoping",
+      "filePath": "tests/test_frontend_sanitizer.py",
+      "lineRange": [
+        299,
+        304
+      ],
+      "summary": "Asserts the Run button appears once for HTML inside the chat area and never for Python or blocks outside it.",
+      "tags": [
+        "test",
+        "browser",
+        "preview"
+      ],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:tests/test_frontend_sanitizer.py",
+      "target": "function:tests/test_frontend_sanitizer.py:_forbid_attr",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:tests/test_frontend_sanitizer.py",
+      "target": "function:tests/test_frontend_sanitizer.py:_forbid_attr",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_sanitizer.py",
+      "target": "function:tests/test_frontend_sanitizer.py:_hook_body",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:tests/test_frontend_sanitizer.py",
+      "target": "function:tests/test_frontend_sanitizer.py:_hook_body",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_sanitizer.py",
+      "target": "function:tests/test_frontend_sanitizer.py:test_forbid_attr_contains_required_attributes",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:tests/test_frontend_sanitizer.py",
+      "target": "function:tests/test_frontend_sanitizer.py:test_forbid_attr_contains_required_attributes",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_sanitizer.py",
+      "target": "function:tests/test_frontend_sanitizer.py:test_language_hook_is_scoped_to_code_and_validated",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:tests/test_frontend_sanitizer.py",
+      "target": "function:tests/test_frontend_sanitizer.py:test_language_hook_is_scoped_to_code_and_validated",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_sanitizer.py",
+      "target": "function:tests/test_frontend_sanitizer.py:test_hook_registered_only_around_sanitize_and_always_removed",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:tests/test_frontend_sanitizer.py",
+      "target": "function:tests/test_frontend_sanitizer.py:test_hook_registered_only_around_sanitize_and_always_removed",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_sanitizer.py",
+      "target": "function:tests/test_frontend_sanitizer.py:test_markdown_goes_through_sanitizer_wrapper",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:tests/test_frontend_sanitizer.py",
+      "target": "function:tests/test_frontend_sanitizer.py:test_markdown_goes_through_sanitizer_wrapper",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_sanitizer.py",
+      "target": "function:tests/test_frontend_sanitizer.py:test_artifact_preview_rebuilds_markdown_like_chat",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:tests/test_frontend_sanitizer.py",
+      "target": "function:tests/test_frontend_sanitizer.py:test_artifact_preview_rebuilds_markdown_like_chat",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_sanitizer.py",
+      "target": "function:tests/test_frontend_sanitizer.py:test_buildPreviewDoc_is_exported",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:tests/test_frontend_sanitizer.py",
+      "target": "function:tests/test_frontend_sanitizer.py:test_buildPreviewDoc_is_exported",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_sanitizer.py",
+      "target": "function:tests/test_frontend_sanitizer.py:test_buildPreviewDoc_handles_all_three_branches",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:tests/test_frontend_sanitizer.py",
+      "target": "function:tests/test_frontend_sanitizer.py:test_buildPreviewDoc_handles_all_three_branches",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_sanitizer.py",
+      "target": "function:tests/test_frontend_sanitizer.py:test_code_preview_js_exports_required_api",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:tests/test_frontend_sanitizer.py",
+      "target": "function:tests/test_frontend_sanitizer.py:test_code_preview_js_exports_required_api",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_sanitizer.py",
+      "target": "function:tests/test_frontend_sanitizer.py:test_code_preview_js_checks_chatArea",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:tests/test_frontend_sanitizer.py",
+      "target": "function:tests/test_frontend_sanitizer.py:test_code_preview_js_checks_chatArea",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_sanitizer.py",
+      "target": "function:tests/test_frontend_sanitizer.py:test_code_workspace_note_updated",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:tests/test_frontend_sanitizer.py",
+      "target": "function:tests/test_frontend_sanitizer.py:test_code_workspace_note_updated",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_sanitizer.py",
+      "target": "function:tests/test_frontend_sanitizer.py:test_purify_config_keeps_http_only_and_forbids_active_tags",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:tests/test_frontend_sanitizer.py",
+      "target": "function:tests/test_frontend_sanitizer.py:test_purify_config_keeps_http_only_and_forbids_active_tags",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_sanitizer.py",
+      "target": "function:tests/test_frontend_sanitizer.py:_chrome",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:tests/test_frontend_sanitizer.py",
+      "target": "function:tests/test_frontend_sanitizer.py:_chrome",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_sanitizer.py",
+      "target": "function:tests/test_frontend_sanitizer.py:browser_result",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:tests/test_frontend_sanitizer.py",
+      "target": "function:tests/test_frontend_sanitizer.py:browser_result",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_sanitizer.py",
+      "target": "function:tests/test_frontend_sanitizer.py:test_browser_attributes_and_classes_stripped",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:tests/test_frontend_sanitizer.py",
+      "target": "function:tests/test_frontend_sanitizer.py:test_browser_attributes_and_classes_stripped",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_sanitizer.py",
+      "target": "function:tests/test_frontend_sanitizer.py:test_browser_language_hook_cannot_be_abused",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:tests/test_frontend_sanitizer.py",
+      "target": "function:tests/test_frontend_sanitizer.py:test_browser_language_hook_cannot_be_abused",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_sanitizer.py",
+      "target": "function:tests/test_frontend_sanitizer.py:test_browser_features_still_work",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:tests/test_frontend_sanitizer.py",
+      "target": "function:tests/test_frontend_sanitizer.py:test_browser_features_still_work",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_sanitizer.py",
+      "target": "function:tests/test_frontend_sanitizer.py:test_browser_buildPreviewDoc_html_fragment",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:tests/test_frontend_sanitizer.py",
+      "target": "function:tests/test_frontend_sanitizer.py:test_browser_buildPreviewDoc_html_fragment",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_sanitizer.py",
+      "target": "function:tests/test_frontend_sanitizer.py:test_browser_buildPreviewDoc_svg",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:tests/test_frontend_sanitizer.py",
+      "target": "function:tests/test_frontend_sanitizer.py:test_browser_buildPreviewDoc_svg",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_sanitizer.py",
+      "target": "function:tests/test_frontend_sanitizer.py:test_browser_buildPreviewDoc_full_document",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:tests/test_frontend_sanitizer.py",
+      "target": "function:tests/test_frontend_sanitizer.py:test_browser_buildPreviewDoc_full_document",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_frontend_sanitizer.py",
+      "target": "function:tests/test_frontend_sanitizer.py:test_browser_run_button_scoping",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:tests/test_frontend_sanitizer.py",
+      "target": "function:tests/test_frontend_sanitizer.py:test_browser_run_button_scoping",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    }
+  ]
+}

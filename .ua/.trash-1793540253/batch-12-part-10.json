@@ -1,0 +1,331 @@
+{
+  "nodes": [
+    {
+      "id": "file:tests/test_architecture.py",
+      "type": "file",
+      "name": "test_architecture.py",
+      "filePath": "tests/test_architecture.py",
+      "summary": "Guards backend layout: imports may only point at allowed lower layers, module-level imports must be acyclic, and environment reads and model ids stay in core.config.",
+      "tags": [
+        "test",
+        "architecture",
+        "validation",
+        "imports"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Parses each backend module with ast and checks a downward package allow-list. The composition root and api layer are the only modules permitted to reach the DI container."
+    },
+    {
+      "id": "function:tests/test_architecture.py:_modules",
+      "type": "function",
+      "name": "_modules",
+      "filePath": "tests/test_architecture.py",
+      "lineRange": [
+        27,
+        34
+      ],
+      "summary": "Maps backend dotted module names to source paths, skipping bytecode caches.",
+      "tags": [
+        "test",
+        "architecture",
+        "filesystem"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_architecture.py:_imports",
+      "type": "function",
+      "name": "_imports",
+      "filePath": "tests/test_architecture.py",
+      "lineRange": [
+        37,
+        52
+      ],
+      "summary": "Collects backend import targets from a file's AST, optionally ignoring imports inside functions.",
+      "tags": [
+        "test",
+        "imports",
+        "ast"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_architecture.py:_package",
+      "type": "function",
+      "name": "_package",
+      "filePath": "tests/test_architecture.py",
+      "lineRange": [
+        55,
+        57
+      ],
+      "summary": "Returns the top-level backend package name for a dotted module.",
+      "tags": [
+        "test",
+        "architecture",
+        "utility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_architecture.py:test_backend_root_only_contains_main",
+      "type": "function",
+      "name": "test_backend_root_only_contains_main",
+      "filePath": "tests/test_architecture.py",
+      "lineRange": [
+        60,
+        63
+      ],
+      "summary": "Asserts the backend root contains only __init__.py and main.py, and that each layer package exists.",
+      "tags": [
+        "test",
+        "architecture",
+        "layout"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_architecture.py:test_layer_direction",
+      "type": "function",
+      "name": "test_layer_direction",
+      "filePath": "tests/test_architecture.py",
+      "lineRange": [
+        66,
+        78
+      ],
+      "summary": "Asserts every import stays inside the package allow-list and that only api imports the DI container.",
+      "tags": [
+        "test",
+        "architecture",
+        "imports"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_architecture.py:test_no_module_level_import_cycles",
+      "type": "function",
+      "name": "test_no_module_level_import_cycles",
+      "filePath": "tests/test_architecture.py",
+      "lineRange": [
+        81,
+        99
+      ],
+      "summary": "Depth-first searches module-level backend imports and fails when a cycle is found.",
+      "tags": [
+        "test",
+        "imports",
+        "graph"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_architecture.py:test_package_initialisers_do_not_import_siblings",
+      "type": "function",
+      "name": "test_package_initialisers_do_not_import_siblings",
+      "filePath": "tests/test_architecture.py",
+      "lineRange": [
+        102,
+        105
+      ],
+      "summary": "Asserts layer package __init__ files contain no import statements.",
+      "tags": [
+        "test",
+        "imports",
+        "packages"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_architecture.py:test_environment_only_read_in_config",
+      "type": "function",
+      "name": "test_environment_only_read_in_config",
+      "filePath": "tests/test_architecture.py",
+      "lineRange": [
+        108,
+        115
+      ],
+      "summary": "Asserts os.getenv and os.environ appear only in backend.core.config.",
+      "tags": [
+        "test",
+        "configuration",
+        "security"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_architecture.py:test_no_hardcoded_model_ids_outside_config",
+      "type": "function",
+      "name": "test_no_hardcoded_model_ids_outside_config",
+      "filePath": "tests/test_architecture.py",
+      "lineRange": [
+        118,
+        122
+      ],
+      "summary": "Asserts model-id literals such as gpt-oss and gemini appear only in backend.core.config.",
+      "tags": [
+        "test",
+        "configuration",
+        "models"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:tests/test_architecture.py:test_every_module_imports_in_a_clean_interpreter",
+      "type": "function",
+      "name": "test_every_module_imports_in_a_clean_interpreter",
+      "filePath": "tests/test_architecture.py",
+      "lineRange": [
+        126,
+        129
+      ],
+      "summary": "Imports each backend module in a fresh interpreter and requires a zero exit code.",
+      "tags": [
+        "test",
+        "imports",
+        "smoke"
+      ],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:tests/test_architecture.py",
+      "target": "function:tests/test_architecture.py:_modules",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:tests/test_architecture.py",
+      "target": "function:tests/test_architecture.py:_modules",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_architecture.py",
+      "target": "function:tests/test_architecture.py:_imports",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:tests/test_architecture.py",
+      "target": "function:tests/test_architecture.py:_imports",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_architecture.py",
+      "target": "function:tests/test_architecture.py:_package",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:tests/test_architecture.py",
+      "target": "function:tests/test_architecture.py:_package",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_architecture.py",
+      "target": "function:tests/test_architecture.py:test_backend_root_only_contains_main",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:tests/test_architecture.py",
+      "target": "function:tests/test_architecture.py:test_backend_root_only_contains_main",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_architecture.py",
+      "target": "function:tests/test_architecture.py:test_layer_direction",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:tests/test_architecture.py",
+      "target": "function:tests/test_architecture.py:test_layer_direction",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_architecture.py",
+      "target": "function:tests/test_architecture.py:test_no_module_level_import_cycles",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:tests/test_architecture.py",
+      "target": "function:tests/test_architecture.py:test_no_module_level_import_cycles",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_architecture.py",
+      "target": "function:tests/test_architecture.py:test_package_initialisers_do_not_import_siblings",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:tests/test_architecture.py",
+      "target": "function:tests/test_architecture.py:test_package_initialisers_do_not_import_siblings",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_architecture.py",
+      "target": "function:tests/test_architecture.py:test_environment_only_read_in_config",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:tests/test_architecture.py",
+      "target": "function:tests/test_architecture.py:test_environment_only_read_in_config",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_architecture.py",
+      "target": "function:tests/test_architecture.py:test_no_hardcoded_model_ids_outside_config",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:tests/test_architecture.py",
+      "target": "function:tests/test_architecture.py:test_no_hardcoded_model_ids_outside_config",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:tests/test_architecture.py",
+      "target": "function:tests/test_architecture.py:test_every_module_imports_in_a_clean_interpreter",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:tests/test_architecture.py",
+      "target": "function:tests/test_architecture.py:test_every_module_imports_in_a_clean_interpreter",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    }
+  ]
+}

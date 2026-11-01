@@ -1,0 +1,166 @@
+{
+  "projectRoot": "F:\\Personal Projects\\AgenticAI_Chatbot_Using_RAG",
+  "batchFiles": [
+    {
+      "path": "backend/api/mcp_server.py",
+      "language": "python",
+      "sizeLines": 124,
+      "fileCategory": "code"
+    },
+    {
+      "path": "backend/api/routes.py",
+      "language": "python",
+      "sizeLines": 410,
+      "fileCategory": "code"
+    },
+    {
+      "path": "backend/client/search_client.py",
+      "language": "python",
+      "sizeLines": 88,
+      "fileCategory": "code"
+    },
+    {
+      "path": "backend/core/container.py",
+      "language": "python",
+      "sizeLines": 196,
+      "fileCategory": "code"
+    },
+    {
+      "path": "backend/main.py",
+      "language": "python",
+      "sizeLines": 119,
+      "fileCategory": "code"
+    },
+    {
+      "path": "backend/models/api.py",
+      "language": "python",
+      "sizeLines": 253,
+      "fileCategory": "code"
+    },
+    {
+      "path": "backend/services/artifact.py",
+      "language": "python",
+      "sizeLines": 1201,
+      "fileCategory": "code"
+    },
+    {
+      "path": "backend/services/chat_service.py",
+      "language": "python",
+      "sizeLines": 538,
+      "fileCategory": "code"
+    },
+    {
+      "path": "backend/services/search_service.py",
+      "language": "python",
+      "sizeLines": 133,
+      "fileCategory": "code"
+    },
+    {
+      "path": "backend/utils/cache.py",
+      "language": "python",
+      "sizeLines": 167,
+      "fileCategory": "code"
+    },
+    {
+      "path": "backend/utils/sse.py",
+      "language": "python",
+      "sizeLines": 12,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/test_api.py",
+      "language": "python",
+      "sizeLines": 503,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/test_live.py",
+      "language": "python",
+      "sizeLines": 224,
+      "fileCategory": "code"
+    }
+  ],
+  "batchImportData": {
+    "backend/api/mcp_server.py": [
+      "backend/core/config.py",
+      "backend/core/container.py",
+      "backend/models/api.py",
+      "backend/services/chat_service.py"
+    ],
+    "backend/api/routes.py": [
+      "backend/core/container.py",
+      "backend/core/exceptions.py",
+      "backend/models/api.py",
+      "backend/services/artifact.py",
+      "backend/services/chat_service.py",
+      "backend/services/document_service.py",
+      "backend/services/github_service.py",
+      "backend/services/llm_service.py",
+      "backend/services/parser.py",
+      "backend/services/retrieval_service.py",
+      "backend/services/search_service.py",
+      "backend/services/session_service.py",
+      "backend/utils/sse.py"
+    ],
+    "backend/client/search_client.py": [],
+    "backend/core/container.py": [
+      "backend/client/http.py",
+      "backend/client/search_client.py",
+      "backend/client/web_client.py",
+      "backend/core/config.py",
+      "backend/core/database.py",
+      "backend/services/chat_service.py",
+      "backend/services/document_service.py",
+      "backend/services/embedding_service.py",
+      "backend/services/github_service.py",
+      "backend/services/index_store.py",
+      "backend/services/llm_service.py",
+      "backend/services/parser.py",
+      "backend/services/prompt_builder.py",
+      "backend/services/rerank_service.py",
+      "backend/services/retrieval_service.py",
+      "backend/services/search_service.py",
+      "backend/services/session_service.py",
+      "backend/utils/cache.py",
+      "backend/utils/rate_limiter.py"
+    ],
+    "backend/main.py": [
+      "backend/api/routes.py",
+      "backend/core/config.py",
+      "backend/core/container.py"
+    ],
+    "backend/models/api.py": [],
+    "backend/services/artifact.py": [],
+    "backend/services/chat_service.py": [
+      "backend/core/config.py",
+      "backend/core/exceptions.py",
+      "backend/services/artifact.py",
+      "backend/services/llm_service.py",
+      "backend/services/prompt_builder.py",
+      "backend/services/retrieval_service.py",
+      "backend/services/search_service.py",
+      "backend/services/session_service.py",
+      "backend/utils/cache.py"
+    ],
+    "backend/services/search_service.py": [
+      "backend/client/search_client.py",
+      "backend/core/config.py",
+      "backend/models/api.py",
+      "backend/utils/cache.py",
+      "backend/utils/text.py"
+    ],
+    "backend/utils/cache.py": [],
+    "backend/utils/sse.py": [],
+    "tests/test_api.py": [
+      "backend/models/api.py",
+      "backend/services/chat_service.py",
+      "tests/conftest.py"
+    ],
+    "tests/test_live.py": [
+      "backend/core/config.py",
+      "backend/core/container.py",
+      "backend/models/api.py",
+      "backend/services/chat_service.py"
+    ]
+  }
+}

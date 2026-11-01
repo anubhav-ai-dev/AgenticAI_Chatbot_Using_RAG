@@ -1,0 +1,23 @@
+{
+  "projectRoot": "F:\\Personal Projects\\AgenticAI_Chatbot_Using_RAG",
+  "batchFiles": [
+    {"path": "backend/client/llm_client.py", "language": "python", "sizeLines": 134, "fileCategory": "code"},
+    {"path": "backend/core/exceptions.py", "language": "python", "sizeLines": 76, "fileCategory": "code"},
+    {"path": "backend/services/llm_service.py", "language": "python", "sizeLines": 399, "fileCategory": "code"},
+    {"path": "backend/utils/rate_limiter.py", "language": "python", "sizeLines": 107, "fileCategory": "code"},
+    {"path": "tests/conftest.py", "language": "python", "sizeLines": 339, "fileCategory": "code"},
+    {"path": "tests/test_artifacts.py", "language": "python", "sizeLines": 450, "fileCategory": "code"},
+    {"path": "tests/test_llm.py", "language": "python", "sizeLines": 263, "fileCategory": "code"},
+    {"path": "tests/test_retrieval.py", "language": "python", "sizeLines": 178, "fileCategory": "code"}
+  ],
+  "batchImportData": {
+    "backend/client/llm_client.py": ["backend/core/config.py", "backend/core/exceptions.py", "backend/utils/timeutil.py"],
+    "backend/core/exceptions.py": [],
+    "backend/services/llm_service.py": ["backend/client/llm_client.py", "backend/core/config.py", "backend/core/exceptions.py", "backend/utils/rate_limiter.py", "backend/utils/streaming.py", "backend/utils/text.py"],
+    "backend/utils/rate_limiter.py": ["backend/utils/timeutil.py"],
+    "tests/conftest.py": ["backend/core/config.py", "backend/core/container.py", "backend/main.py", "backend/services/llm_service.py", "backend/utils/rate_limiter.py"],
+    "tests/test_artifacts.py": ["backend/services/artifact.py", "backend/utils/rate_limiter.py", "tests/conftest.py"],
+    "tests/test_llm.py": ["backend/client/llm_client.py", "backend/core/exceptions.py", "backend/services/llm_service.py", "backend/utils/rate_limiter.py", "tests/conftest.py"],
+    "tests/test_retrieval.py": ["backend/core/exceptions.py", "backend/services/index_store.py", "tests/conftest.py"]
+  }
+}
