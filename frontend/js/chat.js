@@ -955,6 +955,8 @@ window.Chat = (function () {
 
   function openArtifact({ doc, messageId, opener, format }) {
     _wireArtifactPane();
+    // Close code preview if it happens to be open (only one pane at a time)
+    if (window.CodePreview) CodePreview.close();
     const pane = document.getElementById("artifactPane");
     const body = document.getElementById("artifactBody");
     const title = document.getElementById("artifactTitle");
@@ -1148,6 +1150,7 @@ window.Chat = (function () {
     copyMessage,
     getCitation,
     bindArtifact,
+    closeArtifact,
     fileKeywordFormat,
     prepareFilePreview,
   };

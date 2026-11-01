@@ -167,6 +167,9 @@
   <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></symbol>
   <symbol id="i-scan-text" viewBox="0 0 24 24"><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/><path d="M7 8h8"/><path d="M7 12h10"/><path d="M7 16h6"/></symbol>
   <symbol id="i-sparkle" viewBox="0 0 24 24"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"/></symbol>
+  <!-- Lucide download + play — used by the Code workspace preview pane -->
+  <symbol id="i-download" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24"><polygon points="6 3 20 12 6 21 6 3"/></symbol>
 </svg>
 
 <!-- ═══════════════════════════════════════════════════════
@@ -278,6 +281,17 @@
         <input class="input input--search" type="search" id="docSearch" placeholder="Filter by file name" aria-label="Filter documents by file name" autocomplete="off" />
       </div>
       <button class="btn btn--primary btn--sm" id="docsUploadBtn" type="button"><svg class="icon icon--16" aria-hidden="true"><use href="#i-upload"/></svg><span>Upload</span></button>
+    </div>
+    <!-- Bulk-select action bar — shown only when ≥1 document is checked -->
+    <div class="panel__bulk-bar" id="docsBulkBar" hidden aria-live="polite">
+      <label class="doc-bulk__select-all" for="docsSelectAll">
+        <input type="checkbox" id="docsSelectAll" aria-label="Select all documents" />
+        <span id="docsBulkCount">0 selected</span>
+      </label>
+      <button class="btn btn--danger btn--sm" id="docsBulkDeleteBtn" type="button">
+        <svg class="icon icon--16" aria-hidden="true"><use href="#i-trash-2"/></svg>
+        <span>Delete selected</span>
+      </button>
     </div>
     <div class="panel__body" id="docSection">
       <div class="doc-list" id="docList" data-doc-list="full"></div>
@@ -841,7 +855,7 @@
             <button class="chip" type="button" data-template="tests"><svg class="icon icon--16" aria-hidden="true"><use href="#i-flask-conical"/></svg><span>Write tests</span></button>
             <button class="chip" type="button" data-template="debug"><svg class="icon icon--16" aria-hidden="true"><use href="#i-file-search"/></svg><span>Debug logs</span></button>
             </div>
-            <p class="workspace__note"><svg class="icon icon--16" aria-hidden="true"><use href="#i-info"/></svg><span>Paste your code into the message box (Shift+Enter adds a line). Generated code is shown for you to copy; it is never run.</span></p>
+            <p class="workspace__note"><svg class="icon icon--16" aria-hidden="true"><use href="#i-info"/></svg><span>Paste your code into the message box (Shift+Enter adds a line). HTML and SVG responses can be previewed live with the Run button. Other code is shown to copy only.</span></p>
           </section>
         </section>
       </div>
@@ -931,6 +945,21 @@
     </div>
   </main><!-- /.main -->
 
+  <!-- Code preview. Only shown in Code workspace when Run is clicked. -->
+  <div class="artifact-scrim" id="codePreviewScrim" aria-hidden="true"></div>
+  <aside class="code-preview" id="codePreview" role="complementary" aria-label="Code preview" aria-hidden="true" inert>
+    <div class="code-preview__resize" id="codePreviewResize" role="separator" aria-orientation="vertical" aria-label="Resize code preview" tabindex="0"></div>
+    <header class="code-preview__header">
+      <h2 class="code-preview__title" id="codePreviewTitle">Preview</h2>
+      <button class="btn btn--icon" id="codePreviewClose" type="button" aria-label="Close preview">
+        <svg class="icon icon--16" aria-hidden="true"><use href="#i-x"/></svg>
+      </button>
+    </header>
+    <iframe id="codePreviewFrame" class="code-preview__frame"
+            sandbox="allow-scripts allow-forms"
+            title="Code preview" aria-label="Code preview output"></iframe>
+  </aside>
+
   <!-- Document preview. Closed until a file card opens it. Not a route. -->
   <div class="artifact-scrim" id="artifactScrim" aria-hidden="true"></div>
   <aside class="artifact-pane" id="artifactPane" role="complementary" aria-label="Document preview" aria-hidden="true" inert>
@@ -984,6 +1013,7 @@
 <script src="/js/components/workspaces.js"></script>
 <script src="/js/components/settings.js"></script>
 <script src="/js/components/motion.js"></script>
+<script src="/js/components/code-preview.js"></script>
 <script src="/js/intro.js"></script>
 <script src="/js/ui.js"></script>
 <script src="/js/app.js"></script>

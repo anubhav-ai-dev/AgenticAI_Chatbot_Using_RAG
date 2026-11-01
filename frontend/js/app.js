@@ -845,13 +845,35 @@
     }
   }
 
+  async function _deleteSelectedDocuments(ids) {
+    if (!ids || !ids.length) return;
+    const n = ids.length;
+    const ok = await UI.confirm({
+      title: `Remove ${n} ${n === 1 ? "document" : "documents"}?`,
+      message: `${n === 1 ? "This document" : `These ${n} documents`} will be removed from your library and can no longer be searched.`,
+      confirmLabel: "Remove",
+      cancelLabel: "Cancel",
+      destructive: true,
+    });
+    if (!ok) return;
+    try {
+      // Delete in parallel — existing single-delete endpoint handles each
+      await Promise.all(ids.map((id) => API.deleteDocument(id, State.userId)));
+      UI.showToast(`${n} ${n === 1 ? "document" : "documents"} removed`, "success");
+    } catch (err) {
+      UI.showToast(`Could not remove some documents: ${err.message}`, "error");
+    } finally {
+      await _loadDocuments();
+    }
+  }
+
   async function _loadDocuments() {
     if (!State.documentsLoaded) UI.setDocsStatus("loading");
     try {
       const docs = await API.listDocuments(State.userId);
       State.documents = docs || [];
       State.documentsLoaded = true;
-      UI.renderDocList(State.documents, _deleteDocument);
+      UI.renderDocList(State.documents, _deleteDocument, _deleteSelectedDocuments);
     } catch (err) {
       console.error("[app] Could not load documents:", err);
       // Keep a list that was already loaded; show the error state only when there is nothing to show

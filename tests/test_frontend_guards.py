@@ -519,7 +519,7 @@ def test_app_js_has_no_native_confirm_inline_color_interval_or_emoji():
     assert not re.search(r"\.style\.color\b", code), "style the toggle via [aria-pressed] in CSS"
     assert "setInterval" not in code
     assert not _EMOJI.search(APP), "app.js must use icon names, not emoji"
-    assert "UI.confirm(" in code and code.count("await UI.confirm(") == 3   # chat delete + document delete + duplicate-upload guard
+    assert "UI.confirm(" in code and code.count("await UI.confirm(") == 4   # chat delete + document delete + bulk delete + duplicate-upload guard
 
 
 def test_welcome_card_handler_never_sends():

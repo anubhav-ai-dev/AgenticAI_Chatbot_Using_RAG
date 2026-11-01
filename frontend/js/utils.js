@@ -351,7 +351,70 @@ window.Utils = (function () {
           }, 2000);
         });
       });
+
+      // Offer Download + Run for previewable fences (html/htm/svg) in the Code workspace.
+      // CodePreview is loaded after utils.js; the check is safe if it hasn't mounted yet.
+      if (window.CodePreview) CodePreview.decorate(wrapper);
     });
+  }
+
+  /**
+   * Build a self-contained, sandbox-safe HTML document from a code fence.
+   * Pure function (no DOM side-effects). Called by CodePreview and by tests.
+   *
+   * @param {string} source  Raw source from the fence.
+   * @param {string} lang    Fence language tag, e.g. "html", "svg".
+   * @returns {{ title: string, html: string, filename: string }}
+   */
+  function buildPreviewDoc(source, lang) {
+    const src = String(source || "");
+    const l = String(lang || "").toLowerCase();
+    const isSvg = (l === "svg");
+    const isHtml = (l === "html" || l === "htm");
+    const isFull = isHtml && /^\s*(?:<!doctype\b|<html\b)/i.test(src);
+
+    // Extract <title> from the source if present
+    let title = "Preview";
+    const titleM = src.match(/<title[^>]*>([^<]*)<\/title>/i);
+    if (titleM && titleM[1].trim()) title = titleM[1].trim();
+
+    // CSP: allow inline + CDN scripts/styles/fonts; block cross-origin fetch/XHR and form posts.
+    // script-src includes https: so CDN libraries (Bootstrap, Tailwind, Chart.js, etc.) can load.
+    // The iframe sandbox (no allow-same-origin) already prevents DOM/cookie access to the parent.
+    const csp = [
+      "default-src 'self' https: data:",
+      "script-src 'unsafe-inline' https:",
+      "style-src 'unsafe-inline' https:",
+      "img-src https: data: blob:",
+      "font-src https: data:",
+      "connect-src 'none'",
+      "form-action 'none'",
+    ].join("; ");
+    const cspMeta = `<meta http-equiv="Content-Security-Policy" content="${csp}">`;
+
+    let html;
+    if (isFull) {
+      // Inject CSP into the existing <head>; prepend it when no <head> is present
+      if (/<head[\s>]/i.test(src)) {
+        html = src.replace(/(<head[\s>][^>]*>)/i, "$1\n" + cspMeta);
+      } else {
+        html = cspMeta + "\n" + src;
+      }
+    } else if (isSvg) {
+      // Centre the SVG on a neutral background
+      html = "<!DOCTYPE html><html lang=\"en\"><head>" + cspMeta +
+        "<meta charset=\"UTF-8\"><title>" + escapeHtml(title) + "</title>" +
+        "<style>html,body{margin:0;display:flex;align-items:center;justify-content:center;" +
+        "min-height:100vh;background:#fff;}</style></head><body>" + src + "</body></html>";
+    } else {
+      // HTML fragment — wrap in a minimal page
+      html = "<!DOCTYPE html><html lang=\"en\"><head>" + cspMeta +
+        "<meta charset=\"UTF-8\"><title>" + escapeHtml(title) + "</title>" +
+        "<style>body{margin:1rem 1.5rem;font-family:system-ui,sans-serif;line-height:1.6;}</style>" +
+        "</head><body>" + src + "</body></html>";
+    }
+
+    return { title, html, filename: isSvg ? "preview.svg" : "preview.html" };
   }
 
   /** Copy text to the clipboard. Resolves true on success, false on failure. */
@@ -427,6 +490,7 @@ window.Utils = (function () {
     renderMarkdown,
     renderArtifactHtml,
     highlightCode,
+    buildPreviewDoc,
     copyText,
     escapeHtml,
     formatTime,

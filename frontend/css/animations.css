@@ -304,5 +304,6 @@ html[data-page-hidden] .intro__orbits { animation-play-state: paused !important;
   .intro__orbits { animation: none; }
   .skeleton { animation: none; }
   .artifact-pane,
+  .code-preview,
   .artifact-scrim { transition: none; }
 }

@@ -15,6 +15,7 @@ import pytest
 FE = Path(__file__).resolve().parent.parent / "frontend"
 UTILS = (FE / "js/utils.js").read_text(encoding="utf-8")
 ICONS = (FE / "js/icons.js").read_text(encoding="utf-8")
+CODEPREVIEW = (FE / "js/components/code-preview.js").read_text(encoding="utf-8")
 INDEX = (FE / "index.html").read_text(encoding="utf-8")
 
 
@@ -68,6 +69,51 @@ def test_artifact_preview_rebuilds_markdown_like_chat():
     assert 'format === "txt"' in UTILS and 'format === "xlsx"' in UTILS
 
 
+def test_buildPreviewDoc_is_exported():
+    """buildPreviewDoc must appear in the IIFE's return block."""
+    # The public return block is the last 'return {' in the file before the closing '})();'
+    # Simpler: the name followed by comma appears in the return list.
+    assert "buildPreviewDoc," in UTILS, "buildPreviewDoc not found in utils.js exports"
+
+
+def test_buildPreviewDoc_handles_all_three_branches():
+    """Smoke-check that the three code paths are present in buildPreviewDoc."""
+    assert "function buildPreviewDoc" in UTILS, "buildPreviewDoc not found in utils.js"
+    # Use a window from the function declaration — generous enough to cover the whole body
+    start = UTILS.index("function buildPreviewDoc")
+    body = UTILS[start:start + 3000]
+    assert "isFull" in body,        "full-document path missing"
+    assert "isSvg" in body,         "SVG path missing"
+    assert "connect-src" in body,   "CSP meta missing"
+    assert "preview.html" in body,  "html filename missing"
+    assert "preview.svg" in body,   "svg filename missing"
+
+
+def test_code_preview_js_exports_required_api():
+    """code-preview.js must expose decorate / sync / open / close."""
+    assert "decorate" in CODEPREVIEW
+    assert "sync" in CODEPREVIEW
+    assert "_launch" in CODEPREVIEW or "open:" in CODEPREVIEW
+    assert "close" in CODEPREVIEW
+    assert "PREVIEWABLE" in CODEPREVIEW   # the allowlist Set
+    assert '"html"' in CODEPREVIEW and '"svg"' in CODEPREVIEW
+
+
+def test_code_preview_js_checks_chatArea():
+    """decorate() must bail out when the wrapper is not inside #chatArea."""
+    m = re.search(r"function\s+decorate\b(.*?)^\s*\}", CODEPREVIEW, re.S | re.M)
+    assert m, "decorate() not found in code-preview.js"
+    body = m.group(1)
+    assert "chatArea" in body        # it looks up #chatArea
+    assert "contains" in body        # it calls .contains(wrapper)
+
+
+def test_code_workspace_note_updated():
+    """The Code workspace note must mention Run (not the old 'never run' copy)."""
+    assert "Run" in INDEX
+    assert "never run" not in INDEX
+
+
 def test_purify_config_keeps_http_only_and_forbids_active_tags():
     assert "ALLOWED_URI_REGEXP: /^https?:/i" in UTILS
     assert "ALLOW_DATA_ATTR: false" in UTILS
@@ -90,6 +136,7 @@ HARNESS = """<!doctype html><html><body><pre id="out"></pre><svg style="display:
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 <script>%(icons)s</script>
 <script>%(utils)s</script>
+<script>%(code_preview)s</script>
 <script>
 const R = {libs: [typeof marked, typeof DOMPurify, typeof hljs]};
 if (R.libs.includes("undefined")) { document.getElementById("out").textContent = JSON.stringify(R); }
@@ -112,6 +159,63 @@ else {
   Utils.highlightCode(d);
   R.hljs = d.querySelectorAll('[class^="hljs-"]').length;
   R.copy = d.querySelectorAll(".code-block__copy").length;
+
+  // ── buildPreviewDoc ───────────────────────────────────────
+  // fragment wrap
+  const pHtml = Utils.buildPreviewDoc('<p>Hello</p>', 'html');
+  R.prevHtmlTitle    = pHtml.title;
+  R.prevHtmlFilename = pHtml.filename;
+  R.prevHtmlHasCsp   = pHtml.html.includes('Content-Security-Policy');
+  R.prevHtmlHasBody  = pHtml.html.includes('<p>Hello</p>');
+  R.prevHtmlIsDoc    = pHtml.html.startsWith('<!DOCTYPE html>') || pHtml.html.startsWith('<!doctype html>');
+  // SVG wrap
+  const pSvg = Utils.buildPreviewDoc('<svg xmlns="http://www.w3.org/2000/svg"><circle r="5"/></svg>', 'svg');
+  R.prevSvgFilename  = pSvg.filename;
+  R.prevSvgCentred   = pSvg.html.includes('min-height:100vh');
+  // full document — title extraction + CSP injection
+  const pFull = Utils.buildPreviewDoc(
+    '<!DOCTYPE html><html><head><title>My App</title></head><body>Hello</body></html>', 'html');
+  R.prevFullTitle    = pFull.title;
+  R.prevFullCsp      = pFull.html.includes('Content-Security-Policy');
+
+  // ── Run-button scoping via CodePreview.decorate ───────────
+  function makeBlock(lang, parent) {
+    const wrapper = document.createElement('div');
+    wrapper.className = 'code-block';
+    const header = document.createElement('div');
+    header.className = 'code-block__header';
+    const span = document.createElement('span');
+    span.className = 'code-block__lang';
+    span.textContent = lang;
+    const copyBtn = document.createElement('button');
+    copyBtn.className = 'code-block__copy';
+    header.appendChild(span); header.appendChild(copyBtn);
+    const pre = document.createElement('pre');
+    pre.appendChild(document.createElement('code'));
+    wrapper.appendChild(header); wrapper.appendChild(pre);
+    if (parent) parent.appendChild(wrapper);
+    return wrapper;
+  }
+  // create a simulated #chatArea
+  const chatArea = document.createElement('section');
+  chatArea.id = 'chatArea';
+  document.body.appendChild(chatArea);
+  // html in chatArea → Run button expected
+  const htmlInChat = makeBlock('html', chatArea);
+  CodePreview.decorate(htmlInChat);
+  R.runInChat = htmlInChat.querySelectorAll('.code-block__run').length;
+  // html OUTSIDE chatArea → Run button must NOT appear
+  const htmlOut = makeBlock('html', document.body);
+  CodePreview.decorate(htmlOut);
+  R.runOutsideChat = htmlOut.querySelectorAll('.code-block__run').length;
+  // python in chatArea → Run button must NOT appear (not previewable)
+  const pyInChat = makeBlock('python', chatArea);
+  CodePreview.decorate(pyInChat);
+  R.runPythonInChat = pyInChat.querySelectorAll('.code-block__run').length;
+  // idempotent: calling decorate twice must not add a second Run button
+  CodePreview.decorate(htmlInChat);
+  R.runIdempotent = htmlInChat.querySelectorAll('.code-block__run').length;
+
   document.getElementById("out").textContent = JSON.stringify(R);
 }
 </script></body></html>"""
@@ -124,8 +228,11 @@ def browser_result(tmp_path_factory):
         pytest.skip("headless Chrome not available")
     d = tmp_path_factory.mktemp("san")
     page = d / "h.html"
-    page.write_text(HARNESS % {"icons": ICONS.replace("</script", "<\\/script"),
-                               "utils": UTILS.replace("</script", "<\\/script")}, encoding="utf-8")
+    page.write_text(HARNESS % {
+        "icons":        ICONS.replace("</script", "<\\/script"),
+        "utils":        UTILS.replace("</script", "<\\/script"),
+        "code_preview": CODEPREVIEW.replace("</script", "<\\/script"),
+    }, encoding="utf-8")
     try:
         p = subprocess.run(
             [chrome, "--headless=new", "--no-sandbox", "--disable-gpu", f"--user-data-dir={d / 'prof'}",
@@ -166,3 +273,32 @@ def test_browser_features_still_work(browser_result):
     assert "<code>[2]</code>" in r["cite"]
     assert 'rel="noopener noreferrer"' in r["link"] and 'target="_blank"' in r["link"]
     assert r["hljs"] > 0 and r["copy"] == 1
+
+
+def test_browser_buildPreviewDoc_html_fragment(browser_result):
+    r = browser_result
+    assert r["prevHtmlTitle"] == "Preview"        # no <title> in fragment → default
+    assert r["prevHtmlFilename"] == "preview.html"
+    assert r["prevHtmlHasCsp"] is True            # CSP meta injected
+    assert r["prevHtmlHasBody"] is True           # source preserved
+    assert r["prevHtmlIsDoc"] is True             # wrapped in full document
+
+
+def test_browser_buildPreviewDoc_svg(browser_result):
+    r = browser_result
+    assert r["prevSvgFilename"] == "preview.svg"
+    assert r["prevSvgCentred"] is True            # centring CSS present
+
+
+def test_browser_buildPreviewDoc_full_document(browser_result):
+    r = browser_result
+    assert r["prevFullTitle"] == "My App"         # <title> extracted correctly
+    assert r["prevFullCsp"] is True               # CSP injected into existing <head>
+
+
+def test_browser_run_button_scoping(browser_result):
+    r = browser_result
+    assert r["runInChat"] == 1,      "html fence in #chatArea must have exactly one Run button"
+    assert r["runOutsideChat"] == 0, "html fence outside #chatArea must NOT have a Run button"
+    assert r["runPythonInChat"] == 0, "python fence must NOT have a Run button even in #chatArea"
+    assert r["runIdempotent"] == 1,  "calling decorate twice must not add a second Run button"

@@ -279,6 +279,55 @@ html[data-workspace="code"] .welcome { justify-content: flex-start; padding-top:
 @media (hover: hover) {
   .doc-row__del:hover { background: var(--error-bg); color: var(--error); }
 }
+/* Checkbox column — only rendered in the full panel list, not in the compact sidebar */
+.doc-row__check {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+}
+.doc-row__check input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  accent-color: var(--accent);
+  border-radius: var(--r-sm);
+  flex-shrink: 0;
+}
+/* Highlight checked rows */
+.doc-row--selected { background: var(--accent-subtle); border-radius: var(--r-md); }
+
+/* ── Bulk-select action bar ────────────────────────────── */
+.panel__bulk-bar {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: var(--sp-2) var(--sp-5);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  background: var(--surface-raised);
+  animation: fadeIn var(--dur-fast) var(--ease-out);
+}
+.doc-bulk__select-all {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  flex: 1;
+  cursor: pointer;
+  font-size: var(--fs-secondary);
+  color: var(--text-secondary);
+  user-select: none;
+}
+.doc-bulk__select-all input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  accent-color: var(--accent);
+  flex-shrink: 0;
+}
+#docsBulkCount { font-weight: 500; color: var(--text); }
+
 .doc-list--compact .doc-row { padding: var(--sp-2) var(--sp-3); border: 1px solid var(--border-soft); border-radius: var(--r-lg); margin-bottom: var(--sp-2); background: var(--surface); }
 .doc-list--compact .doc-row:last-child { margin-bottom: 0; }
 

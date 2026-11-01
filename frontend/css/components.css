@@ -840,6 +840,40 @@ html[data-workspace="code"] { --column-w: 880px; }
 @media (hover: hover) {
   .code-block__copy:hover { color: var(--text); background: var(--surface-subtle); }
 }
+
+/* ── Run + Download (Code workspace only) ──────────────────
+   Same control style as Copy. Hidden by default; CSS shows
+   them only when html[data-workspace="code"].               */
+.code-block__download,
+.code-block__run {
+  flex-shrink: 0;
+  display: none;           /* hidden outside Code workspace */
+  align-items: center;
+  gap: var(--sp-1);
+  background: transparent;
+  border: 0;
+  border-radius: var(--r-sm);
+  min-height: var(--ctl-sm);
+  padding: 0 var(--sp-2);
+  cursor: pointer;
+  color: var(--text-secondary);
+  font-family: var(--font-ui);
+  font-size: var(--fs-caption);
+  font-weight: 500;
+  transition: color var(--dur-fast) var(--ease-inout);
+}
+html[data-workspace="code"] .code-block__download,
+html[data-workspace="code"] .code-block__run {
+  display: inline-flex;
+}
+html[data-workspace="code"] .code-block__run {
+  color: var(--accent-text);
+}
+@media (hover: hover) {
+  .code-block__download:hover { color: var(--text); background: var(--surface-subtle); }
+  .code-block__run:hover      { color: var(--accent-text); background: var(--accent-subtle); }
+}
+
 .code-block pre {
   margin: 0;
   padding: var(--sp-4);
@@ -980,6 +1014,8 @@ html[data-workspace="code"] { --column-w: 880px; }
 @media (pointer: coarse) {
   .message__actions .btn--icon-sm,
   .code-block__copy,
+  .code-block__download,
+  .code-block__run,
   .activity__toggle,
   .jump-latest,
   .source__excerpt-toggle { min-height: 44px; }
@@ -2054,6 +2090,125 @@ dialog.dialog::backdrop { background: transparent; }
   }
   .artifact-pane__resize:hover,
   .artifact-pane__resize:focus-visible {
+    background: var(--border-control);
+  }
+}
+
+/* ══════════════════════════════════════════════════════════
+   Code preview pane
+   Mirrors .artifact-pane layout + motion.
+   Default width is ~45vw (clamped); JS / localStorage override via --code-preview-w.
+   ══════════════════════════════════════════════════════════ */
+
+.code-preview {
+  --code-preview-w: clamp(320px, 45vw, 900px);
+  flex: 0 0 0;
+  width: 0;
+  min-width: 0;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--surface);
+  color: var(--text);
+  border-left: 0 solid transparent;
+  opacity: 0;
+  transform: translateX(24px);
+  visibility: hidden;
+  pointer-events: none;
+  transition: transform var(--dur-base) var(--ease-out),
+              opacity var(--dur-base) var(--ease-out),
+              visibility 0s linear var(--dur-base);
+}
+.code-preview.is-open {
+  position: relative;
+  flex-basis: var(--code-preview-w);
+  width: var(--code-preview-w);
+  opacity: 1;
+  transform: none;
+  visibility: visible;
+  pointer-events: auto;
+  border-left: 1px solid var(--border);
+  transition-delay: 0s;
+}
+
+/* Resize handle (desktop only; mirrored in @media below) */
+.code-preview__resize { display: none; }
+
+.code-preview__header {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: var(--sp-3);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+  background: var(--surface);
+}
+.code-preview__title {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  font-size: var(--fs-sub);
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* The iframe fills the entire remaining height; no inner padding so the preview
+   can use its own layout (full-bleed hero, dark backgrounds, etc.).
+   No background set here — the srcdoc controls its own background. */
+.code-preview__frame {
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  border: 0;
+  display: block;
+}
+
+/* ── Narrow: full-screen overlay (same as document pane) ── */
+@media (max-width: 767px) {
+  .code-preview {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: auto;
+    z-index: calc(var(--z-popover) + 1);
+    width: calc(100% - 48px);
+    height: auto;
+    transform: translateX(100%);
+    border-left: 0;
+  }
+  .code-preview.is-open {
+    flex-basis: auto;
+    width: calc(100% - 48px);
+    transform: none;
+  }
+  .code-preview__resize { display: none; }
+  .code-preview__header {
+    padding-top: max(var(--sp-3), env(safe-area-inset-top, 0px));
+  }
+}
+
+/* ── Desktop: drag-to-resize handle ── */
+@media (min-width: 768px) {
+  .code-preview__resize {
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: var(--sp-2);
+    z-index: 1;
+    cursor: ew-resize;
+    background: transparent;
+    border: 0;
+    padding: 0;
+    touch-action: none;
+  }
+  .code-preview__resize:hover,
+  .code-preview__resize:focus-visible {
     background: var(--border-control);
   }
 }

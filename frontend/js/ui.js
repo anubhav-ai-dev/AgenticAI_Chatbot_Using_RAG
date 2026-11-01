@@ -401,8 +401,8 @@ window.UI = (function () {
   // ── Document list ─────────────────────────────────────────
 
   /** Render GET /documents rows into every document list (workspace panel + My Documents). */
-  function renderDocList(documents, onDelete) {
-    if (window.DocsView) DocsView.render(documents, onDelete);
+  function renderDocList(documents, onDelete, onDeleteBulk) {
+    if (window.DocsView) DocsView.render(documents, onDelete, onDeleteBulk);
   }
 
   /** "loading" | "error" | "ready" for the document lists; error takes { message, onRetry }. */
@@ -900,6 +900,8 @@ window.UI = (function () {
     document.documentElement.dataset.workspace = m.id;
     if (window.Workspaces) Workspaces.setActive(m.id);
     if (switched && window.Motion) Motion.workspaceChanged();   // the new panel eases in
+    // Code preview pane: close when leaving Code; show/hide Run buttons via CSS
+    if (window.CodePreview) CodePreview.sync(m.id);
   }
 
   // ── User ID display ───────────────────────────────────────

@@ -181,6 +181,21 @@ class ChatService:
         yield _event("meta", route=decision.label, mode=mode, reason=decision.reason,
                      requested_model=model)
 
+        # Compute file_intent early — needed to gate rephrase and semantic cache.
+        file_intent = wants_file(text)
+
+        # ── Query rephrase (code mode only) ──────────────────────────────────
+        # Launched right after meta so it overlaps with the follow-up rewrite and
+        # RAG / web fetches that happen below. Collected just before prompt build.
+        # History always stores the original message; only the model sees the rephrased query.
+        # Skipped for file/artifact requests — the artifact service needs the raw query.
+        query_for_model = text
+        rephrase_task: Optional[asyncio.Task] = None
+        if (mode == "code" and not cmd.regenerate
+                and self._s.query_rewrite_enabled and not file_intent):
+            yield _event("status", stage="understanding", state="start")
+            rephrase_task = asyncio.create_task(self._rephrase_query(text))
+
         # follow-up → standalone query (only when retrieval/search will use it)
         followup = self._router.is_followup(text, bool(history))
         search_query = text
@@ -191,8 +206,6 @@ class ChatService:
             timings["rewrite_ms"] = (time.perf_counter() - t) * 1000
             yield _event("status", stage="rewriting", state="done",
                          elapsed_ms=timings["rewrite_ms"], detail=search_query[:120])
-
-        file_intent = wants_file(text)
 
         # semantic answer cache (standalone, non-live queries only). File turns never
         # replay a cached chat answer — that would skip the preview attachment.
@@ -278,6 +291,22 @@ class ChatService:
         elif decision.use_web and web is not None and not web_results:
             notes.append("Web search returned no results; answer from your own knowledge and say so.")
 
+        # ── Collect rephrase result (started after meta, runs in parallel with RAG/web) ──
+        if rephrase_task is not None:
+            t_rephrase = time.perf_counter()
+            try:
+                query_for_model = await asyncio.wait_for(
+                    asyncio.shield(rephrase_task), timeout=2.0)
+            except Exception as exc:   # noqa: BLE001 — always fall back to original
+                logger.info("Query rephrase skipped (%s)", type(exc).__name__)
+                if not rephrase_task.done():
+                    rephrase_task.cancel()
+                query_for_model = text
+            timings["rephrase_ms"] = (time.perf_counter() - t_rephrase) * 1000
+            yield _event("status", stage="understanding", state="done",
+                         elapsed_ms=timings["rephrase_ms"],
+                         detail=query_for_model[:200])
+
         repo_brief = ""
         if self._github is not None:
             try:
@@ -285,10 +314,10 @@ class ChatService:
             except Exception:  # noqa: BLE001 — chat still answers without the brief
                 logger.info("repo brief skipped")
         specialist = select_specialist(
-            mode, text, file_intent=file_intent, has_repo=bool(repo_brief))
-        prompt = self._prompts.build(mode=mode, query=text, history=history, rag_items=rag_items,
-                                     web_results=web_results, notes=notes, specialist=specialist,
-                                     repo_brief=repo_brief)
+            mode, query_for_model, file_intent=file_intent, has_repo=bool(repo_brief))
+        prompt = self._prompts.build(mode=mode, query=query_for_model, history=history,
+                                     rag_items=rag_items, web_results=web_results, notes=notes,
+                                     specialist=specialist, repo_brief=repo_brief)
         if prompt.citations:
             yield _event("citations", items=prompt.citations)
 
@@ -441,6 +470,38 @@ class ChatService:
         except Exception as exc:  # noqa: BLE001
             logger.info("Query rewrite skipped (%s)", type(exc).__name__)
             return fallback
+
+    async def _rephrase_query(self, query: str) -> str:
+        """Rephrase the user's query to be technically precise without changing its intent.
+
+        Used in code mode to improve model output quality.  A tight timeout and silent
+        fallback mean this never blocks the main response even if the fast model is slow.
+        """
+        if not self._llm.configured:
+            return query
+        messages = [
+            {"role": "system", "content": (
+                "You are a technical query reformulator for a coding AI assistant. "
+                "Rephrase the user's message to be precise and unambiguous.\n\n"
+                "Rules (follow strictly):\n"
+                "1. Preserve the EXACT intent — do not add new requirements or constraints.\n"
+                "2. Fix grammar and make phrasing natural and professional.\n"
+                "3. For UI / frontend requests: specify the expected output format naturally "
+                "   (e.g. 'as a single self-contained HTML file with all CSS and JS inline').\n"
+                "4. For backend / script requests: name the language or framework explicitly "
+                "   if it is clear from context.\n"
+                "5. Output ONLY the rephrased query — no explanation, no preamble."
+            )},
+            {"role": "user", "content": query},
+        ]
+        try:
+            res = await self._llm.complete(
+                messages, fast=True, max_tokens=120, temperature=0.0)
+            rephrased = (res.text or "").strip().splitlines()[0].strip().strip('"\'')
+            return rephrased if rephrased else query
+        except Exception as exc:   # noqa: BLE001
+            logger.info("_rephrase_query failed (%s)", type(exc).__name__)
+            return query
 
     def _maybe_artifact(self, user_text: str, answer: str,
                         history: list[dict[str, str]]) -> tuple[Optional[dict[str, Any]], Optional[str]]:

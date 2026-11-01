@@ -25,6 +25,8 @@ window.DocsView = (function () {
 
   let _docs = [];
   let _onDelete = null;
+  let _onDeleteBulk = null;
+  let _selected = new Set();          // Set of selected doc IDs
   let _status = { state: "ready" };
 
   function _el(tag, cls, text) {
@@ -47,9 +49,46 @@ window.DocsView = (function () {
     return bits.join(" · ");
   }
 
-  function _row(doc) {
+  /** Update the bulk action bar state to match current selection. */
+  function _updateBulkBar() {
+    const bar     = $("docsBulkBar");
+    const countEl = $("docsBulkCount");
+    const selAll  = $("docsSelectAll");
+    const n       = _selected.size;
+    const total   = _docs.length;
+
+    if (bar)     bar.hidden = (n === 0);
+    if (countEl) countEl.textContent = `${n} ${n === 1 ? "selected" : "selected"}`;
+
+    if (selAll) {
+      selAll.checked       = (n > 0 && n === total);
+      selAll.indeterminate = (n > 0 && n < total);
+    }
+  }
+
+  function _row(doc, isFullList) {
     const filename = String(doc.filename == null ? "" : doc.filename);
     const row = _el("div", "doc-row");
+
+    // ── Checkbox (full panel list only) ──────────────────────────────────
+    if (isFullList) {
+      const chkWrap = _el("label", "doc-row__check");
+      chkWrap.title = `Select ${filename}`;
+      const chk = _el("input");
+      chk.type    = "checkbox";
+      chk.setAttribute("aria-label", `Select ${filename}`);
+      chk.checked = _selected.has(doc.id);
+      chk.addEventListener("change", (e) => {
+        e.stopPropagation();
+        if (chk.checked) { _selected.add(doc.id); } else { _selected.delete(doc.id); }
+        row.classList.toggle("doc-row--selected", chk.checked);
+        _updateBulkBar();
+      });
+      chkWrap.appendChild(chk);
+      row.appendChild(chkWrap);
+      if (_selected.has(doc.id)) row.classList.add("doc-row--selected");
+    }
+
     const icon = _el("span", "doc-row__icon");
     icon.setAttribute("aria-hidden", "true");
     icon.appendChild(Icons.el(TYPE_ICON[doc.file_type] || "file", { size: 20 }));
@@ -122,7 +161,7 @@ window.DocsView = (function () {
       container.appendChild(_state("empty", "search", "No matches", `No document name contains “${$("docSearch").value.trim()}”.`));
       return;
     }
-    shown.forEach((d) => container.appendChild(_row(d)));
+    shown.forEach((d) => container.appendChild(_row(d, full)));
   }
 
   function _renderAll() {
@@ -141,13 +180,29 @@ window.DocsView = (function () {
     if (window.Workspaces) Workspaces.setDocCount(ready ? n : 0);
   }
 
-  /** @param {Array} documents GET /documents rows  @param {(doc)=>void} onDelete */
-  function render(documents, onDelete) {
+  /**
+   * @param {Array}           documents    GET /documents rows
+   * @param {(doc)=>void}     onDelete     Single-document delete callback
+   * @param {(ids[])=>void}   onDeleteBulk Bulk-delete callback (receives array of IDs)
+   */
+  function render(documents, onDelete, onDeleteBulk) {
     _docs = Array.isArray(documents) ? documents : [];
     _onDelete = typeof onDelete === "function" ? onDelete : null;
+    _onDeleteBulk = typeof onDeleteBulk === "function" ? onDeleteBulk : null;
+    // Drop any selections that no longer exist in the fresh list
+    const validIds = new Set(_docs.map((d) => d.id));
+    for (const id of _selected) { if (!validIds.has(id)) _selected.delete(id); }
     _status = { state: "ready" };
     _renderAll();
     _counts();
+    _updateBulkBar();
+  }
+
+  /** Clear all checkbox selections and hide the bulk bar. */
+  function clearSelection() {
+    _selected.clear();
+    _renderAll();
+    _updateBulkBar();
   }
 
   function setStatus(state, opts) {
@@ -179,8 +234,36 @@ window.DocsView = (function () {
     if (up) up.addEventListener("click", () => { const a = $("attachBtn"); if (a) a.click(); });
     const url = $("docsAddUrl");
     if (url) url.addEventListener("click", () => { const a = $("addUrlBtn"); if (a) a.click(); });
+
+    // ── Select All checkbox ───────────────────────────────────────────────
+    const selAll = $("docsSelectAll");
+    if (selAll) {
+      selAll.addEventListener("change", () => {
+        const query = (search && search.value || "").trim().toLowerCase();
+        // Only toggle docs currently visible in the filtered list
+        const visible = query
+          ? _docs.filter((d) => String(d.filename || "").toLowerCase().includes(query))
+          : _docs;
+        visible.forEach((d) => {
+          if (selAll.checked) { _selected.add(d.id); } else { _selected.delete(d.id); }
+        });
+        _renderAll();
+        _updateBulkBar();
+      });
+    }
+
+    // ── Delete-selected button ────────────────────────────────────────────
+    const bulkBtn = $("docsBulkDeleteBtn");
+    if (bulkBtn) {
+      bulkBtn.addEventListener("click", () => {
+        if (_onDeleteBulk && _selected.size > 0) {
+          _onDeleteBulk([..._selected]);
+        }
+      });
+    }
+
     _renderAll();
   }
 
-  return { init, render, setStatus, open, close };
+  return { init, render, setStatus, open, close, clearSelection };
 })();
